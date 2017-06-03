@@ -1,2 +1,3 @@
 # mklists
-Rearrange plain text lists by tweaking rules
+
+Recompose plain text lists by tweaking rules
