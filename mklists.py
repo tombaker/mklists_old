@@ -18,6 +18,8 @@ class ListLine():
 
     def addbr(self):
         BR_REGEX = re.compile(r"""(.*)(\n)""")
+        if '<br>' in self.line:
+            return self
         self.line = BR_REGEX.sub(r'\1 <br>\2', self.line)
         return self
 

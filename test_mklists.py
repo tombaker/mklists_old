@@ -7,6 +7,11 @@ def test_addbr():
     output = """http://example.org <br>\n"""
     assert x.addbr().line == output
 
+def test_addbr_already_br():
+    x = ListLine('http://example.org <br>\n')
+    output = """http://example.org <br>\n"""
+    assert x.addbr().line == output
+
 # ----------------------------------------------------------------------
 def test_urlify_already_urlified():
     x = ListLine('A line with <a href="http://example.org">http://example.org</a>.\n')
