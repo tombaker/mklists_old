@@ -11,6 +11,8 @@ class ListLine():
 
     def urlify(self):
         URL_REGEX = re.compile(r"""((?:mailto:|ftp://|http://|https://)[^ <>'"{}|\\^`[\]]*)""")
+        if '<a href=' in self.line:
+            return self
         self.line = URL_REGEX.sub(r'<a href="\1">\1</a>', self.line)
         return self
 
