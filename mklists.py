@@ -10,7 +10,13 @@ class ListLine():
         self.line = line_of_list
 
     def urlify(self):
-        URL_REGEX = re.compile(r'''((?:mailto:|ftp://|http://|https://)[^ <>'"{}|\\^`[\]]*)''')
-        return URL_REGEX.sub(r'<a href="\1">\1</a>', self.line)
+        URL_REGEX = re.compile(r"""((?:mailto:|ftp://|http://|https://)[^ <>'"{}|\\^`[\]]*)""")
+        self.line = URL_REGEX.sub(r'<a href="\1">\1</a>', self.line)
+        return self
+
+    def addbr(self):
+        BR_REGEX = re.compile(r"""(.*)(\n)""")
+        self.line = BR_REGEX.sub(r'\1 <br>\2', self.line)
+        return self
 
 
