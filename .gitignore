@@ -2,3 +2,4 @@ site/
 *.pyc
 .cache
 __pycache__/
+.checkpoints/
