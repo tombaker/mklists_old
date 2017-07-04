@@ -9,7 +9,16 @@ class ListLine():
     def __init__(self, line_of_list):
         self.line = line_of_list
 
-    def urlify(self):
+    def linkify(self):
+        """
+        Given:
+        * 'URL_REGEX': a compiled regex that matches URL strings
+        * 'self': an instance of ListLine, a list of lines
+        * 'self.line': one line of the list 'self'
+
+        Return:
+        * 'self', where 'self.line' has been modified to wrap URL strings in anchor tags
+        """
         URL_REGEX = re.compile(r'''((?:mailto:|git://|http://|https://)[^ <>'"{}|\\^`[\]]*)''')
         if '<a href=' in self.line:
             return self
