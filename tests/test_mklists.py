@@ -24,9 +24,7 @@ def test_urlify():
     assert x.urlify().line == output
 
 def test_urlify_non_url():
-    """
-    Shows that function does not test for non-sensical URLs.
-    """
+    """Shows that function does not test for non-sensical URLs."""
     x = ListLine('http://...')
     output = """<a href="http://...">http://...</a>"""
     assert x.urlify().line == output
