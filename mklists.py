@@ -23,4 +23,3 @@ class ListLine():
         self.line = BR_REGEX.sub(r'\1 <br>\2', self.line)
         return self
 
-
