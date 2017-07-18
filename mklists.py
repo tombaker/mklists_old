@@ -12,15 +12,8 @@ class ListLine():
     def linkified_line(self):
         """
         """
-        URL_REGEX = re.compile(r'''((?:mailto:|git://|http://|https://)[^ <>'"{}|\\^`[\]]*)''')
+        URL_REGEX = re.compile(r'''((?:mailto:|git://|http://|https://)[^ <>'"{},|\\^`[\]]*)''')
         if '<a href=' in self.line:
             return self.line
         return URL_REGEX.sub(r'<a href="\1">\1</a>', self.line)
-
-    def addbr(self):
-        BR_REGEX = re.compile(r"""(.*)(\n)""")
-        if '<br>' in self.line:
-            return self
-        self.line = BR_REGEX.sub(r'\1 <br>\2', self.line)
-        return self.line
 
