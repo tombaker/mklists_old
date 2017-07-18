@@ -1,5 +1,5 @@
 import pytest
-from utilities import dsusort
+from tools import dsusort
 
 def test_dsusort():
     input = ['two ticks\n', 'an ant\n', 'the mite\n']
