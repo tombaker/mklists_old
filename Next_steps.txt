@@ -1,0 +1,53 @@
+I want to design a configuration file in which the second field of each line, when split on whitespace, is a regular expression pattern.
+
+For example, the string 
+
+    r'The\sTest'
+    
+can be used as a search pattern to match the word `The`, followed by whitespace, followed by `Test`:
+
+    >>> re.search(r'The\sTest', 'This is The Test')
+    <_sre.SRE_Match object; span=(8, 16), match='The Test'>
+
+However, when I try to split the line on whitespace and assign the second field to a variable, I get unwanted results:
+
+    >>> x, y, z = "foo r'The\sTest' bar".split()
+    >>> y
+    "r'The\\sTest'"
+
+    >>> x, y, z = r'foo The\sTest bar'.split()
+    >>> y
+    'The\\sTest'
+
+If I correctly understand an [earlier thread about backslash quoting](https://stackoverflow.com/questions/301068/python-backslash-quoting-in-string-literals), typing `y` at the prompt gets a result that is misleading because Python is displaying the result of `__repr__()` on the string.  And indeed, it would appear that `r'The\sTest'` and `y` both have the (correct) length of nine:
+
+    >>> len(r'The\sTest')
+    9
+
+    >>> len(y)
+    9
+
+Why then does the regex search, which works correctly with `r'The\sTest'` (above) not work correctly with `y`?
+
+----------------------------------------------------------------------
+This works!
+
+>>> re.search(y, 'This is The Test')
+<_sre.SRE_Match object; span=(8, 16), match='The Test'>
+
+>>> line = 'foo The\sTest bar'
+
+>>> __, x, __ = line.split()
+
+>>> re.search(x, 'This is The Test')
+<_sre.SRE_Match object; span=(8, 16), match='The Test'>
+
+----------------------------------------------------------------------
+Try next:
+
+>>> line = 'foo The\s+Test bar'
+>>> line = 'foo [TV]est bar'
+
+Make unit tests.
+
+Maybe express as doc tests in a txt file.
