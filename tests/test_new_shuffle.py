@@ -2,7 +2,7 @@ import pytest
 from new_shuffle import shuffle
 from collections import namedtuple
 
-Rule = namedtuple('Rule', 'source_matchfield source_matchregex source target target_sortfield')
+Rule = namedtuple('Rule', 'sourcematch_awkfield source_matchregex source target targetsort_awkfield')
 
 globlines_list1 = [ 'two ticks\n', 'an ant\n', 'the mite\n' ]
 
