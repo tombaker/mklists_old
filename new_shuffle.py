@@ -19,7 +19,6 @@ def shuffle(rules_list, globlines_list):
             regex       = rule.source_matchregex
             target      = rule.target
             source      = rule.source
-            eth_sortkey = rule.targetsort_awkfield - 1
 
             # if awkfield out of range, then source and target remain unchanged
             if awkfield > len(line.split()):
@@ -34,6 +33,13 @@ def shuffle(rules_list, globlines_list):
             if awkfield > 0:
                 mklists_dict[target].extend([line for line in mklists_dict[source] if re.search(regex, line.split()[ethfield])])
                 mklists_dict[source] = [line for line in mklists_dict[source] if not re.search(regex, line.split()[ethfield])]
+
+            # sort mklists_dict[target], dsu-style, if targetsort_awkfield is greater than zero (note: zero is false)
+            if rule.targetsort_awkfield:
+                eth_sortkey = rule.targetsort_awkfield - 1
+                decorated = [(line.split()[eth_sortkey], i, line) for i, line in enumerate(mklists_dict[target])]
+                decorated.sort()
+                mklists_dict[target] = [line for grade, i, line in decorated]
         
     return mklists_dict
 
