@@ -1,4 +1,30 @@
 import pytest
+from collections import namedtuple
+
+Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
+
+# test mklists.shuffle()
+from mklists import shuffle
+
+def test_shuffle():
+    rules_l1 = [ Rule(2, 'i', 'a.txt', 'b.txt', 0) ]
+    globlines_l1 = ['two ticks\n', 'an ant\n', 'the mite\n']
+    output = { 'a.txt': ['an ant\n'], 'b.txt': ['two ticks\n', 'the mite\n'] }
+    assert shuffle(rules_l1, globlines_l1) == output
+
+def test_shuffle_sort():
+    rules_l1 = [ Rule(2, 'i', 'a.txt', 'b.txt', 1) ]
+    globlines_l1 = ['two ticks\n', 'an ant\n', 'the mite\n']
+    output = { 'a.txt': ['an ant\n'], 'b.txt': ['the mite\n', 'two ticks\n'] }
+    assert shuffle(rules_l1, globlines_l1) == output
+
+# test mklists.RuleLine
+from mklists import RuleLine
+
+def test_rule_line_strip_comments():
+    x = RuleLine('1 . source.txt target.txt 3 # This is a comment\n')
+    output = '1 . source.txt target.txt 3'
+    assert x.line.strip_comments() == output
 from mklists import ListLine
 
 def test_linkified_line_already_linkified():
