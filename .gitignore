@@ -5,3 +5,4 @@ __pycache__/
 .checkpoints/
 .ipynb_checkpoints/
 Session.vim
+non-text/

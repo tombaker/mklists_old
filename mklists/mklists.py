@@ -45,6 +45,35 @@ def shuffle(rules_l, globlines_l):
         
     return mkl_d
 
+def get_rules(*rules_files):
+    """
+    split line once on hash (#)
+    keep half of line before hash
+    strip whitespace on both sides
+    delete blank lines
+    rules_l = list()
+    for line in rules_l:
+        line_split = line.split()
+        Something like for line, line_split in ..
+        
+        split the line 
+        bail (citing line) if any line is not exactly five fields long
+        try:
+            $1.isdigit()  - which includes zero
+            $5.isdigit()  - which includes zero
+            $1 = int($1)
+            $5 = int($1)
+        except SourceMatchAndTargetSortOrderDigits:
+            bail (citing line) with error message
+        $3 = re.compile($3)
+        $4 and $5:
+            must have only permitted characters
+        if it gets this far:
+            append line to rules_l
+
+    return rules_l (list of five-item tuples)
+    """
+
 
 class ListLine():
     """@@@"""
@@ -59,4 +88,22 @@ class ListLine():
         if '<a href=' in self.line:
             return self.line
         return URL_REGEX.sub(r'<a href="\1">\1</a>', self.line)
+
+def get_globlines(cwd=os.getcwd()):
+    """Something like:
+    globlines_list = []
+    for file in glob.glob('*'):
+        globlines_list.append(file.readlines())
+    return globlines_list
+    """
+    return cwd
+
+class RuleLine(object):
+
+    def __init__(self, text_line):
+        line = text_line
+
+    def strip_comments(line):
+        return line.partition('#')[0]
+
 
