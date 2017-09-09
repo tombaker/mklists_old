@@ -3,6 +3,13 @@ from collections import namedtuple
 
 Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
 
+# test mklists.mustbetext()
+from mklists import istext
+
+def test_istext():
+    with pytest.raises(UnicodeDecodeError):
+        istext('_non-text.png')
+
 # test mklists.shuffle()
 from mklists import shuffle
 
@@ -18,13 +25,15 @@ def test_shuffle_sort():
     output = { 'a.txt': ['an ant\n'], 'b.txt': ['the mite\n', 'two ticks\n'] }
     assert shuffle(rules_l1, globlines_l1) == output
 
-# test mklists.RuleLine
-from mklists import RuleLine
+# # test mklists.RuleLine
+# from mklists import RuleLine
+# 
+# def test_rule_line_strip_comments():
+#     x = RuleLine('1 . source.txt target.txt 3 # This is a comment\n')
+#     output = '1 . source.txt target.txt 3'
+#     assert x.line.strip_comments() == output
 
-def test_rule_line_strip_comments():
-    x = RuleLine('1 . source.txt target.txt 3 # This is a comment\n')
-    output = '1 . source.txt target.txt 3'
-    assert x.line.strip_comments() == output
+# test mklists.ListLine
 from mklists import ListLine
 
 def test_linkified_line_already_linkified():

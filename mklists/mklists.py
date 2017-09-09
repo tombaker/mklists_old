@@ -45,6 +45,13 @@ def shuffle(rules_l, globlines_l):
         
     return mkl_d
 
+def istext(file_to_test):
+    class NotUTF8Error(Exception): pass
+    try:
+        open(file_to_test).read(512)
+    except UnicodeDecodeError:
+        raise SystemExit('File {} not text in UTF-8; try converting.'.format(file_to_test))
+
 def get_rules(*rules_files):
     """
     split line once on hash (#)
@@ -73,7 +80,7 @@ def get_rules(*rules_files):
 
     return rules_l (list of five-item tuples)
     """
-
+    pass
 
 class ListLine():
     """@@@"""
