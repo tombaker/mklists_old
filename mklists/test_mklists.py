@@ -7,7 +7,7 @@ Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
 from mklists import istext
 
 def test_istext():
-    with pytest.raises(UnicodeDecodeError):
+    with pytest.raises(SystemExit):
         istext('_non-text.png')
 
 # test mklists.shuffle()

@@ -2,6 +2,7 @@ from collections import defaultdict
 import glob
 import os
 import re
+import sys
 
 def shuffle(rules_l, globlines_l):
     """Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')"""
@@ -46,11 +47,13 @@ def shuffle(rules_l, globlines_l):
     return mkl_d
 
 def istext(file_to_test):
-    class NotUTF8Error(Exception): pass
     try:
+        print('Testing {}.'.format(file_to_test))
         open(file_to_test).read(512)
     except UnicodeDecodeError:
-        raise SystemExit('File {} not text in UTF-8; try converting.'.format(file_to_test))
+        sys.exit('File {} must be encoded in UTF-8 (Unicode); try converting.'.format(file_to_test))
+
+    print("Apparently it did not raise an exception.")
 
 def get_rules(*rules_files):
     """
@@ -106,11 +109,12 @@ def get_globlines(cwd=os.getcwd()):
     return cwd
 
 class RuleLine(object):
-
     def __init__(self, text_line):
         line = text_line
 
     def strip_comments(line):
         return line.partition('#')[0]
 
-
+if __name__ == "__main__":
+    istext('_non-text.png')
+    print("Apparently it did not raise an exception.")
