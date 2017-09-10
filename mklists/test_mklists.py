@@ -4,11 +4,11 @@ from collections import namedtuple
 Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
 
 # test mklists.mustbetext()
-from mklists import istext
+from mklists import is_utf8
 
-def test_istext():
+def test_is_utf81():
     with pytest.raises(SystemExit):
-        istext('_non-text.png')
+        is_utf8('_non-text.png')
 
 # test mklists.shuffle()
 from mklists import shuffle

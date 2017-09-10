@@ -46,14 +46,12 @@ def shuffle(rules_l, globlines_l):
         
     return mkl_d
 
-def istext(file_to_test):
+def is_utf8(file):
+    class NotUTF8Error(SystemExit): pass
     try:
-        print('Testing {}.'.format(file_to_test))
-        open(file_to_test).read(512)
-    except UnicodeDecodeError:
-        sys.exit('File {} must be encoded in UTF-8 (Unicode); try converting.'.format(file_to_test))
-
-    print("Apparently it did not raise an exception.")
+        open(file).read(512)
+    except UnicodeDecodeError as e:
+        raise NotUTF8Error('Not UTF-8: {}: fix or delete, then retry.'.format(file)) from e
 
 def get_rules(*rules_files):
     """
@@ -116,5 +114,6 @@ class RuleLine(object):
         return line.partition('#')[0]
 
 if __name__ == "__main__":
-    istext('_non-text.png')
+    is_utf8('_non-text.png')
+    #is_utf8('testme.py')
     print("Apparently it did not raise an exception.")
