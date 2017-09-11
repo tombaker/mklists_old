@@ -8,7 +8,7 @@ from mklists import is_utf8
 
 def test_is_utf81():
     with pytest.raises(SystemExit):
-        is_utf8('_non-text.png')
+        is_utf8('/Users/tbaker/github/tombaker/mklists/mklists/_non-text.png')
 
 # test mklists.shuffle()
 from mklists import shuffle

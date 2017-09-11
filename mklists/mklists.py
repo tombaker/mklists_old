@@ -46,12 +46,24 @@ def shuffle(rules_l, globlines_l):
         
     return mkl_d
 
+def abs_pathname(pathname):
+    return os.path.abspath(os.path.expanduser(pathname))
+
+def urlify_string(s):
+    """
+    2017-07-18 Puts HTML links around URLs found in a string.
+    """
+    URL_REGEX = re.compile(r"""((?:mailto:|git://|http://|https://)[^ <>'"{},|\\^`[\]]*)""")
+    if '<a href=' in s:
+        return s
+    return URL_REGEX.sub(r'<a href="\1">\1</a>', s)
+
 def is_utf8(file):
     class NotUTF8Error(SystemExit): pass
     try:
         open(file).read(512)
     except UnicodeDecodeError as e:
-        raise NotUTF8Error('Not UTF-8: {}: fix or delete, then retry.'.format(file)) from e
+        raise NotUTF8Error('File {} not UTF-8: convert or delete, then retry.'.format(file)) from e
 
 def get_rules(*rules_files):
     """
@@ -76,6 +88,7 @@ def get_rules(*rules_files):
         $3 = re.compile($3)
         $4 and $5:
             must have only permitted characters
+                valid_chars = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
         if it gets this far:
             append line to rules_l
 
@@ -103,6 +116,7 @@ def get_globlines(cwd=os.getcwd()):
     for file in glob.glob('*'):
         globlines_list.append(file.readlines())
     return globlines_list
+    [name for name in glob.glob('*') if os.path.isfile(name)]
     """
     return cwd
 
