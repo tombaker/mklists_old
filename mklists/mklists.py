@@ -47,7 +47,29 @@ def shuffle(rules_l, globlines_l):
     return mkl_d
 
 def abs_pathname(pathname):
-    return os.path.abspath(os.path.expanduser(pathname))
+    """
+    Given: 
+    * the relative or absolute pathname of a file or directory
+
+    Returns: 
+    * the absolute name, if the file or directory exists
+    * None, if the file or directory does not exit
+
+    >>> abs_pathname('./mklists.py')
+    '/Users/tbaker/github/tombaker/mklists/mklists/mklists.py'
+    >>> abs_pathname('/Users/tbaker/github/tombaker/mklists/mklists/mklists.py')
+    '/Users/tbaker/github/tombaker/mklists/mklists/mklists.py'
+    >>> abs_pathname('~/github/tombaker/mklists')
+    '/Users/tbaker/github/tombaker/mklists'
+    >>> abs_pathname('../../../../github/tombaker/mklists')
+    '/Users/tbaker/github/tombaker/mklists'
+    >>> abs_pathname('../github/tombaker/mklists')
+    """
+    absolute_pathname = os.path.abspath(os.path.expanduser(pathname))
+    if os.path.exists(absolute_pathname):
+        return absolute_pathname
+    else:
+        return None
 
 def urlify_string(s):
     """
@@ -64,37 +86,6 @@ def is_utf8(file):
         open(file).read(512)
     except UnicodeDecodeError as e:
         raise NotUTF8Error('File {} not UTF-8: convert or delete, then retry.'.format(file)) from e
-
-def get_rules(*rules_files):
-    """
-    split line once on hash (#)
-    keep half of line before hash
-    strip whitespace on both sides
-    delete blank lines
-    rules_l = list()
-    for line in rules_l:
-        line_split = line.split()
-        Something like for line, line_split in ..
-        
-        split the line 
-        bail (citing line) if any line is not exactly five fields long
-        try:
-            $1.isdigit()  - which includes zero
-            $5.isdigit()  - which includes zero
-            $1 = int($1)
-            $5 = int($1)
-        except SourceMatchAndTargetSortOrderDigits:
-            bail (citing line) with error message
-        $3 = re.compile($3)
-        $4 and $5:
-            must have only permitted characters
-                valid_chars = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
-        if it gets this far:
-            append line to rules_l
-
-    return rules_l (list of five-item tuples)
-    """
-    pass
 
 class ListLine():
     """@@@"""
@@ -127,7 +118,16 @@ class RuleLine(object):
     def strip_comments(line):
         return line.partition('#')[0]
 
+def getfiles2dirs(files2dirs):
+    """
+    Reads yaml dictionary mapping filenames to destination directories.
+    """
+    with open(files2dirs) as yamlfile:
+        config = yaml.load(yamlfile)
+    return config
+
 if __name__ == "__main__":
     is_utf8('_non-text.png')
     #is_utf8('testme.py')
     print("Apparently it did not raise an exception.")
+    # filesanddestinations   = getfiles2dirs('/Users/tbaker/Dropbox/uu/agenda/.mklists.yaml')

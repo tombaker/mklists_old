@@ -1,3 +1,6 @@
+rules_files:
+  - '
+
 files2dirs:
     'abc': '/Users/tbaker/uu/abc'
     'agendaa': '/Users/tbaker/uu/agenda'
@@ -8,18 +11,17 @@ files2dirs:
     'abcd': '/Users/tbaker/uu/abcd'
     'handles': '/Users/tbaker/bitbucket/dotfiles/handles'
     'logs': '/Users/tbaker/uu/logs'
-    'logz': '/Users/tbaker/uu/logz'
+    'someday': '/Users/tbaker/uu/someday'
     'tophone': '/Users/tbaker/uu/phone'
     'tostuff': '/Users/tbaker/uu/stuff'
-    'someday': '/Users/tbaker/uu/someday'
-    'agendax': '/Volumes/Acct/agendax'
-    'agendaxx': '/Volumes/Acct/agendaxx'
     'agendaw': '/Volumes/Person/agendaw'
+    'agendaxx': '/Volumes/Acct/agendaxx'
+    'agendax': '/Volumes/Acct/agendax'
     'agenday': '/Volumes/Person/agenday'
-    'agendazz': '/Volumes/Person/agendazz'
     'agendaz': '/Volumes/Person/agendaz'
 
-blacklist:
-  - r'swp$'
+filename_blacklist:
+  - r'.swp$'
+  - r'.tmp$'
   - r'~$'
   - r'^.'
