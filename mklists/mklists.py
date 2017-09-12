@@ -85,7 +85,7 @@ def is_utf8(file):
     try:
         open(file).read(512)
     except UnicodeDecodeError as e:
-        raise NotUTF8Error('File {} not UTF-8: convert or delete, then retry.'.format(file)) from e
+        raise NotUTF8Error(f'File {file} not UTF-8: convert or delete, then retry.') from e
 
 class ListLine():
     """@@@"""
