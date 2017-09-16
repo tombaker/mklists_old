@@ -1,0 +1,4 @@
+Known issues:
+* Does not test whether data contains a null (and is therefore not a text file)
+* Does not test whether data contains more than 30% non-text (and is therefore not a text file)
+* A symbolic link to a file is seen as a file (no tests to prevent this).
