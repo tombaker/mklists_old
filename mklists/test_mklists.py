@@ -4,14 +4,15 @@ from collections import namedtuple
 Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
 
 # test mklists.mustbetext()
-from mklists import is_utf8
+# from mklists import is_utf8
+from is_utf8 import is_utf8
 
 def test_is_utf81():
     with pytest.raises(SystemExit):
         is_utf8('/Users/tbaker/github/tombaker/mklists/mklists/_non-text.png')
 
 # test mklists.shuffle()
-from mklists import shuffle
+from shuffle import shuffle
 
 def test_shuffle():
     rules_l1 = [ Rule(2, 'i', 'a.txt', 'b.txt', 0) ]
@@ -34,7 +35,7 @@ def test_shuffle_sort():
 #     assert x.line.strip_comments() == output
 
 # test mklists.ListLine
-from mklists import ListLine
+from mkl import ListLine
 
 def test_linkified_line_already_linkified():
     x = ListLine('A line with <a href="http://example.org">http://example.org</a>.\n')
