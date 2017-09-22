@@ -30,32 +30,10 @@ class RuleString(object):
             Digit = any of the numerals from 0 to 9, especially when forming part of a number
             Integer = any whole number, including negative numbers
     """
+    def __init__(self, text_line):
+        line = text_line
 
 class Rule(object):
     """ Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
     """
-
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/collection.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/compare.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/compat.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/events.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/exceptions.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/graph.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/namespace.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/parser.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/paths.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/plugin.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/query.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/resource.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/serializer.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/store.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/term.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/util.py
-FTMP /Users/tbaker/github/rdflib/rdflib/rdflib/void.py
-class RuleLine(object):
-    def __init__(self, text_line):
-        line = text_line
-
-    def strip_comments(line):
-        return line.partition('#')[0]
 

@@ -1,5 +1,12 @@
 __all__ = ['get', 'getrules', 'is_utf8', 'mkl', 'shuffle']
 
+import glob
+import os
+import pprint
+import re
+import sys
+import yaml
+
 from mklists import util
 from mklists.rule import Rule, RuleFile, RuleString
 
@@ -14,10 +21,3 @@ from mklists.rule import Rule, RuleFile, RuleString
 #     class Literal(Identifier)
 # /Users/tbaker/github/rdflib/rdflib/rdflib/util.py
 #     def check_predicate(p):
-import glob
-import os
-import re
-import sys
-import yaml
-import pprint
-

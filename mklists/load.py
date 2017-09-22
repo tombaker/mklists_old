@@ -1,12 +1,6 @@
-def load_files2dirs(files2dirs):
-    """
-    Reads yaml dictionary mapping filenames to destination directories.
-    """
-    with open(files2dirs) as yamlfile:
-        config = yaml.load(yamlfile)
-    return config
-
 def load_config(config_file='_mklists.yaml'):
+    """ Loads files with yaml configuration dictionary.
+    """
     with open(config_file) as yamlfile:
         config = yaml.load(yamlfile)
 
@@ -18,16 +12,6 @@ def load_config(config_file='_mklists.yaml'):
     pprint.pprint(config['filename_blacklist'])
 
     print(config['files2dirs']['agendaz'])
-
-def load_globlines(cwd=os.getcwd()):
-    """Something like:
-    globlines_list = []
-    for file in glob.glob('*'):
-        globlines_list.append(file.readlines())
-    return globlines_list
-    [name for name in glob.glob('*') if os.path.isfile(name)]
-    """
-    return cwd
 
 def load_rules(*rules_files):
     """
@@ -61,7 +45,15 @@ def load_rules(*rules_files):
     """
     pass
 
-import yaml
+def load_globlines(cwd=os.getcwd()):
+    """Something like:
+    globlines_list = []
+    for file in glob.glob('*'):
+        globlines_list.append(file.readlines())
+    return globlines_list
+    [name for name in glob.glob('*') if os.path.isfile(name)]
+    """
+    return cwd
 
 def load_data(files):
     """
