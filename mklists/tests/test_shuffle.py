@@ -1,15 +1,9 @@
 import pytest
 from collections import namedtuple
-from mklists.util import *
+from mklists.shuffle import shuffle
 
 Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
 
-def test_is_utf81():
-    with pytest.raises(SystemExit):
-        is_utf8('/Users/tbaker/github/tombaker/mklists/mklists/_non-text.png')
-
-### test mklists.shuffle()
-from mklists.shuffle import shuffle
 def test_shuffle():
     rules_l1 = [ Rule(2, 'i', 'a.txt', 'b.txt', 0) ]
     globlines_l1 = ['two ticks\n', 'an ant\n', 'the mite\n']
