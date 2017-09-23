@@ -74,7 +74,7 @@ def linkify(string):
     """
     2017-07-18 Puts HTML links around URLs found in a string.
     """
-    URL_REGEX = re.compile(r"""((?:mailto:|git://|http://|https://)[^ <>'"{},|\\^`[\]]*)""")
+    URL_REGEX = re.compile(r"""((?:mailto:|git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)""")
     if '<a href=' in string:
         return string
     return URL_REGEX.sub(r'<a href="\1">\1</a>', string)
