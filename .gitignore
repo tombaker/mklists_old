@@ -1,4 +1,5 @@
 site/
+.idea/
 *.pyc
 .cache
 __pycache__/
