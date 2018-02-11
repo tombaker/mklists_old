@@ -1,14 +1,14 @@
-__all__ = ['is_utf8', 'ls_files', 'abs_pathname', 'linkify']
+__all__ = ['_is_utf8_encoded', 'ls_files', 'abs_pathname', 'linkify']
 
 import os
 import re
 from mklists.exceptions import NotUTF8Error
 
-def is_utf8(file):
+def _is_utf8_encoded(filename):
     try:
-        open(file).read(512)
+        open(filename).read()
     except UnicodeDecodeError as e:
-        raise NotUTF8Error(f'File {file} not UTF-8: convert or delete, then retry.') from e
+        raise NotUTF8Error(f'File "{file}" is not UTF-8-encoded. Convert to UTF-8 or delete before proceeding.') from e
 
 def ls_files(filenames=os.listdir(), config_file='mklists.yaml'):
     """

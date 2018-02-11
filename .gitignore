@@ -1,5 +1,7 @@
 site/
+.pytest_cache/
 .idea/
+mklenv/
 *.pyc
 .cache
 __pycache__/
@@ -8,3 +10,4 @@ __pycache__/
 Session.vim
 non-text/
 notes/
+src/mklists.egg-info/

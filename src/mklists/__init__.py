@@ -1,4 +1,4 @@
-__all__ = ['get', 'getrules', 'is_utf8', 'mkl', 'shuffle']
+__all__ = ['get', 'getrules', '_is_utf8_encoded', 'mkl', 'shuffle']
 
 import glob
 import os
@@ -9,8 +9,6 @@ import yaml
 
 from mklists import util
 from mklists.rule import Rule, RuleFile, RuleString
-
-
 
 # https://stackoverflow.com/questions/44834/can-someone-explain-all-in-python
 # /Users/tbaker/github/rdflib/rdflib/rdflib/__init__.py
