@@ -25,21 +25,21 @@ pass_config = click.make_pass_decorator(Config)
 
 
 @click.group()
-@click.option('--repo-home', envvar='REPO_HOME', default='.repo',
-              metavar='PATH', help='Changes the repository folder location.')
+@click.option('--list-folder', default='.', type=click.Path(exists=True),
+              help='Changes the list folder location.')
 @click.option('--config', nargs=2, multiple=True,
               metavar='KEY VALUE', help='Overrides a config key/value pair.')
-@click.option('--verbose', '-v', is_flag=True,
+@click.option('--verbose', is_flag=True,
               help='Enables verbose mode.')
-@click.version_option('1.0')
+@click.version_option()
 @click.pass_context
-def cli(ctx, repo_home, config, verbose):
-    """Mklists is a command line tool that for managing to-do lists
+def cli(ctx, list_folder, config, verbose):
+    """Manage plain-text lists by tweaking rules
     """
     # Create a repo object and remember it as as the context object.  From
     # this point onwards other commands can refer to it by using the
     # @pass_config decorator.
-    ctx.obj = Config(os.path.abspath(repo_home))
+    ctx.obj = Config(os.path.abspath(list_folder))
     ctx.obj.verbose = verbose
     for key, value in config:
         ctx.obj.set_config(key, value)
@@ -48,17 +48,15 @@ def cli(ctx, repo_home, config, verbose):
 @cli.command()
 @click.argument('src')
 @click.argument('dest', required=False)
-@click.option('--shallow/--deep', default=False,
-              help='Makes a checkout shallow or deep.  Deep by default.')
 @click.option('--rev', '-r', default='HEAD',
               help='Clone a specific revision instead of HEAD.')
 @pass_config
 def clone(repo, src, dest, shallow, rev):
-    """Clones a repository.
+    """Initialize a list folder.
 
-    This will clone the repository at SRC into the folder DEST.  If DEST
-    is not provided this will automatically use the last path component
-    of SRC and create that folder.
+    Initializes directory with default configuration files:
+    * '.rules' (mandatory)
+    * '.mklistsrc' (expected but not mandatory)
     """
     if dest is None:
         dest = posixpath.split(src)[-1] or '.'
@@ -67,24 +65,6 @@ def clone(repo, src, dest, shallow, rev):
     if shallow:
         click.echo('Making shallow checkout')
     click.echo('Checking out revision %s' % rev)
-
-
-@cli.command()
-@click.option('--username', prompt=True,
-              help='The developer\'s shown username.')
-@click.option('--email', prompt='E-Mail',
-              help='The developer\'s email address')
-@click.password_option(help='The login password.')
-@pass_config
-def setuser(repo, username, email, password):
-    """Sets the user credentials.
-
-    This will override the current user config.
-    """
-    repo.set_config('username', username)
-    repo.set_config('email', email)
-    repo.set_config('password', '*' * len(password))
-    click.echo('Changed credentials.')
 
 
 @cli.command()
