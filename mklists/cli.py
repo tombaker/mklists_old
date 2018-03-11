@@ -1,14 +1,13 @@
 import os
 import sys
-import posixpath
 
 import click
 
 
-class Config(object):
+class Config():
 
-    def __init__(self, home):
-        self.home = home
+    def __init__(self, cwd):
+        self.cwd = cwd
         self.config = {}
         self.verbose = False
 
@@ -18,7 +17,7 @@ class Config(object):
             click.echo('  config[%s] = %s' % (key, value), file=sys.stderr)
 
     def __repr__(self):
-        return '<Config %r>' % self.home
+        return '<Config %r>' % self.cwd
 
 
 pass_config = click.make_pass_decorator(Config)
@@ -26,19 +25,18 @@ pass_config = click.make_pass_decorator(Config)
 
 @click.group()
 @click.option('--list-folder', default='.', type=click.Path(exists=True),
-              help='Changes the list folder location.')
-@click.option('--config', nargs=2, multiple=True,
-              metavar='KEY VALUE', help='Overrides a config key/value pair.')
+              help='Changes list folder location.')
+@click.option('--config-file', default='.mklists.yaml', type=click.Path(exists=True),
+              help='Changes configuration file; repeatable.')
+@click.option('--rule-file', default='.rules', multiple=True, type=click.Path(exists=True),
+              help='Changes rule file; repeatable.')
 @click.option('--verbose', is_flag=True,
               help='Enables verbose mode.')
 @click.version_option()
 @click.pass_context
-def cli(ctx, list_folder, config, verbose):
+def cli(ctx, list_folder, config_file, rule_file, verbose):
     """Manage plain-text lists by tweaking rules
     """
-    # Create a repo object and remember it as as the context object.  From
-    # this point onwards other commands can refer to it by using the
-    # @pass_config decorator.
     ctx.obj = Config(os.path.abspath(list_folder))
     ctx.obj.verbose = verbose
     for key, value in config:
@@ -46,70 +44,34 @@ def cli(ctx, list_folder, config, verbose):
 
 
 @cli.command()
-@click.argument('src')
-@click.argument('dest', required=False)
-@click.option('--rev', '-r', default='HEAD',
-              help='Clone a specific revision instead of HEAD.')
 @pass_config
-def clone(repo, src, dest, shallow, rev):
-    """Initialize a list folder.
+def init(list_folder):
+    """Initialize current folder as new list folder.
 
     Initializes directory with default configuration files:
     * '.rules' (mandatory)
     * '.mklistsrc' (expected but not mandatory)
     """
-    if dest is None:
-        dest = posixpath.split(src)[-1] or '.'
-    click.echo('Cloning repo %s to %s' % (src, os.path.abspath(dest)))
-    repo.home = dest
-    if shallow:
-        click.echo('Making shallow checkout')
-    click.echo('Checking out revision %s' % rev)
 
 
 @cli.command()
-@click.option('--message', '-m', multiple=True,
-              help='The commit message.  If provided multiple times each '
-              'argument gets converted into a new line.')
-@click.argument('files', nargs=-1, type=click.Path())
 @pass_config
-def commit(repo, files, message):
-    """Commits outstanding changes.
-
-    Commit changes to the given files into the repository.  You will need to
-    "repo push" to push up your changes to other repositories.
-
-    If a list of files is omitted, all changes reported by "repo status"
-    will be committed.
+def mklists(repo, files, message):
+    """Remake lists in list folder.
     """
-    if not message:
-        marker = '# Files to be committed:'
-        hint = ['', '', marker, '#']
-        for file in files:
-            hint.append('#   U %s' % file)
-        message = click.edit('\n'.join(hint))
-        if message is None:
-            click.echo('Aborted!')
-            return
-        msg = message.split(marker)[0].rstrip()
-        if not msg:
-            click.echo('Aborted! Empty commit message')
-            return
-    else:
-        msg = '\n'.join(message)
-    click.echo('Files to be committed: %s' % (files,))
-    click.echo('Commit message:\n' + msg)
 
 
-@cli.command(short_help='Copies files.')
-@click.option('--force', is_flag=True,
-              help='forcibly copy over an existing managed file')
-@click.argument('src', nargs=-1, type=click.Path())
-@click.argument('dst', type=click.Path())
+@cli.command()
 @pass_config
-def copy(repo, src, dst, force):
-    """Copies one or multiple files to a new location.  This copies all
-    files from SRC to DST.
+def check(ctx, files, message):
+    """Check list folder and report problems.
+    """
+
+@cli.command(short_help='Backs up list directory.')
+@click.argument('target', type=click.Path())
+@pass_config
+def backup(repo, target):
+    """Back up list directory to time-stamped directory.
     """
     for fn in src:
         click.echo('Copy from %s -> %s' % (fn, dst))
