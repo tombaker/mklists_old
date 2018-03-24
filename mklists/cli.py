@@ -25,17 +25,17 @@ pass_config = click.make_pass_decorator(Config)
 
 @click.group()
 @click.option('--list-folder', default='.', type=click.Path(exists=True),
-              help='Changes list folder location.')
+        help='Change list folder (default: current directory)')
 @click.option('--config', default='.mklists.yaml', type=click.Path(exists=True),
-              help='Changes configuration file; repeatable.')
-@click.option('--rules', default='.rules', multiple=True, type=click.Path(exists=True),
-              help='Changes file file; repeatable.')
+        help='Use settings (default: .mklists.yml; repeatable)')
+@click.option('--rules', default='.rules', multiple=True, # type=click.Path(exists=True),
+        help='Use rules (default: .rules.yml; repeatable)')
 @click.option('--verbose', is_flag=True,
               help='Enables verbose mode.')
 @click.version_option()
 @click.pass_context
 def cli(ctx, list_folder, config, rules, verbose):
-    """Manage plain-text lists by tweaking rules
+    """Rearrange plain-text lists by tweaking rules
     """
     ctx.obj = Config(os.path.abspath(list_folder))
     ctx.obj.verbose = verbose
