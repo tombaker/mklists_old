@@ -25,13 +25,13 @@ pass_config = click.make_pass_decorator(Config)
 
 @click.group()
 @click.option('--backup-folder', default='.mklists', type=click.Path(),
-        help='Change backup folder from default ".mklists/".')
+        help="Change backup folder (.mklists/).")
 @click.option('--config', default='.mklists.yml', type=click.Path(exists=True),
-        help='Change settings from default ".mklists.yml".')
+        help="Change configuration (.mklists.yml).")
 @click.option('--list-folder', default='.', type=click.Path(exists=True),
-        help='Change list folder from default ".".')
+        help="Change list folder (./).")
 @click.option('--rules', default='.rules', multiple=True, # type=click.Path(exists=True),
-        help='Change rules from default ".rules.yml" (repeatable).')
+        help="Change rules (.rules.yml); repeatable.")
 @click.option('--verbose', is_flag=True,
               help='Enable verbose mode.')
 @click.version_option()
@@ -72,8 +72,8 @@ def check(ctx, files, message):
 @cli.command()
 @click.argument('target', type=click.Path())
 @pass_config
-def backup(repo, target):
-    """Snapshot list files in backup folder.
+def checkpoint(repo, target):
+    """Snapshot lists in backup folder.
     """
     for fn in src:
         click.echo('Copy from %s -> %s' % (fn, dst))

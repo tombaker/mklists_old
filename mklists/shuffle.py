@@ -23,21 +23,25 @@ def shuffle(rules_l, globlines_l):
             if awkf > len(ln.split()):
                 continue                       
 
-            # if awkf is zero, then regex matched against entire line
+            # if awkf is zero, 
+            # then regex is matched against entire line
             if awkf == 0:                
                 mkl_d[trg].extend([ln for ln in mkl_d[src] if re.search(rgx, ln)])
                 mkl_d[src] = [ln for ln in mkl_d[src] if not re.search(rgx, ln)]
 
-            # if awkf greater than zero (and within range), regex matched against specific field
+            # if awkf greater than zero (and within range), 
+            # then regex is matched against specific field
             if awkf > 0:
                 mkl_d[trg].extend([ln for ln in mkl_d[src] if re.search(rgx, ln.split()[ethf])])
                 mkl_d[src] = [ln for ln in mkl_d[src] if not re.search(rgx, ln.split()[ethf])]
 
-            # sort mkl_d[trg], dsu-style, if trgsort_awkf greater than zero (note: zero is false)
+            # if trgsort_awkf greater than zero (note: zero is false), 
+            # then sort mkl_d[trg], dsu-style, 
             # in trgsort_awkf, zero means "no sort order specified"
             if rule.trgsort_awkf:
                 eth_sortkey = rule.trgsort_awkf - 1
-                decorated = [(ln.split()[eth_sortkey], i, ln) for i, ln in enumerate(mkl_d[trg])]
+                decorated = [(ln.split()[eth_sortkey], i, ln) 
+                             for i, ln in enumerate(mkl_d[trg])]
                 decorated.sort()
                 mkl_d[trg] = [ln for grade, i, ln in decorated]
         
