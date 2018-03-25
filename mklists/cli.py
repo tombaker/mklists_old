@@ -24,14 +24,23 @@ pass_config = click.make_pass_decorator(Config)
 
 
 @click.group()
-@click.option('--backup-folder', default='.mklists', type=click.Path(),
-        help="Change backup folder (.mklists/).")
-@click.option('--config', default='.mklists.yml', type=click.Path(exists=True),
-        help="Change configuration (.mklists.yml).")
-@click.option('--list-folder', default='.', type=click.Path(exists=True),
-        help="Change list folder (./).")
-@click.option('--rules', default='.rules', multiple=True, # type=click.Path(exists=True),
-        help="Change rules (.rules.yml); repeatable.")
+@click.option('--backup-folder', 
+              default='.mklists', 
+              type=click.Path(),
+              help="Change backup folder (.mklists/).")
+@click.option('--config', 
+              default='.mklists.yml', 
+              type=click.Path(exists=True),
+              help="Change configuration (.mklists.yml).")
+@click.option('--list-folder', 
+              default='.', 
+              type=click.Path(exists=True),
+              help="Change list folder (./).")
+@click.option('--rules', 
+              default='.rules', 
+              multiple=True, 
+              # type=click.Path(exists=True),
+              help="Change rules (.rules.yml); repeatable.")
 @click.option('--verbose', is_flag=True,
               help='Enable verbose mode.')
 @click.version_option()
