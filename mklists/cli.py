@@ -24,14 +24,16 @@ pass_config = click.make_pass_decorator(Config)
 
 
 @click.group()
+@click.option('--backup-folder', default='.mklists', type=click.Path(),
+        help='Change backup folder from default ".mklists/".')
+@click.option('--config', default='.mklists.yml', type=click.Path(exists=True),
+        help='Change settings from default ".mklists.yml".')
 @click.option('--list-folder', default='.', type=click.Path(exists=True),
-        help='Change list folder (default: current directory)')
-@click.option('--config', default='.mklists.yaml', type=click.Path(exists=True),
-        help='Use settings (default: .mklists.yml; repeatable)')
+        help='Change list folder from default ".".')
 @click.option('--rules', default='.rules', multiple=True, # type=click.Path(exists=True),
-        help='Use rules (default: .rules.yml; repeatable)')
+        help='Change rules from default ".rules.yml" (repeatable).')
 @click.option('--verbose', is_flag=True,
-              help='Enables verbose mode.')
+              help='Enable verbose mode.')
 @click.version_option()
 @click.pass_context
 def cli(ctx, list_folder, config, rules, verbose):
@@ -46,7 +48,7 @@ def cli(ctx, list_folder, config, rules, verbose):
 @cli.command()
 @pass_config
 def init(list_folder):
-    """Initialize current folder as new list folder.
+    """Initialize list folder.
 
     Initializes directory with default configuration files:
     * '.rules' (mandatory)
@@ -56,22 +58,22 @@ def init(list_folder):
 
 @cli.command()
 @pass_config
-def mklists(repo, files, message):
-    """Remake lists in list folder.
+def run(repo, files, message):
+    """Remake lists.
     """
 
 
 @cli.command()
 @pass_config
 def check(ctx, files, message):
-    """Check list folder and report problems.
+    """Check list folder for problems.
     """
 
-@cli.command(short_help='Backs up list directory.')
+@cli.command()
 @click.argument('target', type=click.Path())
 @pass_config
 def backup(repo, target):
-    """Back up list directory to time-stamped directory.
+    """Snapshot list files in backup folder.
     """
     for fn in src:
         click.echo('Copy from %s -> %s' % (fn, dst))
