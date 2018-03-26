@@ -24,23 +24,23 @@ pass_config = click.make_pass_decorator(Config)
 
 
 @click.group()
-@click.option('--backup-folder', 
-              default='.mklists', 
-              type=click.Path(),
-              help="Change backup folder (.mklists/).")
-@click.option('--config', 
-              default='.mklists.yml', 
-              type=click.Path(exists=True),
-              help="Change configuration (.mklists.yml).")
 @click.option('--list-folder', 
               default='.', 
               type=click.Path(exists=True),
-              help="Change list folder (./).")
+              help="Change list folder [./].")
+@click.option('--backup-folder', 
+              default='.mklists', 
+              type=click.Path(),
+              help="Change backup folder [.mklists/].")
+@click.option('--config', 
+              default='.mklistsrc', 
+              type=click.Path(exists=True),
+              help="Change configuration [.mklistsrc].")
 @click.option('--rules', 
               default='.rules', 
               multiple=True, 
               # type=click.Path(exists=True),
-              help="Change rules (.rules.yml); repeatable.")
+              help="Change rules [.rules]. Repeatable.")
 @click.option('--verbose', is_flag=True,
               help='Enable verbose mode.')
 @click.version_option()
@@ -75,14 +75,14 @@ def run(repo, files, message):
 @cli.command()
 @pass_config
 def check(ctx, files, message):
-    """Check list folder for problems.
+    """Dry-run with verbose sanity checks.
     """
 
 @cli.command()
 @click.argument('target', type=click.Path())
 @pass_config
 def checkpoint(repo, target):
-    """Snapshot lists in backup folder.
+    """Snapshot lists to backup folder.
     """
     for fn in src:
         click.echo('Copy from %s -> %s' % (fn, dst))
