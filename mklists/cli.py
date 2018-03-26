@@ -8,7 +8,7 @@ print()
 print()
 
 
-class Config():
+class ListFolder():
 
     def __init__(self, cwd):
         self.cwd = cwd
@@ -21,10 +21,10 @@ class Config():
             click.echo('  config[%s] = %s' % (key, value), file=sys.stderr)
 
     def __repr__(self):
-        return '<Config %r>' % self.cwd
+        return '<ListFolder %r>' % self.cwd
 
 
-pass_config = click.make_pass_decorator(Config)
+pass_config = click.make_pass_decorator(ListFolder)
 
 
 @click.group()
@@ -39,7 +39,7 @@ pass_config = click.make_pass_decorator(Config)
 @click.option('--config', 
               default='.mklistsrc', 
               type=click.Path(exists=True),
-              help="Change configuration [.mklistsrc].")
+              help="Change config file [.mklistsrc].")
 @click.option('--rules', 
               default='.rules', 
               multiple=True, 
@@ -47,12 +47,12 @@ pass_config = click.make_pass_decorator(Config)
               help="Change rules [.rules]. Repeatable.")
 @click.option('--verbose', is_flag=True,
               help='Enable verbose mode.')
-@click.version_option()
+@click.version_option('0.1')
 @click.pass_context
 def cli(ctx, list_folder, config, rules, verbose):
     """Rearrange plain-text lists by tweaking rules
     """
-    ctx.obj = Config(os.path.abspath(list_folder))
+    ctx.obj = ListFolder(os.path.abspath(list_folder))
     ctx.obj.verbose = verbose
     for key, value in config:
         ctx.obj.set_config(key, value)
