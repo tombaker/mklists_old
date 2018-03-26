@@ -3,6 +3,10 @@ import sys
 
 import click
 
+print('Running mklists')
+print()
+print()
+
 
 class Config():
 
