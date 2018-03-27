@@ -2,6 +2,7 @@ import os
 import sys
 
 import click
+from dataclasses import dataclass
 
 print('Running mklists')
 print()
