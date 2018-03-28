@@ -1,14 +1,16 @@
 import os
 import re
 import sys
+import glob
 
 import click
 from dataclasses import dataclass
 from posixpath import realpath
 
+# ----------------------------------------------------------------------
 @dataclass
 class ListFolder():
-    list_folder:       click.Path
+    list_folder:       click.Path = os.getcwd()
     backup_folder:     click.Path = '.mklists'
     backup_depth:      int = 3
     html_folder:       click.Path = '.html'
@@ -19,12 +21,23 @@ class ListFolder():
 
     def get_config(self):
         click.echo('@@@ get configuration')
+        # read .mklists.yml
+        #     if not found, exit with error message
         if self.verbose:
-            click.echo('running verbose')
+            """print config values
+            Warn - but not exit - of any problems
+            if not verbose (i.e., called by 'mklists run')
+                exit with error message
+            return config_dict
+            """
+
+    def ls_visible_files(self):
+        visible_files = [name for name in glob.glob('*') if os.path.isfile[name]]
+        return visible_files
 
 pass_listfolder = click.make_pass_decorator(ListFolder)
 
-
+# ----------------------------------------------------------------------
 @click.group()
 @click.option('--list-folder', default='.', 
               type=click.Path(exists=True),
@@ -69,6 +82,7 @@ def cli(ctx, list_folder, backup_folder, backup_depth, html_folder, config, rule
     click.echo()
 
 
+# ----------------------------------------------------------------------
 @cli.command()
 @pass_listfolder
 def init(list_folder):
@@ -80,18 +94,44 @@ def init(list_folder):
     """
 
 
+# ----------------------------------------------------------------------
 @cli.command()
 @click.option('--backup-depth', default=3, 
               help='Retains max number of backups [3].')
 @pass_listfolder
 def run(repo, backup_depth):
     """Remake lists.
+        if VERIFY:
+            before = _hash_lines
+        check() - but silently
+        if VERIFY:
+            after = _hash_lines
     """
 
-
+# ----------------------------------------------------------------------
 @cli.command()
 @pass_listfolder
 def check(ctx):
     """Dry-run with verbose sanity checks.
     """
 
+    # Print to screen all (non-dunder) config attributes/values
+
+
+# ======================================================================
+@dataclass
+class RuleSet():
+
+    def get_rules():
+        """Read rules file, return rule set."""
+
+# ======================================================================
+@dataclass 
+class ListFile():
+    file = click.Path
+    # is_utf8_encoded()
+    # file has legal name (only allowable characters - e.g., no spaces)
+    # is_text (implement this?)
+    #   allowable_percent_non_ascii_characters
+    #   return True or False
+    # return { file: [['one line\n'], [...]] }
