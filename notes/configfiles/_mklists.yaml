@@ -1,6 +1,9 @@
 rules_files:
   - '
 
+valid_filename_characters:
+    - '@:-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
 files2dirs:
     'abc': '/Users/tbaker/uu/abc'
     'agendaa': '/Users/tbaker/uu/agenda'
