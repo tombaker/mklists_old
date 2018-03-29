@@ -2,33 +2,22 @@ import os
 import re
 import sys
 import glob
+import configparser
 
 import click
 from posixpath import realpath
 from dataclasses import dataclass
 
-@dataclass
-class ListFolder():
+class ListFolder:
 
-    def get_config(self):
-        click.echo('@@@ get configuration')
-        # read .mklists.yml
-        #     if not found, exit with error message
-        if self.verbose:
-            """print config values
-            Warn - but not exit - of any problems
-            if not verbose (i.e., called by 'mklists run')
-                exit with error message
-            return config_dict
-            """
+    def __init__(*kwargs):
+        pass
 
-    def ls_visible_files(self):
+    def ls_visible_files(folder='.'):
         visible_files = [name for name in glob.glob('*') if os.path.isfile[name]]
         return visible_files
 
-pass_listfolder = click.make_pass_decorator(ListFolder)
 
-# ----------------------------------------------------------------------
 @click.group()
 @click.option('--list-folder', default='.',
               type=click.Path(exists=True),
@@ -36,9 +25,9 @@ pass_listfolder = click.make_pass_decorator(ListFolder)
 @click.option('--backup-folder', default='.backups',
               type=click.Path(),
               help="Change backup folder [.backups/].")
-@click.option('--backup-depth', default=3, 
+@click.option('--backup-depth', type=click.INT,
               help="Change backup depth [3].")
-@click.option('--html-folder', default='.html', type=click.Path(),
+@click.option('--html-folder', default='.sgml', type=click.Path(),
               help="Set urlified-lists folder [None].")
 @click.option('--config', default='.mklistsrc', type=click.File('r'),
               help="Change config file [.mklistsrc].")
@@ -46,7 +35,7 @@ pass_listfolder = click.make_pass_decorator(ListFolder)
               help="Change global rules [.rules]. Repeatable.")
 @click.option('--rules', default='.rules', type=click.File('r'),
               help="Change local rules [.rules]. Repeatable.")
-@click.option('--verbose', is_flag=True,
+@click.option('--verbose', default=False, is_flag=True,
               help='Enable verbose mode.')
 @click.version_option('0.1')
 @click.pass_context
@@ -54,40 +43,47 @@ def cli(ctx, list_folder, backup_folder, backup_depth, html_folder,
         config, global_rules, rules, verbose):
     """Rearrange plain-text lists by tweaking rules
     """
-    ctx.obj = ListFolder()
-    ctx.obj.list_folder = list_folder
-    ctx.obj.backup_folder = backup_folder
-    ctx.obj.backup_depth = backup_depth
-    ctx.obj.html_folder = html_folder
-    ctx.obj.config = config
-    ctx.obj.rules = rules
-    ctx.obj.global_rules = global_rules
-    ctx.obj.verbose = verbose
+    config_parser = configparser.ConfigParser()
+    config_parser.read('.mklistsrc')
+    config = dict([[key, config_parser['DEFAULT'][key]] for key in config_parser['DEFAULT']])
+    print(config)
+    ctx.obj = config
+    print(ctx.obj)
 
-    click.echo(f'>>> cli                       =>  {cli}')
-    click.echo(f'>>> ctx.obj.__dir__()...      =>  {[item for item in ctx.obj.__dir__() if not re.search("__", item)]}')
-    click.echo(f'>>> ctx.obj.list_folder       =>  {ctx.obj.list_folder}')
-    click.echo(f'>>> ctx.obj.backup_folder     =>  {ctx.obj.backup_folder}')
-    click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}')
-    click.echo(f'>>> ctx.obj.html_folder       =>  {ctx.obj.html_folder}')
-    click.echo(f'>>> ctx.obj.config            =>  {ctx.obj.config}')
-    click.echo(f'>>> ctx.obj.rules             =>  {ctx.obj.rules}')
-    click.echo(f'>>> ctx.obj.global_rules      =>  {ctx.obj.global_rules}')
-    click.echo(f'>>> ctx.obj.verbose           =>  {ctx.obj.verbose}')
-    click.echo(f'>>> ctx.obj.get_config        =>  {ctx.obj.get_config}')
-    click.echo()
+#    if list_folder:   ctx.obj['list_folder'] = list_folder
+#    if backup_folder: ctx.obj['backup_folder'] = backup_folder
+    if backup_depth:  ctx.obj['backup_depth'] = backup_depth
+    print(ctx.obj)
+    if html_folder:   ctx.obj['html_folder'] = html_folder
+#    if config:        ctx.obj['config'] = config
+#    if rules:         ctx.obj['rules'] = rules
+#    if global_rules:  ctx.obj['global_rules'] = global_rules
+#    if verbose:       ctx.obj['verbose'] = verbose
+#
+#    click.echo(f'>>> cli                       =>  {cli}')
+#    click.echo(f'>>> ctx.obj.__dir__()...      =>  {[item for item in ctx.obj.__dir__() if not re.search("__", item)]}')
+#    click.echo(f'>>> ctx.obj.list_folder       =>  {ctx.obj.list_folder}')
+#    click.echo(f'>>> ctx.obj.backup_folder     =>  {ctx.obj.backup_folder}')
+#    click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}')
+#    click.echo(f'>>> ctx.obj.html_folder       =>  {ctx.obj.html_folder}')
+#    click.echo(f'>>> ctx.obj.config            =>  {ctx.obj.config}')
+#    click.echo(f'>>> ctx.obj.rules             =>  {ctx.obj.rules}')
+#    click.echo(f'>>> ctx.obj.global_rules      =>  {ctx.obj.global_rules}')
+#    click.echo(f'>>> ctx.obj.verbose           =>  {ctx.obj.verbose}')
+#    click.echo(f'>>> ctx.obj.get_config        =>  {ctx.obj.get_config}')
+#    click.echo()
 
 
 # ----------------------------------------------------------------------
 @cli.command()
-@pass_listfolder
+@click.pass_context
 def init(list_folder):
     """Initialize list folder.
     """
 
 # ----------------------------------------------------------------------
 @cli.command()
-@pass_listfolder
+@click.pass_context
 def run(repo):
     """Regenerate lists according to rules.
     """
@@ -105,7 +101,7 @@ def run(repo):
 
 # ----------------------------------------------------------------------
 @cli.command()
-@pass_listfolder
+@click.pass_context
 def check(ctx):
     """Dry-run with verbose sanity checks.
     """
