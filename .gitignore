@@ -1,14 +1,10 @@
-site/
 .pytest_cache/
 .idea/
 mklenv/
-*.pyc
 .cache
-__pycache__/
 .checkpoints/
 .ipynb_checkpoints/
 Session.vim
 non-text/
 notes/
-src/mklists.egg-info/
 mklists.egg-info/
