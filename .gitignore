@@ -2,9 +2,5 @@
 .idea/
 mklenv/
 .cache
-.checkpoints/
-.ipynb_checkpoints/
 Session.vim
-non-text/
-notes/
 mklists.egg-info/
