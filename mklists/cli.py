@@ -1,12 +1,10 @@
 import os
-import re
-import sys
 import glob
 
 import click
-from posixpath import realpath
 from dataclasses import dataclass
 from configparser import ConfigParser
+
 
 class ListFolder:
 
@@ -14,7 +12,8 @@ class ListFolder:
         pass
 
     def ls_visible_files(folder='.'):
-        visible_files = [name for name in glob.glob('*') if os.path.isfile[name]]
+        visible_files = [name for name in glob.glob('*')
+                         if os.path.isfile[name]]
         return visible_files
 
 
@@ -37,26 +36,37 @@ class ListFolder:
               help='Enable verbose mode.')
 @click.version_option('0.2')
 @click.pass_context
-def cli(ctx, 
+def cli(ctx,
         config, rules,
-        list_folder, backup_folder, backup_depth, html_folder, 
+        list_folder, backup_folder, backup_depth, html_folder,
         verbose):
     """Rearrange plain-text to-do lists by tweaking rules"""
-    config_parser = ConfigParser()
-    config_parser.read('.mklistsrc')
-    mklistsrc = dict([[key, config_parser['DEFAULTS'][key]] for key in config_parser['DEFAULTS']])
+    confparser = ConfigParser()
+    confparser.read('.mklistsrc')
+    mklistsrc = dict([[key, confparser['DEFAULTS'][key]]
+                     for key in confparser['DEFAULTS']])
     print("mklistsrc = ", mklistsrc)
     ctx.obj = mklistsrc
     print("ctx.obj = ", ctx.obj)
 
-#    if list_folder:   ctx.obj['list_folder'] = list_folder
-#    if backup_folder: ctx.obj['backup_folder'] = backup_folder
-#    if backup_depth:  ctx.obj['backup_depth'] = backup_depth
-#    print(ctx.obj)
+    if config:
+        ctx.obj['config'] = config
+
+    if rules:
+        ctx.obj['rules'] = rules
+
+    if list_folder:
+        ctx.obj['list_folder'] = list_folder
+
+    if backup_folder:
+        ctx.obj['backup_folder'] = backup_folder
+
+    if backup_depth:
+        ctx.obj['backup_depth'] = backup_depth
+
+    print(ctx.obj)
+
 #    if html_folder:   ctx.obj['html_folder'] = html_folder
-#    if config:        ctx.obj['config'] = config
-#    if rules:         ctx.obj['rules'] = rules
-#    if global_rules:  ctx.obj['global_rules'] = global_rules
 #    if verbose:       ctx.obj['verbose'] = verbose
 #
 #    click.echo(f'>>> cli                       =>  {cli}')
@@ -101,20 +111,19 @@ def run(cli):
 @cli.command()
 @click.pass_context
 def check(ctx):
-    """Dry-run with verbose sanity checks.
-    """
+    """Dry-run with verbose sanity checks."""
     # Print to screen all (non-dunder) config attributes/values
 
 
 # ======================================================================
 @dataclass
-class RuleSet():
+class RuleSet:
 
     def get_rules():
         """Read rules file, return rule set."""
 
 # ======================================================================
-@dataclass 
+@dataclass
 class ListFile():
     file = click.Path
     # is_utf8_encoded()
