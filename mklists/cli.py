@@ -2,11 +2,11 @@ import os
 import re
 import sys
 import glob
-import configparser
 
 import click
 from posixpath import realpath
 from dataclasses import dataclass
+from configparser import ConfigParser
 
 class ListFolder:
 
@@ -19,6 +19,10 @@ class ListFolder:
 
 
 @click.group()
+@click.option('--config', default='.mklistsrc', type=click.File('r'),
+              help="Change config file [.mklistsrc].")
+@click.option('--rules', default='.rules', type=click.File('r'),
+              help="Change local rules [.rules]. Repeatable.")
 @click.option('--list-folder', default='.',
               type=click.Path(exists=True),
               help="Change list folder [./].")
@@ -29,32 +33,27 @@ class ListFolder:
               help="Change backup depth [3].")
 @click.option('--html-folder', default='.sgml', type=click.Path(),
               help="Set urlified-lists folder [None].")
-@click.option('--config', default='.mklistsrc', type=click.File('r'),
-              help="Change config file [.mklistsrc].")
-@click.option('--global-rules', default='.globalrules', type=click.File('r'),
-              help="Change global rules [.rules]. Repeatable.")
-@click.option('--rules', default='.rules', type=click.File('r'),
-              help="Change local rules [.rules]. Repeatable.")
 @click.option('--verbose', default=False, is_flag=True,
               help='Enable verbose mode.')
-@click.version_option('0.1')
+@click.version_option('0.2')
 @click.pass_context
-def cli(ctx, list_folder, backup_folder, backup_depth, html_folder, 
-        config, global_rules, rules, verbose):
-    """Rearrange plain-text lists by tweaking rules
-    """
-    config_parser = configparser.ConfigParser()
+def cli(ctx, 
+        config, rules,
+        list_folder, backup_folder, backup_depth, html_folder, 
+        verbose):
+    """Rearrange plain-text to-do lists by tweaking rules"""
+    config_parser = ConfigParser()
     config_parser.read('.mklistsrc')
-    config = dict([[key, config_parser['DEFAULT'][key]] for key in config_parser['DEFAULT']])
-    print(config)
-    ctx.obj = config
-    print(ctx.obj)
+    mklistsrc = dict([[key, config_parser['DEFAULTS'][key]] for key in config_parser['DEFAULTS']])
+    print("mklistsrc = ", mklistsrc)
+    ctx.obj = mklistsrc
+    print("ctx.obj = ", ctx.obj)
 
 #    if list_folder:   ctx.obj['list_folder'] = list_folder
 #    if backup_folder: ctx.obj['backup_folder'] = backup_folder
-    if backup_depth:  ctx.obj['backup_depth'] = backup_depth
-    print(ctx.obj)
-    if html_folder:   ctx.obj['html_folder'] = html_folder
+#    if backup_depth:  ctx.obj['backup_depth'] = backup_depth
+#    print(ctx.obj)
+#    if html_folder:   ctx.obj['html_folder'] = html_folder
 #    if config:        ctx.obj['config'] = config
 #    if rules:         ctx.obj['rules'] = rules
 #    if global_rules:  ctx.obj['global_rules'] = global_rules
@@ -78,26 +77,25 @@ def cli(ctx, list_folder, backup_folder, backup_depth, html_folder,
 @cli.command()
 @click.pass_context
 def init(list_folder):
-    """Initialize list folder.
-    """
+    """Initialize list folder."""
+    print('@@@TODO')
 
 # ----------------------------------------------------------------------
 @cli.command()
 @click.pass_context
-def run(repo):
-    """Regenerate lists according to rules.
-    """
-    click.echo(f'>>> cli                       =>  {cli}')
-    click.echo(f'>>> repo.__dir__()...      =>  {[item for item in repo.__dir__() if not re.search("__", item)]}')
-    click.echo(f'>>> repo.list_folder       =>  {repo.list_folder}')
-    click.echo(f'>>> repo.backup_folder     =>  {repo.backup_folder}')
-    click.echo(f'>>> repo.backup_depth      =>  {repo.backup_depth}')
-    click.echo(f'>>> repo.html_folder       =>  {repo.html_folder}')
-    click.echo(f'>>> repo.config            =>  {repo.config}')
-    click.echo(f'>>> repo.rules             =>  {repo.rules}')
-    click.echo(f'>>> repo.verbose           =>  {repo.verbose}')
-    click.echo(f'>>> repo.get_config        =>  {repo.get_config}')
-    click.echo()
+def run(cli):
+    """Regenerate lists according to rules."""
+    click.echo(f'>>> cli                             =>  {cli}')
+    click.echo(f'>>> cli.obj                        =>  {cli.obj}')
+    click.echo(f'>>> cli.obj["rules"]               =>  {cli.obj["rules"]}')
+    #click.echo(f'>>> cli.__dir__()...              =>  {[item for item in cli.__dir__() if not re.search("__", item)]}')
+    #click.echo(f'>>> cli.list_folder               =>  {cli.list_folder}')
+    #click.echo(f'>>> cli.backup_folder             =>  {cli.backup_folder}')
+    #click.echo(f'>>> cli.backup_depth              =>  {cli.backup_depth}')
+    #click.echo(f'>>> cli.html_folder               =>  {cli.html_folder}')
+    #click.echo(f'>>> cli.verbose                   =>  {cli.verbose}')
+    #click.echo(f'>>> cli.get_config                =>  {cli.get_config}')
+    #click.echo()
 
 # ----------------------------------------------------------------------
 @cli.command()

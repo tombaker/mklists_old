@@ -1,8 +1,7 @@
-[DEFAULT]
+[DEFAULTS]
 list_folder = .
 backup_folder = .backups
 backup_depth = 2
 #html_folder = .html
 config = .mklistsrc
-global_rules = .globalrules
 rules = .rules

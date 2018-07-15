@@ -1,6 +1,6 @@
 # mklists
 
-Recompose plain-text to-do lists by tweaking rules
+Rearrange plain-text to-do lists by tweaking rules
 
 ## Installation
 
