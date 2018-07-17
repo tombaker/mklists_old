@@ -2,11 +2,6 @@ import re
 from textwrap import dedent
 from dataclasses import dataclass
 
-def get_rulestrings(rulefile):
-    """what if rulefile does not exist?"""
-    with open(rulefield, 'r') as rulefile:
-        return rulefile.read().splitlines()
-
 class RuleFile(object):
     """ print(rulefilename)
         NoRuleFileError('Rule file does not exist or is unusable.')
@@ -42,6 +37,11 @@ class BadRuleString(SystemExit):
 # No source 
 #    probably because not yet created by target
 
+def get_stringrules(rulefile):
+    """what if rulefile does not exist?"""
+    with open(rulefield, 'r') as rulefile:
+        return rulefile.read().splitlines()
+
 def stringrule_to_listrule(rulestring):
     fields = []
     in_field, __, rest = rulestring.partition('/')
@@ -54,31 +54,21 @@ def stringrule_to_listrule(rulestring):
     fields = [field for field in fields if field]
     return fields
 
-def stringrules_to_listrules(rulestrings):
-    return [stringrule_to_listrule(line) for line in rulestrings if stringrule_to_listrule(line)]
+def stringrules_to_listrules(stringrules):
+    return [stringrule_to_listrule(line) for line in stringrules if stringrule_to_listrule(line)]
 
-def check_rulestrings2rules(rulestrings):
-    """asdf"""
-
-def lines2rulestrings2(rulestrings):
-    fielded_rules = []
-    for rulestring in rulestrings:
-        fields = []
-        in_field, __, rest = rulestring.partition('/')
-        fields.append(in_field.strip())
-        regex, __, rest = rest.rpartition('/')
-        fields.append(regex)
-        rest = rest.partition('#')[0].strip()
-        if not rest:
-            continue
-        fields.extend(rest.split())
-        fielded_rules.append(fields)
-    for rule in fielded_rules:
-        if not rule[0].isdigit():
-            print(repr(rulestring))
+def check_listrules(listrules):
+    """2018-07-17: does not 'see' the liststring
+    Could test for content of error message too:
+    https://stackoverflow.com/questions/30256332/verify-the-the-error-code-or-message-from-systemexit-in-pytest
+    """
+    for listrule in listrules:
+        if not listrule[0].isdigit():
+            stringrule = " ".join([listrule[0], "/", listrule[1], "/", listrule[2], listrule[3], listrule[4]])
+            print(repr(stringrule))
             raise BadRuleString
-        rule[0] = int(rule[0])
-    return fielded_rules
+        listrule[0] = int(listrule[0])
+    return listrules
 
 
 @dataclass

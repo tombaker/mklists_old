@@ -1,3 +1,4 @@
+import pytest
 from mklists.rule import *
 
 
@@ -46,5 +47,8 @@ def test_stringrules_to_listrules():
               ['x', 'FTMP', '__RENAME__', 'a', '0']]
     assert stringrules_to_listrules(input) == output
 
-
+def test_check_listrule_field1_error_exit():
+    input = [['x', 'FTMP', '__RENAME__', 'a', '0']]
+    with pytest.raises(SystemExit):
+        check_listrules(input)
 
