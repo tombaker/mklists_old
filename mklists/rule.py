@@ -1,8 +1,11 @@
+import re
 from textwrap import dedent
 from dataclasses import dataclass
 
-with open("_rules", 'r') as rulefile:
-    rules_strings = rulefile.read().splitlines()
+def get_rulestrings(rulefile):
+    """what if rulefile does not exist?"""
+    with open(rulefield, 'r') as rulefile:
+        return rulefile.read().splitlines()
 
 class RuleFile(object):
     """ print(rulefilename)
@@ -39,7 +42,7 @@ class BadRuleString(SystemExit):
 # No source 
 #    probably because not yet created by target
 
-def parse_rulestring(rulestring):
+def stringrule_to_listrule(rulestring):
     fields = []
     in_field, __, rest = rulestring.partition('/')
     fields.append(in_field.strip())
@@ -47,9 +50,17 @@ def parse_rulestring(rulestring):
     fields.append(regex)
     rest = rest.partition('#')[0].strip()
     fields.extend(rest.split())
+    fields = [field for field in fields if not re.match('#', field)]
+    fields = [field for field in fields if field]
     return fields
 
-def lines2rulestrings(rulestrings):
+def stringrules_to_listrules(rulestrings):
+    return [stringrule_to_listrule(line) for line in rulestrings if stringrule_to_listrule(line)]
+
+def check_rulestrings2rules(rulestrings):
+    """asdf"""
+
+def lines2rulestrings2(rulestrings):
     fielded_rules = []
     for rulestring in rulestrings:
         fields = []
