@@ -1,4 +1,4 @@
-__all__ = ['get', 'getrules', '_is_utf8_encoded', 'mkl', 'shuffle']
+__all__ = ['get', 'getrules', '_is_utf8_encoded', 'mkl', 'shuffle', 'parse_rulestring']
 
 import glob
 import os
@@ -8,6 +8,5 @@ import sys
 import yaml
 
 from mklists import util
-from mklists.rule import Rule, RuleFile, RuleString
 from dataclasses import dataclass
 

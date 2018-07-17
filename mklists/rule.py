@@ -1,39 +1,82 @@
+from textwrap import dedent
+from dataclasses import dataclass
+
+with open("_rules", 'r') as rulefile:
+    rules_strings = rulefile.read().splitlines()
+
 class RuleFile(object):
     """ print(rulefilename)
         NoRuleFileError('Rule file does not exist or is unusable.')
     """
 
-class RuleString(object):
-    """ Fields 1 and 5 must be digits
-            try:
-                if field1.isdigit():
-                    field1 = int(field1)
-                    field5 = int(field5)
-            except ValueError as e:
-                print(rule_s)
-                    print('First rule item (field in source line matched) must be a digit.')
-                    print('Fifth rule item (sort order of target file) must be a digit.')
-    
-        Field 2, a regex
-                    print('Second rule item (regex matched to field in source line) must be a digit.')
-                    def exit_rule_regex_must_be_escaped(line):
-                        print("In rule: %r" % line)
-                        print("...in order to match the regex string: %r" % linesplitonorbar[1])
-                        print("...the rule component must be escaped as follows: %r" % re.escape(linesplitonorbar[1])
-    
-        Not five fields long
-            print(rulestring)
-    
-        No source 
-            probably because not yet created by target
-        Note
-            Digit = any of the numerals from 0 to 9, especially when forming part of a number
-            Integer = any whole number, including negative numbers
-    """
-    def __init__(self, text_line):
-        line = text_line
+class BadRuleString(SystemExit):
 
-class Rule(object):
-    """ Rule = namedtuple('Rule', 'srcmatch_awkf srcmatch_rgx src trg trgsort_awkf')
+    def __str__(self):
+        return """\
+                Correct form: '3 /x/ a.txt b.txt 2' - means:
+
+                for each line in source a.txt
+                    if regex /x/ matches third field (the "match field")
+                        move line from a.txt to b.txt
+                        sort b.txt on second field
+
+                Note:
+                -- if match field is 0, entire line (with whitespace) matched
+                -- if match field is greater than line length, match is ignored
+                -- regex must escape forward slashes - eg "/\/n/"
+                -- regex may include spaces - eg "/^From /"
+                """
+
+# Entire line must be five fields long
+# Fields 1 and 5 must be digits
+#    if rule[0].isdigit
+#    if rule[4].isdigit
+# Field 2, a regex
+#    def exit_rule_regex_must_be_escaped(line):
+#        print("In rule: %r" % line)
+#        print("...in order to match the regex string: %r" % linesplitonorbar[1])
+#        print("...the rule component must be escaped as follows: %r" % re.escape(linesplitonorbar[1])
+# No source 
+#    probably because not yet created by target
+
+def parse_rulestring(rulestring):
+    fields = []
+    in_field, __, rest = rulestring.partition('/')
+    fields.append(in_field.strip())
+    regex, __, rest = rest.rpartition('/')
+    fields.append(regex)
+    rest = rest.partition('#')[0].strip()
+    fields.extend(rest.split())
+    return fields
+
+def lines2rulestrings(rulestrings):
+    fielded_rules = []
+    for rulestring in rulestrings:
+        fields = []
+        in_field, __, rest = rulestring.partition('/')
+        fields.append(in_field.strip())
+        regex, __, rest = rest.rpartition('/')
+        fields.append(regex)
+        rest = rest.partition('#')[0].strip()
+        if not rest:
+            continue
+        fields.extend(rest.split())
+        fielded_rules.append(fields)
+    for rule in fielded_rules:
+        if not rule[0].isdigit():
+            print(repr(rulestring))
+            raise BadRuleString
+        rule[0] = int(rule[0])
+    return fielded_rules
+
+
+@dataclass
+class Rule:
+    """ 
+    srcmatch_awkf 
+    srcmatch_rgx 
+    src 
+    trg 
+    trgsort_awkf
     """
 
