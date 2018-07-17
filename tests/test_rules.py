@@ -52,3 +52,13 @@ def test_check_listrule_field1_error_exit():
     with pytest.raises(SystemExit):
         check_listrules(input)
 
+def test_listrule_backto_stringrule():
+    input = [0, '\/n', 'a.txt', 'b.txt', 0]
+    output = '0 /\/n/ a.txt b.txt 0'
+    assert listrule_backto_stringrule(input) == output
+
+def test_listrule_backto_stringrule_one_field_only():
+    input = [0]
+    output = '0'
+    assert listrule_backto_stringrule(input) == output
+

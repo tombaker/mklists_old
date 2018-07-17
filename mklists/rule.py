@@ -57,6 +57,18 @@ def stringrule_to_listrule(rulestring):
 def stringrules_to_listrules(stringrules):
     return [stringrule_to_listrule(line) for line in stringrules if stringrule_to_listrule(line)]
 
+def listrule_backto_stringrule(listrule):
+    if len(listrule) > 1:
+        listrule[1] = "".join(["/", listrule[1], "/"])
+    return " ".join([str(item) for item in listrule])
+
+def listrule_to_stringrule(listrule):
+    try:
+        listrule[1] = "".join("/", listrule[1], "/")
+    except:
+        return repr(listrule)
+    return " ".join([item for item in listrule])
+
 def check_listrules(listrules):
     """2018-07-17: does not 'see' the liststring
     Could test for content of error message too:
