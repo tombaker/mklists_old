@@ -9,6 +9,7 @@ class BadRuleString(SystemExit):
 
 VALID_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
+# Put this into default .mklistsrc
 CORRECT_RULE_FORM = """\
 The rule above is incorrectly formed.
 
@@ -44,18 +45,18 @@ Note:
 -- Fields 3 and 4 are (configurably) valid filenames not containing slashes.
 """
 
-def get_stringrules(*rules_files):
-    stringrules = []
+def get_srules(*rules_files):
+    srules = []
     for rules_file in rules_files:
         try:
             with open(rules_file, 'r') as rulefile:
-                stringrules.extend(rulefile.read().splitlines())
+                srules.extend(rulefile.read().splitlines())
         except FileNotFoundError:
             sys.exit(f'Rule file "{rules_file}" does not exist or is not accessible.')
 
-    return stringrules
+    return srules
             
-def stringrule_to_listrule(rulestring):
+def srule_to_lrule(rulestring):
     fields = []
     in_field, __, rest = rulestring.partition('/')
     fields.append(in_field.strip())
@@ -67,61 +68,60 @@ def stringrule_to_listrule(rulestring):
     fields = [field for field in fields if field]
     return fields
 
-def stringrules_to_listrules(stringrules):
-    return [stringrule_to_listrule(line) for line in stringrules if stringrule_to_listrule(line)]
+def srules_to_lrules(srules):
+    return [srule_to_lrule(line) for line in srules if srule_to_lrule(line)]
 
-def listrule_backto_stringrule(listrule):
-    if len(listrule) > 1:
-        listrule[1] = "".join(["/", listrule[1], "/"])
-    return " ".join([str(item) for item in listrule])
+def lrule_backto_srule(lrule):
+    if len(lrule) > 1:
+        lrule[1] = "".join(["/", lrule[1], "/"])
+    return " ".join([str(item) for item in lrule])
 
-def listrule_to_stringrule(listrule):
+def lrule_to_srule(lrule):
     try:
-        listrule[1] = "".join("/", listrule[1], "/")
+        lrule[1] = "".join("/", lrule[1], "/")
     except:
-        return repr(listrule)
-    return " ".join([item for item in listrule])
+        return repr(lrule)
+    return " ".join([item for item in lrule])
 
-def exit_for_bad_rule_form(listrule_tested, message):
-    if len(listrule_tested) > 1:
-        listrule_tested[1] = '/' + listrule_tested[1] + '/'
-    print(" ".join(listrule_tested))
+def exit_for_bad_rule_form(lrule_tested, message):
+    if len(lrule_tested) > 1:
+        lrule_tested[1] = '/' + lrule_tested[1] + '/'
+    print(" ".join(lrule_tested))
     sys.exit(message)
 
-def check_listrules(listrules):
-    listrules_checked = []
-    for listrule_to_check in listrules:
-
-        # listrule_to_check must have 4 or 5 fields
-        if 4 <= len(listrule_to_check) <= 5:
-            exit_for_bad_rule_form(listrule_to_check, CORRECT_RULE_FORM)
+def check_lrules(lrules):
+    lrules_checked = []
+    for lrule_to_check in lrules:
+        # lrule_to_check must have 4 or 5 fields
+        if 4 <= len(lrule_to_check) <= 5:
+            exit_for_bad_rule_form(lrule_to_check, CORRECT_RULE_FORM)
 
         # field 1 is a digit
-        if not listrule_to_check[0].isdigit():
-            exit_for_bad_rule_form(listrule_to_check, CORRECT_RULE_FORM)
+        if not lrule_to_check[0].isdigit():
+            exit_for_bad_rule_form(lrule_to_check, CORRECT_RULE_FORM)
 
         # field 2 is a valid regular expression
         try:
-            re.compile(listrule_to_check[1])
+            re.compile(lrule_to_check[1])
         except:
-            exit_for_bad_rule_form(listrule_to_check, CORRECT_RULE_FORM)
+            exit_for_bad_rule_form(lrule_to_check, CORRECT_RULE_FORM)
 
         # field 3 is a valid filename (according to set of valid characters)
-        if not all(c in VALID_CHARS for c in listrule_to_check[2]):
-            exit_for_bad_rule_form(listrule_to_check, CORRECT_RULE_FORM)
+        if not all(c in VALID_CHARS for c in lrule_to_check[2]):
+            exit_for_bad_rule_form(lrule_to_check, CORRECT_RULE_FORM)
 
         # field 4 is a valid filename (according to set of valid characters)
-        if not all(c in VALID_CHARS for c in listrule_to_check[3]):
-            exit_for_bad_rule_form(listrule_to_check, CORRECT_RULE_FORM)
+        if not all(c in VALID_CHARS for c in lrule_to_check[3]):
+            exit_for_bad_rule_form(lrule_to_check, CORRECT_RULE_FORM)
 
         # field 5 is a digit
-        if len(listrule_to_check) == 5:
-            if not listrule_to_check[4].isdigit():
-                exit_for_bad_rule_form(listrule_to_check, CORRECT_RULE_FORM)
+        if len(lrule_to_check) == 5:
+            if not lrule_to_check[4].isdigit():
+                exit_for_bad_rule_form(lrule_to_check, CORRECT_RULE_FORM)
 
-        listrules_checked.append(listrule)
+        lrules_checked.append(lrule)
 
-    return listrules_checked
+    return lrules_checked
 
 # Field 2, a regex
 #    def exit_rule_regex_must_be_escaped(line):
@@ -153,5 +153,5 @@ class Rule:
 # ...: except:
 # ...:     print('oops')
 
-        # listrule_checked[0] = int(listrule_checked[0])
-        # listrule_checked[4] = int(listrule_checked[4])
+        # lrule_checked[0] = int(lrule_checked[0])
+        # lrule_checked[4] = int(lrule_checked[4])

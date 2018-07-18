@@ -15,10 +15,10 @@ def load_config(config_file='_mklists.yaml'):
 
 def load_globlines(cwd=os.getcwd()):
     """Something like:
-    globlines_list = []
+    globlines_l = []
     for file in glob.glob('*'):
-        globlines_list.append(file.readlines())
-    return globlines_list
+        globlines_l.append(file.readlines())
+    return globlines_l
     [name for name in glob.glob('*') if os.path.isfile(name)]
     """
     return cwd
