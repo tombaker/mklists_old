@@ -1,5 +1,5 @@
 import pytest
-from mklists.rule import *
+from mklists.rules import *
 
 
 def test_rulestring():

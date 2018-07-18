@@ -1,4 +1,5 @@
 import re
+import sys
 from textwrap import dedent
 from dataclasses import dataclass
 
@@ -11,7 +12,7 @@ class BadRuleString(SystemExit):
 
     def __str__(self):
         return """\
-                Correct form: '3 /x/ a.txt b.txt 2' - means:
+                Example: '3 /x/ a.txt b.txt 2'
 
                 for each line in source a.txt
                     if regex /x/ matches third field (the "match field")
@@ -25,23 +26,18 @@ class BadRuleString(SystemExit):
                 -- regex may include spaces - eg "/^From /"
                 """
 
-# Entire line must be five fields long
-# Fields 1 and 5 must be digits
-#    if rule[0].isdigit
-#    if rule[4].isdigit
-# Field 2, a regex
-#    def exit_rule_regex_must_be_escaped(line):
-#        print("In rule: %r" % line)
-#        print("...in order to match the regex string: %r" % linesplitonorbar[1])
-#        print("...the rule component must be escaped as follows: %r" % re.escape(linesplitonorbar[1])
-# No source 
-#    probably because not yet created by target
 
-def get_stringrules(rulefile):
-    """what if rulefile does not exist?"""
-    with open(rulefield, 'r') as rulefile:
-        return rulefile.read().splitlines()
+def get_stringrules(*rules_files):
+    stringrules = []
+    for rules_file in rules_files:
+        try:
+            with open(rules_file, 'r') as rulefile:
+                stringrules.extend(rulefile.read().splitlines())
+        except FileNotFoundError:
+            sys.exit(f'Rule file "{rules_file}" does not exist or is not accessible.')
 
+    return stringrules
+            
 def stringrule_to_listrule(rulestring):
     fields = []
     in_field, __, rest = rulestring.partition('/')
@@ -81,6 +77,29 @@ def check_listrules(listrules):
             raise BadRuleString
         listrule[0] = int(listrule[0])
     return listrules
+
+# Entire line must be five fields long
+# Fields 1 and 5 must be digits
+#    if rule[0].isdigit
+#    if rule[4].isdigit
+# Field 2, a regex
+#    def exit_rule_regex_must_be_escaped(line):
+#        print("In rule: %r" % line)
+#        print("...in order to match the regex string: %r" % linesplitonorbar[1])
+#        print("...the rule component must be escaped as follows: %r" % re.escape(linesplitonorbar[1])
+# No source 
+#    probably because not yet created by target
+# $1.isdigit()  - which includes zero
+# $5.isdigit()  - which includes zero
+# $1 = int($1)
+# $5 = int($1)
+# except SourceMatchAndTargetSortOrderDigits:
+# $3 = re.compile($3)
+# $4 and $5:
+# must have only permitted characters
+# valid_chars = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
+# if it gets this far:
+# append line to rules_l
 
 
 @dataclass
