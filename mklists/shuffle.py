@@ -26,14 +26,18 @@ def shuffle(rules_l, globlines_l):
             # if awkf is zero, 
             # then regex is matched against entire line
             if awkf == 0:                
-                mkl_d[trg].extend([ln for ln in mkl_d[src] if re.search(rgx, ln)])
-                mkl_d[src] = [ln for ln in mkl_d[src] if not re.search(rgx, ln)]
+                mkl_d[trg].extend([ln for ln in mkl_d[src] 
+                                   if re.search(rgx, ln)])
+                mkl_d[src] =      [ln for ln in mkl_d[src] 
+                                   if not re.search(rgx, ln)]
 
             # if awkf greater than zero (and within range), 
             # then regex is matched against specific field
             if awkf > 0:
-                mkl_d[trg].extend([ln for ln in mkl_d[src] if re.search(rgx, ln.split()[ethf])])
-                mkl_d[src] = [ln for ln in mkl_d[src] if not re.search(rgx, ln.split()[ethf])]
+                mkl_d[trg].extend([ln for ln in mkl_d[src] 
+                                   if re.search(rgx, ln.split()[ethf])])
+                mkl_d[src] =      [ln for ln in mkl_d[src] 
+                                   if not re.search(rgx, ln.split()[ethf])]
 
             # if trgsort_awkf greater than zero (note: zero is false), 
             # then sort mkl_d[trg], dsu-style, 

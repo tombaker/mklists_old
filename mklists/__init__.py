@@ -1,4 +1,4 @@
-__all__ = ['get', 'getrules', '_is_utf8_encoded', 'mkl', 'shuffle', 'stringrule_to_listrule', 'stringrules_to_listrules', 'listrule_backto_stringrule']
+__all__ = ['get', 'getrules', '_is_utf8_encoded', 'mkl', 'shuffle', 'srule_to_lrule', 'srules_to_lrules', 'lrule_backto_srule']
 
 import glob
 import os

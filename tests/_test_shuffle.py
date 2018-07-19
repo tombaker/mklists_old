@@ -11,7 +11,6 @@ def test_shuffle():
     output = {'a.txt': ['an ant\n'], 'b.txt': ['two ticks\n', 'the mite\n']}
     assert shuffle(rules_l1, globlines_l1) == output
 
-
 def test_shuffle_sort():
     rules_l1 = [Rule(2, 'i', 'a.txt', 'b.txt', 1)]
     globlines_l1 = ['two ticks\n', 'an ant\n', 'the mite\n']
