@@ -4,6 +4,11 @@ import string
 from textwrap import dedent
 from dataclasses import dataclass
 
+SOME_CONSTANT = "Hello, world!"
+
+def print_constant():
+    return SOME_CONSTANT
+
 class BadRuleString(SystemExit):
     pass
 
