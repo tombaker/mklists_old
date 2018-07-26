@@ -41,10 +41,10 @@ def cli(ctx,
         list_folder, backup_folder, backup_depth, html_folder,
         verbose):
     """Rearrange plain-text to-do lists by tweaking rules"""
-    confparser = ConfigParser()
-    confparser.read('.mklistsrc')
-    mklistsrc = dict([[key, confparser['DEFAULTS'][key]]
-                     for key in confparser['DEFAULTS']])
+    mklrc = ConfigParser()
+    mklrc.read('.mklistsrc')
+    mklistsrc = dict([[key, mklrc['DEFAULTS'][key]]
+                     for key in mklrc['DEFAULTS']])
     print("mklistsrc = ", mklistsrc)
     ctx.obj = mklistsrc
     print("ctx.obj = ", ctx.obj)
