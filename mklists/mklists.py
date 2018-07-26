@@ -7,7 +7,7 @@ def apply_rules(rules_l, lines_l):
     Input:
     -- rules_l: list of five-item rules
     -- lines_l: list of lines from all text files in working directory
-    
+
     Initializes result with 'source' name as per rules_l, line 1, field 3
     -- key: rules_l[0][2]
     -- value: lines from all text files in working directory
@@ -39,16 +39,16 @@ def apply_rules(rules_l, lines_l):
             if match_awkfield == 0:
                 result_d[target].extend([x for x in result_d[source]
                                          if re.search(rgx, x)])
-                result_d[source] =      [x for x in result_d[source]
-                                         if not re.search(rgx, x)]
+                result_d[source] = [x for x in result_d[source]
+                                    if not re.search(rgx, x)]
 
             # if match_awkfield greater than zero and within range, match it
             if match_awkfield > 0:
                 y = match_awkfield - 1
                 result_d[target].extend([x for x in result_d[source]
                                          if re.search(rgx, x.split()[y])])
-                result_d[source] =      [x for x in result_d[source]
-                                         if not re.search(rgx, x.split()[y])]
+                result_d[source] = [x for x in result_d[source]
+                                    if not re.search(rgx, x.split()[y])]
 
             # if sort_awkfield greater than zero, sort target dsu-style
             if sort_awkfield:
