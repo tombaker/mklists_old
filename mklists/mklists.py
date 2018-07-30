@@ -36,6 +36,7 @@ def apply_rules(rules_l, lines_l):
                 continue
 
             # if match_awkfield is exactly zero, match against entire line
+            # TRY: `if not rgx in x` - may not work with compiled regexes
             if match_awkfield == 0:
                 result_d[target].extend([x for x in result_d[source]
                                          if re.search(rgx, x)])
