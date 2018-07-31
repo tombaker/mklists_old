@@ -1,6 +1,8 @@
+import pytest
 from mklists.util import *
 
 
+@pytest.mark.linkify
 def test_linkified_line_already_linkified():
     input = """A line with <a href="http://example.org">http://example.org</a>.\n"""
     output = """A line with <a href="http://example.org">http://example.org</a>.\n"""
