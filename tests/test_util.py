@@ -1,5 +1,5 @@
 import pytest
-from mklists.util import *
+from mklists.Common import *
 
 # def test_is_utf81():
 #     with pytest.raises(SystemExit):

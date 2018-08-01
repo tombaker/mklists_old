@@ -7,5 +7,5 @@ import re
 import sys
 import yaml
 
-from mklists import util
+# from mklists import Common
 from dataclasses import dataclass

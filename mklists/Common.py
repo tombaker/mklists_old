@@ -1,3 +1,8 @@
+import os
+import re
+
+__all__ = ['_is_utf8_encoded', 'ls_files', 'abs_pathname', 'linkify']
+
 """According to Martelli, the simplest way to share objects 
 (such as functions and constants) among modules in package P:
     
@@ -8,14 +13,10 @@ Then:
        from every module in package that needs to access the objects
        -- refer to Common.f, Common.K...
 """
+
 class NotUTF8Error(SystemExit):
     """Exit with helpful error message if object is not UTF-8."""
 
-__all__ = ['_is_utf8_encoded', 'ls_files', 'abs_pathname', 'linkify']
-
-import os
-import re
-from mklists.exceptions import NotUTF8Error
 
 def _is_utf8_encoded(filename):
     try:
@@ -40,6 +41,7 @@ def ls_files(filenames=os.listdir(), config_file='mklists.yaml'):
     * [f for f in passing_filenames if os.path.isfile(f)]
     * mustbetext?
     """
+
     #     with open(config_file) as mkl:
     #         config = yaml.load(mkl)
     #         
