@@ -23,3 +23,4 @@ def test_rulestring_not_enough_fields():
 #def test_check_lrule_field1_error_exit():
 #def test_lrule_backto_srule():
 #def test_lrule_backto_srule_one_field_only():
+#def test_source_ne_target():  # source not the same as target

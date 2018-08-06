@@ -16,7 +16,7 @@ class Rule:
     target_sortorder: int = 0
 
     initialized = False
-    targets = []
+    sources = []
 
     def has_five_fields(self):
         if len([v for v in self.__dict__.values() if v is not None]) != 5:
@@ -25,25 +25,29 @@ class Rule:
     def register_source(self):
         """\
         When class is first created, class variables 'initialized' 
-        (a flag) and 'targets' (a list) are initialized.
+        (a flag) and 'sources' (a list) are initialized.
+
+        Note that every time I edit then execute the module, the 
+        registry of sources is wiped clean.
 
         When Rule instantiated for first time: 
-        * value of self.target added to 'targets' list
-        * value of self.source _also_ added to 'targets' list 
+        * value of self.target added to 'sources' list
+        * value of self.source _also_ added to 'sources' list 
         * 'initialized' flag is set to True
 
         When Rule is instantiated each subsequent time
-        * iff value of self.source is in 'targets' list
-          * value of self.target added to 'targets' list
-        * iff value of self.source is _not_ in 'targets' list
+        * iff value of self.source is in 'sources' list
+          * value of self.target added to 'sources' list
+        * iff value of self.source is _not_ in 'sources' list
           * exit with error message
 
         @@@Todo: create 
         """
         if not Rule.initialized:
-            Rule.targets.append(self.source)
+            Rule.sources.append(self.source)
             Rule.initialized = True
-        if self.source not in Rule.targets:
-            print(f"oh no! {self.source} is not in Rule.targets!")
-        Rule.targets.append(self.target)
-        print(Rule.targets)
+        if self.source not in Rule.sources:
+            print(f"oh no! {self.source} is not in Rule.sources!")
+        if self.target not in Rule.sources:
+            Rule.sources.append(self.target)
+        print(Rule.sources)
