@@ -12,7 +12,7 @@ def test_rulestring_regex_has_space():
     assert x.source_matchpattern == '^X 19'
 
 def test_rulestring_not_enough_fields():
-    x = Rule('1', '^X 19', 'a', 'b')
+    x = Rule('1', '^X 19', 'a')
     with pytest.raises(SystemExit):
         x.has_five_fields()
 
