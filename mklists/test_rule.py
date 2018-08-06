@@ -7,7 +7,10 @@ def test_rule():
     x = Rule('1', '.', 'a', 'b', '2')
     assert x.source == 'a'
 
-#def test_rulestring_regex_has_space():
+def test_rulestring_regex_has_space():
+    x = Rule('1', '^X 19', 'a', 'b', '2')
+    assert x.source_matchpattern == '^X 19'
+
 #def test_rulestring_not_enough_fields():
 #def test_rulestring_field1_is_not_digit():
 #def test_rulestring_is_empty():
