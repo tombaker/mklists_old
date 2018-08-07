@@ -17,6 +17,9 @@ class SourceNotRegisteredError(SystemExit):
 class SourceEqualsTargetError(SystemExit): 
     pass
 
+class BadRegexError(SystemExit):
+    pass
+
 # Eventually, add check whether set in '.mklistsrc' and, if so, override
 VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
@@ -47,6 +50,13 @@ class Rule:
             print(f"In rule: {self}")
             print(f"target_sortorder is not a digit")
             raise NotDigitError
+        return True
+
+    def source_matchpattern_is_valid(self):
+        try:
+            re.compile(self.source_matchpattern)
+        except re.error:
+            raise BadRegexError
         return True
 
     def source_filename_valid(self):

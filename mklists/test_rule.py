@@ -36,8 +36,6 @@ def test_register_source_not():
     with pytest.raises(SystemExit):
         y.register_source()
 
-# source_matchfield, source_matchpattern, source, target, target_sortorder
-
 def test_source_matchfield_is_digit():
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
     assert x.source_matchfield_is_digit
@@ -55,7 +53,11 @@ def test_source_ne_target_not():
     with pytest.raises(SystemExit):
         x.source_not_equal_target()
 
-#def test_rulestring_is_empty():
-#def test_rulestring_is_comment_only():
-#def test_srules_to_lrules():
-#def test_check_lrule_field1_error_exit():
+def test_source_matchpattern_is_valid():
+    x = Rule('1', 'NOW', 'a.txt', 'a.txt', '0')
+    assert x.source_matchpattern_is_valid
+
+def test_source_matchpattern_is_valid_not():
+    x = Rule('1', 'N(OW', 'a.txt', 'a.txt', '0')
+    with pytest.raises(SystemExit):
+        x.source_matchpattern_is_valid()
