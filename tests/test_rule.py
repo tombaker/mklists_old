@@ -1,5 +1,5 @@
 import pytest
-from mklists.rule import *
+from mklists.rules import *
 
 @pytest.mark.rule
 def test_validate_rule():
