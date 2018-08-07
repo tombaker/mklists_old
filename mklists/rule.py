@@ -5,7 +5,11 @@ from textwrap import dedent
 from dataclasses import dataclass
 from typing import List
 
-class NotFiveFieldsError(SystemExit): pass
+class NotValidFilenameError(SystemExit): pass
+class SourceNotRegisteredError(SystemExit): pass
+
+# Eventually, add check whether set in '.mklistsrc' and, if so, override
+VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
 @dataclass
 class Rule:
@@ -18,36 +22,31 @@ class Rule:
     initialized = False
     sources = []
 
-    def has_five_fields(self):
-        if len([v for v in self.__dict__.values() if v is not None]) != 5:
-            raise NotFiveFieldsError
+    def source_filename_valid(self):
+        for c in self.source: 
+            if c not in VALID_FILENAME_CHARS:
+                print(f"In rule: {self}")
+                print(f"filename {self.source} has invalid character(s).")
+                print(f"Valid: {VALID_FILENAME_CHARS}")
+                raise NotValidFilenameError
+        return True
+
+    def target_filename_valid(self):
+        for c in self.target: 
+            if c not in VALID_FILENAME_CHARS:
+                print(f"In rule: {self}")
+                print(f"filename {self.target} has invalid character(s).")
+                print(f"Valid: {VALID_FILENAME_CHARS}")
+                raise NotValidFilenameError
+        return True
 
     def register_source(self):
-        """\
-        When class is first created, class variables 'initialized' 
-        (a flag) and 'sources' (a list) are initialized.
-
-        Note that every time I edit then execute the module, the 
-        registry of sources is wiped clean.
-
-        When Rule instantiated for first time: 
-        * value of self.target added to 'sources' list
-        * value of self.source _also_ added to 'sources' list 
-        * 'initialized' flag is set to True
-
-        When Rule is instantiated each subsequent time
-        * iff value of self.source is in 'sources' list
-          * value of self.target added to 'sources' list
-        * iff value of self.source is _not_ in 'sources' list
-          * exit with error message
-
-        @@@Todo: create 
-        """
         if not Rule.initialized:
             Rule.sources.append(self.source)
             Rule.initialized = True
         if self.source not in Rule.sources:
             print(f"oh no! {self.source} is not in Rule.sources!")
+            raise SourceNotRegisteredError
         if self.target not in Rule.sources:
             Rule.sources.append(self.target)
         print(Rule.sources)

@@ -11,16 +11,36 @@ def test_rulestring_regex_has_space():
     x = Rule('1', '^X 19', 'a', 'b', '2')
     assert x.source_matchpattern == '^X 19'
 
-def test_rulestring_not_enough_fields():
-    x = Rule('1', '^X 19', 'a')
+def test_source_filename_valid():
+    x = Rule('1', '^X 19', 'a.txt', 'b.txt', '2')
+    assert x.source_filename_valid()
+
+def test_target_filename_valid():
+    x = Rule('1', '^X 19', 'a.txt', 'b.txt', '2')
+    assert x.target_filename_valid()
+
+def test_target_filename_valid_not():
+    x = Rule('1', '^X 19', 'a.txt', 'b^.txt', '2')
     with pytest.raises(SystemExit):
-        x.has_five_fields()
+        x.target_filename_valid()
+
+def test_register_source_ok():
+    x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
+    x.register_source()
+    y = Rule('1', 'LATER', 'b.txt', 'c.txt', '0')
+    assert y.register_source
+
+def test_register_source_not():
+    x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
+    x.register_source()
+    y = Rule('1', 'LATER', 'c.txt', 'd.txt', '0')
+    with pytest.raises(SystemExit):
+        y.register_source()
+
 
 #def test_rulestring_field1_is_not_digit():
 #def test_rulestring_is_empty():
 #def test_rulestring_is_comment_only():
 #def test_srules_to_lrules():
 #def test_check_lrule_field1_error_exit():
-#def test_lrule_backto_srule():
-#def test_lrule_backto_srule_one_field_only():
 #def test_source_ne_target():  # source not the same as target

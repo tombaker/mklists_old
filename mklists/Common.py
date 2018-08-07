@@ -139,9 +139,6 @@ def load_data(files):
                 Not end with .bak
                 Not end with .tmp
                 Not have any spaces (though this comes out in course of parsing rule string)
-            FilenameCharError('Has characters not in...')
-                valid_chars = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
-                print("Filename %r has one or more characters other than: %r" % rule, valid_chars)
     
     Directory
         print(repr(dirname))
