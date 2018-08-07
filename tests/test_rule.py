@@ -1,7 +1,7 @@
 import pytest
 from mklists.rule import *
 
-
+@pytest.mark.rule
 def test_rule():
     x = Rule('1', '.', 'a', 'b', '2')
     assert x.source == 'a'

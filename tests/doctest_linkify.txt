@@ -1,6 +1,6 @@
 # Run this file with $ python -m doctest -v doctest_linkify.txt
 
->>> from mklists.util import linkify
+>>> from mklists.Common import linkify
 
 >>> linkify('A line with <a href="http://example.org">http://example.org</a>.\n')
 'A line with <a href="http://example.org">http://example.org</a>.\n'
