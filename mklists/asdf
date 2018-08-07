@@ -1,0 +1,7 @@
+    def _source_matchfield_is_digit(self):
+    def _target_sortorder_is_digit(self):
+    def _source_matchpattern_is_valid(self):
+    def _source_filename_valid(self):
+    def _target_filename_valid(self):
+    def _source_not_equal_target(self):
+    def _register_source(self):

@@ -8,10 +8,10 @@ from typing import List
 class NotValidFilenameError(SystemExit): 
     pass
 
-class NotDigitError(SystemExit): 
+class NotIntegerError(SystemExit): 
     pass
 
-class SourceNotRegisteredError(SystemExit): 
+class SourceNotPrecedentedError(SystemExit): 
     pass
 
 class SourceEqualsTargetError(SystemExit): 
@@ -34,32 +34,53 @@ class Rule:
     initialized = False
     sources = []
 
-    def source_matchfield_is_digit(self):
+    def _source_is_precedented(self):
+        if not Rule.initialized:
+            Rule.sources.append(self.source)
+            Rule.initialized = True
+        if self.source not in Rule.sources:
+            print(f"oh no! {self.source} is not in Rule.sources!")
+            raise SourceNotPrecedentedError
+        if self.target not in Rule.sources:
+            Rule.sources.append(self.target)
+        print(Rule.sources)
+
+    def validate_rule(self):
+        self._source_is_precedented()
+        self._source_matchfield_is_integer()
+        self._target_sortorder_is_integer()
+        self._source_matchpattern_is_valid()
+        self._source_filename_valid()
+        self._target_filename_valid()
+        self._source_not_equal_target()
+        return self
+
+    def _source_matchfield_is_integer(self):
         try:
             self.source_matchfield = int(self.source_matchfield)
         except:
             print(f"In rule: {self}")
-            print(f"source_matchfield is not a digit")
-            raise NotDigitError
+            print(f"source_matchfield is not an integer")
+            raise NotIntegerError
         return True
 
-    def target_sortorder_is_digit(self):
+    def _target_sortorder_is_integer(self):
         try:
             self.target_sortorder = int(self.target_sortorder)
         except:
             print(f"In rule: {self}")
-            print(f"target_sortorder is not a digit")
-            raise NotDigitError
+            print(f"target_sortorder is not an integer")
+            raise NotIntegerError
         return True
 
-    def source_matchpattern_is_valid(self):
+    def _source_matchpattern_is_valid(self):
         try:
             re.compile(self.source_matchpattern)
         except re.error:
             raise BadRegexError
         return True
 
-    def source_filename_valid(self):
+    def _source_filename_valid(self):
         for c in self.source: 
             if c not in VALID_FILENAME_CHARS:
                 print(f"In rule: {self}")
@@ -68,7 +89,7 @@ class Rule:
                 raise NotValidFilenameError
         return True
 
-    def target_filename_valid(self):
+    def _target_filename_valid(self):
         for c in self.target: 
             if c not in VALID_FILENAME_CHARS:
                 print(f"In rule: {self}")
@@ -77,18 +98,8 @@ class Rule:
                 raise NotValidFilenameError
         return True
 
-    def source_not_equal_target(self):
+    def _source_not_equal_target(self):
         if self.source == self.target:
             raise SourceEqualsTargetError
         return True
 
-    def register_source(self):
-        if not Rule.initialized:
-            Rule.sources.append(self.source)
-            Rule.initialized = True
-        if self.source not in Rule.sources:
-            print(f"oh no! {self.source} is not in Rule.sources!")
-            raise SourceNotRegisteredError
-        if self.target not in Rule.sources:
-            Rule.sources.append(self.target)
-        print(Rule.sources)
