@@ -150,3 +150,38 @@ def load_data(files):
             NoDataError('No data here to back up or process - skipping.')
     """
 
+# Put this into default .mklistsrc
+CORRECT_RULE_FORM = """\
+The rule above is incorrectly formed.
+
+Rule must have four or (optionally) five fields:
+
+    3 /x/ a.txt b.txt
+    3 /x/ a.txt b.txt 2   # with optional sort order
+
+Fields:
+
+    1. Field against which regex is matched (a digit).
+    2. Regex, delimited by slashes.
+    3. Source file, lines of which are tested for matches.
+    4. Target file, destination of matching lines.
+    5. Sort order of target file
+
+In pseudo-code:
+
+    for each line in source a.txt
+        if regex /x/ matches third field (the "match field")
+            move line from a.txt to b.txt
+            sort b.txt on second field (if optional sort order given)
+        if regex /x/ does not match third field
+            do nothing
+
+Note:
+-- If match field is 0, entire line (with whitespace) matched.
+-- If match field is greater than line length, match is ignored.
+-- Regex must escape forward slashes - eg "/\/n/".
+-- Regex may include spaces - eg "/^From /"
+-- Whitespace is ignored except within regex (between first and last slash).
+-- Comments (everything after a pound sign) are ignored.
+-- Fields 3 and 4 are (configurably) valid filenames not containing slashes.
+"""
