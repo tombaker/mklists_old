@@ -1,3 +1,4 @@
+import string
 class BadRuleString(SystemExit): pass
 
 VALID_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
