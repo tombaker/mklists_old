@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import List
 
 class NotValidFilenameError(SystemExit): pass
+class NotDigitError(SystemExit): pass
 class SourceNotRegisteredError(SystemExit): pass
 
 # Eventually, add check whether set in '.mklistsrc' and, if so, override
@@ -21,6 +22,15 @@ class Rule:
 
     initialized = False
     sources = []
+
+    def source_matchfield_is_digit(self):
+        try:
+            self.source_matchfield = int(self.source_matchfield)
+        except:
+            print(f"In rule: {self}")
+            print(f"source_matchfield {source_matchfield} is not a digit")
+            raise NotDigitError
+        return True
 
     def source_filename_valid(self):
         for c in self.source: 
