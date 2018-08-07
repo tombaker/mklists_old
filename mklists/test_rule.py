@@ -42,8 +42,20 @@ def test_source_matchfield_is_digit():
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
     assert x.source_matchfield_is_digit
 
+def test_target_sortorder_is_digit():
+    x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
+    assert x.target_sortorder_is_digit
+
+def test_source_ne_target():
+    x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
+    assert x.source_not_equal_target
+
+def test_source_ne_target_not():
+    x = Rule('1', 'NOW', 'a.txt', 'a.txt', '0')
+    with pytest.raises(SystemExit):
+        x.source_not_equal_target()
+
 #def test_rulestring_is_empty():
 #def test_rulestring_is_comment_only():
 #def test_srules_to_lrules():
 #def test_check_lrule_field1_error_exit():
-#def test_source_ne_target():  # source not the same as target

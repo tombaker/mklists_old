@@ -5,9 +5,17 @@ from textwrap import dedent
 from dataclasses import dataclass
 from typing import List
 
-class NotValidFilenameError(SystemExit): pass
-class NotDigitError(SystemExit): pass
-class SourceNotRegisteredError(SystemExit): pass
+class NotValidFilenameError(SystemExit): 
+    pass
+
+class NotDigitError(SystemExit): 
+    pass
+
+class SourceNotRegisteredError(SystemExit): 
+    pass
+
+class SourceEqualsTargetError(SystemExit): 
+    pass
 
 # Eventually, add check whether set in '.mklistsrc' and, if so, override
 VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
@@ -28,7 +36,16 @@ class Rule:
             self.source_matchfield = int(self.source_matchfield)
         except:
             print(f"In rule: {self}")
-            print(f"source_matchfield {source_matchfield} is not a digit")
+            print(f"source_matchfield is not a digit")
+            raise NotDigitError
+        return True
+
+    def target_sortorder_is_digit(self):
+        try:
+            self.target_sortorder = int(self.target_sortorder)
+        except:
+            print(f"In rule: {self}")
+            print(f"target_sortorder is not a digit")
             raise NotDigitError
         return True
 
@@ -48,6 +65,11 @@ class Rule:
                 print(f"filename {self.target} has invalid character(s).")
                 print(f"Valid: {VALID_FILENAME_CHARS}")
                 raise NotValidFilenameError
+        return True
+
+    def source_not_equal_target(self):
+        if self.source == self.target:
+            raise SourceEqualsTargetError
         return True
 
     def register_source(self):
