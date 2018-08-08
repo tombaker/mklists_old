@@ -28,6 +28,14 @@ VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
 @dataclass
 class RulestringParser:
+    """\
+    Usage:
+        x = RulestringParser
+        x.get_stringlines('_rules', '_rules_correct')
+        x.parse_stringlines_to_splitlines()
+        x.splitlines_to_ruleobjects()
+        x.validate_rules()
+    """
 
     def get_stringlines(self, *rulefiles):
         stringlines = []
@@ -59,9 +67,19 @@ class RulestringParser:
 
     def splitlines_to_ruleobjects(self):
         rules = []
-        for rule in y:
+        for rule in self.splitlines:
+            """2018-08-08: AttributeError: 'list' object has no attribute '_source_is_precedented'"""
+            #Rule.validate(rule)
             rules.append(Rule(*rule))                       
         self.rules = rules
+        return self.rules
+
+    def validate_rules(self):
+        validated_rules = []
+        for rule in self.rules:
+            Rule.validate(rule)
+            validated_rules.append(rule)
+        self.rules = validated_rules
         return self.rules
 
 @dataclass
@@ -80,14 +98,14 @@ class Rule:
             Rule.sources.append(self.source)
             Rule.initialized = True
         if self.source not in Rule.sources:
-            print(f"oh no! {self.source} is not in Rule.sources!")
+            print(f"Oh no! {self.source} is not one of {Rule.sources}!")
             raise SourceNotPrecedentedError
         if self.target not in Rule.sources:
             Rule.sources.append(self.target)
         print(Rule.sources)
 
-    def validate_rule(self):
-        self._source_is_precedented()
+    def validate(self):
+        #self._source_is_precedented()
         self._source_matchfield_is_integer()
         self._target_sortorder_is_integer()
         self._source_matchpattern_is_valid()

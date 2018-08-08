@@ -5,13 +5,13 @@ from mklists.rules import *
 def test_validate_rule():
     x = Rule('1', '.', 'a', 'b', '2')
     y = Rule(1, '.', 'a', 'b', 2)
-    assert x.validate_rule() == y
+    assert x.validate() == y
 
 @pytest.mark.rule
 def test_validate_rule_not():
     x = Rule('1', 'N(OW', 'a', 'b', '2')
     with pytest.raises(SystemExit):
-        x.validate_rule()
+        x.validate()
 
 def test_rule():
     x = Rule('1', '.', 'a', 'b', '2')
