@@ -6,35 +6,15 @@ from dataclasses import dataclass
 from configparser import ConfigParser
 
 
-class ListFolder:
-
-    def __init__(*kwargs):
-        pass
-
-    def ls_visible_files(folder='.'):
-        visible_files = [name for name in glob.glob('*')
-                         if os.path.isfile[name]]
-        return visible_files
-
-
 @click.group()
-@click.option('--config', default='.mklistsrc', type=click.File('r'),
-              help="Change config file [.mklistsrc].")
-@click.option('--rules', default='.rules', type=click.File('r'),
-              help="Change local rules [.rules]. Repeatable.")
-@click.option('--list-folder', default='.',
-              type=click.Path(exists=True),
-              help="Change list folder [./].")
-@click.option('--backup-folder', default='.backups',
-              type=click.Path(),
-              help="Change backup folder [.backups/].")
-@click.option('--backup-depth', type=click.INT,
-              help="Change backup depth [3].")
-@click.option('--html-folder', default='.sgml', type=click.Path(),
-              help="Set urlified-lists folder [None].")
-@click.option('--verbose', default=False, is_flag=True,
-              help='Enable verbose mode.')
-@click.version_option('0.2')
+@click.option('--config', default='.mklistsrc', help="Configuration file.")
+@click.option('--rules', default='.rules', help="Rule file. Repeatable.")
+@click.option('--data', default='.', help="Data folder.")
+@click.option('--backups', default='.backups', help="Backup folder.")
+@click.option('--backup-depth', default=3, help="Backup depth.")
+@click.option('--html-folder', default='.html', help="For urlified data.")
+@click.option('--verbose', default=False, is_flag=True)
+@click.version_option('0.2', help="")
 @click.pass_context
 def cli(ctx,
         config, rules,
@@ -70,6 +50,7 @@ def cli(ctx,
 #    if verbose:       ctx.obj['verbose'] = verbose
 #
 #    click.echo(f'>>> cli                       =>  {cli}')
+#    click.echo(f'>>> ctx                       =>  {ctx}')
 #    click.echo(f'>>> ctx.obj.__dir__()...      =>  {[item for item in ctx.obj.__dir__() if not re.search("__", item)]}')
 #    click.echo(f'>>> ctx.obj.list_folder       =>  {ctx.obj.list_folder}')
 #    click.echo(f'>>> ctx.obj.backup_folder     =>  {ctx.obj.backup_folder}')
@@ -83,52 +64,37 @@ def cli(ctx,
 #    click.echo()
 
 
-# ----------------------------------------------------------------------
 @cli.command()
 @click.pass_context
 def init(list_folder):
-    """Initialize list folder."""
+    """Initialize folder for Mklists data."""
     print('@@@TODO')
 
-# ----------------------------------------------------------------------
 @cli.command()
 @click.pass_context
-def run(cli):
+def make(ctx):
     """Regenerate lists according to rules."""
-    click.echo(f'>>> cli                             =>  {cli}')
-    click.echo(f'>>> cli.obj                        =>  {cli.obj}')
-    click.echo(f'>>> cli.obj["rules"]               =>  {cli.obj["rules"]}')
-    #click.echo(f'>>> cli.__dir__()...              =>  {[item for item in cli.__dir__() if not re.search("__", item)]}')
-    #click.echo(f'>>> cli.list_folder               =>  {cli.list_folder}')
-    #click.echo(f'>>> cli.backup_folder             =>  {cli.backup_folder}')
-    #click.echo(f'>>> cli.backup_depth              =>  {cli.backup_depth}')
-    #click.echo(f'>>> cli.html_folder               =>  {cli.html_folder}')
-    #click.echo(f'>>> cli.verbose                   =>  {cli.verbose}')
-    #click.echo(f'>>> cli.get_config                =>  {cli.get_config}')
+    click.echo(f'>>> ctx                             =>  {ctx}')
+    click.echo(f'>>> ctx.obj                        =>  {ctx.obj}')
+    click.echo(f'>>> ctx.obj["rules"]               =>  {ctx.obj["rules"]}')
+    #click.echo(f'>>> ctx.__dir__()...              =>  {[item for item in ctx.__dir__() if not re.search("__", item)]}')
+    #click.echo(f'>>> ctx.list_folder               =>  {ctx.list_folder}')
+    #click.echo(f'>>> ctx.backup_folder             =>  {ctx.backup_folder}')
+    #click.echo(f'>>> ctx.backup_depth              =>  {ctx.backup_depth}')
+    #click.echo(f'>>> ctx.html_folder               =>  {ctx.html_folder}')
+    #click.echo(f'>>> ctx.verbose                   =>  {ctx.verbose}')
+    #click.echo(f'>>> ctx.get_config                =>  {ctx.get_config}')
     #click.echo()
 
-# ----------------------------------------------------------------------
 @cli.command()
 @click.pass_context
 def check(ctx):
     """Dry-run with verbose sanity checks."""
     # Print to screen all (non-dunder) config attributes/values
 
+@cli.command()
+@click.pass_context
+def rules(ctx):
+    """Inspect rules."""
+    # Print to screen all (non-dunder) config attributes/values
 
-# ======================================================================
-@dataclass
-class RuleSet:
-
-    def get_rules():
-        """Read rules file, return rule set."""
-
-# ======================================================================
-@dataclass
-class ListFile():
-    file = click.Path
-    # is_utf8_encoded()
-    # file has legal name (only allowable characters - e.g., no spaces)
-    # is_text (implement this?)
-    #   allowable_percent_non_ascii_characters
-    #   return True or False
-    # return { file: [['one line\n'], [...]] }
