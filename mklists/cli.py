@@ -7,20 +7,45 @@ from configparser import ConfigParser
 
 
 @click.group()
-@click.option('--config', default='.mklistsrc', help="Configuration file.")
-@click.option('--rules', default='.rules', help="Rule file. Repeatable.")
-@click.option('--data', default='.', help="Data folder.")
-@click.option('--backups', default='.backups', help="Backup folder.")
-@click.option('--backup-depth', default=3, help="Backup depth.")
-@click.option('--html-folder', default='.html', help="For urlified data.")
-@click.option('--verbose', default=False, is_flag=True)
-@click.version_option('0.2', help="")
+@click.option(
+    '--config', 
+    default='.mklistsrc', 
+    metavar='FILENAME', 
+    help="Configuration file.")
+@click.option(
+    '--rules', 
+    default='.rules', 
+    metavar='FILENAME', 
+    help="Rule file, repeatable.")
+@click.option(
+    '--data-folder', 
+    default='.', 
+    metavar='DIRNAME', 
+    help="Data folder.")
+@click.option(
+    '--html-folder', 
+    default='.html', 
+    metavar='DIRNAME', 
+    help="Data folder, urlified.")
+@click.option(
+    '--backup-folder', 
+    default='.backups', 
+    metavar='DIRNAME', 
+    help="Backup folder.")
+@click.option(
+    '--backup-depth', 
+    default=3, 
+    help="Backup depth.")
+@click.option(
+    '--verbose', 
+    default=False, 
+    is_flag=True,
+    help="Run in verbose mode.")
+@click.version_option('0.2', help="Show version and exit.")
 @click.pass_context
-def cli(ctx,
-        config, rules,
-        list_folder, backup_folder, backup_depth, html_folder,
-        verbose):
-    """Rearrange plain-text to-do lists by tweaking rules"""
+def cli(ctx, config, rules, data_folder, html_folder, backup_folder, 
+        backup_depth, verbose):
+    """Update plain-text to-do lists by tweaking rules"""
     mklrc = ConfigParser()
     mklrc.read('.mklistsrc')
     mklistsrc = dict([[key, mklrc['DEFAULTS'][key]]
@@ -35,8 +60,8 @@ def cli(ctx,
     if rules:
         ctx.obj['rules'] = rules
 
-    if list_folder:
-        ctx.obj['list_folder'] = list_folder
+    if data_folder:
+        ctx.obj['data_folder'] = data_folder
 
     if backup_folder:
         ctx.obj['backup_folder'] = backup_folder
