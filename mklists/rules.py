@@ -4,28 +4,6 @@ import string
 from textwrap import dedent
 from dataclasses import dataclass
 
-class BadRuleString(SystemExit): 
-    pass
-
-class NotValidFilenameError(SystemExit): 
-    pass
-
-class NotIntegerError(SystemExit): 
-    pass
-
-class SourceNotPrecedentedError(SystemExit): 
-    pass
-
-class SourceEqualsTargetError(SystemExit): 
-    pass
-
-class BadRegexError(SystemExit):
-    pass
-
-# Eventually, add check whether set in '.mklistsrc' and, if so, override
-VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
-
-
 @dataclass
 class RulestringParser:
     """\
@@ -139,11 +117,6 @@ class RulestringParser:
 
 
 @dataclass
-class Dataline:
-    dataline: str
-
-
-@dataclass
 class Rule:
     source_matchfield: int = None
     source_matchpattern: str = None
@@ -197,7 +170,7 @@ class Rule:
         try:
             re.compile(self.source_matchpattern)
         except re.error:
-            raise BadRegexError
+            raise RegexError
         return True
 
     def _source_filename_valid(self):

@@ -46,7 +46,7 @@ from configparser import ConfigParser
 @click.pass_context
 def cli(ctx, config, rules, data_folder, html_folder, backup_folder, 
         backup_depth, verbose):
-    """Edit to-do lists, tweak their rules, run to refresh"""
+    """Manage plain text lists by tweaking rules"""
     print("Before reading config file: backup_depth =", backup_depth)
     mklrc = ConfigParser()
     mklrc.read('.mklistsrc')
