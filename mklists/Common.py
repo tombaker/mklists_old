@@ -1,14 +1,18 @@
 import os
+import string
 import re
 
-__all__ = ['_is_utf8_encoded', 'ls_files', 'linkify']
+__all__ = ['ls_files', 'linkify']
 
 # Rule errors
 class RuleError(SystemExit): 
     pass
 
+# Data errors
 class NotUTF8Error(SystemExit):
     """Object is not UTF8-encoded."""
+
+
 
 class NotValidFilenameError(SystemExit): 
     pass
