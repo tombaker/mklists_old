@@ -83,7 +83,7 @@ def cli(ctx, config, rules, data_folder, html_folder, backup_folder,
 
 @cli.command()
 @click.pass_context
-def init(list_folder):
+def init(ctx):
     """Initialize folder for Mklists data."""
     print('@@@TODO')
 

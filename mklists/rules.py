@@ -2,6 +2,7 @@ import re
 import sys
 from textwrap import dedent
 from dataclasses import dataclass
+from mklists import *
 
 @dataclass
 class RulestringParser:
@@ -169,7 +170,7 @@ class Rule:
         try:
             re.compile(self.source_matchpattern)
         except re.error:
-            raise RegexError
+            raise SourcePatternError
         return True
 
     def _source_filename_valid(self):

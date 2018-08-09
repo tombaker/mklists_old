@@ -2,116 +2,71 @@ from dataclasses import dataclass
 
 @dataclass
 class Datadir:
-    where: str
+    pathname: str = "."
 
-    def ls_visible_files(folder='.'):
-        visible_files = [name for name in glob.glob('*')
-                         if os.path.isfile[name]]
-        return visible_files
+    def get_data(self):
+        """\
+        _datadir_exists()
+        for filename in filenames
+            _no_invalid_filenames()
+            _files_visible()
+            return aggregated lines
+        """
+        datalines = []
+        for file in self.filenames
+            datalines.append(file.readlines())
+        return datalines
 
+    def _datadir_exists(self):
+        """NoDatadirError('Directory does not exist or is not accessible.')"""
+
+    def _no_invalid_filenames(self):
+        """FilenamePatternError - config['invalid_filenames']"""
+
+    def _files_visible(self):
+        # change directory?
+        ls_visible_files = [name for name in glob.glob('*')]
+        self.filenames = ls_visible_files
 
 @dataclass
-class Datafile():
-    file = click.Path
-    # is_utf8_encoded()
-    # file has legal name (only allowable characters - e.g., no spaces)
-    # is_text (implement this?)
-    #   allowable_percent_non_ascii_characters
-    #   return True or False
-    # return { file: [['one line\n'], [...]] }
-    #     return [f for f in passing_filenames if os.path.isfile(f)]
+class Datafile:
 
-def linkify(string):
-    """
-    2017-07-18 Puts HTML links around URLs found in a string.
-    """
-    URL_REGEX = re.compile(r"""((?:mailto:|git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)""")
-    if '<a href=' in string:
-        return string
-    return URL_REGEX.sub(r'<a href="\1">\1</a>', string)
+    def get_datalines(self):
+        """\
+        _is_file()
+        _has_data()
+        _has_no_blank_lines()
+        _is_text()
+        _is_utf8_encoded()
+        returns self.datalines, a list"""
 
+    def _has_data(self):
+        """NoDataError('No data here to back up or process - skipping.')"""
 
-def _is_utf8_encoded(filename):
-    try:
-        open(filename).read()
-    except UnicodeDecodeError as e:
-        raise NotUTF8Error(f'File "{file}" is not UTF-8-encoded. Convert to UTF-8 or delete before proceeding.') from e
+    def _is_file(self):
+        """\
+        Visible pathnames in Datadir must all be files:
+        * os.path.isfile(name)
+        * no directories, no links
+        """
 
-def ls_files(filenames=os.listdir(), config_file='mklists.yaml'):
-    """
-    Arguments:
-    * filenames - default: os.listdir()
-    * config_file - default: 'mklists.yaml'
+    def _is_text(self):
+        """flag - has arbitrary allowable percent non-ASCII characters"""
 
-    Checks 
-    * first, for filenames matching showstopping patterns (swap filenames, backup filenames...)
-    * then, filters out filenames 
+    def _is_utf8_encoded(self):
+        try:
+            open(self.filename).read()
+        except UnicodeDecodeError:
+            raise NotUTF8Error(f'File {file} not UTF8-encoded.')
 
-    Returns: 
-    * list of passing filenames, only for files
+    def _has_no_blank_lines(self):
+        """BlankLinesError('File has blank lines.')"""
 
-    FACTOR OUT ls_files_only??  
-    * [f for f in passing_filenames if os.path.isfile(f)]
-    * mustbetext?
-    """
+    def linkify(self):
+        datalines_linkified = []
+        for line in self.datalines:
+            if '<a href=' in line:
+                return line
+            line = re.compile(URL_REGEX).sub(r'<a href="\1">\1</a>', string)
 
-    #     with open(config_file) as mkl:
-    #         config = yaml.load(mkl)
-    #         
-    #     no_showstoppers = []
-    #     for filename in filenames:
-    #         for regex_string in config['showstopping_filenames']:
-    #             if re.search(regex_string, os.path.split(filename)[1]):
-    #                 raise SystemExit("Show-stopper: filename {} matches blacklist pattern {}".format(filename, regex_string))
-    #         no_showstoppers.append(filename)
-    # 
-    #     passing_filenames = []
-    #     for filename in no_showstoppers:
-    #         for regex_string in config['ignored_filenames']:
-    #             if not re.search(config['ignored_filenames'][0], filename):
-    #                 passing_filenames.append(filename)
-    # 
-    #     return [f for f in passing_filenames if os.path.isfile(f)]
-
-def linkify(string):
-    """
-    2017-07-18 Puts HTML links around URLs found in a string.
-    """
-    URL_REGEX = re.compile(r"""((?:mailto:|git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)""")
-    if '<a href=' in string:
-        return string
-    return URL_REGEX.sub(r'<a href="\1">\1</a>', string)
-
-def load_globlines(cwd=os.getcwd()):
-    """Something like:
-    globlines_l = []
-    for file in glob.glob('*'):
-        globlines_l.append(file.readlines())
-    return globlines_l
-    [name for name in glob.glob('*') if os.path.isfile(name)]
-    """
-    return cwd
-
-def load_data(files):
-    """
-    File (contents)
-        print(repr(file))
-            NotUTF8Error('File not UTF-8: convert encoding or delete file, then retry.'
-        print(repr(file))
-            BlankLinesError('File has blank lines: delete blank lines or delete file.')
     
-    Filename (blacklisted regex)
-        print(repr(filename))
-            FilenamePatternError('Filename matches pattern {}: rename file.'.format(pattern))
-                Not start with a dot
-                Not end with ~
-                Not end with .bak
-                Not end with .tmp
-                Not have any spaces (though this comes out in course of parsing rule string)
-    
-    Directory
-        print(repr(dirname))
-            DirNotExistError('Directory does not exist or is not accessible - skipping.'
-        print(repr(dirname))
-            NoDataError('No data here to back up or process - skipping.')
-    """

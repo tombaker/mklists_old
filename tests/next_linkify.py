@@ -1,5 +1,5 @@
 import pytest
-from mklists.Common import *
+from mklists import *
 
 
 @pytest.mark.linkify
