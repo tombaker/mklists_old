@@ -68,7 +68,8 @@ class RulestringParser:
     def splitlines_to_ruleobjects(self):
         rules = []
         for rule in self.splitlines:
-            """2018-08-08: AttributeError: 'list' object has no attribute '_source_is_precedented'"""
+            """2018-08-08: 
+            AttributeError: 'list' object has no attribute '_source_is_precedented'"""
             #Rule.validate(rule)
             rules.append(Rule(*rule))                       
         self.rules = rules
@@ -82,25 +83,64 @@ class RulestringParser:
         self.rules = validated_rules
         return self.rules
 
-    def apply_rules_to(self, datalines):
+    def apply_rules_to_datalines(self, datalines):
+        """\
+        Input: 
+            'self' - list of Rules instances
+            'datalines' - a list of all datalines
 
-        all_datalines = defaultdict(list)
+        Initializes dictionary structure where:
+        * values hold (changing) portions of 'datalines'
+        * keys are filenames to which values will be written
+        """
+
+        datalines_dict = defaultdict(list)
         initialized = False
 
-        for rule in rules_l:
-
-            [match_awkf, regexp, source, target, sort_awkf] = rule
-            # insert ckrules() here, possibly redundantly
-            match_awkf = int(match_awkf)
-            sort_awkf = int(sort_awkf)
+        for rule in self.rules:
 
             if not initialized:
-                all_d[source] = lines_l
+                datalines_dict[rule.source] = rule.source
                 initialized = True
 
-            apply_rule(match_awkf, regexp, source, target, sort_awkf, all_d)
+            for line in datalines:
+                # Rule.apply_rule_to_dataline(rule, line)
 
-        return all_d
+                # skip match if self.source_matchfield out of range
+                if self.source_matchfield > len(line.split()):
+                    continue
+        
+                # match against entire line if self.source_matchfield is zero
+                if self.source_matchfield == 0:
+                    self.target.extend([x for x in self.source if re.search(rgx, x)])
+                    self.source = [x for x in self.source if not re.search(rgx, x)]
+        
+                # match given field if self.source_matchfield greater than zero and within range
+                if self.source_matchfield > 0:
+                    y = self.source_matchfield - 1
+                    self.target.extend([x for x in self.source
+                                     if re.search(rgx, x.split()[y])])
+                    self.source = [x for x in self.source
+                                if not re.search(rgx, x.split()[y])]
+        
+                # sort target if self.target_sortorder greater than zero
+                if self.target_sortorder:
+                    decorated = [(line.split()[self.target_sortorder - 1], __, line)
+                                 for __, line in enumerate(self.target)]
+                    decorated.sort()
+                    self.target = [line for ___, __, line in decorated]
+        
+            return all
+
+
+            ## how is datalines_dict being written to?
+
+        return datalines_dict
+
+
+@dataclass
+class Dataline:
+    dataline: str
 
 
 @dataclass
@@ -114,6 +154,16 @@ class Rule:
     initialized = False
     sources = []
 
+    def validate(self):
+        #self._source_is_precedented()
+        self._source_matchfield_is_integer()
+        self._target_sortorder_is_integer()
+        self._source_matchpattern_is_valid()
+        self._source_filename_valid()
+        self._target_filename_valid()
+        self._source_not_equal_target()
+        return self
+
     def _source_is_precedented(self):
         if not Rule.initialized:
             Rule.sources.append(self.source)
@@ -124,16 +174,6 @@ class Rule:
         if self.target not in Rule.sources:
             Rule.sources.append(self.target)
         print(Rule.sources)
-
-    def validate(self):
-        #self._source_is_precedented()
-        self._source_matchfield_is_integer()
-        self._target_sortorder_is_integer()
-        self._source_matchpattern_is_valid()
-        self._source_filename_valid()
-        self._target_filename_valid()
-        self._source_not_equal_target()
-        return self
 
     def _source_matchfield_is_integer(self):
         try:
@@ -183,34 +223,3 @@ class Rule:
             raise SourceEqualsTargetError
         return True
 
-    def apply_rule_to(self, dataline):
-
-        for line in all[src]:
-
-            # @@@ change field names
-            # skip match if in_field out of range
-            if in_field > len(line.split()):
-                continue
-
-            # match against entire line if in_field exactly zero
-            if in_field == 0:
-                all[trg].extend([x for x in all[src] if re.search(rgx, x)])
-                all[src] = [x for x in all[src] if not re.search(rgx, x)]
-
-            # match given field if in_field greater than zero and within range
-            if in_field > 0:
-                y = in_field - 1
-                all[trg].extend([x for x in all[src]
-                                 if re.search(rgx, x.split()[y])])
-                all[src] = [x for x in all[src]
-                            if not re.search(rgx, x.split()[y])]
-
-            # sort target if sort_awkf greater than zero
-            if sort_awkf:
-                sort_ethf = sort_awkf - 1
-                decorated = [(line.split()[sort_ethf], __, line)
-                             for __, line in enumerate(all[trg])]
-                decorated.sort()
-                all[trg] = [line for ___, __, line in decorated]
-
-        return all

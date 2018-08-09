@@ -1,4 +1,5 @@
 import os
+import re
 import glob
 
 import click
@@ -45,14 +46,14 @@ from configparser import ConfigParser
 @click.pass_context
 def cli(ctx, config, rules, data_folder, html_folder, backup_folder, 
         backup_depth, verbose):
-    """Update plain-text to-do lists by tweaking rules"""
+    """Edit to-do lists, tweak their rules, run to refresh"""
+    print("Before reading config file: backup_depth =", backup_depth)
     mklrc = ConfigParser()
     mklrc.read('.mklistsrc')
-    mklistsrc = dict([[key, mklrc['DEFAULTS'][key]]
-                     for key in mklrc['DEFAULTS']])
-    print("mklistsrc = ", mklistsrc)
+    mklistsrc = dict([[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']])
+    print("Values as read from config file: mklistsrc = ", mklistsrc)  ################
     ctx.obj = mklistsrc
-    print("ctx.obj = ", ctx.obj)
+    print("After reading values from config file: ctx.obj = ", ctx.obj)  ################
 
     if config:
         ctx.obj['config'] = config
@@ -63,30 +64,21 @@ def cli(ctx, config, rules, data_folder, html_folder, backup_folder,
     if data_folder:
         ctx.obj['data_folder'] = data_folder
 
+    if html_folder:   
+        ctx.obj['html_folder'] = html_folder
+
     if backup_folder:
         ctx.obj['backup_folder'] = backup_folder
 
     if backup_depth:
         ctx.obj['backup_depth'] = backup_depth
 
-    print(ctx.obj)
+    if verbose:
+        ctx.obj['verbose'] = verbose
 
-#    if html_folder:   ctx.obj['html_folder'] = html_folder
-#    if verbose:       ctx.obj['verbose'] = verbose
-#
-#    click.echo(f'>>> cli                       =>  {cli}')
-#    click.echo(f'>>> ctx                       =>  {ctx}')
-#    click.echo(f'>>> ctx.obj.__dir__()...      =>  {[item for item in ctx.obj.__dir__() if not re.search("__", item)]}')
-#    click.echo(f'>>> ctx.obj.list_folder       =>  {ctx.obj.list_folder}')
-#    click.echo(f'>>> ctx.obj.backup_folder     =>  {ctx.obj.backup_folder}')
-#    click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}')
-#    click.echo(f'>>> ctx.obj.html_folder       =>  {ctx.obj.html_folder}')
-#    click.echo(f'>>> ctx.obj.config            =>  {ctx.obj.config}')
-#    click.echo(f'>>> ctx.obj.rules             =>  {ctx.obj.rules}')
-#    click.echo(f'>>> ctx.obj.global_rules      =>  {ctx.obj.global_rules}')
-#    click.echo(f'>>> ctx.obj.verbose           =>  {ctx.obj.verbose}')
-#    click.echo(f'>>> ctx.obj.get_config        =>  {ctx.obj.get_config}')
-#    click.echo()
+    print("ctx.obj = ", ctx.obj)  ################ 12345
+    print("After overriding with values set on command line: ctx.obj['data_folder'] =", repr(ctx.obj['data_folder']))  #######
+    #click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}') #####
 
 
 @cli.command()
