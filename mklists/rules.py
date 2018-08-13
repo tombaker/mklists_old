@@ -9,26 +9,26 @@ class RulestringParser:
     """\
     Usage:
         x = RulestringParser
-        x.get_stringlines('_rules', '_rules_correct')
-        x.parse_stringlines_to_splitlines()
-        x.splitlines_to_ruleobjects()
+        x.get_stringrules('_rules', '_rules_correct')
+        x.parse_stringrules_to_splitrules()
+        x.splitrules_to_ruleobjects()
         x.validate_rules()
     """
 
-    def get_stringlines(self, *rulefiles):
-        stringlines = []
+    def get_stringrules(self, *rulefiles):
+        stringrules = []
         for rf in rulefiles:
             try:
                 with open(rf, 'r') as rulefile:
-                    stringlines.extend(rulefile.read().splitlines())
+                    stringrules.extend(rulefile.read().splitrules())
             except FileNotFoundError:
                 sys.exit(f'Rule file "{rf}" does not exist or is not accessible.')
-        self.stringlines = stringlines
-        return self.stringlines
+        self.stringrules = stringrules
+        return self.stringrules
 
-    def parse_stringlines_to_splitlines(self):
-        splitlines = []
-        for line in self.stringlines:
+    def parse_stringrules_to_splitrules(self):
+        splitrules = []
+        for line in self.stringrules:
             line_fielded = []
             line_field1, __, line_rest = line.partition('/')
             line_fielded.append(line_field1.strip())
@@ -39,13 +39,13 @@ class RulestringParser:
             line_fielded = [field for field in line_fielded if not re.match('#', field)]
             line_fielded = [field for field in line_fielded if field]
             if line_fielded:
-                splitlines.append(line_fielded)
-        self.splitlines = splitlines
-        return self.splitlines
+                splitrules.append(line_fielded)
+        self.splitrules = splitrules
+        return self.splitrules
 
-    def splitlines_to_ruleobjects(self):
+    def splitrules_to_ruleobjects(self):
         rules = []
-        for rule in self.splitlines:
+        for rule in self.splitrules:
             """2018-08-08: 
             AttributeError: 'list' object has no attribute '_source_is_precedented'"""
             #Rule.validate(rule)
