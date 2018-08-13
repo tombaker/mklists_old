@@ -110,7 +110,6 @@ class RulestringParser:
         
             return all
 
-
             ## how is datalines_dict being written to?
 
         return datalines_dict
