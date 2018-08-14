@@ -5,15 +5,17 @@ from dataclasses import dataclass
 from mklists import *
 
 @dataclass
-class RulestringParser:
-    """\
-    Usage:
-        x = RulestringParser
-        x.get_stringrules('_rules', '_rules_correct')
-        x.parse_stringrules_to_splitrules()
-        x.splitrules_to_ruleobjects()
-        x.validate_rules()
-    """
+class Rules:
+
+    def parse(self, *rulefiles):
+        """\
+        Parse rule files adding resulting instance of Rule to Rules.
+
+        :Parameters:
+        rulefiles -- list of files using mklists's plain-text rule format
+
+        :Returns:
+        """
 
     def get_stringrules(self, *rulefiles):
         stringrules = []

@@ -146,3 +146,9 @@ def test_source_matchpattern_is_valid_not():
 #     output = '0'
 #     assert lrule_backto_srule(input) == output
 
+#    Usage:
+#        x = RulestringParser
+#        x.get_stringrules('_rules', '_rules_correct')
+#        x.parse_stringrules_to_splitrules()
+#        x.splitrules_to_ruleobjects()
+#        x.validate_rules()
