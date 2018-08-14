@@ -23,63 +23,31 @@ class Datadir:
         for pathname in self.visible_pathnames:
             if not os.path.isfile(pathname):
                 raise DatadirHasNonFilesError(f'{pathname} not a file.')
+        return self.visible_pathnames
 
     def _visible_filenames_are_all_valid(self):
         for filename in self.visible_pathnames:
             for bad_pat in bad_filename_patterns:
                 if re.search(bad_pat, filename):
                     raise BadFilenameError(f'{bad_pat} in {filename}.')
+        return True
 
-    def _visible_files_are_valid_datafiles(self):
+    def _visible_files_are_utf8_encoded(self):
         for filename in self.visible_pathnames:
-            Datafile.validate(filename)
+            try:
+                open(self.filename).read()
+            except UnicodeDecodeError:
+                raise NotUTF8Error(f'File {file} not UTF8-encoded.')
+        return True
 
     def _get_datalines_from_datafiles(self):
-        datalines = []
+        self.datalines = []
         for file in self.visible_pathnames:
-            datalines.append(file.readlines())
-        if not datalines:
-            raise NoDataError('No data here')
-        return datalines
+            for line in file.readlines():
+                if not line:
+                    raise BlankLinesError(f'File {file} has blank lines.')
+                self.datalines.append(line)
+        if not self.datalines:
+            raise NoDataError('No data here.')
+        return self.datalines
 
-@dataclass
-class Datafile:
-
-    def validate(self):
-        _is_file()
-        _has_data()
-
-    def _is_file(self):
-        """\
-        Visible pathnames in Datadir must all be files:
-        * os.path.isfile(name)
-        * no directories, no links
-        """
-
-    def _is_text(self):
-        """flag - has arbitrary allowable percent non-ASCII characters"""
-
-    def _is_utf8_encoded(self):
-        try:
-            open(self.filename).read()
-        except UnicodeDecodeError:
-            raise NotUTF8Error(f'File {file} not UTF8-encoded.')
-
-    def _has_no_blank_lines(self):
-        """BlankLinesError('File has blank lines.')"""
-
-    def get_datalines(self):
-        """\
-        _has_no_blank_lines()
-        _is_text()
-        _is_utf8_encoded()
-        returns self.datalines, a list"""
-
-    def linkify(self):
-        datalines_linkified = []
-        for line in self.datalines:
-            if '<a href=' in line:
-                return line
-            line = re.compile(URL_REGEX).sub(r'<a href="\1">\1</a>', string)
-
-    
