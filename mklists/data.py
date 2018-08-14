@@ -1,25 +1,27 @@
+import glob
+import os
+import re
 from dataclasses import dataclass
+from mklists import *
+
 
 @dataclass
 class Datadir:
     dirname: str = '.'
-    bad_filename_patterns: list
+    bad_filename_patterns: tuple = tuple()
 
     def get_datalines(self):
-        _change_to_datadir()
-        _visible_pathnames_are_all_files()
-        _visible_filenames_are_all_valid()
-        _visible_files_are_valid_datafiles()
-        _get_datalines_from_datafiles()
-
-    def _change_to_datadir(self):
         try:
             os.chdir(self.dirname)
+            self.visible_pathnames = [name for name in glob.glob('*')] 
         except FileNotFoundError:
             raise NoDatadirError('Directory is not accessible.')
+        self._visible_pathnames_are_all_files()
+        self._visible_filenames_are_all_valid()
+        self._visible_files_are_utf8_encoded()
+        self._get_datalines_from_datafiles()
 
     def _visible_pathnames_are_all_files(self):
-        self.visible_pathnames = [name for name in glob.glob('*')] 
         for pathname in self.visible_pathnames:
             if not os.path.isfile(pathname):
                 raise DatadirHasNonFilesError(f'{pathname} not a file.')
@@ -27,7 +29,7 @@ class Datadir:
 
     def _visible_filenames_are_all_valid(self):
         for filename in self.visible_pathnames:
-            for bad_pat in bad_filename_patterns:
+            for bad_pat in self.bad_filename_patterns:
                 if re.search(bad_pat, filename):
                     raise BadFilenameError(f'{bad_pat} in {filename}.')
         return True
@@ -50,4 +52,32 @@ class Datadir:
         if not self.datalines:
             raise NoDataError('No data here.')
         return self.datalines
+
+
+class DataError(SystemExit):
+    pass
+
+
+class BadFilenameError(DataError):
+    pass
+
+
+class BlankLinesError(DataError):
+    pass
+
+
+class DatadirHasNonFilesError(DataError):
+    pass
+
+
+class NoDataError(DataError):
+    pass
+
+
+class NoDatadirError(DataError):
+    pass
+
+
+class NotUTF8Error(DataError):
+    pass
 
