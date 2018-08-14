@@ -46,12 +46,24 @@ class RulestringParser:
     def splitrules_to_ruleobjects(self):
         rules = []
         for rule in self.splitrules:
-            """2018-08-08: 
-            AttributeError: 'list' object has no attribute '_source_is_precedented'"""
-            #Rule.validate(rule)
+            Rule.validate(rule)
             rules.append(Rule(*rule))                       
         self.rules = rules
         return self.rules
+
+    def register(self, self_instance):
+        if not cls.initialized:
+            print(cls.sources)
+            cls.sources.append(self_instance.source)
+            print(cls.sources)
+            cls.initialized = True
+        if self_instance.source not in cls.sources:
+            print(f"Oh no! {self_instance.source} is not one of {cls.sources}!")
+            raise SourceNotPrecedentedError
+        if self_instance.target not in cls.sources:
+            cls.sources.append(self_instance.target)
+        print(cls.sources)
+
 
     def validate_rules(self):
         validated_rules = []
@@ -127,7 +139,6 @@ class Rule:
     sources = []
 
     def validate(self):
-        #self._source_is_precedented()
         self._source_matchfield_is_integer()
         self._target_sortorder_is_integer()
         self._source_matchpattern_is_valid()
@@ -135,17 +146,6 @@ class Rule:
         self._target_filename_valid()
         self._source_not_equal_target()
         return self
-
-    def _source_is_precedented(self):
-        if not Rule.initialized:
-            Rule.sources.append(self.source)
-            Rule.initialized = True
-        if self.source not in Rule.sources:
-            print(f"Oh no! {self.source} is not one of {Rule.sources}!")
-            raise SourceNotPrecedentedError
-        if self.target not in Rule.sources:
-            Rule.sources.append(self.target)
-        print(Rule.sources)
 
     def _source_matchfield_is_integer(self):
         try:
