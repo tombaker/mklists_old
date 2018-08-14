@@ -2,46 +2,52 @@ from dataclasses import dataclass
 
 @dataclass
 class Datadir:
-    pathname: str = "."
+    dirname: str = '.'
+    bad_filename_patterns: list
 
-    def get_data(self):
-        """\
-        _datadir_exists()
-        for filename in filenames
-            _no_invalid_filenames()
-            _files_visible()
-            return aggregated lines
-        """
+    def get_datalines(self):
+        _change_to_datadir()
+        _visible_pathnames_are_all_files()
+        _visible_filenames_are_all_valid()
+        _visible_files_are_valid_datafiles()
+        _get_datalines_from_datafiles()
+
+    def _change_to_datadir(self):
+        try:
+            os.chdir(self.dirname)
+        except FileNotFoundError:
+            raise NoDatadirError('Directory is not accessible.')
+
+    def _visible_pathnames_are_all_files(self):
+        self.visible_pathnames = [name for name in glob.glob('*')] 
+        for pathname in self.visible_pathnames:
+            if not os.path.isfile(pathname):
+                raise DatadirHasNonFilesError(f'{pathname} not a file.')
+
+    def _visible_filenames_are_all_valid(self):
+        for filename in self.visible_pathnames:
+            for bad_pat in bad_filename_patterns:
+                if re.search(bad_pat, filename):
+                    raise BadFilenameError(f'{bad_pat} in {filename}.')
+
+    def _visible_files_are_valid_datafiles(self):
+        for filename in self.visible_pathnames:
+            Datafile.validate(filename)
+
+    def _get_datalines_from_datafiles(self):
         datalines = []
-        for file in self.filenames
+        for file in self.visible_pathnames:
             datalines.append(file.readlines())
+        if not datalines:
+            raise NoDataError('No data here')
         return datalines
-
-    def _datadir_exists(self):
-        """NoDatadirError('Directory does not exist or is not accessible.')"""
-
-    def _no_invalid_filenames(self):
-        """FilenamePatternError - config['invalid_filenames']"""
-
-    def _files_visible(self):
-        # change directory?
-        ls_visible_files = [name for name in glob.glob('*')]
-        self.filenames = ls_visible_files
 
 @dataclass
 class Datafile:
 
-    def get_datalines(self):
-        """\
+    def validate(self):
         _is_file()
         _has_data()
-        _has_no_blank_lines()
-        _is_text()
-        _is_utf8_encoded()
-        returns self.datalines, a list"""
-
-    def _has_data(self):
-        """NoDataError('No data here to back up or process - skipping.')"""
 
     def _is_file(self):
         """\
@@ -61,6 +67,13 @@ class Datafile:
 
     def _has_no_blank_lines(self):
         """BlankLinesError('File has blank lines.')"""
+
+    def get_datalines(self):
+        """\
+        _has_no_blank_lines()
+        _is_text()
+        _is_utf8_encoded()
+        returns self.datalines, a list"""
 
     def linkify(self):
         datalines_linkified = []

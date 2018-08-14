@@ -8,16 +8,20 @@ from mklists import *
 class Rules:
 
     def parse(self, *rulefiles):
-        """\
-        Parse rule files adding resulting instance of Rule to Rules.
+        """Parse rule files adding resulting instance of Rule to Rules.
 
-        :Parameters:
-        rulefiles -- list of files using mklists's plain-text rule format
+        Args:
+            *rulefiles: Names of files with unparsed rules (list).
 
         :Returns:
         """
+        _get_stringrules(*rulefiles)
+        _parse_stringrules_to_splitrules()
+        _instantiate_splitrules_as_ruleobjects()
+        _rule_sources_have_precedents()
+        _validate_rules()
 
-    def get_stringrules(self, *rulefiles):
+    def _get_stringrules(self, *rulefiles):
         stringrules = []
         for rf in rulefiles:
             try:
@@ -28,7 +32,7 @@ class Rules:
         self.stringrules = stringrules
         return self.stringrules
 
-    def parse_stringrules_to_splitrules(self):
+    def _parse_stringrules_to_splitrules(self):
         splitrules = []
         for line in self.stringrules:
             line_fielded = []
@@ -45,7 +49,7 @@ class Rules:
         self.splitrules = splitrules
         return self.splitrules
 
-    def splitrules_to_ruleobjects(self):
+    def _instantiate_splitrules_as_ruleobjects(self):
         rules = []
         for rule in self.splitrules:
             Rule.validate(rule)
@@ -53,21 +57,22 @@ class Rules:
         self.rules = rules
         return self.rules
 
-    def register(self, self_instance):
-        if not cls.initialized:
-            print(cls.sources)
-            cls.sources.append(self_instance.source)
-            print(cls.sources)
-            cls.initialized = True
-        if self_instance.source not in cls.sources:
-            print(f"Oh no! {self_instance.source} is not one of {cls.sources}!")
-            raise SourceNotPrecedentedError
-        if self_instance.target not in cls.sources:
-            cls.sources.append(self_instance.target)
-        print(cls.sources)
+    def _rule_sources_have_precedents(self):
+        initialized = False
+        sources = []
 
+        for rule in self.rules:
+            if not initialized:
+                sources.append(rule.source)
+                initialized = True
+            if rule.source not in sources:
+                print(f"Oh no! {rule.source} is not one of {sources}!")
+                raise SourceNotPrecedentedError
+            if rule.target not in sources:
+                sources.append(rule.target)
+        return True
 
-    def validate_rules(self):
+    def _validate_rules(self):
         validated_rules = []
         for rule in self.rules:
             Rule.validate(rule)
@@ -75,11 +80,11 @@ class Rules:
         self.rules = validated_rules
         return self.rules
 
-    def apply_rules_to_datalines(self, datalines):
-        """\
-        Input: 
-            'self' - list of Rules instances
-            'datalines' - a list of all datalines
+    def apply(self, datalines):
+        """
+        Args: 
+            self: instances of Rules (list)
+            datalines: all datalines (list)
 
         Initializes dictionary structure where:
         * values hold (changing) portions of 'datalines'
@@ -144,9 +149,9 @@ class Rule:
         self._source_matchfield_is_integer()
         self._target_sortorder_is_integer()
         self._source_matchpattern_is_valid()
-        self._source_filename_valid()
-        self._target_filename_valid()
-        self._source_not_equal_target()
+        self._source_filename_is_valid()
+        self._target_filename_is_valid()
+        self._source_is_not_equal_target()
         return self
 
     def _source_matchfield_is_integer(self):
@@ -174,7 +179,7 @@ class Rule:
             raise SourcePatternError
         return True
 
-    def _source_filename_valid(self):
+    def _source_filename_is_valid(self):
         for c in self.source: 
             if c not in VALID_FILENAME_CHARS:
                 print(f"In rule: {self}")
@@ -183,7 +188,7 @@ class Rule:
                 raise NotValidFilenameError
         return True
 
-    def _target_filename_valid(self):
+    def _target_filename_is_valid(self):
         for c in self.target: 
             if c not in VALID_FILENAME_CHARS:
                 print(f"In rule: {self}")
@@ -192,7 +197,7 @@ class Rule:
                 raise NotValidFilenameError
         return True
 
-    def _source_not_equal_target(self):
+    def _source_is_not_equal_target(self):
         if self.source == self.target:
             raise SourceEqualsTargetError
         return True

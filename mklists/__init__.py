@@ -30,7 +30,13 @@ class NotUTF8Error(SystemExit):
 
 
 
+class BadFilenameError(SystemExit): 
+    pass
+
 class NotValidFilenameError(SystemExit): 
+    pass
+
+class DatadirHasNonFilesError(SystemExit):
     pass
 
 class NotIntegerError(SystemExit): 
