@@ -2,15 +2,21 @@
 
 import re
 import sys
+import string
+from collections import defaultdict
 from dataclasses import dataclass
-from mklists import *
+
+URL_PATTERN = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+
+VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
 @dataclass
 class Rules:
     """docstring"""
 
-    stringrules: list
-    rules: list
+    stringrules: list = None
+    splitrules: list = None
+    rules: list = None
 
     def parse(self, *rulefiles):
         """Parse rule files adding resulting instance of Rule to Rules.
@@ -28,12 +34,12 @@ class Rules:
 
     def _get_stringrules(self, *rulefiles):
         stringrules = []
-        for rf in rulefiles:
+        for rulefile in rulefiles:
             try:
-                with open(rf, 'r') as rulefile:
+                with open(rulefile, 'r') as rulefile:
                     stringrules.extend(rulefile.read().splitrules())
             except FileNotFoundError:
-                sys.exit(f'Rule file "{rf}" does not exist or is not accessible.')
+                sys.exit(f'Rule file "{rulefile}" does not exist or is not accessible.')
         self.stringrules = stringrules
         return self.stringrules
 
@@ -88,7 +94,6 @@ class Rules:
     def apply(self, datalines):
         """
         Args:
-            self: instances of Rules (list)
             datalines: all datalines (list)
 
         Initializes dictionary structure where:
@@ -106,31 +111,38 @@ class Rules:
                 initialized = True
 
             for line in datalines:
-                # Rule.apply_rule_to_dataline(rule, line)
 
-                # skip match if self.source_matchfield out of range
-                if self.source_matchfield > len(line.split()):
+                # skip match if rule.source_matchfield out of range
+                if rule.source_matchfield > len(line.split()):
                     continue
 
-                # match against entire line if self.source_matchfield is zero
-                if self.source_matchfield == 0:
-                    self.target.extend([x for x in self.source if re.search(rgx, x)])
-                    self.source = [x for x in self.source if not re.search(rgx, x)]
+                # match against entire line if rule.source_matchfield is zero
+                if rule.source_matchfield == 0:
+                    rgx = rule.source_matchpattern
+                    positives = [line for line in rule.source
+                                 if re.search(rgx, line)]
+                    negatives = [line for line in rule.source
+                                 if not re.search(rgx, line)]
+                    rule.target.extend(positives)
+                    rule.source = negatives
 
-                # match given field if self.source_matchfield greater than zero and within range
-                if self.source_matchfield > 0:
-                    y = self.source_matchfield - 1
-                    self.target.extend([x for x in self.source
-                                        if re.search(rgx, x.split()[y])])
-                    self.source = [x for x in self.source
-                                   if not re.search(rgx, x.split()[y])]
+                # match field if rule.source_matchfield > 0 and within range
+                if rule.source_matchfield > 0:
+                    eth = rule.source_matchfield - 1
+                    rgx = rule.source_matchpattern
+                    positives = [line for line in rule.source
+                                 if re.search(rgx, line.split()[eth])]
+                    negatives = [line for line in rule.source
+                                 if not re.search(rgx, line.split()[eth])]
+                    rule.target.extend(positives)
+                    rule.source = negatives
 
-                # sort target if self.target_sortorder greater than zero
-                if self.target_sortorder:
-                    decorated = [(line.split()[self.target_sortorder - 1], __, line)
-                                 for __, line in enumerate(self.target)]
+                # sort target if rule.target_sortorder greater than zero
+                if rule.target_sortorder:
+                    decorated = [(line.split()[rule.target_sortorder - 1], __, line)
+                                 for __, line in enumerate(rule.target)]
                     decorated.sort()
-                    self.target = [line for ___, __, line in decorated]
+                    rule.target = [line for ___, __, line in decorated]
 
             return all
 
@@ -197,8 +209,8 @@ class Rule:
     def _source_filename_is_valid(self):
         """docstring"""
 
-        for c in self.source:
-            if c not in VALID_FILENAME_CHARS:
+        for single_character in str(self.source):
+            if single_character not in VALID_FILENAME_CHARS:
                 print(f"In rule: {self}")
                 print(f"filename {self.source} has invalid character(s).")
                 print(f"Valid: {VALID_FILENAME_CHARS}")
@@ -208,8 +220,8 @@ class Rule:
     def _target_filename_is_valid(self):
         """docstring"""
 
-        for c in self.target:
-            if c not in VALID_FILENAME_CHARS:
+        for single_character in str(self.target):
+            if single_character not in VALID_FILENAME_CHARS:
                 print(f"In rule: {self}")
                 print(f"filename {self.target} has invalid character(s).")
                 print(f"Valid: {VALID_FILENAME_CHARS}")
