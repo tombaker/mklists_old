@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from configparser import ConfigParser
 import click
+import sys
+import yaml
 
 # 1. Define Config class in module top level
 # 2. Within group command function definition: 
@@ -28,7 +30,9 @@ import click
 def cli(ctx, config, rules, data_folder, html_folder, backup_folder, backup_depth, verbose):
     """Manage plain text lists by tweaking rules"""
 
-    mklistsrc = {
+
+    # Sensible default configuration values (eg, in absence of config file)
+    ctx.obj = {
         'config': '.mklistsrc',
         'rules': ('.rules',),
         'data_folder': '.',
@@ -37,20 +41,26 @@ def cli(ctx, config, rules, data_folder, html_folder, backup_folder, backup_dept
         'backup_depth': 3,
         'verbose': False}
 
-    print("mklistsrc: ", mklistsrc)
-    ctx.obj = mklistsrc
+    # if command line option points to different config file, use that one
+    default_configfile_specified = True
+    if config:
+        ctx.obj['config'] = config
+        default_configfile_specified = False
+
+    # Confirm default config values
     print("Default config dict saved on ctx.obj = ", ctx.obj)  ################
 
-    # Read configuration
-    mklrc = ConfigParser()
-    mklrc.read('.mklistsrc')
-
-    # Update 'mklistsrc' with configurations read from file
-    ctx.obj.update(dict([[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']]))
-    print("File settings used to update ctx.obj = ", ctx.obj)  ################
-
-    # if config:
-    #     ctx.obj['config'] = config
+    # Try to read configfile and use it to update ctx.obj
+    # If configfile does not exist, write ctx.obj to a YAML file
+    try:
+        with open(config) as configfile:
+            ctx.obj.update(yaml.load(configfile))
+    except FileNotFoundError:
+        if default_configfile_specified:
+            print("Creating config file '.mklistsrc'. Can be edited.")
+            yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+        else:
+            raise ConfigFileNotFoundError(f"{repr(config)} not found.")
 
     # if rules:
     #     ctx.obj['rules'] = rules
@@ -111,3 +121,6 @@ def check(ctx):
 def rules(ctx):
     """Inspect rules."""
     # Print to screen all (non-dunder) config attributes/values
+
+class ConfigFileNotFoundError(SystemExit):
+    """Specified (non-default) configuration file was not found"""
