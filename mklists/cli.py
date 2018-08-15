@@ -6,41 +6,13 @@ import click
 
 
 @click.group()
-@click.option(
-    '--config',
-    default='.mklistsrc',
-    metavar='FILENAME',
-    help="Configuration file.")
-@click.option(
-    '--rules',
-    default='.rules',
-    metavar='FILENAME',
-    multiple=True,
-    help="Rule file, repeatable.")
-@click.option(
-    '--data-folder',
-    default='.',
-    metavar='DIRNAME',
-    help="Data folder.")
-@click.option(
-    '--html-folder',
-    default='.html',
-    metavar='DIRNAME',
-    help="Data folder, urlified.")
-@click.option(
-    '--backup-folder',
-    default='.backups',
-    metavar='DIRNAME',
-    help="Backup folder.")
-@click.option(
-    '--backup-depth',
-    default=3,
-    help="Backup depth.")
-@click.option(
-    '--verbose',
-    default=False,
-    is_flag=True,
-    help="Run in verbose mode.")
+@click.option('--config', default='.mklistsrc', metavar='FILENAME', help="Configuration file.")
+@click.option('--rules', default=None, metavar='FILENAME', multiple=True, help="Rule file, repeatable.")
+@click.option('--data-folder', default='.', metavar='DIRNAME', help="Data folder.")
+@click.option('--html-folder', default='.html', metavar='DIRNAME', help="Data folder, urlified.")
+@click.option('--backup-folder', default='.backups', metavar='DIRNAME', help="Backup folder.")
+@click.option('--backup-depth', default=3, help="Backup depth.")
+@click.option('--verbose', default=False, is_flag=True, help="Run in verbose mode.")
 @click.version_option('0.2', help="Show version and exit.")
 @click.pass_context
 def cli(ctx, config, rules, data_folder, html_folder, backup_folder,
@@ -50,8 +22,9 @@ def cli(ctx, config, rules, data_folder, html_folder, backup_folder,
     print("Before reading config file: backup_depth =", backup_depth)
     mklrc = ConfigParser()
     mklrc.read('.mklistsrc')
-    # mklistsrc = dict([[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']])
-    mklistsrc = {[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']}
+    mklistsrc = dict([[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']])
+    # mklistsrc = { (key, mklrc['DEFAULTS'][key]) for key in mklrc['DEFAULTS'] }
+    print(f"type(mklistsrc): {type(mklistsrc)}")
     print("Values as read from config file: mklistsrc = ", mklistsrc)  ################
     ctx.obj = mklistsrc
     print("After reading values from config file: ctx.obj = ", ctx.obj)  ################
@@ -79,7 +52,7 @@ def cli(ctx, config, rules, data_folder, html_folder, backup_folder,
 
     print("ctx.obj = ", ctx.obj)  ################ 12345
     print("After overriding with values set on command line:"
-          "ctx.obj['data_folder'] =", repr(ctx.obj['data_folder']))  #######
+          "ctx.obj['backup_depth'] =", repr(ctx.obj['backup_depth']))  #######
 
     #click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}') #####
 
