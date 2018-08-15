@@ -6,6 +6,8 @@ backup_depth = 2
 config = .mklistsrc
 rules = .rules
 verbose = False
+foobar = False
+
 # rules_files:
 #   - '
 # 

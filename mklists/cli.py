@@ -4,57 +4,79 @@ from dataclasses import dataclass
 from configparser import ConfigParser
 import click
 
+# 1. Define Config class in module top level
+# 2. Within group command function definition: 
+#    * @click.pass_context 
+#    * Function signature positional argument ('ctx')
+#    * Instantiate Config object 
+#    * Remember Config object as the context object ('ctx.obj')
+#    * Save other 
+# 5. In subcommands this point onwards other commands can refer to it by using the
+# @pass_config decorator.
+
 
 @click.group()
-@click.option('--config', default='.mklistsrc', metavar='FILENAME', help="Configuration file.")
-@click.option('--rules', default=None, metavar='FILENAME', multiple=True, help="Rule file, repeatable.")
-@click.option('--data-folder', default='.', metavar='DIRNAME', help="Data folder.")
-@click.option('--html-folder', default='.html', metavar='DIRNAME', help="Data folder, urlified.")
-@click.option('--backup-folder', default='.backups', metavar='DIRNAME', help="Backup folder.")
-@click.option('--backup-depth', default=3, help="Backup depth.")
-@click.option('--verbose', default=False, is_flag=True, help="Run in verbose mode.")
+@click.option('--config', type=str, metavar='FILENAME', help="Configuration file.")
+@click.option('--rules', type=str, metavar='FILENAME', multiple=True, help="Rule file, repeatable.")
+@click.option('--data-folder', type=str, metavar='DIRNAME', help="Data folder.")
+@click.option('--html-folder', type=str, metavar='DIRNAME', help="Data folder, urlified.")
+@click.option('--backup-folder', type=str, metavar='DIRNAME', help="Backup folder.")
+@click.option('--backup-depth', type=int, help="Backup depth.")
+@click.option('--verbose', type=bool, is_flag=True, help="Run in verbose mode.")
 @click.version_option('0.2', help="Show version and exit.")
 @click.pass_context
-def cli(ctx, config, rules, data_folder, html_folder, backup_folder,
-        backup_depth, verbose):
+def cli(ctx, config, rules, data_folder, html_folder, backup_folder, backup_depth, verbose):
     """Manage plain text lists by tweaking rules"""
 
-    print("Before reading config file: backup_depth =", backup_depth)
+    mklistsrc = {
+        'config': '.mklistsrc',
+        'rules': ('.rules',),
+        'data_folder': '.',
+        'html_folder': '.html',
+        'backup_folder': '.backups',
+        'backup_depth': 3,
+        'verbose': False}
+
+    print("mklistsrc: ", mklistsrc)
+    ctx.obj = mklistsrc
+    print("Default config dict saved on ctx.obj = ", ctx.obj)  ################
+
+    # Read configuration
     mklrc = ConfigParser()
     mklrc.read('.mklistsrc')
-    mklistsrc = dict([[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']])
-    # mklistsrc = { (key, mklrc['DEFAULTS'][key]) for key in mklrc['DEFAULTS'] }
-    print(f"type(mklistsrc): {type(mklistsrc)}")
-    print("Values as read from config file: mklistsrc = ", mklistsrc)  ################
-    ctx.obj = mklistsrc
-    print("After reading values from config file: ctx.obj = ", ctx.obj)  ################
 
-    if config:
-        ctx.obj['config'] = config
+    # Update 'mklistsrc' with configurations read from file
+    ctx.obj.update(dict([[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']]))
+    print("File settings used to update ctx.obj = ", ctx.obj)  ################
 
-    if rules:
-        ctx.obj['rules'] = rules
+    # if config:
+    #     ctx.obj['config'] = config
 
-    if data_folder:
-        ctx.obj['data_folder'] = data_folder
+    # if rules:
+    #     ctx.obj['rules'] = rules
 
-    if html_folder:
-        ctx.obj['html_folder'] = html_folder
+    # if data_folder:
+    #     ctx.obj['data_folder'] = data_folder
 
-    if backup_folder:
-        ctx.obj['backup_folder'] = backup_folder
+    # if html_folder:
+    #     ctx.obj['html_folder'] = html_folder
+
+    # if backup_folder:
+    #     ctx.obj['backup_folder'] = backup_folder
 
     if backup_depth:
         ctx.obj['backup_depth'] = backup_depth
 
-    if verbose:
-        ctx.obj['verbose'] = verbose
+    print("ctx.obj with backup_depth overriden by click option = ", ctx.obj)  ################
 
-    print("ctx.obj = ", ctx.obj)  ################ 12345
-    print("After overriding with values set on command line:"
-          "ctx.obj['backup_depth'] =", repr(ctx.obj['backup_depth']))  #######
+    # if verbose:
+    #     ctx.obj['verbose'] = verbose
 
-    #click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}') #####
+    # print("ctx.obj = ", ctx.obj)  ################ 12345
+    # print("After overriding with values set on command line:"
+    #       "ctx.obj['backup_depth'] =", repr(ctx.obj['backup_depth']))  #######
+
+    # #click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}') #####
 
 
 @cli.command()
