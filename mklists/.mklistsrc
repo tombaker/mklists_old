@@ -1,24 +1,19 @@
-[DEFAULTS]
-data_folder = .
-backup_folder = .backups
-backup_depth = 2
-#html_folder = .html
-config = .mklistsrc
-rules = .rules
-verbose = False
-# rules_files:
-#   - '
-# 
-# valid_filename_characters:
-#     - ':@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-# 
-# files2dirs:
-#     'abc': '/Users/tbaker/uu/abc'
-#     'agendaa': '/Users/tbaker/uu/agenda'
-#     'agendab': '/Users/tbaker/uu/agendab'
-# 
-# filename_blacklist:
-#   - r'.swp$'
-#   - r'.tmp$'
-#   - r'~$'
-#   - r'^.'
+data_folder: .
+backup_folder: .backups
+backup_depth: 2
+html_folder: .html
+config: .mklistsrc
+rules: 
+- .rules
+verbose: false
+foobar: false
+valid_filename_characters: ':@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+files2dirs:
+- abc: /Users/tbaker/uu/abc
+- agendaa: /Users/tbaker/uu/agenda
+- agendab: /Users/tbaker/uu/agendab
+bad_filename_patterns:
+- r'.swp$'
+- r'.tmp$'
+- r'~$'
+- r'^.'

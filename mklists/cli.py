@@ -3,56 +3,90 @@
 from dataclasses import dataclass
 from configparser import ConfigParser
 import click
+import sys
+import yaml
+
+# 1. Define Config class in module top level
+# 2. Within group command function definition: 
+#    * @click.pass_context 
+#    * Function signature positional argument ('ctx')
+#    * Instantiate Config object 
+#    * Remember Config object as the context object ('ctx.obj')
+#    * Save other 
+# 5. In subcommands this point onwards other commands can refer to it by using the
+# @pass_config decorator.
 
 
 @click.group()
-@click.option('--config', default='.mklistsrc', metavar='FILENAME', help="Configuration file.")
-@click.option('--rules',  default='.rules',     metavar='FILENAME', multiple=True, help="Rule file, repeatable.")
-@click.option('--data-folder', default='.',     metavar='DIRNAME',  help="Data folder.")
-@click.option('--html-folder', default='.html', metavar='DIRNAME',  help="Data folder, urlified.")
-@click.option('--backup-folder', default='.backups', metavar='DIRNAME', help="Backup folder.")
-@click.option('--backup-depth', default=3, help="Backup depth.")
-@click.option('--verbose', default=False, is_flag=True, help="Run in verbose mode.")
+@click.option('--config', type=str, metavar='FILENAME', help="Configuration file.")
+@click.option('--rules', type=str, metavar='FILENAME', multiple=True, help="Rule file, repeatable.")
+@click.option('--data-folder', type=str, metavar='DIRNAME', help="Data folder.")
+@click.option('--html-folder', type=str, metavar='DIRNAME', help="Data folder, urlified.")
+@click.option('--backup-folder', type=str, metavar='DIRNAME', help="Backup folder.")
+@click.option('--backup-depth', type=int, help="Backup depth.")
+@click.option('--verbose', type=bool, is_flag=True, help="Run in verbose mode.")
 @click.version_option('0.2', help="Show version and exit.")
 @click.pass_context
 def cli(ctx, config, rules, data_folder, html_folder, backup_folder, backup_depth, verbose):
     """Manage plain text lists by tweaking rules"""
 
-    print("Before reading config file: backup_depth =", backup_depth)
-    mklrc = ConfigParser()
-    mklrc.read('.mklistsrc')
-    # mklistsrc = dict([[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']])
-    mklistsrc = {[key, mklrc['DEFAULTS'][key]] for key in mklrc['DEFAULTS']}
-    print("Values as read from config file: mklistsrc = ", mklistsrc)  ################
-    ctx.obj = mklistsrc
-    print("After reading values from config file: ctx.obj = ", ctx.obj)  ################
 
+    # Sensible default configuration values (eg, in absence of config file)
+    ctx.obj = {
+        'config': '.mklistsrc',
+        'rules': ('.rules',),
+        'data_folder': '.',
+        'html_folder': '.html',
+        'backup_folder': '.backups',
+        'backup_depth': 3,
+        'verbose': False}
+
+    # if command line option points to different config file, use that one
+    default_configfile_specified = True
     if config:
         ctx.obj['config'] = config
+        default_configfile_specified = False
 
-    if rules:
-        ctx.obj['rules'] = rules
+    # Confirm default config values
+    print("Default config dict saved on ctx.obj = ", ctx.obj)  ################
 
-    if data_folder:
-        ctx.obj['data_folder'] = data_folder
+    # Try to read configfile and use it to update ctx.obj
+    # If configfile does not exist, write ctx.obj to a YAML file
+    try:
+        with open(config) as configfile:
+            ctx.obj.update(yaml.load(configfile))
+    except FileNotFoundError:
+        if default_configfile_specified:
+            print("Creating config file '.mklistsrc'. Can be edited.")
+            yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+        else:
+            raise ConfigFileNotFoundError(f"{repr(config)} not found.")
 
-    if html_folder:
-        ctx.obj['html_folder'] = html_folder
+    # if rules:
+    #     ctx.obj['rules'] = rules
 
-    if backup_folder:
-        ctx.obj['backup_folder'] = backup_folder
+    # if data_folder:
+    #     ctx.obj['data_folder'] = data_folder
+
+    # if html_folder:
+    #     ctx.obj['html_folder'] = html_folder
+
+    # if backup_folder:
+    #     ctx.obj['backup_folder'] = backup_folder
 
     if backup_depth:
         ctx.obj['backup_depth'] = backup_depth
 
-    if verbose:
-        ctx.obj['verbose'] = verbose
+    print("ctx.obj with backup_depth overriden by click option = ", ctx.obj)  ################
 
-    print("ctx.obj = ", ctx.obj)  ################ 12345
-    print("After overriding with values set on command line:"
-          "ctx.obj['data_folder'] =", repr(ctx.obj['data_folder']))  #######
+    # if verbose:
+    #     ctx.obj['verbose'] = verbose
 
-    #click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}') #####
+    # print("ctx.obj = ", ctx.obj)  ################ 12345
+    # print("After overriding with values set on command line:"
+    #       "ctx.obj['backup_depth'] =", repr(ctx.obj['backup_depth']))  #######
+
+    # #click.echo(f'>>> ctx.obj.backup_depth      =>  {ctx.obj.backup_depth}') #####
 
 
 @cli.command()
@@ -87,3 +121,6 @@ def check(ctx):
 def rules(ctx):
     """Inspect rules."""
     # Print to screen all (non-dunder) config attributes/values
+
+class ConfigFileNotFoundError(SystemExit):
+    """Specified (non-default) configuration file was not found"""
