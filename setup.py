@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name = 'mklists',
-    version = '0.1.0',
+    version = '0.1.1',
     license = 'MIT',
     description = 'Manage plain text lists by tweaking rules',
     long_description=readme(),

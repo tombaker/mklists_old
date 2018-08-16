@@ -19,7 +19,7 @@ import yaml
               help="Backup depth [3]")
 @click.option('--verbose', type=bool, is_flag=True, 
               help="Run verbosely")
-@click.version_option('0.2', help="Show version and exit")
+@click.version_option('0.1.1', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx, config, rules, data, html, backups, 
