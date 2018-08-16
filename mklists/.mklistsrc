@@ -9,9 +9,9 @@ verbose: false
 foobar: false
 valid_filename_characters: ':@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 files2dirs:
-- abc: /Users/tbaker/uu/abc
-- agendaa: /Users/tbaker/uu/agenda
-- agendab: /Users/tbaker/uu/agendab
+    abc: /Users/tbaker/uu/abc
+    agendaa: /Users/tbaker/uu/agenda
+    agendab: /Users/tbaker/uu/agendab
 bad_filename_patterns:
 - \.swp$
 - \.tmp$
