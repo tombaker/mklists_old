@@ -58,7 +58,7 @@ def cli(ctx, config, rules, data_folder, html_folder, backup_folder, backup_dept
     except FileNotFoundError:
         if default_configfile_specified:
             print("Creating config file '.mklistsrc'. Can be edited.")
-            yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+            yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False) # pretty-prints
         else:
             raise ConfigFileNotFoundError(f"{repr(config)} not found.")
 

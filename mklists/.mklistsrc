@@ -13,7 +13,7 @@ files2dirs:
 - agendaa: /Users/tbaker/uu/agenda
 - agendab: /Users/tbaker/uu/agendab
 bad_filename_patterns:
-- r'.swp$'
-- r'.tmp$'
-- r'~$'
-- r'^.'
+- \.swp$
+- \.tmp$
+- ~$
+- ^\.
