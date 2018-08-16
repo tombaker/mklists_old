@@ -1,1 +1,1 @@
-"""docstring"""
+"""Marks as package directory for Python."""

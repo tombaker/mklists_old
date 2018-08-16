@@ -10,7 +10,13 @@ VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
 @dataclass
 class Rules:
-    """Parses files in special 'rules' format to get Rule objects."""
+    """Parses files in special 'rules' format to get Rule objects.
+
+    Attributes:
+        stringrules: list of lines read in from rule files, before parsing
+        splitrules: list of stringrules parsed into lists of fields
+        rules: list of Rule objects
+    """
 
     stringrules: list = None
     splitrules: list = None
@@ -70,8 +76,8 @@ class Rules:
             line_fielded.append(regex)
             line_rest = line_rest.partition('#')[0].strip()
             line_fielded.extend(line_rest.split())
-            line_fielded = [field for field in line_fielded if not re.match('#', field)]
-            line_fielded = [field for field in line_fielded if field]
+            line_fielded = [f for f in line_fielded if not re.match('#', f)]
+            line_fielded = [f for f in line_fielded if f] # drops empty items
             if line_fielded:
                 splitrules.append(line_fielded)
         self.splitrules = splitrules
