@@ -1,21 +1,8 @@
-"""docstring"""
-
 from dataclasses import dataclass
 from configparser import ConfigParser
 import click
 import sys
 import yaml
-
-# 1. Define Config class in module top level
-# 2. Within group command function definition: 
-#    * @click.pass_context 
-#    * Function signature positional argument ('ctx')
-#    * Instantiate Config object 
-#    * Remember Config object as the context object ('ctx.obj')
-#    * Save other 
-# 5. In subcommands this point onwards other commands can refer to it by using the
-# @pass_config decorator.
-
 
 @click.group()
 @click.option('--config', type=str, metavar='FILENAME', 

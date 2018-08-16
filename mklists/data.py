@@ -11,6 +11,25 @@ class Datadir:
     bad_filename_patterns: tuple = tuple()
 
     def get_datalines(self):
+        """Gets data lines from all files in a given directory.
+
+        Calls private methods to check that all visible objects
+        in a given directory are UTF8-encoded files, with no 
+        temporary or backup files (i.e., files matching a list 
+        of bad filename patterns).
+        
+        Returns:
+            self.visible_pathnames: list of data files in given directory.
+            self.datalines: list of all lines in all valid data files.
+            
+        Raises:
+            NoDatadirError: if directory is not accessible.
+            DatadirHasNonFilesError: if any visible object is not a file.
+            BadFilenameError: if any filename matches a bad pattern
+            UnicodeDecodeError: if any file is not UTF8-encoded.
+            BlankLinesError: if any file has blank lines.
+            NoDataError: if there is no data to process.
+        """
         try:
             os.chdir(self.dirname)
             self.visible_pathnames = [name for name in glob.glob('*')] 
@@ -22,12 +41,32 @@ class Datadir:
         self._get_datalines_from_datafiles()
 
     def _visible_pathnames_are_all_files(self):
+        """Confirms that all visible objects in directory are files.
+        
+        Returns:
+            True
+            
+        Raises:
+            DatadirHasNonFilesError: if object is not a file.
+        """
         for pathname in self.visible_pathnames:
             if not os.path.isfile(pathname):
                 raise DatadirHasNonFilesError(f'{pathname} not a file.')
-        return self.visible_pathnames
+        return True
 
     def _visible_filenames_are_all_valid(self):
+        """Confirms that no filenames match bad patterns.
+
+        Used to block execution of mklists if the data
+        folder has any files that should not be processed,
+        such as temporary or backup files.
+        
+        Returns:
+            True
+            
+        Raises:
+            BadFilenameError: if filename matches a bad pattern.
+        """
         for filename in self.visible_pathnames:
             for bad_pat in self.bad_filename_patterns:
                 if re.search(bad_pat, filename):
@@ -35,6 +74,14 @@ class Datadir:
         return True
 
     def _visible_files_are_utf8_encoded(self):
+        """Checks that all data files are UTF8-encoded.
+        
+        Returns:
+            True
+            
+        Raises:
+            UnicodeDecodeError: if any file is not UTF8-encoded.
+        """
         for filename in self.visible_pathnames:
             try:
                 open(self.filename).read()
@@ -43,6 +90,12 @@ class Datadir:
         return True
 
     def _get_datalines_from_datafiles(self):
+        """Returns list of data files to process.
+
+        Raises:
+            BlankLinesError: if any file has blank lines.
+            NoDataError: if there is no data to process.
+        """
         self.datalines = []
         for file in self.visible_pathnames:
             for line in file.readlines():
@@ -50,34 +103,34 @@ class Datadir:
                     raise BlankLinesError(f'File {file} has blank lines.')
                 self.datalines.append(line)
         if not self.datalines:
-            raise NoDataError('No data here.')
+            raise NoDataError('No data to process.')
         return self.datalines
 
 
 class DataError(SystemExit):
-    pass
+    """Superclass for errors relating to data."""
 
 
 class BadFilenameError(DataError):
-    pass
+    """Filename is bad (ie, matches a blacklisted pattern)."""
 
 
 class BlankLinesError(DataError):
-    pass
+    """File contains blank lines."""
 
 
 class DatadirHasNonFilesError(DataError):
-    pass
+    """Data directory has visible non-file objects (eg, links, directories."""
 
 
 class NoDataError(DataError):
-    pass
+    """There is no data to process."""
 
 
 class NoDatadirError(DataError):
-    pass
+    """Data directory is not found or not accessible."""
 
 
 class NotUTF8Error(DataError):
-    pass
+    """File is not UTF8-encoded."""
 
