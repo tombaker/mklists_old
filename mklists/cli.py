@@ -18,12 +18,12 @@ import yaml
               help="Backup depth [3]")
 @click.option('--verbose', type=bool, is_flag=True, 
               help="Run verbosely")
-@click.version_option('0.1.1', help="Show version and exit")
+@click.version_option('0.1.2', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx, config, rules, data, html, backups, 
         backup_depth, verbose):
-    """Rebuild plain-text todo lists per evolving rules"""
+    """Rebuild plain-text todo lists using rules"""
 
     if verbose:
         print('Printing diagnostic information.')
