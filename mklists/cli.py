@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from configparser import ConfigParser
 import click
 import sys
 import yaml

@@ -21,7 +21,7 @@ setup(
     url = 'https://github.com/tombaker/mklists',
     packages = find_packages(exclude=['tests']),
     install_requires =[
-        'pyyaml', 'click'
+        'pyyaml', 'click', 'dataclasses', 'string'
     ],
     entry_points = """
         [console_scripts]
