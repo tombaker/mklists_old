@@ -1,27 +1,32 @@
+"""Datadir module"""
+
 import glob
 import os
 import re
 from dataclasses import dataclass
-from mklists import *
 
 
 @dataclass
 class Datadir:
+    """docstring"""
+
     dirname: str = '.'
     bad_filename_patterns: tuple = tuple()
+    visible_pathnames: list = None
+    datalines: list = None
 
     def get_datalines(self):
         """Gets data lines from all files in a given directory.
 
         Calls private methods to check that all visible objects
-        in a given directory are UTF8-encoded files, with no 
-        temporary or backup files (i.e., files matching a list 
+        in a given directory are UTF8-encoded files, with no
+        temporary or backup files (i.e., files matching a list
         of bad filename patterns).
-        
+
         Returns:
             self.visible_pathnames: list of data files in given directory.
             self.datalines: list of all lines in all valid data files.
-            
+
         Raises:
             NoDatadirError: if directory is not accessible.
             DatadirHasNonFilesError: if any visible object is not a file.
@@ -32,7 +37,7 @@ class Datadir:
         """
         try:
             os.chdir(self.dirname)
-            self.visible_pathnames = [name for name in glob.glob('*')] 
+            self.visible_pathnames = [name for name in glob.glob('*')]
         except FileNotFoundError:
             raise NoDatadirError('Directory is not accessible.')
         self._visible_pathnames_are_all_files()
@@ -42,10 +47,10 @@ class Datadir:
 
     def _visible_pathnames_are_all_files(self):
         """Confirms that all visible objects in directory are files.
-        
+
         Returns:
             True
-            
+
         Raises:
             DatadirHasNonFilesError: if object is not a file.
         """
@@ -60,10 +65,10 @@ class Datadir:
         Used to block execution of mklists if the data
         folder has any files that should not be processed,
         such as temporary or backup files.
-        
+
         Returns:
             True
-            
+
         Raises:
             BadFilenameError: if filename matches a bad pattern.
         """
@@ -75,18 +80,18 @@ class Datadir:
 
     def _visible_files_are_utf8_encoded(self):
         """Checks that all data files are UTF8-encoded.
-        
+
         Returns:
             True
-            
+
         Raises:
             UnicodeDecodeError: if any file is not UTF8-encoded.
         """
         for filename in self.visible_pathnames:
             try:
-                open(self.filename).read()
+                open(filename).read()
             except UnicodeDecodeError:
-                raise NotUTF8Error(f'File {file} not UTF8-encoded.')
+                raise NotUTF8Error(f'File {filename} not UTF8-encoded.')
         return True
 
     def _get_datalines_from_datafiles(self):
@@ -133,4 +138,3 @@ class NoDatadirError(DataError):
 
 class NotUTF8Error(DataError):
     """File is not UTF8-encoded."""
-

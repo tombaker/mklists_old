@@ -1,5 +1,6 @@
 import pytest
-from mklists.rules import *
+from mklists.rules import Rules
+from mklists.rule import Rule
 
 @pytest.mark.skip
 def test_source_is_registered():
