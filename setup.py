@@ -8,7 +8,7 @@ setup(
     version = '0.1.1',
     license = 'MIT',
     description = 'Rebuild plain-text todo lists per evolving rules',
-    long_description=readme(),
+    long_description=long_description,
     author = 'Tom Baker',
     author_email='tom@tombaker.org',
     classifiers=[
