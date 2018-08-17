@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name = 'mklists',
-    version = '0.1.1',
+    version = '0.1.2',
     license = 'MIT',
     description = 'Rebuild plain-text todo lists per evolving rules',
     long_description=long_description,
