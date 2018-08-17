@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
 
-def readme():
-    with open('README.md') as f:
-        return f.read()
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
 setup(
     name = 'mklists',
     version = '0.1.1',
     license = 'MIT',
-    description = 'Manage plain text lists by tweaking rules',
+    description = 'Rebuild plain-text todo lists per evolving rules',
     long_description=readme(),
     author = 'Tom Baker',
     author_email='tom@tombaker.org',
@@ -21,7 +20,7 @@ setup(
     url = 'https://github.com/tombaker/mklists',
     packages = find_packages(exclude=['tests']),
     install_requires =[
-        'pyyaml', 'click', 'dataclasses', 'string'
+        'pyyaml', 'Click', 'dataclasses', 'string'
     ],
     entry_points = """
         [console_scripts]

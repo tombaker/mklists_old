@@ -23,7 +23,7 @@ import yaml
 @click.pass_context
 def cli(ctx, config, rules, data, html, backups, 
         backup_depth, verbose):
-    """Manage plain text lists by tweaking rules"""
+    """Rebuild plain-text todo lists per evolving rules"""
 
     if verbose:
         print('Printing diagnostic information.')
