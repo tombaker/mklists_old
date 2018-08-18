@@ -70,6 +70,7 @@ class Rule:
             raise SourceEqualsTargetError("source must not be same as target.")
         return True
 
+
 class RuleError(SystemExit):
     """Super-category for exceptions related to rules."""
 
