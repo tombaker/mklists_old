@@ -8,7 +8,7 @@ VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
 @dataclass
 class Rule:
-    """Validates individual rules.
+    """Validates an individual rule.
 
     Attributes:
         source_matchfield:
