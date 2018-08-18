@@ -42,28 +42,28 @@ def test_rulestring_regex_has_space():
 @pytest.mark.rule
 def test_source_filename_valid():
     x = Rule('1', '^X 19', 'a.txt', 'b.txt', '2')
-    assert x._source_filename_is_valid()
+    assert x._source_and_target_filenames_are_valid()
 
 @pytest.mark.rule
 def test_target_filename_valid():
     x = Rule('1', '^X 19', 'a.txt', 'b.txt', '2')
-    assert x._target_filename_is_valid()
+    assert x._source_and_target_filenames_are_valid()
 
 @pytest.mark.rule
 def test_target_filename_valid_not():
     x = Rule('1', '^X 19', 'a.txt', 'b^.txt', '2')
     with pytest.raises(SystemExit):
-        x._target_filename_is_valid()
+        x._source_and_target_filenames_are_valid()
 
 @pytest.mark.rule
-def test_source_matchfield_is_integer():
+def test_source_matchfield_and_target_sortorder_are_valid():
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
-    assert x._source_matchfield_is_integer
+    assert x._source_matchfield_and_target_sortorder_are_integers
 
 @pytest.mark.rule
-def test_target_sortorder_is_integer():
+def test_source_matchfield_and_target_sortorder_are_integers():
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
-    assert x._target_sortorder_is_integer
+    assert x._source_matchfield_and_target_sortorder_are_integers
 
 @pytest.mark.rule
 def test_source_ne_target():

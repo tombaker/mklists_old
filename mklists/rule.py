@@ -17,7 +17,6 @@ class Rule:
         target:
         target_sortorder:
     """
-
     source_matchfield: int = None
     source_matchpattern: str = None
     source: str = None
@@ -28,120 +27,47 @@ class Rule:
     sources = []
 
     def validate(self):
-        """Validates a rule.
-
-        Calls private methods to validate specific aspects.
-
-        Returns:
-            True
-
-        Raises:
+        """Returns True if instance of Rule is valid.
         """
-
-        self._source_matchfield_is_integer()
-        self._target_sortorder_is_integer()
+        self._source_matchfield_and_target_sortorder_are_integers()
         self._source_matchpattern_is_valid()
-        self._source_filename_is_valid()
-        self._target_filename_is_valid()
+        self._source_and_target_filenames_are_valid()
         self._source_is_not_equal_target()
         return self
 
-    def _source_matchfield_is_integer(self):
-        """Verifies that source_matchfield is an integer.
-
-        Returns:
-            True
-
-        Raises:
-            NotIntegerError
+    def _source_matchfield_and_target_sortorder_are_integers(self):
+        """Returns True if source_matchfield and target_sortorder are integers.
         """
-        try:
-            self.source_matchfield = int(self.source_matchfield)
-        except:
-            print(f"In rule: {self}")
-            print(f"source_matchfield is not an integer")
-            raise NotIntegerError
-        return True
-
-    def _target_sortorder_is_integer(self):
-        """Verifies that target_sortorder is an integer.
-
-        Returns:
-            True
-
-        Raises:
-            NotIntegerError
-        """
-        try:
-            self.target_sortorder = int(self.target_sortorder)
-        except:
-            print(f"In rule: {self}")
-            print(f"target_sortorder is not an integer")
-            raise NotIntegerError
+        for field in [self.source_matchfield, self.target_sortorder]:
+            if not isinstance(field, int):
+                print(f"In rule: {self}")
+                raise NotIntegerError(f"{field} must be an integer.")
         return True
 
     def _source_matchpattern_is_valid(self):
-        """Confirms that source_matchpattern compiles as regular expression.
-
-        Returns:
-            True
-
-        Raises:
-            SourceMatchpatternError
-        """
+        """Returns True if source_matchpattern is valid regular expression."""
         try:
             re.compile(self.source_matchpattern)
         except re.error:
-            raise SourceMatchpatternError
+            print(f"In rule: {self}")
+            raise SourceMatchpatternError(f"source_matchpattern is not valid.")
         return True
 
-    def _source_filename_is_valid(self):
-        """Confirms that source filename uses only valid characters.
-
-        Returns:
-            True
-
-        Raises:
-            NotValidFilenameError
-        """
-
-        for single_character in str(self.source):
-            if single_character not in VALID_FILENAME_CHARS:
-                print(f"In rule: {self}")
-                print(f"filename {self.source} has invalid character(s).")
-                print(f"Valid: {VALID_FILENAME_CHARS}")
-                raise NotValidFilenameError
-        return True
-
-    def _target_filename_is_valid(self):
-        """Confirms that target filename uses only valid characters.
-
-        Returns:
-            True
-
-        Raises:
-            NotValidFilenameError
-        """
-
-        for single_character in str(self.target):
-            if single_character not in VALID_FILENAME_CHARS:
-                print(f"In rule: {self}")
-                print(f"filename {self.target} has invalid character(s).")
-                print(f"Valid: {VALID_FILENAME_CHARS}")
-                raise NotValidFilenameError
+    def _source_and_target_filenames_are_valid(self):
+        """Returns True if filenames use only valid characters."""
+        for field in [self.source, self.target]:
+            for char in str(field):
+                if char not in VALID_FILENAME_CHARS:
+                    print(f"In rule: {self}")
+                    raise BadFilenameError(
+                        f"{repr(char)} is not a valid filename character.")
         return True
 
     def _source_is_not_equal_target(self):
-        """Confirms that source is not equal to target.
-
-        Returns:
-            True
-
-        Raises:
-            SourceEqualsTargetError
+        """Returns True if source is not equal to target.
         """
         if self.source == self.target:
-            raise SourceEqualsTargetError
+            raise SourceEqualsTargetError("source must not be same as target.")
         return True
 
 class RuleError(SystemExit):
@@ -152,7 +78,7 @@ class NotIntegerError(RuleError):
     """Value is not an integer."""
 
 
-class NotValidFilenameError(RuleError):
+class BadFilenameError(RuleError):
     """Filename uses character not in list of valid characters."""
 
 

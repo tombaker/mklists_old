@@ -8,103 +8,48 @@ from mklists.rule import Rule
 
 @dataclass
 class Rules:
-    """Parses files in special 'rules' format to get Rule objects.
+    """Parse YAML rule files and produce lists of Rule objects."""
 
-    Attributes:
-        stringrules: list of lines read in from rule files, before parsing
-        splitrules: list of stringrules parsed into lists of fields
-        rules: list of Rule objects
-    """
-
-    stringrules: list = None
-    splitrules: list = None
     rules: list = None
 
     def parse(self, *rulefiles):
-        """Parse rule files adding resulting instance of Rule to Rules.
+        """docstring"""
+        raw = self._parse_yaml(*rulefiles)
+        self.rules = self._instantiate_rule_objects(raw)
+        self._validate_rule_objects()
+        return self.rules
 
-        Args:
-            *rulefiles: Names of files with unparsed rules (list).
-
-        Returns:
-        """
-        self._get_stringrules(*rulefiles)
-        self._parse_stringrules_to_splitrules()
-        self._instantiate_splitrules_as_ruleobjects()
-        self._rule_sources_have_precedents()
-        self._validate_rules()
-
-    def _get_stringrules(self, *rulefiles):
-        """Given filenames of rule files, gets lines ("stringrules").
-
-        Args:
-            *rulefiles: list of rule files
-
-        Returns:
-            self.stringrules: list of stringrules
-
-        Raises:
-            FileNotFoundError: if a rule file is not accessible.
-        """
-        stringrules = []
+    def _parse_yaml(self, *rulefiles):
+        """docstring"""
+        rules_raw = []
         for rulefile in rulefiles:
             try:
-                with open(rulefile, 'r') as rulefile:
-                    stringrules.extend(rulefile.read().splitrules())
+                with open(rulefile) as rf:
+                    rules_raw.extend(yaml.load(rf))
             except FileNotFoundError:
-                sys.exit(f'Rule file "{rulefile}" is not accessible.')
-        self.stringrules = stringrules
-        return self.stringrules
+                raise RuleFileNotFoundError(f'{rulefile}" not found.')
+        return rules_raw
 
-    def _parse_stringrules_to_splitrules(self):
-        """Returns splitrules - stringrules parsed into fields.
+    def _instantiate_rule_objects(self, raw_rules: list = None):
+        """docstring"""
+        rules_validated = []
+        for raw_rule in raw_rules:
+            Rule.validate(raw_rule)
+            rules_validated.append(Rule(*raw_rule))
+        self.rules = rules_validated
 
-        Rule file format, designed for ease of editing, requires
-        special parsing procedure implemented here.
+    def validate(self):
+        self._rule_sources_have_precedents()
 
-        Returns:
-            self.splitrules: stringrules parsed into fields using algorithm.
-        """
-        splitrules = []
-        for line in self.stringrules:
-            line_fielded = []
-            line_field1, __, line_rest = line.partition('/')
-            line_fielded.append(line_field1.strip())
-            regex, __, line_rest = line_rest.rpartition('/')
-            line_fielded.append(regex)
-            line_rest = line_rest.partition('#')[0].strip()
-            line_fielded.extend(line_rest.split())
-            line_fielded = [f for f in line_fielded if not re.match('#', f)]
-            line_fielded = [f for f in line_fielded if f] # drops empty items
-            if line_fielded:
-                splitrules.append(line_fielded)
-        self.splitrules = splitrules
-        return self.splitrules
-
-    def _instantiate_splitrules_as_ruleobjects(self):
-        """Returns list of rule objects.
-
-        Validates each splitrule and creates rule objects from splitrules
-        (after validation).
-
-        Raises:
-        """
-        rules = []
-        for rule in self.splitrules:
+    def _validate_rule_objects(self):
+        validated_rules = []
+        for rule in self.rules:
             Rule.validate(rule)
-            rules.append(Rule(*rule))
-        self.rules = rules
+            validated_rules.append(rule)
+        self.rules = validated_rules
         return self.rules
 
     def _rule_sources_have_precedents(self):
-        """Verifies that each "source" has been previously initialized.
-
-        Returns:
-            True
-
-        Raises:
-            SourceNotPrecedentedError: if any "source" not initialized.
-        """
         initialized = False
         sources = []
 
@@ -118,21 +63,6 @@ class Rules:
             if rule.target not in sources:
                 sources.append(rule.target)
         return True
-
-    def _validate_rules(self):
-        """Validates list of rule objects.
-
-        Calls Rule class to validate each rule.
-
-        Returns:
-            self.rules: validated and lightly corrected list of rule objects.
-        """
-        validated_rules = []
-        for rule in self.rules:
-            Rule.validate(rule)
-            validated_rules.append(rule)
-        self.rules = validated_rules
-        return self.rules
 
     def apply(self, datalines):
         """
@@ -154,7 +84,6 @@ class Rules:
                 initialized = True
 
             for line in datalines:
-
                 # skip match if rule.source_matchfield out of range
                 if rule.source_matchfield > len(line.split()):
                     continue
@@ -182,7 +111,8 @@ class Rules:
 
                 # sort target if rule.target_sortorder greater than zero
                 if rule.target_sortorder:
-                    decorated = [(line.split()[rule.target_sortorder - 1], __, line)
+                    eth_sortorder = rule.target_sortorder - 1
+                    decorated = [(line.split()[eth_sortorder], __, line)
                                  for __, line in enumerate(rule.target)]
                     decorated.sort()
                     rule.target = [line for ___, __, line in decorated]
@@ -191,6 +121,11 @@ class Rules:
 
         return datalines_dict
 
+class RulesErrors(SystemExit):
+    """Category of exceptions related to sets or rules."""
 
-class SourceNotPrecedentedError(SystemExit):
+class RuleFileNotFoundError(RulesErrors):
+    """Rule file not found or not accessible."""
+
+class SourceNotPrecedentedError(RulesErrors):
     """Source has not been previously initialized."""
