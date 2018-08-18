@@ -9,59 +9,58 @@ from mklists.rule import Rule
 @dataclass
 class Rules:
     """Parse YAML rule files and produce lists of Rule objects."""
-
+    
+    # could be initialized with an existing list of Rule objects
     rules: list = None
 
-    def parse(self, *rulefiles):
+    def parse(self, rulefiles):
         """docstring"""
-        raw = self._parse_yaml(*rulefiles)
-        self.rules = self._instantiate_rule_objects(raw)
-        self._validate_rule_objects()
-        return self.rules
+        parsed_yaml = self._parse_yaml(rulefiles)
+        rule_objects_list = self._create_list_of_rule_objects(parsed_yaml)
+        self._rule_objects_are_valid(rule_objects_list)
+        return rule_objects_list
 
-    def _parse_yaml(self, *rulefiles):
-        """docstring"""
-        rules_raw = []
+    def _parse_yaml(self, rulefiles):
+        """Issue: what if rulefiles is a string?  Should be permitted."""
+        list_parsed_from_yaml = []
         for rulefile in rulefiles:
             try:
                 with open(rulefile) as rf:
-                    rules_raw.extend(yaml.load(rf))
+                    list_parsed_from_yaml.extend(yaml.load(rf))
             except FileNotFoundError:
-                raise RuleFileNotFoundError(f'{rulefile}" not found.')
-        return rules_raw
+                print(f"Expected rule files: {rulefiles}.")
+                raise RuleFileNotFoundError(f"{repr(rulefile)} not found.")
 
-    def _instantiate_rule_objects(self, raw_rules: list = None):
+        return list_parsed_from_yaml
+
+    def _create_list_of_rule_objects(self, rule_list_from_yaml: list = None):
         """docstring"""
-        rules_validated = []
-        for raw_rule in raw_rules:
-            Rule.validate(raw_rule)
-            rules_validated.append(Rule(*raw_rule))
-        self.rules = rules_validated
+        list_of_rule_objects = []
+        for item in rule_list_from_yaml:
+            try:
+                list_of_rule_objects.append(Rule(*item))
+            except TypeError:
+                raise BadYamlRule(f"{item} is badly formed.")
 
-    def validate(self):
-        self._rule_sources_have_precedents()
+        return list_of_rule_objects
 
-    def _validate_rule_objects(self):
-        validated_rules = []
-        for rule in self.rules:
-            Rule.validate(rule)
-            validated_rules.append(rule)
-        self.rules = validated_rules
-        return self.rules
+    def _rule_objects_are_valid(self, list_of_rule_objects):
+        source_list_initialized = False
+        source_list = []
 
-    def _rule_sources_have_precedents(self):
-        initialized = False
-        sources = []
+        for rule in list_of_rule_objects:
+            if not source_list_initialized:
+                source_list.append(rule.source)
+                source_list.append(rule.target)
+                source_list_initialized = True
+            if rule.source not in source_list:
+                raise SourceNotPrecedentedError("source has no precedent")
+            else:
+                source_list.append(rule.target)
 
-        for rule in self.rules:
-            if not initialized:
-                sources.append(rule.source)
-                initialized = True
-            if rule.source not in sources:
-                print(f"Oh no! {rule.source} is not one of {sources}!")
-                raise SourceNotPrecedentedError
-            if rule.target not in sources:
-                sources.append(rule.target)
+            if rule.is_valid():
+                pass
+
         return True
 
     def apply(self, datalines):

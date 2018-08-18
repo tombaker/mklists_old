@@ -26,14 +26,14 @@ class Rule:
     initialized = False
     sources = []
 
-    def validate(self):
+    def is_valid(self):
         """Returns True if instance of Rule is valid.
         """
         self._source_matchfield_and_target_sortorder_are_integers()
         self._source_matchpattern_is_valid()
         self._source_and_target_filenames_are_valid()
         self._source_is_not_equal_target()
-        return self
+        return True
 
     def _source_matchfield_and_target_sortorder_are_integers(self):
         """Returns True if source_matchfield and target_sortorder are integers.

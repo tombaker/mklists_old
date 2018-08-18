@@ -18,16 +18,10 @@ def test_source_is_registered_not():
         Rule.register(y)
 
 @pytest.mark.rule
-def test_validate_rule():
-    x = Rule('1', '.', 'a', 'b', '2')
-    y = Rule(1, '.', 'a', 'b', 2)
-    assert x.validate() == y
-
-@pytest.mark.rule
-def test_validate_rule_not():
+def test_is_valie_not():
     x = Rule('1', 'N(OW', 'a', 'b', '2')
     with pytest.raises(SystemExit):
-        x.validate()
+        x.is_valid()
 
 @pytest.mark.rule
 def test_rule():
