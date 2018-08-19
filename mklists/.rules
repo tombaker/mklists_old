@@ -1,8 +1,0 @@
-0  /./         lines         __RENAME__   0 
-0  /^= 20/     __RENAME__    calendar     1 # regex has a space
-1  /TRACK/     __RENAME__    a            0
-1  /FTMP/      __RENAME__    a            0
-
-# blank lines and lines that start with hash get ignored
-0  /^\*/       __RENAME__    a            0 # lines that start with a star
-1  /^x$/       __RENAME__    cox          3
