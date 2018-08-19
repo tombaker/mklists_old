@@ -2,11 +2,6 @@ import pytest
 import os
 from mklists.rule import Rule
 
-def test_rulesy(tmpdir, use_rules):
-    os.chdir(tmpdir)
-    # assert os.path.isfile('.rulesy')
-    assert os.path.cwd() == tmpdir
-
 @pytest.mark.skip
 def test_source_is_registered():
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
