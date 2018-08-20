@@ -1,4 +1,7 @@
-"""Shuffle module docstring"""
+"""Shuffle module docstring
+
+Called 'shuffle' for historical reasons.
+"""
 
 from collections import defaultdict
 import re
