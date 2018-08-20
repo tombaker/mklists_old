@@ -1,7 +1,5 @@
 """Rules docstring"""
 
-from collections import defaultdict
-import re
 import yaml
 from mklists.rule import Rule
 from mklists import VALID_FILENAME_CHARS
@@ -13,7 +11,7 @@ def parse_rules(rulefiles, good_chars=VALID_FILENAME_CHARS, bad_pats=None):
     """
     parsed_yaml = _parse_yaml(rulefiles)
     rule_objects_list = _create_list_of_rule_objects(parsed_yaml)
-    _rule_objects_are_valid(rule_objects_list)
+    _rule_objects_are_valid(rule_objects_list) # bad_pats?
     return rule_objects_list
 
 def _parse_yaml(rulefiles):
@@ -31,6 +29,8 @@ def _parse_yaml(rulefiles):
 
 def _create_list_of_rule_objects(rule_list_from_yaml: list = None):
     """docstring"""
+
+    # test for bad YAML here?
     list_of_rule_objects = []
     for item in rule_list_from_yaml:
         try:
@@ -40,69 +40,12 @@ def _create_list_of_rule_objects(rule_list_from_yaml: list = None):
 
     return list_of_rule_objects
 
-def _rule_objects_are_valid(list_of_rule_objects):
+def _rule_objects_are_valid(list_of_rule_objects): # add bad_pats?
     for rule in list_of_rule_objects:
-        if rule.is_valid():
+        if rule.is_valid(): # add bad_pats?
             pass
 
     return True
-
-def apply_rules_to_datalines(rules, datalines):
-    """
-    Args:
-        datalines: all datalines (list)
-
-    Initializes dictionary structure where:
-    * values hold (changing) portions of 'datalines'
-    * keys are filenames to which values will be written
-    """
-
-    datalines_dict = defaultdict(list)
-    initialized = False
-
-    for rule in rules:
-
-        if not initialized:
-            datalines_dict[rule.source] = rule.source
-            initialized = True
-
-        for line in datalines:
-            # skip match if rule.source_matchfield out of range
-            if rule.source_matchfield > len(line.split()):
-                continue
-
-            # match against entire line if rule.source_matchfield is zero
-            if rule.source_matchfield == 0:
-                rgx = rule.source_matchpattern
-                positives = [line for line in rule.source
-                             if re.search(rgx, line)]
-                negatives = [line for line in rule.source
-                             if not re.search(rgx, line)]
-                rule.target.extend(positives)
-                rule.source = negatives
-
-            # match field if rule.source_matchfield > 0 and within range
-            if rule.source_matchfield > 0:
-                eth = rule.source_matchfield - 1
-                rgx = rule.source_matchpattern
-                positives = [line for line in rule.source
-                             if re.search(rgx, line.split()[eth])]
-                negatives = [line for line in rule.source
-                             if not re.search(rgx, line.split()[eth])]
-                rule.target.extend(positives)
-                rule.source = negatives
-
-            # sort target if rule.target_sortorder greater than zero
-            if rule.target_sortorder:
-                eth_sortorder = rule.target_sortorder - 1
-                decorated = [(line.split()[eth_sortorder], __, line)
-                             for __, line in enumerate(rule.target)]
-                decorated.sort()
-                rule.target = [line for ___, __, line in decorated]
-
-        return all
-
-    return datalines_dict
 
 
 class RulesErrors(SystemExit):
@@ -113,9 +56,12 @@ class RuleFileNotFoundError(RulesErrors):
     """Rule file not found or not accessible."""
 
 
-class SourceNotPrecedentedError(RulesErrors):
-    """Source has not been previously initialized."""
-
-
 class BadYamlRule(RulesErrors):
     """Rule is badly formed in YAML source."""
+
+
+DEFAULT_RULE_FILE = """\
+- [0,  '.',         lines,         todo.txt,   0]  # notes...
+- [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
+- [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
+"""

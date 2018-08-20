@@ -1,4 +1,7 @@
-"""CLI - command-line interface module"""
+"""CLI - command-line interface module
+
+Issue: where to do chdir(datadir)?  
+"""
 
 import yaml
 import click
@@ -20,16 +23,17 @@ from mklists import VALID_FILENAME_CHARS
               help="Backup depth [3]")
 @click.option('--debug', type=bool, is_flag=True,
               help="Run verbosely")
-@click.version_option('0.1.2', help="Show version and exit")
+@click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx, config, rules, datadir, htmldir, backupdir, backup_depth, debug):
-    """Rebuild plain-text todo lists using rules"""
+    """Tweak plain-text todo lists by rules"""
 
     if debug:
         print('Printing diagnostic information.')
 
-    # Hardwired config values (before reading optional config file)
+    # Hardwired default values (before reading optional config file)
+    # maybe -vv with count=True?
     ctx.obj = {
         'config': '.mklistsrc',
         'rules': ['.rules', ],
@@ -37,7 +41,11 @@ def cli(ctx, config, rules, datadir, htmldir, backupdir, backup_depth, debug):
         'htmldir': '.html',
         'backupdir': '.backups',
         'backup_depth': 3,
-        'debug': False}
+        'debug': False,
+        'verbose': False,
+        'valid_filename_characters': None,
+        'files2dirs': None,
+        'bad_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.']}
 
     if debug:
         click.echo('Hardwired config defaults:')
@@ -46,52 +54,53 @@ def cli(ctx, config, rules, datadir, htmldir, backupdir, backup_depth, debug):
 
     # If command line specifies non-default config file, use it
     if config:
-        using_nondefault_configfile = True
-        ctx.obj['config'] = config
         if debug:
-            print(f"Will use config file, {repr(ctx.obj['config'])}.")
-    else:
-        using_nondefault_configfile = False
+            print(f"Using config file, {repr(ctx.obj['config'])}.")
+        ctx.obj['config'] = config
 
     # Try to read configfile and use it to update ctx.obj
     # If configfile does not exist, write ctx.obj to a YAML file
     try:
         with open(ctx.obj['config']) as configfile:
             ctx.obj.update(yaml.load(configfile))
-        if debug:
-            print('Config settings after reading config file:')
-            for key, value in ctx.obj.items():
-                print("    ", key, "=", value)
+
     except FileNotFoundError:
         if using_nondefault_configfile:
             raise ConfigFileNotFoundError(f"File {repr(config)} not found.")
         else:
             print("Warning: No config file found; using hardwired defaults.")
 
+    # if 'rules' set on command line, possibly repeated
+    if debug:
+        print('Config settings after reading config file:')
+        for key, value in ctx.obj.items():
+            print("    ", key, "=", value)
+
     if rules:
         ctx.obj['rules'] = list(rules)
         if debug:
-            print(f"Will use rule file(s) {repr(ctx.obj['rules'])}.")
+            # for rulefile in rules:
+            print(f"Using rule file(s) {repr(ctx.obj['rules'])}.")
 
     if datadir:
         ctx.obj['datadir'] = datadir
         if debug:
-            print(f"Will use data folder {repr(ctx.obj['datadir'])}.")
+            print(f"Using data folder {repr(ctx.obj['datadir'])}.")
 
     if htmldir:
         ctx.obj['htmldir'] = htmldir
         if debug:
-            print(f"Will use urlified data folder {repr(ctx.obj['htmldir'])}.")
+            print(f"Using urlified data folder {repr(ctx.obj['htmldir'])}.")
 
     if backupdir:
         ctx.obj['backupdir'] = backupdir
         if debug:
-            print(f"Will use backups folder {repr(ctx.obj['htmldir'])}.")
+            print(f"Using backups folder {repr(ctx.obj['backupdir'])}.")
 
     if backup_depth:
         ctx.obj['backup_depth'] = backup_depth
         if debug:
-            print(f"Will keep last {repr(ctx.obj['backup_depth'])} backups.")
+            print(f"Will keep last {str(backup_depth)} backups.")
 
     if debug:
         ctx.obj['debug'] = debug
@@ -105,8 +114,10 @@ def cli(ctx, config, rules, datadir, htmldir, backupdir, backup_depth, debug):
 def init(ctx):
     """Initialize data folder"""
 
-    print(f"Creating mandatory default rule file: '.rules'.")
-    print(f"Creating optional config file {repr(ctx.obj['config'])}.")
+    print(f"If '.rules' does not exist,")
+    print(f"creating editable rule file: '.rules'." (use constant in rule.py)
+    print(f"If '.mklistsrc' does not exist,")
+    print(f"Writing settings to editable config file {repr(ctx.obj['config'])}.")
     # yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
 
 
@@ -115,15 +126,12 @@ def init(ctx):
 def make(ctx):
     """Remake lists as per rules"""
 
-    print(f"* Get rules: {repr(ctx.obj['rules'])}.")
-    print(f"* Check data folder: {repr(ctx.obj['datadir'])}.")
+    print(f"* Try to get rules: {repr(ctx.obj['rules'])}.")
     print(f"* Get data: {repr(ctx.obj['datadir'])}.")
     print(f"* Apply rules to data, modifying data dictionary.")
-    print(f"* Double-check for data loss??")
     print(f"* Create (or use) time-stamped folder within backup folder.")
     print(f"* Move files to time-stamped backup folder.")
     print(f"* Write out data dictionary as files in data folder.")
-    print(f"* Verify that no data lost?.")
     print(f"* Move files as per ['files2dirs'].")
 
 

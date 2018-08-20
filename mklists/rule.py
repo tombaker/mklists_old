@@ -1,4 +1,4 @@
-"""Rule docstring"""
+"""Rule module docstring"""
 
 import re
 import string
@@ -26,7 +26,7 @@ class Rule:
     initialized = False
     sources = []
 
-    def is_valid(self):
+    def is_valid(self):                        # also valid_filename_chars?
         """Returns True if instance of Rule is valid.
         """
         self._source_matchfield_and_target_sortorder_are_integers()

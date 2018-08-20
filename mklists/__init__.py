@@ -2,4 +2,5 @@
 
 import string
 
-VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
+VALID_FILENAME_CHARS = """\
+    :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
