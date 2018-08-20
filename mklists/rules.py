@@ -4,9 +4,13 @@ from collections import defaultdict
 import re
 import yaml
 from mklists.rule import Rule
+from mklists import VALID_FILENAME_CHARS
 
-def parse_yamlfiles_to_ruleslist(rulefiles):
-    """docstring"""
+
+def parse_rules(rulefiles, good_chars=VALID_FILENAME_CHARS, bad_pats=None):
+    """docstring
+        bad_pats: patterns (regular expressions) for invalid filenames
+    """
     parsed_yaml = _parse_yaml(rulefiles)
     rule_objects_list = _create_list_of_rule_objects(parsed_yaml)
     _rule_objects_are_valid(rule_objects_list)
@@ -37,23 +41,11 @@ def _create_list_of_rule_objects(rule_list_from_yaml: list = None):
     return list_of_rule_objects
 
 def _rule_objects_are_valid(list_of_rule_objects):
-    source_list_initialized = False
-    source_list = []
-
     for rule in list_of_rule_objects:
-        if not source_list_initialized:
-            source_list.append(rule.source)
-            source_list.append(rule.target)
-            source_list_initialized = True
-        if rule.source not in source_list:
-            raise SourceNotPrecedentedError("source has no precedent")
-        else:
-            source_list.append(rule.target)
-
         if rule.is_valid():
             pass
 
-        return True
+    return True
 
 def apply_rules_to_datalines(rules, datalines):
     """

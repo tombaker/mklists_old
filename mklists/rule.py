@@ -3,8 +3,8 @@
 import re
 import string
 from dataclasses import dataclass
+from mklists import VALID_FILENAME_CHARS
 
-VALID_FILENAME_CHARS = '@:-_=.{}{}'.format(string.ascii_letters, string.digits)
 
 @dataclass
 class Rule:
@@ -33,6 +33,7 @@ class Rule:
         self._source_matchpattern_is_valid()
         self._source_and_target_filenames_are_valid()
         self._source_is_not_equal_target()
+        self._source_has_been_initialized()
         return True
 
     def _source_matchfield_and_target_sortorder_are_integers(self):
@@ -70,6 +71,19 @@ class Rule:
             raise SourceEqualsTargetError("source must not be same as target.")
         return True
 
+    def _source_has_been_initialized(self):
+        """Returns True if source has previously been initialized."""
+        if not self.__class__.initialized:
+            self.__class__.sources.append(self.source)
+            self.__class__.initialized = True
+        if self.source not in self.__class__.sources:
+            print(f"In rule: {self}")
+            print(f"self.__class__.sources = {self.__class__.sources}")
+            raise BadSourceError(f"{repr(self.source)} not initialized.")
+        if self.target not in Rule.sources:
+            Rule.sources.append(self.target)
+        return True
+
 
 class RuleError(SystemExit):
     """Super-category for exceptions related to rules."""
@@ -89,3 +103,6 @@ class SourceEqualsTargetError(RuleError):
 
 class SourceMatchpatternError(RuleError):
     """Match pattern does not compile correctly as a regular expression."""
+
+class BadSourceError(RuleError):
+    """Source has not been initialized as a source (has no precedent)."""

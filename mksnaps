@@ -1,0 +1,18 @@
+MKLISTS=/Users/tbaker/github/tombaker/mklists/mklists
+TESTS=/Users/tbaker/github/tombaker/mklists/tests
+SNAPS=/Users/tbaker/github/tombaker/mklists/snaps
+
+cd $MKLISTS
+cat cli.py         | enscript --media=A4 --header='20%D        cli.py||Page $% of $=' -cp - -f Courier7 >$SNAPS/cli.ps           2>/dev/null
+cat datadir.py     | enscript --media=A4 --header='20%D    datadir.py||Page $% of $=' -cp - -f Courier7 >$SNAPS/datadir.ps       2>/dev/null
+cat rule.py        | enscript --media=A4 --header='20%D       rule.py||Page $% of $=' -cp - -f Courier7 >$SNAPS/rule.ps          2>/dev/null
+cat rules.py       | enscript --media=A4 --header='20%D      rules.py||Page $% of $=' -cp - -f Courier7 >$SNAPS/rules.ps         2>/dev/null
+
+cd $TESTS
+cat conftest.py    | enscript --media=A4 --header='20%D   conftest.py||Page $% of $=' -cp - -f Courier7 >$SNAPS/conftest.ps      2>/dev/null
+cat test_rule.py   | enscript --media=A4 --header='20%D  test_rule.py||Page $% of $=' -cp - -f Courier7 >$SNAPS/test_rule.ps     2>/dev/null
+cat test_rules.py  | enscript --media=A4 --header='20%D test_rules.py||Page $% of $=' -cp - -f Courier7 >$SNAPS/test_rules.ps    2>/dev/null
+
+cd $SNAPS
+open .
+

@@ -2,6 +2,7 @@
 
 import yaml
 import click
+from mklists import VALID_FILENAME_CHARS
 
 
 @click.group()
