@@ -9,12 +9,12 @@ from mklists import VALID_FILENAME_CHARS
 
 
 @click.group()
+@click.option('--datadir', type=str, metavar='DIRNAME',
+              help="Working data directory [.]")
 @click.option('--rules', type=str, metavar='FILENAME', multiple=True,
               help="Rule file - repeatable [.rules]")
-@click.option('--datadir', type=str, metavar='DIRNAME',
-              help="Data folder [.]")
 @click.option('--htmldir', type=str, metavar='DIRNAME',
-              help="Data folder, urlified [.html]")
+              help="Urlified-data directory [.html]")
 @click.option('--backupdir', type=str, metavar='DIRNAME',
               help="Backup folder [.backups]")
 @click.option('--backup-depth', type=int, metavar='INT',
@@ -24,11 +24,12 @@ from mklists import VALID_FILENAME_CHARS
 @click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, rules, datadir, htmldir, backupdir, backup_depth, debug):
+def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
     """Tweak plain-text todo lists by rules"""
 
     if debug:
         print('Printing diagnostic information.')
+        print(VALID_FILENAME_CHARS)
 
     # Hardwired default values (before reading '.mklistsrc')
     ctx.obj = {
