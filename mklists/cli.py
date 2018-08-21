@@ -9,13 +9,13 @@ from mklists import VALID_FILENAME_CHARS
 
 
 @click.group()
-@click.option('--datadir', type=str, metavar='DIRNAME',
+@click.option('--datadir', type=str, metavar='DIRPATH',
               help="Working data directory [.]")
 @click.option('--rules', type=str, metavar='FILENAME', multiple=True,
               help="Rule file - repeatable [.rules]")
-@click.option('--htmldir', type=str, metavar='DIRNAME',
+@click.option('--htmldir', type=str, metavar='DIRPATH',
               help="Urlified-data directory [.html]")
-@click.option('--backupdir', type=str, metavar='DIRNAME',
+@click.option('--backupdir', type=str, metavar='DIRPATH',
               help="Backup folder [.backups]")
 @click.option('--backup-depth', type=int, metavar='INT',
               help="Backup depth [3]")
@@ -26,6 +26,8 @@ from mklists import VALID_FILENAME_CHARS
 @click.pass_context
 def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
     """Tweak plain-text todo lists by rules"""
+
+    ### CHANGE HERE TO WORKING DIRECTORY
 
     if debug:
         print('Printing diagnostic information.')
@@ -52,7 +54,7 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
 
     # Try to read configfile and use it to update ctx.obj
     try:
-        with open(ctx.obj['config']) as configfile:
+        with open('.mklistsrc') as configfile:
             ctx.obj.update(yaml.load(configfile))
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"Mandatory {repr(config)} not found.")
@@ -101,10 +103,10 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
 def init(ctx):
     """Initialize data folder"""
 
-    print(f"If '.rules' does not exist,")
-    print(f"creating editable rule file: '.rules'." (use constant in rule.py)
-    print(f"If '.mklistsrc' does not exist,")
-    print(f"Creating mandatory config file {repr(ctx.obj['config'])}.")
+    print(f"Create editable rule file: '.rules' with defaults.")
+    print(f"If rule file already exists, print warning and skip.")
+    print(f"Create mandatory config file '.mklistsrc'.")
+    print(f"If config file already exists, print warning and skip.")
     # yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
 
 
