@@ -21,19 +21,17 @@ from mklists import VALID_FILENAME_CHARS, MKLISTSRC
               help="Urlified-data directory [.html]")
 @click.option('--backupdir', type=str, metavar='DIRPATH',
               help="Backup folder [.backups]")
-@click.option('--backup-depth', type=int, metavar='INT',
-              help="Backup depth [3]")
-@click.option('--debug', type=bool, is_flag=True,
-              help="Run verbosely")
+@click.option('--verbose', type=bool, is_flag=True, help="Run verbosely")
+@click.option('--vverbose', type=bool, is_flag=True, help="Run very verbosely")
 @click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
+def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
     """Tweak plain-text todo lists by rules"""
 
     ### CHANGE HERE TO WORKING DIRECTORY - test:
 
-    if debug:
+    if vverbose:
         print('Printing diagnostic information.')
         print(VALID_FILENAME_CHARS)
 
@@ -44,14 +42,14 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
         'htmldir': '.html',
         'backupdir': '.backups',
         'backup_depth': 3,
-        'debug': False,
+        'verbose': False,
         'verbose': False,
         'valid_filename_characters': VALID_FILENAME_CHARS,
         'files2dirs': None,
         'bad_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.']}
 
     # maybe -vv with count=True?
-    if debug:
+    if vverbose:
         click.echo('Hardwired configuration defaults:')
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
@@ -63,7 +61,7 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"Mandatory {repr(config)} not found.")
 
-    if debug:
+    if verbose:
         print('Config settings after reading config file:')
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
@@ -71,32 +69,27 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
     # if 'rules' set on command line, possibly repeated
     if rules:
         ctx.obj['rules'] = list(rules)
-        if debug:
+        if verbose:
             # for rulefile in rules:
             print(f"Using rule file(s) {repr(ctx.obj['rules'])}.")
 
     if datadir:
         ctx.obj['datadir'] = datadir
-        if debug:
+        if verbose:
             print(f"Using data folder {repr(ctx.obj['datadir'])}.")
 
     if htmldir:
         ctx.obj['htmldir'] = htmldir
-        if debug:
+        if verbose:
             print(f"Using urlified data folder {repr(ctx.obj['htmldir'])}.")
 
     if backupdir:
         ctx.obj['backupdir'] = backupdir
-        if debug:
+        if verbose:
             print(f"Using backups folder {repr(ctx.obj['backupdir'])}.")
 
-    if backup_depth:
-        ctx.obj['backup_depth'] = backup_depth
-        if debug:
-            print(f"Will keep last {str(backup_depth)} backups.")
-
-    if debug:
-        ctx.obj['debug'] = debug
+    if verbose:
+        ctx.obj['verbose'] = verbose
         print('Final config settings:')
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
