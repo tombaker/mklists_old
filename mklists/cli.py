@@ -14,7 +14,7 @@ from mklists import VALID_FILENAME_CHARS, MKLISTSRC
 
 @click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
-              help="Working data directory [.]")
+              help="Working directory [.]")
 @click.option('--rules', type=str, metavar='FILENAME', multiple=True,
               help="Rule file - repeatable [.rules]")
 @click.option('--htmldir', type=str, metavar='DIRPATH',
@@ -28,8 +28,6 @@ from mklists import VALID_FILENAME_CHARS, MKLISTSRC
 @click.pass_context
 def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
     """Tweak plain-text todo lists by rules"""
-
-    ### CHANGE HERE TO WORKING DIRECTORY - test:
 
     if vverbose:
         print('Printing diagnostic information.')
@@ -48,7 +46,17 @@ def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
         'files2dirs': None,
         'bad_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.']}
 
-    # maybe -vv with count=True?
+    if datadir:
+        try:
+            os.chdir(datadir)
+            if verbose:
+                print(f"Changing to working directory {repr(datadir)}.")
+        except FileNotFoundError:
+            raise DatadirNotAccessibleError(f"{datadir} not accessible.")
+
+    ### CHANGE HERE TO WORKING DIRECTORY - test:
+    print(os.getcwd())
+
     if vverbose:
         click.echo('Hardwired configuration defaults:')
         for key, value in ctx.obj.items():
@@ -59,9 +67,9 @@ def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
         with open(MKLISTSRC) as configfile:
             ctx.obj.update(yaml.load(configfile))
     except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"Mandatory {repr(config)} not found.")
+        raise ConfigFileNotFoundError(f"{repr(MKLISTSRC)} not found.")
 
-    if verbose:
+    if vverbose:
         print('Config settings after reading config file:')
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
@@ -72,11 +80,6 @@ def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
         if verbose:
             # for rulefile in rules:
             print(f"Using rule file(s) {repr(ctx.obj['rules'])}.")
-
-    if datadir:
-        ctx.obj['datadir'] = datadir
-        if verbose:
-            print(f"Using data folder {repr(ctx.obj['datadir'])}.")
 
     if htmldir:
         ctx.obj['htmldir'] = htmldir
@@ -127,6 +130,8 @@ def make(ctx):
 def verify(ctx):
     """Check rules and data folder, verbosely"""
 
+    print(os.getcwd())
+
     rules = ctx.obj['rules']
 
     for rulefile in rules:
@@ -134,5 +139,12 @@ def verify(ctx):
     print(f"* Check data folder {repr(ctx.obj['datadir'])}, verbosely.")
 
 
-class ConfigFileNotFoundError(SystemExit):
-    """Specified (non-default) configuration file was not found"""
+class ConfigError(SystemExit):
+    """Category of errors related to configuration"""
+
+class ConfigFileNotFoundError(ConfigError):
+    """Hardwired configuration file '.mklistsrc' was not found"""
+    
+
+class DatadirNotAccessibleError(ConfigError):
+    """Non-default working data directory is not accessible"""
