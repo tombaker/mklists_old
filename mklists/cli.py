@@ -1,11 +1,15 @@
 """CLI - command-line interface module
 
-Issue: where to do chdir(datadir)?  
+Issues: 
+* chdir(datadir) right at beginning?
+* flag to opt in/out of backup option? No - only question should be "where?"
+* flag to opt in/out of HTML option?
 """
 
 import yaml
 import click
-from mklists import VALID_FILENAME_CHARS
+import os
+from mklists import VALID_FILENAME_CHARS, MKLISTSRC
 
 
 @click.group()
@@ -27,7 +31,7 @@ from mklists import VALID_FILENAME_CHARS
 def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
     """Tweak plain-text todo lists by rules"""
 
-    ### CHANGE HERE TO WORKING DIRECTORY
+    ### CHANGE HERE TO WORKING DIRECTORY - test:
 
     if debug:
         print('Printing diagnostic information.')
@@ -42,7 +46,7 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
         'backup_depth': 3,
         'debug': False,
         'verbose': False,
-        'valid_filename_characters': None,
+        'valid_filename_characters': VALID_FILENAME_CHARS,
         'files2dirs': None,
         'bad_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.']}
 
@@ -54,7 +58,7 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
 
     # Try to read configfile and use it to update ctx.obj
     try:
-        with open('.mklistsrc') as configfile:
+        with open(MKLISTSRC) as configfile:
             ctx.obj.update(yaml.load(configfile))
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"Mandatory {repr(config)} not found.")
@@ -103,10 +107,8 @@ def cli(ctx, datadir, rules, htmldir, backupdir, backup_depth, debug):
 def init(ctx):
     """Initialize data folder"""
 
-    print(f"Create editable rule file: '.rules' with defaults.")
-    print(f"If rule file already exists, print warning and skip.")
-    print(f"Create mandatory config file '.mklistsrc'.")
-    print(f"If config file already exists, print warning and skip.")
+    print(f"Create basic '.rules' - or if exists, print warning and skip.")
+    print(f"Create '.mklistsrc' - or if exists, print warning and skip.")
     # yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
 
 
@@ -115,13 +117,16 @@ def init(ctx):
 def make(ctx):
     """Remake lists as per rules"""
 
-    print(f"* Try to get rules: {repr(ctx.obj['rules'])}.")
-    print(f"* Get data: {repr(ctx.obj['datadir'])}.")
-    print(f"* Apply rules to data, modifying data dictionary.")
-    print(f"* Create (or use) time-stamped folder within backup folder.")
-    print(f"* Move files to time-stamped backup folder.")
-    print(f"* Write out data dictionary as files in data folder.")
-    print(f"* Move files as per ['files2dirs'].")
+    print(f"* Already got configuration in main mklists command.")
+    print(f"* Already set datadir to current working directory.")
+    print(f"* Initialize datadict from with datalines from files in datadir.")
+    print(f"* Get rules from rulefiles (in principle anywhere).")
+    print(f"* Apply rules to datalines, modifying in-memory datadict.")
+    print(f"* Backup option: Create time-stamped backupdir.")
+    print(f"* Backup option: Move existing files to backupdir.")
+    print(f"* Write out datadict values as files in datadir.")
+    print(f"* HTML option: Write out datadict values as files in htmldir.")
+    print(f"* Move files outside datadir as per ['files2dirs'].")
 
 
 @cli.command()
@@ -129,7 +134,10 @@ def make(ctx):
 def verify(ctx):
     """Check rules and data folder, verbosely"""
 
-    print(f"* Get rules: {repr(ctx.obj['rules'])}, verbosely.")
+    rules = ctx.obj['rules']
+
+    for rulefile in rules:
+        print(f"* Get rules from file {repr(rulefile)}, verbosely.")
     print(f"* Check data folder {repr(ctx.obj['datadir'])}, verbosely.")
 
 
