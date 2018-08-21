@@ -9,8 +9,6 @@ from mklists import VALID_FILENAME_CHARS
 
 
 @click.group()
-@click.option('--config', type=str, metavar='FILENAME',
-              help="Config file [.mklistsrc]")
 @click.option('--rules', type=str, metavar='FILENAME', multiple=True,
               help="Rule file - repeatable [.rules]")
 @click.option('--datadir', type=str, metavar='DIRNAME',
@@ -26,16 +24,14 @@ from mklists import VALID_FILENAME_CHARS
 @click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, config, rules, datadir, htmldir, backupdir, backup_depth, debug):
+def cli(ctx, rules, datadir, htmldir, backupdir, backup_depth, debug):
     """Tweak plain-text todo lists by rules"""
 
     if debug:
         print('Printing diagnostic information.')
 
-    # Hardwired default values (before reading optional config file)
-    # maybe -vv with count=True?
+    # Hardwired default values (before reading '.mklistsrc')
     ctx.obj = {
-        'config': '.mklistsrc',
         'rules': ['.rules', ],
         'datadir': '.',
         'htmldir': '.html',
@@ -47,35 +43,25 @@ def cli(ctx, config, rules, datadir, htmldir, backupdir, backup_depth, debug):
         'files2dirs': None,
         'bad_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.']}
 
+    # maybe -vv with count=True?
     if debug:
-        click.echo('Hardwired config defaults:')
+        click.echo('Hardwired configuration defaults:')
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
 
-    # If command line specifies non-default config file, use it
-    if config:
-        if debug:
-            print(f"Using config file, {repr(ctx.obj['config'])}.")
-        ctx.obj['config'] = config
-
     # Try to read configfile and use it to update ctx.obj
-    # If configfile does not exist, write ctx.obj to a YAML file
     try:
         with open(ctx.obj['config']) as configfile:
             ctx.obj.update(yaml.load(configfile))
-
     except FileNotFoundError:
-        if using_nondefault_configfile:
-            raise ConfigFileNotFoundError(f"File {repr(config)} not found.")
-        else:
-            print("Warning: No config file found; using hardwired defaults.")
+        raise ConfigFileNotFoundError(f"Mandatory {repr(config)} not found.")
 
-    # if 'rules' set on command line, possibly repeated
     if debug:
         print('Config settings after reading config file:')
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
 
+    # if 'rules' set on command line, possibly repeated
     if rules:
         ctx.obj['rules'] = list(rules)
         if debug:
@@ -117,7 +103,7 @@ def init(ctx):
     print(f"If '.rules' does not exist,")
     print(f"creating editable rule file: '.rules'." (use constant in rule.py)
     print(f"If '.mklistsrc' does not exist,")
-    print(f"Writing settings to editable config file {repr(ctx.obj['config'])}.")
+    print(f"Creating mandatory config file {repr(ctx.obj['config'])}.")
     # yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
 
 
