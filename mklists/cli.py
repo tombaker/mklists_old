@@ -47,10 +47,10 @@ def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
         'bad_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.']}
 
     if datadir:
+        session_datadir = datadir
         try:
-            os.chdir(datadir)
-            if verbose:
-                print(f"Changing to working directory {repr(datadir)}.")
+            print(f"Changing to working directory {repr(session_datadir)}.")
+            os.chdir(session_datadir)
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} not accessible.")
 
@@ -130,13 +130,13 @@ def make(ctx):
 def verify(ctx):
     """Check rules and data folder, verbosely"""
 
-    print(os.getcwd())
-
     rules = ctx.obj['rules']
 
     for rulefile in rules:
         print(f"* Get rules from file {repr(rulefile)}, verbosely.")
     print(f"* Check data folder {repr(ctx.obj['datadir'])}, verbosely.")
+
+    print(f"We are still in {os.getcwd()}.")
 
 
 class ConfigError(SystemExit):

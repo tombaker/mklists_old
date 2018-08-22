@@ -5,7 +5,6 @@ html_folder: .html
 rules: 
 - .rules
 verbose: false
-foobar: false
 valid_filename_characters: ':@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 files2dirs:
     abc: /Users/tbaker/uu/abc
