@@ -14,13 +14,13 @@ from mklists import VALID_FILENAME_CHARS, MKLISTSRC
 
 @click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
-              help="Working directory [.]")
+              help="Set DIRPATH as data directory [./]")
 @click.option('--rules', type=str, metavar='FILENAME', multiple=True,
-              help="Rule file - repeatable [.rules]")
-@click.option('--htmldir', type=str, metavar='DIRPATH',
-              help="Urlified-data directory [.html]")
+              help="Use non-default rule file - repeatable [.rules]")
+@click.option('--htmldir', type=str, metavar='DIRPATH',  # change to flag?
+              help="Copy data files, urlified, to DIRPATH")
 @click.option('--backupdir', type=str, metavar='DIRPATH',
-              help="Backup folder [.backups]")
+              help="Back up data files to DIRPATH")
 @click.option('--verbose', type=bool, is_flag=True, help="Run verbosely")
 @click.option('--vverbose', type=bool, is_flag=True, help="Run very verbosely")
 @click.version_option('0.1.3', help="Show version and exit")
@@ -78,18 +78,18 @@ def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
     if rules:
         ctx.obj['rules'] = list(rules)
         if verbose:
-            # for rulefile in rules:
-            print(f"Using rule file(s) {repr(ctx.obj['rules'])}.")
+            for rulefile in rules:
+                print(f"Will use rule file {repr(rulefile)}.")
 
     if htmldir:
         ctx.obj['htmldir'] = htmldir
         if verbose:
-            print(f"Using urlified data folder {repr(ctx.obj['htmldir'])}.")
+            print(f"Will copy new data files, urlified, to {repr(htmldir)}.")
 
     if backupdir:
         ctx.obj['backupdir'] = backupdir
         if verbose:
-            print(f"Using backups folder {repr(ctx.obj['backupdir'])}.")
+            print(f"Will back up existing data files to {repr(backupdir)}.")
 
     if verbose:
         ctx.obj['verbose'] = verbose
@@ -103,9 +103,12 @@ def cli(ctx, datadir, rules, htmldir, backupdir, verbose, vverbose):
 def init(ctx):
     """Initialize data folder"""
 
-    print(f"Create basic '.rules' - or if exists, print warning and skip.")
-    print(f"Create '.mklistsrc' - or if exists, print warning and skip.")
-    # yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+    print(f"Create basic '.rules' or, if already exists, ask to replace.")
+    print(f"Create '.mklistsrc' or, if already exists, ask to replace.")
+    # if MKLISTS exists:
+    #    prompt: replace?
+    # with open(MKLISTS), 'w') as fout:
+    #     yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
 
 
 @cli.command()
