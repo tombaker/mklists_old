@@ -1,10 +1,4 @@
-"""CLI - command-line interface module
-
-Issues: 
-* chdir(datadir) right at beginning?
-* flag to opt in/out of backup option? No - only question should be "where?"
-* flag to opt in/out of HTML option?
-"""
+"""CLI - command-line interface module"""
 
 import yaml
 import click
@@ -150,7 +144,7 @@ def make(ctx, urlify_dir, backup_dir, backup_depth):
 @cli.command()
 @click.pass_context
 def verify(ctx):
-    """Check rules and data folder, verbosely"""
+    """Check rules and data, verbosely"""
 
     if verbose:
         print('Running subcommand `verify`.')
