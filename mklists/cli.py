@@ -11,6 +11,8 @@ from mklists.rules import parse_rules, DEFAULT_RULE_FILE
               help="Set DIRPATH as current data directory")
 @click.option('--rules', type=str, metavar='FILENAME', multiple=True,
               help="Use non-default rule file - repeatable")
+@click.option('--init', type=bool, is_flag=True,
+              help="Initialize current directory as data directory.")
 @click.option('--backup', type=bool, is_flag=True,
               help="Back up input data to .backups/YYYYMMDD_HHMMSS/")
 @click.option('--urlify', type=bool, is_flag=True,
@@ -19,7 +21,7 @@ from mklists.rules import parse_rules, DEFAULT_RULE_FILE
 @click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, datadir, rules, backup, urlify, verbose):
+def cli(ctx, datadir, rules, init, backup, urlify, verbose):
     """Evolve plain-text todo lists by tweaking rules"""
 
     if verbose:
@@ -28,6 +30,7 @@ def cli(ctx, datadir, rules, backup, urlify, verbose):
     ctx.obj = {
         'rules': ['.rules', ],
         'datadir': '.',
+        'init': False,
         'urlify': False,
         'urlify_dir': '.urlified',
         'backup': False,
@@ -52,12 +55,27 @@ def cli(ctx, datadir, rules, backup, urlify, verbose):
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
 
-    try:
-        print(f"Configuration - try to read {repr(MKLISTSRC)}")
-        with open(MKLISTSRC) as configfile:
-            ctx.obj.update(yaml.load(configfile))
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"{MKLISTSRC} not found.")
+    if not os.path.exists(MKLISTSRC):
+        print(f"Required configuration file {repr(MKLISTSRC)} not found.")
+        if init:
+            print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
+            with open(MKLISTSRC, 'w') as fout:
+                yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+        else:
+            raise ConfigFileNotFoundError(f"Run `mklists --init`.")
+    
+    with open(MKLISTSRC) as configfile:
+        ctx.obj.update(yaml.load(configfile))
+    print(f"Configuration - using {repr(MKLISTSRC)}")
+
+    if not os.path.exists(RULEFILE):
+        print(f"At least one rule file named {repr(RULEFILE)} is required.")
+        if init:
+            print(f"Creating {repr(RULEFILE)} - customize as needed.")
+            with open(RULEFILE, 'w') as fout:
+                fout.write(DEFAULT_RULE_FILE)
+        else:
+            raise ConfigFileNotFoundError(f"Run `mklists --init`.")
 
     if verbose:
         print(f"Configuration - after reading {repr(MKLISTSRC)}:")
@@ -81,32 +99,6 @@ def cli(ctx, datadir, rules, backup, urlify, verbose):
         ctx.obj['urlify'] = urlify
         if verbose:
             print(f"Will urlify data to {repr(ctx.obj['urlify_dir'])}.")
-
-
-@cli.command()
-@click.pass_context
-def init(ctx):
-    """Initialize data folder"""
-
-    if verbose:
-        print('Running subcommand `init`.')
-
-    all_rule_files = ctx.obj['rules'].extend(RULEFILE)
-    for file in all_rule_files:
-        if os.path.exists(file):
-            sys.exit(f"To replace rule files, delete files and re-run.")
-        else:
-            if verbose:
-                print(f"Creating default rule file - edit as desired.")
-            with open(RULEFILE, 'w') as fout:
-                fout.write(DEFAULT_RULE_FILE)
-
-    if os.path.exists(MKLISTSRC):
-        sys.exit(f"To replace {repr(MKLISTSRC)}, delete and re-run.")
-    else:
-        print(f"Creating default {repr(MKLISTSRC)} - edit as desired.")
-        with open(MKLISTS, 'w') as fout:
-            yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
 
 
 @cli.command()
@@ -156,6 +148,7 @@ def verify(ctx):
 
 class ConfigError(SystemExit):
     """Category of errors related to configuration"""
+
 
 class ConfigFileNotFoundError(ConfigError):
     """Hardwired configuration file '.mklistsrc' was not found"""
