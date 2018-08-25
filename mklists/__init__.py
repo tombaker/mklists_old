@@ -6,3 +6,5 @@ VALID_FILENAME_CHARS = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
 
 MKLISTSRC = '.mklistsrc'
+
+RULEFILE = '.rules'

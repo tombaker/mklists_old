@@ -1,3 +1,3 @@
 mklists
 
-Rebuild plain-text todo lists using rules
+Evolve plain-text todo lists by tweaking rules

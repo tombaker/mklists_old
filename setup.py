@@ -7,7 +7,7 @@ setup(
     name = 'mklists',
     version = '0.1.1',
     license = 'MIT',
-    description = 'Rebuild plain-text todo lists using rules',
+    description = 'Evolve plain-text todo lists by tweaking rules',
     long_description=long_description,
     author = 'Tom Baker',
     author_email='tom@tombaker.org',
