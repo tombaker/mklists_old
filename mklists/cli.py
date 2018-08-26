@@ -90,13 +90,17 @@ def cli(ctx, datadir, rules, init, backup, urlify, verbose):
             print(f"Will urlify data to {repr(ctx.obj['urlify_dir'])}.")
 
     for rulefile in ctx.obj['rules']:
-        at_least_one_rulefile_exists = []
-        at_least_one_rulefile_exists.append(os.path.exists(rulefile))
-        if not True in at_least_one_rulefile_exists:
-            if init:
-                print(f"Creating {repr(RULEFILE)} - customize as needed.")
-                with open(RULEFILE, 'w') as fout:
-                    fout.write(DEFAULT_RULE_FILE)
+        exists = os.path.exists(rulefile)
+        if exists:
+            at_least_one_rulefile_exists = True
+        else:
+            print(f"Warning: {rulefile} does not exist or not accessible.")
+
+    if not at_least_one_rulefile_exists:
+        if init:
+            print(f"Creating {repr(RULEFILE)} - customize as needed.")
+            with open(RULEFILE, 'w') as fout:
+                fout.write(DEFAULT_RULE_FILE)
 
 
 @cli.command()
@@ -113,7 +117,7 @@ def dryrun(ctx):
 
 
 @cli.command()
-@click.option('--urlify_dir', type=str, metavar='DIRPATH',
+@click.option('--urlify-dir', type=str, metavar='DIRPATH',
               help="Copy data files, urlified, to DIRPATH")
 @click.option('--backup-dir', type=str, metavar='DIRPATH',
               help="Back up data files to DIRPATH")
