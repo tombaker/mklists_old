@@ -10,9 +10,9 @@ from mklists.rules import parse_rules, DEFAULT_RULE_FILE
 @click.option('--datadir', type=str, metavar='DIRPATH',
               help="Set DIRPATH as current data directory")
 @click.option('--rules', type=str, metavar='FILENAME', multiple=True,
-              help="Use non-default rule file - repeatable")
+              help="Use non-default rule file - repeat to sequence")
 @click.option('--init', type=bool, is_flag=True,
-              help="Initialize current directory as data directory.")
+              help="Write config files for first-time run or dryrun")
 @click.option('--backup', type=bool, is_flag=True,
               help="Back up input data to .backups/YYYYMMDD_HHMMSS/")
 @click.option('--urlify', type=bool, is_flag=True,
@@ -30,13 +30,11 @@ def cli(ctx, datadir, rules, init, backup, urlify, verbose):
     ctx.obj = {
         'rules': ['.rules', ],
         'datadir': '.',
-        'init': False,
         'urlify': False,
         'urlify_dir': '.urlified',
         'backup': False,
         'backup_dir': '.backups',
         'backup_depth': 3,
-        'verbose': False,
         'verbose': False,
         'valid_filename_characters': VALID_FILENAME_CHARS,
         'bad_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.'],
@@ -62,27 +60,18 @@ def cli(ctx, datadir, rules, init, backup, urlify, verbose):
             with open(MKLISTSRC, 'w') as fout:
                 yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
         else:
-            raise ConfigFileNotFoundError(f"Run `mklists --init`.")
+            raise ConfigFileNotFoundError(f"Run `mklists --init dryrun`.")
     
     with open(MKLISTSRC) as configfile:
         ctx.obj.update(yaml.load(configfile))
     print(f"Configuration - using {repr(MKLISTSRC)}")
 
-    if not os.path.exists(RULEFILE):
-        print(f"At least one rule file named {repr(RULEFILE)} is required.")
-        if init:
-            print(f"Creating {repr(RULEFILE)} - customize as needed.")
-            with open(RULEFILE, 'w') as fout:
-                fout.write(DEFAULT_RULE_FILE)
-        else:
-            raise ConfigFileNotFoundError(f"Run `mklists --init`.")
-
     if verbose:
         print(f"Configuration - after reading {repr(MKLISTSRC)}:")
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
-        ctx.obj['verbose'] = verbose  # set only after showing MKLISTSRC
-        print(f"Configuration - checking for options set on command line")
+        ctx.obj['verbose'] = verbose
+        print(f"Checking for options set on command line...")
 
     if rules:
         ctx.obj['rules'] = list(rules)
@@ -100,6 +89,28 @@ def cli(ctx, datadir, rules, init, backup, urlify, verbose):
         if verbose:
             print(f"Will urlify data to {repr(ctx.obj['urlify_dir'])}.")
 
+    for rulefile in ctx.obj['rules']:
+        at_least_one_rulefile_exists = []
+        at_least_one_rulefile_exists.append(os.path.exists(rulefile))
+        if not True in at_least_one_rulefile_exists:
+            if init:
+                print(f"Creating {repr(RULEFILE)} - customize as needed.")
+                with open(RULEFILE, 'w') as fout:
+                    fout.write(DEFAULT_RULE_FILE)
+
+
+@cli.command()
+@click.pass_context
+def dryrun(ctx):
+    """Read-only dry run (see also --init)"""
+
+    if verbose:
+        print('Running subcommand `dryrun`.')
+
+    for rulefile in ctx.obj['rules']:
+        print(f"* Get rules from file {repr(rulefile)}, verbosely.")
+    print(f"* Check data folder {repr(ctx.obj['datadir'])}, verbosely.")
+
 
 @cli.command()
 @click.option('--urlify_dir', type=str, metavar='DIRPATH',
@@ -109,11 +120,11 @@ def cli(ctx, datadir, rules, init, backup, urlify, verbose):
 @click.option('--backup-depth', type=int, metavar='INT',
               help="Backup depth [3]")
 @click.pass_context
-def make(ctx, urlify_dir, backup_dir, backup_depth):
-    """Process lists as per rules"""
+def run(ctx, urlify_dir, backup_dir, backup_depth):
+    """Process and rewrite lists as per rules"""
 
     if verbose:
-        print('Running subcommand `make`.')
+        print('Running subcommand `run`.')
 
     session_datadir = ctx.obj['datadir']
     urlify_dir = ctx.obj['urlify_dir']
@@ -132,18 +143,6 @@ def make(ctx, urlify_dir, backup_dir, backup_depth):
     print(f"* HTML option: Write out datadict values as files in urlify_dir.")
     print(f"* Move files outside datadir as per ['files2dirs'].")
 
-
-@cli.command()
-@click.pass_context
-def verify(ctx):
-    """Check rules and data, verbosely"""
-
-    if verbose:
-        print('Running subcommand `verify`.')
-
-    for rulefile in ctx.obj['rules']:
-        print(f"* Get rules from file {repr(rulefile)}, verbosely.")
-    print(f"* Check data folder {repr(ctx.obj['datadir'])}, verbosely.")
 
 
 class ConfigError(SystemExit):
