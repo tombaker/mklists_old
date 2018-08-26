@@ -2,7 +2,7 @@
 
 import yaml
 from mklists.rule import Rule
-from mklists import VALID_FILENAME_CHARS, DEFAULT_RULE_FILE
+from mklists import VALID_FILENAME_CHARS
 
 
 def parse_rules(rulefiles, good_chars=VALID_FILENAME_CHARS, bad_pats=None):
