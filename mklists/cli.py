@@ -108,7 +108,7 @@ def cli(ctx, datadir, globalrules, rules, init, backup, urlify, verbose):
             print(f"Will urlify data to {repr(ctx.obj['urlify_dir'])}.")
 
     if verbose:
-        print(f"Configuration - after overriding with command-line options:"
+        print(f"Configuration - after overriding with command-line options:")
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
 
@@ -123,16 +123,6 @@ def cli(ctx, datadir, globalrules, rules, init, backup, urlify, verbose):
             print(f"Creating {repr(LOCAL_RULEFILE_NAME)} - tweak as needed.")
             with open(LOCAL_RULEFILE_NAME, 'w') as fout:
                 fout.write(LOCAL_RULE_FILE_STARTER)
-
-    if not os.path.exists(ctx.obj['rules']):
-    for rulefile in global_rules local_rules:
-        exists = os.path.exists(rulefile)
-        if exists:
-            at_least_one_rulefile_exists = True
-        else:
-            print(f"Warning: {rulefile} does not exist or not accessible.")
-
-        local_rules = ctx.obj['rules']
 
 
 @cli.command()
