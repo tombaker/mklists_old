@@ -4,6 +4,13 @@ import glob
 import os
 import re
 from dataclasses import dataclass
+from mklists import (
+    BadFilenameError,
+    BlankLinesError,
+    DatadirHasNonFilesError,
+    NoDataError,
+    NoDatadirError,
+    NotUTF8Error)
 
 
 @dataclass
@@ -111,30 +118,3 @@ class Datadir:
             raise NoDataError('No data to process.')
         return self.datalines
 
-
-class DataError(SystemExit):
-    """Superclass for errors relating to data."""
-
-
-class BadFilenameError(DataError):
-    """Filename is bad (ie, matches a blacklisted pattern)."""
-
-
-class BlankLinesError(DataError):
-    """File contains blank lines."""
-
-
-class DatadirHasNonFilesError(DataError):
-    """Data directory has visible non-file objects (eg, links, directories."""
-
-
-class NoDataError(DataError):
-    """There is no data to process."""
-
-
-class NoDatadirError(DataError):
-    """Data directory is not found or not accessible."""
-
-
-class NotUTF8Error(DataError):
-    """File is not UTF8-encoded."""

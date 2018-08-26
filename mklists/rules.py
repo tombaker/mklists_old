@@ -2,7 +2,10 @@
 
 import yaml
 from mklists.rule import Rule
-from mklists import VALID_FILENAME_CHARS
+from mklists import (
+    VALID_FILENAME_CHARS,
+    RuleFileNotFoundError,
+    BadYamlRule)
 
 
 def parse_rules(rulefiles, good_chars=VALID_FILENAME_CHARS, bad_pats=None):
@@ -46,16 +49,4 @@ def _rule_objects_are_valid(list_of_rule_objects):
         if rule.is_valid(): # add bad_pats?
             pass
     return True
-
-
-class RulesErrors(SystemExit):
-    """Category of exceptions related to sets or rules."""
-
-
-class RuleFileNotFoundError(RulesErrors):
-    """Rule file not found or not accessible."""
-
-
-class BadYamlRule(RulesErrors):
-    """Rule is badly formed in YAML source."""
 

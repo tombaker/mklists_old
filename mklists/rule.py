@@ -3,7 +3,14 @@
 import re
 import string
 from dataclasses import dataclass
-from mklists import VALID_FILENAME_CHARS
+from mklists import (
+    VALID_FILENAME_CHARS,
+    RuleError,
+    NotIntegerError,
+    BadFilenameError,
+    SourceEqualsTargetError,
+    SourceMatchpatternError,
+    BadSourceError)
 
 
 @dataclass
@@ -84,25 +91,3 @@ class Rule:
             Rule.sources.append(self.target)
         return True
 
-
-class RuleError(SystemExit):
-    """Super-category for exceptions related to rules."""
-
-
-class NotIntegerError(RuleError):
-    """Value is not an integer."""
-
-
-class BadFilenameError(RuleError):
-    """Filename uses character not in list of valid characters."""
-
-
-class SourceEqualsTargetError(RuleError):
-    """Source equals target."""
-
-
-class SourceMatchpatternError(RuleError):
-    """Match pattern does not compile correctly as a regular expression."""
-
-class BadSourceError(RuleError):
-    """Source has not been initialized as a source (has no precedent)."""

@@ -10,7 +10,10 @@ from mklists import (
     GLOBAL_RULEFILE_STARTER,
     LOCAL_RULEFILE_NAME, 
     LOCAL_RULEFILE_STARTER, 
-    VALID_FILENAME_CHARS)
+    VALID_FILENAME_CHARS,
+    ConfigFileNotFoundError,
+    DatadirNotAccessibleError
+    )
 from mklists.rules import parse_rules
 
 @click.group()
@@ -180,16 +183,3 @@ def run(ctx, urlify_dir, backup_dir, backup_depth):
     print(f"* Write out datadict values as files in datadir.")
     print(f"* HTML option: Write out datadict values as files in urlify_dir.")
     print(f"* Move files outside datadir as per ['files2dirs'].")
-
-
-
-class ConfigError(SystemExit):
-    """Category of errors related to configuration"""
-
-
-class ConfigFileNotFoundError(ConfigError):
-    """Hardwired configuration file '.mklistsrc' was not found"""
-    
-
-class DatadirNotAccessibleError(ConfigError):
-    """Non-default working data directory is not accessible"""
