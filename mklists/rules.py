@@ -1,4 +1,7 @@
-"""Rules docstring"""
+"""Rules docstring
+
+Issues: make sure an empty .globalrules file would return an empty list
+"""
 
 import yaml
 from mklists.rule import Rule

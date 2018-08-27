@@ -26,7 +26,10 @@ class ConfigFileNotFoundError(ConfigError):
     """Hardwired configuration file '.mklistsrc' was not found"""
     
 class DatadirNotAccessibleError(ConfigError):
-    """Non-default working data directory is not accessible"""
+    """Non-default data directory is not accessible"""
+    
+class AlreadyInitError(ConfigError):
+    """Data directory has already been initialized"""
 
 # Errors related to data directory, used in datadir module
 class DataError(SystemExit):
@@ -43,9 +46,6 @@ class DatadirHasNonFilesError(DataError):
 
 class NoDataError(DataError):
     """There is no data to process."""
-
-class NoDatadirError(DataError):
-    """Data directory is not found or not accessible."""
 
 class NotUTF8Error(DataError):
     """File is not UTF8-encoded."""

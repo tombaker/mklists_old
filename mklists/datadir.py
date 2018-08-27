@@ -1,6 +1,5 @@
 """Datadir module"""
 
-import glob
 import os
 import re
 from dataclasses import dataclass
@@ -9,7 +8,6 @@ from mklists import (
     BlankLinesError,
     DatadirHasNonFilesError,
     NoDataError,
-    NoDatadirError,
     NotUTF8Error)
 
 
@@ -17,12 +15,9 @@ from mklists import (
 class Datadir:
     """docstring"""
 
-    # dirname: str = '.'   # need? os.chdir(self.dirname) should be elsewhere?
-    bad_filename_patterns: list = None
-    visible_files: list = None
     datalines: list = None
 
-    def get_datalines(self):
+    def get_datalines(self, datafiles=[], not_matching=[]):
         """Gets data lines from all files in a given directory.
 
         Calls private methods to check that all visible objects
@@ -35,17 +30,12 @@ class Datadir:
             self.datalines: list of all lines in all valid data files.
 
         Raises:
-            NoDatadirError: if directory is not accessible.
             DatadirHasNonFilesError: if any visible object is not a file.
             BadFilenameError: if any filename matches a bad pattern
             UnicodeDecodeError: if any file is not UTF8-encoded.
             BlankLinesError: if any file has blank lines.
             NoDataError: if there is no data to process.
         """
-        try:
-            self.visible_files = [name for name in glob.glob('*')]
-        except FileNotFoundError:
-            raise NoDatadirError('Directory is not accessible.')
         self._visible_files_are_really_files()
         self._names_of_visible_files_are_all_valid()
         self._visible_files_are_utf8_encoded()
