@@ -1,4 +1,8 @@
-"""Datadir module"""
+"""Datadir module
+
+Issue: Why is this a class?  Turn into module!
+When running mklists, after all, would only need to be instantiated once!
+"""
 
 import os
 import re
