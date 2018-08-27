@@ -101,11 +101,13 @@ def cli(ctx, datadir, globalrules, rules,
     if not os.path.exists(MKLISTSRC):
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
+    ctx.obj['verbose'] = verbose # for passing to subcommands
+
 
 @cli.command()
 @click.pass_context
 def init(ctx):
-    """Generate initial configuration and rule files"""
+    """Generate default configuration and rule files"""
 
     print(f"Global rules: {ctx.obj['globalrules']}")
     print(f"Local rules: {ctx.obj['rules']}")
@@ -126,7 +128,6 @@ def init(ctx):
         print(f"Configuration - after reading {repr(MKLISTSRC)}:")
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
-        ctx.obj['verbose'] = verbose
         print(f"Checking for options set on command line...")
 
     if ctx.obj['globalrules']:
@@ -147,9 +148,10 @@ def init(ctx):
 
 @cli.command()
 @click.pass_context
-def run(ctx, urlify_dir, backup_dir, backup_depth):
+def run(ctx):
     """Apply rules to re-write data"""
 
+    verbose = ctx.obj['verbose']
     if verbose:
         print('Running subcommand `run`.')
         print(f"Running in data directory {os.getcwd()}.")
@@ -159,15 +161,15 @@ def run(ctx, urlify_dir, backup_dir, backup_depth):
 
     bad_patterns = ctx.obj['invalid_filename_patterns']
     global_rules = ctx.obj['globalrules']
-    local_rules = ctx.obj['local_rules']
-    rule_list = {}
+    local_rules = ctx.obj['rules']
+    rule_list = []
     if global_rules:
         if verbose:
             print(f"Reading global rule file {repr(global_rules)}.")
         rule_list.extend(parse_rules(global_rules, bad_patterns))
     if verbose:
         print(f"Reading local rule file {repr(global_rules)}.")
-    rule_list.extend(parse_rules(local_rules, bad_patterns))
+    #rule_list.extend(parse_rules(local_rules, bad_patterns))
 
     visible_files = [name for name in glob.glob('*')]
     print(f"* Something like: Datadir.get_datalines(datafiles=visible_files,")
