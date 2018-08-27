@@ -15,100 +15,80 @@ from mklists import (
     NotUTF8Error)
 
 
-@dataclass
-class Datadir:
-    """docstring"""
+def get_datalines(ls=[], bad_filenames=[]):
+    """Returns list of all lines in all files of data directory.
 
-    datalines: list = None
+    Args:
+        ls: list of all visible objects in data directory.
+        bad_filenames: list of patterns that match invalid filenames.
 
-    def get_datalines(self, datafiles=[], not_matching=[]):
-        """Gets data lines from all files in a given directory.
+    Raises:
+        DatadirHasNonFilesError: if any visible object is not a file.
+        BadFilenameError: if any filename matches a bad pattern
+        UnicodeDecodeError: if any file is not UTF8-encoded.
+        BlankLinesError: if any file is found to have blank lines.
+        NoDataError: if, in the end, there is no data to process.
+    """
+    _visible_files_are_really_files(ls)
+    _names_of_visible_files_are_all_valid(ls, bad_filenames)
+    _visible_files_are_utf8_encoded(ls)
+    return _get_datalines_from_visible_files(ls)
 
-        Calls private methods to check that all visible objects
-        in a given directory are UTF8-encoded files, with no
-        temporary or backup files (i.e., files matching a list
-        of bad filename patterns).
+def _visible_files_are_really_files(objects_list):
+    """Returns true if all visible objects in directory are files.
 
-        Returns:
-            self.visible_files: list of data files in given directory.
-            self.datalines: list of all lines in all valid data files.
+    Raises:
+        DatadirHasNonFilesError: if object is not a file.
+    """
+    for object in objects_list:
+        if not os.path.isfile(object):
+            raise DatadirHasNonFilesError(f'{object} not a file.')
+    return True
 
-        Raises:
-            DatadirHasNonFilesError: if any visible object is not a file.
-            BadFilenameError: if any filename matches a bad pattern
-            UnicodeDecodeError: if any file is not UTF8-encoded.
-            BlankLinesError: if any file has blank lines.
-            NoDataError: if there is no data to process.
-        """
-        self._visible_files_are_really_files()
-        self._names_of_visible_files_are_all_valid()
-        self._visible_files_are_utf8_encoded()
-        self._get_datalines_from_visible_files()
+def _names_of_visible_files_are_all_valid(files_list, bad_filename_patterns):
+    """Return True if no filenames match bad patterns.
 
-    def _visible_files_are_really_files(self):
-        """Confirms that all visible objects in directory are files.
+    Used to block execution of mklists if the data
+    folder has any files that should not be processed,
+    such as temporary files or backup files.
 
-        Returns:
-            True
-
-        Raises:
-            DatadirHasNonFilesError: if object is not a file.
-        """
-        for pathname in self.visible_files:
-            if not os.path.isfile(pathname):
-                raise DatadirHasNonFilesError(f'{pathname} not a file.')
-        return True
-
-    def _names_of_visible_files_are_all_valid(self):
-        """Confirms that no filenames match bad patterns.
-
-        Used to block execution of mklists if the data
-        folder has any files that should not be processed,
-        such as temporary or backup files.
-
-        Returns:
-            True
-
-        Raises:
-            BadFilenameError: if filename matches a bad pattern.
-        """
-        for filename in self.visible_files:
-            # add: if self.bad_filename_patterns is not None:
-            for bad_pat in self.bad_filename_patterns:
+    Raises:
+        BadFilenameError: if filename matches a bad pattern.
+    """
+    if bad_filename_patterns:
+        for filename in files_list:
+            for bad_pat in bad_filename_patterns:
                 if re.search(bad_pat, filename):
-                    raise BadFilenameError(f'{bad_pat} in {filename}.')
-        return True
+                    raise BadFilenameError(f'{repr(bad_pat)} in {filename}.')
+    return True
 
-    def _visible_files_are_utf8_encoded(self):
-        """Checks that all data files are UTF8-encoded.
+def _visible_files_are_utf8_encoded(files_list):
+    """Returns True if all data files are UTF8-encoded.
 
-        Returns:
-            True
+    Raises:
+        UnicodeDecodeError: if any file is not UTF8-encoded.
+    """
+    for filename in files_list:
+        try:
+            open(filename).read()
+        except UnicodeDecodeError:
+            raise NotUTF8Error(f'File {filename} is not UTF8-encoded.')
+    return True
 
-        Raises:
-            UnicodeDecodeError: if any file is not UTF8-encoded.
-        """
-        for filename in self.visible_files:
-            try:
-                open(filename).read()
-            except UnicodeDecodeError:
-                raise NotUTF8Error(f'File {filename} not UTF8-encoded.')
-        return True
+def _get_datalines_from_visible_files(files_list):
+    """Returns consolidated list of datalines to process.
 
-    def _get_datalines_from_visible_files(self):
-        """Returns consolidated list of datalines to process.
-
-        Raises:
-            BlankLinesError: if any file has blank lines.
-            NoDataError: if there is no data to process.
-        """
-        self.datalines = []
-        for file in self.visible_files:
-            for line in file.readlines():
-                if not line:
-                    raise BlankLinesError(f'{repr(file)} has blank lines.')
-                self.datalines.append(line)
-        if not self.datalines:
-            raise NoDataError('No data to process.')
-        return self.datalines
+    Raises:
+        BlankLinesError: if a file is found to have blank lines.
+        NoDataError: if, in the end, there is no data to process.
+    """
+    aggregated_list_of_lines = []
+    for file in files_list:
+        for line in file.readlines():
+            if not line:
+                raise BlankLinesError(f'{repr(file)} has blank lines.')
+            aggregated_list_of_lines.append(line)
+    if not aggregated_list_of_lines:
+        raise NoDataError('No data to process.')
+    return aggregated_list_of_lines
 
