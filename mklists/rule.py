@@ -33,12 +33,11 @@ class Rule:
     initialized = False
     sources = []
 
-    def is_valid(self):                        # also valid_filename_chars?
-        """Returns True if instance of Rule is valid.
-        """
+    def is_valid(self, valid_filename_characters):
+        """Returns True if instance of Rule is valid."""
         self._source_matchfield_and_target_sortorder_are_integers()
         self._source_matchpattern_is_valid()
-        self._source_and_target_filenames_are_valid()
+        self._source_and_target_filenames_are_valid(valid_filename_characters)
         self._source_is_not_equal_target()
         self._source_has_been_initialized()
         return True
@@ -61,11 +60,11 @@ class Rule:
             raise SourceMatchpatternError(f"source_matchpattern is not valid.")
         return True
 
-    def _source_and_target_filenames_are_valid(self):
+    def _source_and_target_filenames_are_valid(self, valid_chars):
         """Returns True if filenames use only valid characters."""
         for field in [self.source, self.target]:
             for char in str(field):
-                if char not in VALID_FILENAME_CHARS:
+                if char not in valid_chars:
                     print(f"In rule: {self}")
                     raise BadFilenameError(
                         f"{repr(char)} is not a valid filename character.")

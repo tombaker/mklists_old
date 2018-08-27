@@ -1,6 +1,7 @@
 import pytest
 import os
 from mklists.rule import Rule
+from mklists import VALID_FILENAME_CHARS
 
 def test_has_been_initialized():
     x = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
@@ -19,7 +20,7 @@ def test_source_is_registered_not():
 def test_is_valid_not():
     x = Rule(1, 'N(OW', 'a', 'b', 2)
     with pytest.raises(SystemExit):
-        x.is_valid()
+        x.is_valid(VALID_FILENAME_CHARS)
 
 def test_rule():
     x = Rule(1, '.', 'a', 'b', 2)
@@ -30,17 +31,17 @@ def test_rulestring_regex_has_space():
     assert x.source_matchpattern == '^X 19'
 
 def test_source_filename_valid():
-    x = Rule('1', '^X 19', 'a.txt', 'b.txt', '2')
-    assert x._source_and_target_filenames_are_valid()
+    x = Rule(1, '^X 19', 'a.txt', 'b.txt', 2)
+    assert x._source_and_target_filenames_are_valid(VALID_FILENAME_CHARS)
 
 def test_target_filename_valid():
-    x = Rule('1', '^X 19', 'a.txt', 'b.txt', '2')
-    assert x._source_and_target_filenames_are_valid()
+    x = Rule(1, '^X 19', 'a.txt', 'b.txt', 2)
+    assert x._source_and_target_filenames_are_valid(VALID_FILENAME_CHARS)
 
 def test_target_filename_valid_not():
-    x = Rule('1', '^X 19', 'a.txt', 'b^.txt', '2')
+    x = Rule(1, '^X 19', 'a.txt', 'b^.txt', 2)
     with pytest.raises(SystemExit):
-        x._source_and_target_filenames_are_valid()
+        x._source_and_target_filenames_are_valid(VALID_FILENAME_CHARS)
 
 def test_source_matchfield_and_target_sortorder_are_valid():
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
