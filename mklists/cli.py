@@ -6,9 +6,9 @@ import click
 import os
 import sys
 from mklists import (
-    MKLISTSRC, 
+    MKLISTSRC,
     STARTER_GLOBAL_RULEFILE,
-    STARTER_LOCAL_RULEFILE, 
+    STARTER_LOCAL_RULEFILE,
     VALID_FILENAME_CHARS,
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
@@ -16,12 +16,13 @@ from mklists import (
     )
 from mklists.rules import parse_rules
 
+
 @click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
               help="Use non-default data directory [./]")
-@click.option('--globalrules', type=str, metavar='FILEPATH', 
+@click.option('--globalrules', type=str, metavar='FILEPATH',
               help="Set non-default global rules [./.globalrules]")
-@click.option('--rules', type=str, metavar='FILEPATH', 
+@click.option('--rules', type=str, metavar='FILEPATH',
               help="Set non-default local rules [./.rules]")
 @click.option('--backup', type=bool, is_flag=True,
               help="Back up input data [./.backups/]")
@@ -38,9 +39,9 @@ from mklists.rules import parse_rules
 @click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, datadir, globalrules, rules, 
-        backup, backup_dir, backup_depth, 
-        urlify, urlify_dir, 
+def cli(ctx, datadir, globalrules, rules,
+        backup, backup_dir, backup_depth,
+        urlify, urlify_dir,
         readonly, verbose):
     """Tweak rules to rearrange plain-text todo lists"""
 
@@ -99,6 +100,7 @@ def cli(ctx, datadir, globalrules, rules,
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
 
+
 @cli.command()
 @click.pass_context
 def init(ctx):
@@ -119,7 +121,7 @@ def init(ctx):
     with open(MKLISTSRC) as configfile:
         ctx.obj.update(yaml.load(configfile))
 
-    if verbose:
+    if ctx.obj['verbose']:
         print(f"Configuration - after reading {repr(MKLISTSRC)}:")
         for key, value in ctx.obj.items():
             print("    ", key, "=", value)
@@ -167,7 +169,7 @@ def run(ctx):
         rule_list.extend(parse_rules(global_rules, bad_patterns))
     if verbose:
         print(f"Reading local rule file {repr(global_rules)}.")
-    #rule_list.extend(parse_rules(local_rules, bad_patterns))
+    # rule_list.extend(parse_rules(local_rules, bad_patterns))
 
     visible_files = [name for name in glob.glob('*')]
     print(f"* Something like: Datadir.get_datalines(datafiles=visible_files,")
