@@ -5,6 +5,7 @@ import os
 import sys
 import click
 import yaml
+from mklists.rules import parse_rules
 from mklists import (
     MKLISTSRC,
     STARTER_GLOBAL_RULEFILE,
@@ -12,9 +13,7 @@ from mklists import (
     VALID_FILENAME_CHARS,
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
-    InitError
-    )
-from mklists.rules import parse_rules
+    InitError)
 
 
 @click.group()
@@ -106,7 +105,7 @@ def init(ctx):
     else:
         raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
 
-    if not ctx.obj['rules']:   # unusual and hopefully rare edge case
+    if not ctx.obj['rules']:   # hopefully a rare edge case
         raise InitError(f"Filename needed for local rule file (eg, '.rules').")
 
     for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),

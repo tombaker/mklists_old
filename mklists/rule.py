@@ -15,14 +15,14 @@ from mklists import (
 
 @dataclass
 class Rule:
-    """Holds (and self-validates) attributes of a single rule.
+    """Holds attributes, and methods for self-validation, of a single rule.
 
     Attributes:
-        source_matchfield:
-        source_matchpattern:
-        source:
-        target:
-        target_sortorder:
+        source_matchfield: @@@@
+        source_matchpattern: @@@@
+        source: @@@@
+        target: @@@@
+        target_sortorder: @@@@
     """
     source_matchfield: int = None
     source_matchpattern: str = None

@@ -72,6 +72,8 @@ class RulesError(SystemExit):
 class RuleFileNotFoundError(RulesError):
     """Rule file not found or not accessible."""
 
-class BadYamlRule(RulesError):
+class BadYamlRuleError(RulesError):
     """Rule is badly formed in YAML source."""
 
+class BadYamlError(RulesError):
+    """YAML format of the file does not parse correctly."""

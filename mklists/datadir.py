@@ -1,12 +1,7 @@
-"""Datadir module
-
-Issue: Why is this a class?  Turn into module!
-When running mklists, after all, would only need to be instantiated once!
-"""
+"""Datadir module"""
 
 import os
 import re
-from dataclasses import dataclass
 from mklists import (
     BadFilenameError,
     BlankLinesError,
