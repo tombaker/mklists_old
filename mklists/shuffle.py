@@ -7,21 +7,17 @@ from collections import defaultdict
 import re
 
 def apply_rules_to_datalines(rules, datalines):
-    """
+    """Applies rules to datalines.
+
     Args:
         rules: list of (validated) rule objects
-        datalines: all datalines (list)
-
-    Initializes dictionary structure where:
-    * values hold (changing) portions of 'datalines'
-    * keys are filenames to which values will be written
+        datalines: list of all datalines
     """
 
     datalines_dict = defaultdict(list)
     initialized = False
 
     for rule in rules:
-
         if not initialized:
             datalines_dict[rule.source] = rule.source
             initialized = True
@@ -60,7 +56,4 @@ def apply_rules_to_datalines(rules, datalines):
                 decorated.sort()
                 rule.target = [line for ___, __, line in decorated]
 
-        return all
-
     return datalines_dict
-

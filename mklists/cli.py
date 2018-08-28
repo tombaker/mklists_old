@@ -43,7 +43,7 @@ def cli(ctx, datadir, globalrules, rules,
         backup, backup_dir, backup_depth,
         urlify, urlify_dir,
         readonly, verbose):
-    """Tweak rules to rearrange plain-text todo lists"""
+    """Sync your plain-text todo lists to evolving rules"""
 
     # default settings (do valid_filename_characters need r prefix??)
     ctx.obj = {
@@ -133,23 +133,32 @@ def run(ctx):
     """Apply rules to re-write data files"""
 
     verbose = ctx.obj['verbose']
-    bad_patterns = ctx.obj['invalid_filename_patterns']
+    valid_chars = ctx.obj['valid_filename_chars']
+    invalid_patterns = ctx.obj['invalid_filename_patterns']
     global_rulefile = ctx.obj['globalrules']
     local_rulefile = ctx.obj['rules']
     rule_list = []
     if global_rulefile:
         if verbose:
             print(f"Reading global rule file {repr(global_rulefile)}.")
-        rule_list.extend(parse_rules(global_rulefile, bad_patterns))
+        grules = parse_rules(global_rulefile, 
+                             good_chars=valid_chars, 
+                             bad_pats=invalid_patterns)
+        rule_list.extend(grules)
     if verbose:
         print(f"Reading local rule file {local_rulefile}.")
-    # rule_list.extend(parse_rules(local_rulefile, bad_patterns))
+    lrules = parse_rules(local_rulefile, 
+                         good_chars=valid_chars, 
+                         bad_pats=invalid_patterns)
+    rule_list.extend(lrules)
+    if verbose:
+        print(rule_list)
 
     visible_files = [name for name in glob.glob('*')]
     print(f"* get_datalines(ls={visible_files}, but_not=bad_patterns)")
     print(f"* Check data folder, verbosely.")
 
-    print(f"* Get datalines from files in {os.getcwd()}.")
+    print(f"* Get datalines from {visible_files}.")
     print(f"* Apply rules to datalines, modifying in-memory datadict.")
     print(f"* Backup option: Create time-stamped backup_dir.")
     print(f"* Backup option: Move existing files to backup_dir.")
