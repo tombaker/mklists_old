@@ -106,7 +106,9 @@ def init(ctx):
     else:
         raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
 
-    # flaw: what if ctx.obj['rules'] is False? Is that likely or possible?
+    if not ctx.obj['rules']:   # unusual and hopefully rare edge case
+        raise InitError(f"Filename needed for local rule file (eg, '.rules').")
+
     for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
                           (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
         if file:
