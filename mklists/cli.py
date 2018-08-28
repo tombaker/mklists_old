@@ -44,10 +44,6 @@ def cli(ctx, datadir, globalrules, rules,
         readonly, verbose):
     """Tweak rules to rearrange plain-text todo lists"""
 
-    # Eventually delete
-    if verbose:
-        print('Running main command `mklists`.')
-
     ctx.obj = {
         'globalrules': None,
         'rules': '.rules',
@@ -63,7 +59,7 @@ def cli(ctx, datadir, globalrules, rules,
         'invalid_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.'],
         'files2dirs': None}
 
-    if datadir:        # if set with command-line option
+    if datadir:  # i.e., if re-set with command-line option
         try:
             os.chdir(datadir)
             if verbose:
@@ -71,36 +67,37 @@ def cli(ctx, datadir, globalrules, rules,
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} not accessible.")
 
-    if verbose:
-        print("Configuration - hardwired defaults:")
-        for key, value in ctx.obj.items():
-            print("    ", key, "=", value)
-
     if globalrules:
         ctx.obj['globalrules'] = globalrules
-        if verbose:
-            print(f"Will use global rule file {repr(ctx.obj['global'])}.")
 
     if rules:
         ctx.obj['rules'] = rules
-        if verbose:
-            print(f"Will use local rule file {repr(ctx.obj['rules'])}.")
 
     if backup:
         ctx.obj['backup'] = backup
-        if verbose:
-            print(f"Will back up input data to {repr(ctx.obj['backup_dir'])}.")
+
+    if backup_dir:
+        ctx.obj['backup_dir'] = backup_dir
+
+    if backup_depth:
+        ctx.obj['backup_depth'] = backup_depth
 
     if urlify:
         ctx.obj['urlify'] = urlify
-        if verbose:
-            print(f"Will urlify data to {repr(ctx.obj['urlify_dir'])}.")
+
+    if urlify_dir:
+        ctx.obj['urlify_dir'] = urlify_dir
 
     if not os.path.exists(MKLISTSRC):
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
-    ctx.obj['verbose'] = verbose # for passing to subcommands
+    if verbose:
+        ctx.obj['verbose'] = verbose
 
+    if verbose:
+        print("Using configuration:")
+        for key, value in ctx.obj.items():
+            print("    ", key, "=", value)
 
 @cli.command()
 @click.pass_context
