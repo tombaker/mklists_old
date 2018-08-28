@@ -56,7 +56,7 @@ def cli(ctx, datadir, globalrules, rules,
         'readonly': False,
         'verbose': False,
         'valid_filename_characters': VALID_FILENAME_CHARS,
-        'invalid_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.'],
+        'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
         'files2dirs': None}
 
     if datadir is not None:
@@ -133,14 +133,14 @@ def run(ctx):
     if global_rulefile:
         if verbose:
             print(f"Reading global rule file {repr(global_rulefile)}.")
-        grules = parse_rules(global_rulefile, 
-                             good_chars=valid_chars, 
+        grules = parse_rules(global_rulefile,
+                             good_chars=valid_chars,
                              bad_pats=invalid_patterns)
         rule_list.extend(grules)
     if verbose:
         print(f"Reading local rule file {local_rulefile}.")
-    lrules = parse_rules(local_rulefile, 
-                         good_chars=valid_chars, 
+    lrules = parse_rules(local_rulefile,
+                         good_chars=valid_chars,
                          bad_pats=invalid_patterns)
     rule_list.extend(lrules)
     if verbose:
