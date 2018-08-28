@@ -60,13 +60,13 @@ def cli(ctx, datadir, globalrules, rules,
         'invalid_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.'],
         'files2dirs': None}
 
-    if datadir:
+    if datadir is not None:
         try:
             os.chdir(datadir)
             if verbose:
                 print(f"Setting {repr(datadir)} as current data directory.")
         except FileNotFoundError:
-            raise DatadirNotAccessibleError(f"{datadir} not accessible.")
+            raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
 
     # override defaults with any settings specified in '.mklistsrc'
     try:
@@ -75,20 +75,18 @@ def cli(ctx, datadir, globalrules, rules,
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
-    # override with any settings specified on command line
-    def assign_to_ctxobj(context, context_object_key, value):
-        if value:
-            context.obj[context_object_key] = value
-
-    assign_to_ctxobj(ctx, 'globalrules', globalrules)
-    assign_to_ctxobj(ctx, 'rules', rules)
-    assign_to_ctxobj(ctx, 'urlify', urlify)
-    assign_to_ctxobj(ctx, 'urlify_dir', urlify_dir)
-    assign_to_ctxobj(ctx, 'backup', backup)
-    assign_to_ctxobj(ctx, 'backup_dir', backup_dir)
-    assign_to_ctxobj(ctx, 'backup_depth', backup_depth)
-    assign_to_ctxobj(ctx, 'readonly', readonly)
-    assign_to_ctxobj(ctx, 'verbose', verbose)
+    # override with settings explicitly specified by command-line option
+    for key, value in [('globalrules', globalrules),
+                       ('rules', rules),
+                       ('urlify', urlify),
+                       ('urlify_dir', urlify_dir),
+                       ('backup', backup),
+                       ('backup_dir', backup_dir),
+                       ('backup_depth', backup_depth),
+                       ('readonly', readonly),
+                       ('verbose', verbose)]:
+        if value is not None:
+            ctx.obj[key] = value
 
     if verbose:
         print("Using configuration:")
