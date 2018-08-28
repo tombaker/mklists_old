@@ -7,10 +7,8 @@ import os
 import sys
 from mklists import (
     MKLISTSRC, 
-    GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULEFILE_STARTER,
-    LOCAL_RULEFILE_NAME, 
-    LOCAL_RULEFILE_STARTER, 
+    STARTER_GLOBAL_RULEFILE,
+    STARTER_LOCAL_RULEFILE, 
     VALID_FILENAME_CHARS,
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
@@ -35,8 +33,7 @@ from mklists.rules import parse_rules
               help="Copy data, urlified [./.html/]")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
               help="Set non-default urlified directory")
-@click.option('--dryrun', type=bool, is_flag=True, 
-              help="Run read-only and verbosely")
+@click.option('--readonly', type=bool, is_flag=True, help="Run read-only")
 @click.option('--verbose', type=bool, is_flag=True, help="Run verbosely")
 @click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
@@ -44,9 +41,10 @@ from mklists.rules import parse_rules
 def cli(ctx, datadir, globalrules, rules, 
         backup, backup_dir, backup_depth, 
         urlify, urlify_dir, 
-        dryrun, verbose):
+        readonly, verbose):
     """Tweak rules to rearrange plain-text todo lists"""
 
+    # Eventually delete
     if verbose:
         print('Running main command `mklists`.')
 
@@ -65,11 +63,11 @@ def cli(ctx, datadir, globalrules, rules,
         'invalid_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.'],
         'files2dirs': None}
 
-    if datadir:
+    if datadir:        # if set with command-line option
         try:
             os.chdir(datadir)
             if verbose:
-                print(f"Setting current data directory: {repr(datadir)}.")
+                print(f"Setting {repr(datadir)} as current data directory.")
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} not accessible.")
 
@@ -130,18 +128,21 @@ def init(ctx):
             print("    ", key, "=", value)
         print(f"Checking for options set on command line...")
 
-    if ctx.obj['globalrules']:
-        if not os.path.exists(ctx.obj['globalrules']):
-            print(f"Creating {repr(GLOBAL_RULEFILE_NAME)} - tweak as needed.")
-            with open(GLOBAL_RULEFILE_NAME, 'w') as fout:
-                fout.write(GLOBAL_RULE_FILE_STARTER)
+    # Rules
+    global_rules = ctx.obj['globalrules']
+    if global_rules:
+        if not os.path.exists(global_rules):
+            print(f"Creating {global_rules} - tweak as needed.")
+            with open(global_rules, 'w') as fout:
+                fout.write(STARTER_GLOBAL_RULEFILE)
         else:
-            print(f"Found existing {repr(ctx.obj['globalrules'])}.")
+            print(f"Found existing {repr(global_rules)}.")
 
-    if not os.path.exists(ctx.obj['rules']):
-        print(f"Creating {repr(LOCAL_RULEFILE_NAME)} - tweak as needed.")
-        with open(LOCAL_RULEFILE_NAME, 'w') as fout:
-            fout.write(LOCAL_RULE_FILE_STARTER)
+    local_rules = ctx.obj['rules']
+    if not os.path.exists(local_rules):
+        print(f"Creating {repr(local_rules)} - tweak as needed.")
+        with open(local_rules, 'w') as fout:
+            fout.write(STARTER_LOCAL_RULEFILE)
     else:
         print(f"Found existing {repr(ctx.obj['rules'])}.")
 
