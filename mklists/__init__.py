@@ -24,7 +24,7 @@ class ConfigFileNotFoundError(ConfigError):
 class DatadirNotAccessibleError(ConfigError):
     """Non-default data directory is not accessible"""
     
-class AlreadyInitError(ConfigError):
+class InitError(ConfigError):
     """Data directory has already been initialized"""
 
 # Errors related to data directory, used in datadir module

@@ -15,7 +15,7 @@ from mklists import (
 
 @dataclass
 class Rule:
-    """Validates an individual rule.
+    """Holds (and self-validates) attributes of a single rule.
 
     Attributes:
         source_matchfield:

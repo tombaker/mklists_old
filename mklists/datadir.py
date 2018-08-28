@@ -15,12 +15,12 @@ from mklists import (
     NotUTF8Error)
 
 
-def get_datalines(ls=[], bad_filenames=[]):
-    """Returns list of all lines in all files of data directory.
+def get_datalines(ls=[], but_not=[]):
+    """Returns list of all lines in all files in data directory.
 
     Args:
         ls: list of all visible objects in data directory.
-        bad_filenames: list of patterns that match invalid filenames.
+        but_not: list of patterns that match invalid filenames.
 
     Raises:
         DatadirHasNonFilesError: if any visible object is not a file.
@@ -30,7 +30,7 @@ def get_datalines(ls=[], bad_filenames=[]):
         NoDataError: if, in the end, there is no data to process.
     """
     _visible_files_are_really_files(ls)
-    _names_of_visible_files_are_all_valid(ls, bad_filenames)
+    _names_of_visible_files_are_all_valid(ls, but_not)
     _visible_files_are_utf8_encoded(ls)
     return _get_datalines_from_visible_files(ls)
 
@@ -45,7 +45,7 @@ def _visible_files_are_really_files(objects_list):
             raise DatadirHasNonFilesError(f'{object} not a file.')
     return True
 
-def _names_of_visible_files_are_all_valid(files_list, bad_filename_patterns):
+def _names_of_visible_files_are_all_valid(files_list, except_for):
     """Return True if no filenames match bad patterns.
 
     Used to block execution of mklists if the data
@@ -55,9 +55,9 @@ def _names_of_visible_files_are_all_valid(files_list, bad_filename_patterns):
     Raises:
         BadFilenameError: if filename matches a bad pattern.
     """
-    if bad_filename_patterns:
+    if except_for:
         for filename in files_list:
-            for bad_pat in bad_filename_patterns:
+            for bad_pat in except_for:
                 if re.search(bad_pat, filename):
                     raise BadFilenameError(f'{repr(bad_pat)} in {filename}.')
     return True
@@ -80,7 +80,7 @@ def _get_datalines_from_visible_files(files_list):
 
     Raises:
         BlankLinesError: if a file is found to have blank lines.
-        NoDataError: if, in the end, there is no data to process.
+        NoDataError: if there is no data to process at all.
     """
     aggregated_list_of_lines = []
     for file in files_list:

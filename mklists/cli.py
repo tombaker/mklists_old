@@ -1,10 +1,10 @@
 """CLI - command-line interface module"""
 
 import glob
-import yaml
-import click
 import os
 import sys
+import click
+import yaml
 from mklists import (
     MKLISTSRC,
     STARTER_GLOBAL_RULEFILE,
@@ -12,7 +12,7 @@ from mklists import (
     VALID_FILENAME_CHARS,
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
-    AlreadyInitError
+    InitError
     )
 from mklists.rules import parse_rules
 
@@ -45,13 +45,10 @@ def cli(ctx, datadir, globalrules, rules,
         readonly, verbose):
     """Tweak rules to rearrange plain-text todo lists"""
 
-    if not os.path.exists(MKLISTSRC):
-        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-
+    # default settings (do valid_filename_characters need r prefix??)
     ctx.obj = {
         'globalrules': '.globalrules',
         'rules': '.rules',
-        'datadir': '.',
         'urlify': False,
         'urlify_dir': '.urlified',
         'backup': False,
@@ -71,9 +68,17 @@ def cli(ctx, datadir, globalrules, rules,
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} not accessible.")
 
-    def assign_to_ctxobj(context, ctxobj_key, value):
+    # override defaults with any settings specified in '.mklistsrc'
+    try:
+        with open(MKLISTSRC) as configfile:
+            ctx.obj.update(yaml.load(configfile))
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+
+    # override with any settings specified on command line
+    def assign_to_ctxobj(context, context_object_key, value):
         if value:
-            context.obj[ctxobj_key] = value
+            context.obj[context_object_key] = value
 
     assign_to_ctxobj(ctx, 'globalrules', globalrules)
     assign_to_ctxobj(ctx, 'rules', rules)
@@ -96,75 +101,53 @@ def cli(ctx, datadir, globalrules, rules,
 def init(ctx):
     """Generate default configuration and rule files"""
 
-    print(f"Global rules: {ctx.obj['globalrules']}")
-    print(f"Local rules: {ctx.obj['rules']}")
-    print(f"Default config: {MKLISTSRC}")
-    sys.exit("Exiting")
-
     if not os.path.exists(MKLISTSRC):
         print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
         with open(MKLISTSRC, 'w') as fout:
             yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
     else:
-        raise AlreadyInitError(f"To re-initialize, first delete {MKLISTSRC}.")
-
-    with open(MKLISTSRC) as configfile:
-        ctx.obj.update(yaml.load(configfile))
-
-    if ctx.obj['verbose']:
-        print(f"Configuration - after reading {repr(MKLISTSRC)}:")
-        for key, value in ctx.obj.items():
-            print("    ", key, "=", value)
-        print(f"Checking for options set on command line...")
+        raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
 
     # Rules
-    global_rules = ctx.obj['globalrules']
-    if global_rules:
-        if not os.path.exists(global_rules):
-            print(f"Creating {global_rules} - tweak as needed.")
-            with open(global_rules, 'w') as fout:
+    global_rulefile = ctx.obj['globalrules']
+    if global_rulefile:
+        if not os.path.exists(global_rulefile):
+            print(f"Creating {global_rulefile} - tweak as needed.")
+            with open(global_rulefile, 'w') as fout:
                 fout.write(STARTER_GLOBAL_RULEFILE)
         else:
-            print(f"Found existing {repr(global_rules)}.")
+            print(f"Leaving pre-existing {repr(global_rulefile)} untouched.")
 
-    local_rules = ctx.obj['rules']
-    if not os.path.exists(local_rules):
-        print(f"Creating {repr(local_rules)} - tweak as needed.")
-        with open(local_rules, 'w') as fout:
+    local_rulefile = ctx.obj['rules']
+    if not os.path.exists(local_rulefile):
+        print(f"Creating {repr(local_rulefile)} - tweak as needed.")
+        with open(local_rulefile, 'w') as fout:
             fout.write(STARTER_LOCAL_RULEFILE)
     else:
-        print(f"Found existing {repr(ctx.obj['rules'])}.")
+        print(f"Leaving pre-existing {repr(local_rulefile)} untouched.")
 
 
 @cli.command()
 @click.pass_context
 def run(ctx):
-    """Apply rules to re-write data"""
+    """Apply rules to re-write data files"""
 
     verbose = ctx.obj['verbose']
-    if verbose:
-        print('Running subcommand `run`.')
-        print(f"Running in data directory {os.getcwd()}.")
-        print(f"Using configuration:")
-        for key, value in ctx.obj.items():
-            print("    ", key, "=", value)
-
     bad_patterns = ctx.obj['invalid_filename_patterns']
-    global_rules = ctx.obj['globalrules']
-    local_rules = ctx.obj['rules']
+    global_rulefile = ctx.obj['globalrules']
+    local_rulefile = ctx.obj['rules']
     rule_list = []
-    if global_rules:
+    if global_rulefile:
         if verbose:
-            print(f"Reading global rule file {repr(global_rules)}.")
-        rule_list.extend(parse_rules(global_rules, bad_patterns))
+            print(f"Reading global rule file {repr(global_rulefile)}.")
+        rule_list.extend(parse_rules(global_rulefile, bad_patterns))
     if verbose:
-        print(f"Reading local rule file {repr(global_rules)}.")
-    # rule_list.extend(parse_rules(local_rules, bad_patterns))
+        print(f"Reading local rule file {local_rulefile}.")
+    # rule_list.extend(parse_rules(local_rulefile, bad_patterns))
 
     visible_files = [name for name in glob.glob('*')]
-    print(f"* Something like: Datadir.get_datalines(datafiles=visible_files,")
-    print(f"  not_matching=bad_patterns).")
-    print(f"* Check data folder {repr(ctx.obj['datadir'])}, verbosely.")
+    print(f"* get_datalines(ls={visible_files}, but_not=bad_patterns)")
+    print(f"* Check data folder, verbosely.")
 
     print(f"* Get datalines from files in {os.getcwd()}.")
     print(f"* Apply rules to datalines, modifying in-memory datadict.")
@@ -173,3 +156,16 @@ def run(ctx):
     print(f"* Write out datadict values as files in datadir.")
     print(f"* HTML option: Write out datadict values as files in urlify_dir.")
     print(f"* Move files outside datadir as per ['files2dirs'].")
+
+
+@cli.command()
+@click.pass_context
+def debug(ctx):
+    """Temporary subcommand for debugging purposes"""
+
+    print('Running subcommand `debug`.')
+
+    print(f"Global rules: {ctx.obj['globalrules']}")
+    print(f"Local rules: {ctx.obj['rules']}")
+    print(f"Default config: {MKLISTSRC}")
+    sys.exit("Exiting")
