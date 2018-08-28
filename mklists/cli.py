@@ -106,23 +106,16 @@ def init(ctx):
     else:
         raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
 
-    # Rules
-    global_rulefile = ctx.obj['globalrules']
-    if global_rulefile:
-        if not os.path.exists(global_rulefile):
-            print(f"Creating {global_rulefile} - tweak as needed.")
-            with open(global_rulefile, 'w') as fout:
-                fout.write(STARTER_GLOBAL_RULEFILE)
-        else:
-            print(f"Leaving pre-existing {repr(global_rulefile)} untouched.")
-
-    local_rulefile = ctx.obj['rules']
-    if not os.path.exists(local_rulefile):
-        print(f"Creating {repr(local_rulefile)} - tweak as needed.")
-        with open(local_rulefile, 'w') as fout:
-            fout.write(STARTER_LOCAL_RULEFILE)
-    else:
-        print(f"Leaving pre-existing {repr(local_rulefile)} untouched.")
+    # flaw: what if ctx.obj['rules'] is False? Is that likely or possible?
+    for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
+                          (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
+        if file:
+            if not os.path.exists(file):
+                print(f"Creating {file} - tweak as needed.")
+                with open(file, 'w') as fout:
+                    fout.write(content)
+            else:
+                print(f"Found {repr(file)} - leaving untouched.")
 
 
 @cli.command()
