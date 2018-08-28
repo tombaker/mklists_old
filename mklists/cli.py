@@ -45,8 +45,11 @@ def cli(ctx, datadir, globalrules, rules,
         readonly, verbose):
     """Tweak rules to rearrange plain-text todo lists"""
 
+    if not os.path.exists(MKLISTSRC):
+        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+
     ctx.obj = {
-        'globalrules': None,
+        'globalrules': '.globalrules',
         'rules': '.rules',
         'datadir': '.',
         'urlify': False,
@@ -60,7 +63,7 @@ def cli(ctx, datadir, globalrules, rules,
         'invalid_filename_patterns': ['\.swp$', '\.tmp$', '~$', '^\.'],
         'files2dirs': None}
 
-    if datadir:  # i.e., if re-set with command-line option
+    if datadir:
         try:
             os.chdir(datadir)
             if verbose:
@@ -68,32 +71,19 @@ def cli(ctx, datadir, globalrules, rules,
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} not accessible.")
 
-    if globalrules:
-        ctx.obj['globalrules'] = globalrules
+    def assign_to_ctxobj(context, ctxobj_key, value):
+        if value:
+            context.obj[ctxobj_key] = value
 
-    if rules:
-        ctx.obj['rules'] = rules
-
-    if backup:
-        ctx.obj['backup'] = backup
-
-    if backup_dir:
-        ctx.obj['backup_dir'] = backup_dir
-
-    if backup_depth:
-        ctx.obj['backup_depth'] = backup_depth
-
-    if urlify:
-        ctx.obj['urlify'] = urlify
-
-    if urlify_dir:
-        ctx.obj['urlify_dir'] = urlify_dir
-
-    if not os.path.exists(MKLISTSRC):
-        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-
-    if verbose:
-        ctx.obj['verbose'] = verbose
+    assign_to_ctxobj(ctx, 'globalrules', globalrules)
+    assign_to_ctxobj(ctx, 'rules', rules)
+    assign_to_ctxobj(ctx, 'urlify', urlify)
+    assign_to_ctxobj(ctx, 'urlify_dir', urlify_dir)
+    assign_to_ctxobj(ctx, 'backup', backup)
+    assign_to_ctxobj(ctx, 'backup_dir', backup_dir)
+    assign_to_ctxobj(ctx, 'backup_depth', backup_depth)
+    assign_to_ctxobj(ctx, 'readonly', readonly)
+    assign_to_ctxobj(ctx, 'verbose', verbose)
 
     if verbose:
         print("Using configuration:")
