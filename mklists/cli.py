@@ -177,6 +177,12 @@ def debug(ctx):
     """Temporary subcommand for debugging purposes"""
 
     print('Running subcommand `debug`.')
+    for item in ctx.__dir__():
+        print(item)
+
+    print('====')
+    print(ctx.__class__)
+
     #print(f"Parent context is {ctx.parent.__dir__()}")
     #print('=====')
     #print(f"Parent command is {ctx.parent.command.__dir__()}")
