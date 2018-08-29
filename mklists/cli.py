@@ -44,7 +44,23 @@ def cli(ctx, datadir, globalrules, rules,
         readonly, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
-    # default settings (do valid_filename_characters need r prefix??)
+    # 2018-08-29: This should provide way to call an init _module_
+    # Also: make anki cards
+    if ctx.invoked_subcommand == 'init':
+        click.echo(f"I was invoked with {ctx.invoked_subcommand}!!")
+    if ctx.invoked_subcommand != 'init':
+        click.echo(f"I was NOT invoked with {ctx.invoked_subcommand}!!")
+
+    # If non-default datadir given on command line, change to that directory.
+    if datadir is not None:
+        try:
+            os.chdir(datadir)
+            if verbose:
+                print(f"Setting {repr(datadir)} as current data directory.")
+        except FileNotFoundError:
+            raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
+
+    # Save hardwired default settings to object passed with @pass_context.
     ctx.obj = {
         'globalrules': '.globalrules',
         'rules': '.rules',
@@ -59,22 +75,15 @@ def cli(ctx, datadir, globalrules, rules,
         'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
         'files2dirs': None}
 
-    if datadir is not None:
-        try:
-            os.chdir(datadir)
-            if verbose:
-                print(f"Setting {repr(datadir)} as current data directory.")
-        except FileNotFoundError:
-            raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
-
-    # override defaults with any settings specified in '.mklistsrc'
+    # Override default settings with any settings loaded from '.mklistsrc'.
+    # Oops - if MKLISTSRC does not exist, exits before `init` can fire.
     try:
         with open(MKLISTSRC) as configfile:
             ctx.obj.update(yaml.load(configfile))
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
-    # override with settings explicitly specified by command-line option
+    # Override settings with settings explicitly specified on command line.
     for key, value in [('globalrules', globalrules),
                        ('rules', rules),
                        ('urlify', urlify),
@@ -87,10 +96,20 @@ def cli(ctx, datadir, globalrules, rules,
         if value is not None:
             ctx.obj[key] = value
 
+    # If user asked for 'verbose', tell user what should happen now.
     if verbose:
-        print("Using configuration:")
-        for key, value in ctx.obj.items():
-            print("    ", key, "=", value)
+        if ctx.obj['globalrules']:
+            print(f"Using global rule file {ctx.obj['globalrules']}.")
+        if ctx.obj['rules']:
+            print(f"Using global rule file {ctx.obj['rules']}.")
+        if ctx.obj['urlify']:
+            print(f"Will convert copies of TXT files into HTML.")
+        else:
+            print(f"Will NOT convert copies of TXT files into HTML.")
+        if ctx.obj['urlify_dir']:
+            print(f"If urlify activated, files saved in {ctx.obj['urlify']}.")
+        else:
+            print(f"If urlify activated, would fail: no destination dir.")
 
 
 @cli.command()
@@ -165,6 +184,11 @@ def debug(ctx):
     """Temporary subcommand for debugging purposes"""
 
     print('Running subcommand `debug`.')
+    print(f"Parent context is {ctx.parent.__dir__()}")
+    print('=====')
+    print(f"Parent command is {ctx.parent.command.__dir__()}")
+    print('=====')
+    print(f"Parent invoked command is {ctx.parent.invoked_subcommand}")
 
     print(f"Global rules: {ctx.obj['globalrules']}")
     print(f"Local rules: {ctx.obj['rules']}")
