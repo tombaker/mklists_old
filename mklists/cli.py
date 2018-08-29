@@ -5,7 +5,7 @@ import os
 import sys
 import click
 import yaml
-from mklists.debug import show_context
+from mklists.verbose import explain_configuration
 from mklists.rules import parse_rules
 from mklists import (
     MKLISTSRC,
@@ -50,7 +50,7 @@ def cli(ctx, datadir, globalrules, rules,
     if ctx.invoked_subcommand == 'init':
         click.echo(f"I was invoked with {ctx.invoked_subcommand}!!")
     if ctx.invoked_subcommand != 'init':
-        click.echo(f"I was NOT invoked with {ctx.invoked_subcommand}!!")
+        click.echo(f"I was NOT invoked with init!!")
 
     # If non-default datadir given on command line, change to that directory.
     if datadir is not None:
@@ -60,6 +60,8 @@ def cli(ctx, datadir, globalrules, rules,
                 print(f"Setting {repr(datadir)} as current data directory.")
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
+
+    print('2')
 
     # Save hardwired default settings to object passed with @pass_context.
     ctx.obj = {
@@ -84,6 +86,8 @@ def cli(ctx, datadir, globalrules, rules,
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
+    print('3')
+
     # Override settings with settings explicitly specified on command line.
     for key, value in [('globalrules', globalrules),
                        ('rules', rules),
@@ -97,54 +101,9 @@ def cli(ctx, datadir, globalrules, rules,
         if value is not None:
             ctx.obj[key] = value
 
-    # If user asked for 'verbose', tell user what should happen now.
     if verbose:
-        if ctx.obj['globalrules']:
-            print(f"Using global rule file {ctx.obj['globalrules']}.")
-        else:
-            print("No global rule file found")
-
-        if ctx.obj['rules']:
-            print(f"Using global rule file {ctx.obj['rules']}.")
-        else:
-            print("Uh-oh - no rule file found")
-
-        if ctx.obj['urlify']:
-            print(f"Will convert copies of TXT files into HTML.")
-        else:
-            print(f"Will NOT convert copies of TXT files into HTML.")
-
-        if ctx.obj['urlify_dir']:
-            print(f"If urlify activated, files saved in {ctx.obj['urlify']}.")
-        else:
-            print(f"If urlify activated, would fail: no destination dir.")
-
-        if backup:
-            print("Will back up data files")
-        else:
-            print("Will not back up data files")
-
-        if backup_dir:
-            # Somewhere in module, calculate YYYYMMDD
-            print("Will back up files to directory X/YYYYMMDD_hhmmss")
-
-        if backup_depth:
-            print("Will keep last {backup_depth} backups.")
-
-        if readonly:
-            print("Will stop short of writing to disk or moving files.")
-
-        if valid_filename_characters:
-            print("Filenames must consist only of the following characters:")
-            print(f"{valid_filename_chars}")
-
-        if files2dirs:
-            print("Output file of given name to be moved to given directory.")
-
-        print("Edit MKLISTSRC to change settings for future use")
-
-
-
+        print('Trying to run explain_configuration')
+        explain_configuration(**ctx.obj)
 
 @cli.command()
 @click.pass_context
@@ -218,17 +177,15 @@ def debug(ctx):
     """Temporary subcommand for debugging purposes"""
 
     print('Running subcommand `debug`.')
-    print(f"Parent context is {ctx.parent.__dir__()}")
-    print('=====')
-    print(f"Parent command is {ctx.parent.command.__dir__()}")
-    print('=====')
-    print(f"Parent invoked command is {ctx.parent.invoked_subcommand}")
+    #print(f"Parent context is {ctx.parent.__dir__()}")
+    #print('=====')
+    #print(f"Parent command is {ctx.parent.command.__dir__()}")
+    #print('=====')
+    #print(f"Parent invoked command is {ctx.parent.invoked_subcommand}")
 
-    print(f"Global rules: {ctx.obj['globalrules']}")
-    print(f"Local rules: {ctx.obj['rules']}")
-    print(f"Default config: {MKLISTSRC}")
+    #print(f"Global rules: {ctx.obj['globalrules']}")
+    #print(f"Local rules: {ctx.obj['rules']}")
+    #print(f"Default config: {MKLISTSRC}")
 
-    show_context(**ctx.obj)
-
-    sys.exit("Exiting")
+    #sys.exit("Exiting")
 

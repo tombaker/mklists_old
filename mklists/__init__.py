@@ -27,6 +27,9 @@ class DatadirNotAccessibleError(ConfigError):
 class InitError(ConfigError):
     """Data directory has already been initialized"""
 
+class NoRulefileSpecified(ConfigError):
+    """Configuration does not even specify a rule file."""
+
 # Errors related to data directory, used in datadir module
 class DataError(SystemExit):
     """Superclass for errors relating to data."""
