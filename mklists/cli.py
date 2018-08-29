@@ -5,6 +5,7 @@ import os
 import sys
 import click
 import yaml
+from mklists.debug import show_context
 from mklists.rules import parse_rules
 from mklists import (
     MKLISTSRC,
@@ -231,6 +232,3 @@ def debug(ctx):
 
     sys.exit("Exiting")
 
-# Next - try moving to another module
-def show_context(**kwargs):
-    print(kwargs)
