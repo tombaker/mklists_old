@@ -100,16 +100,49 @@ def cli(ctx, datadir, globalrules, rules,
     if verbose:
         if ctx.obj['globalrules']:
             print(f"Using global rule file {ctx.obj['globalrules']}.")
+        else:
+            print("No global rule file found")
+
         if ctx.obj['rules']:
             print(f"Using global rule file {ctx.obj['rules']}.")
+        else:
+            print("Uh-oh - no rule file found")
+
         if ctx.obj['urlify']:
             print(f"Will convert copies of TXT files into HTML.")
         else:
             print(f"Will NOT convert copies of TXT files into HTML.")
+
         if ctx.obj['urlify_dir']:
             print(f"If urlify activated, files saved in {ctx.obj['urlify']}.")
         else:
             print(f"If urlify activated, would fail: no destination dir.")
+
+        if backup:
+            print("Will back up data files")
+        else:
+            print("Will not back up data files")
+
+        if backup_dir:
+            # Somewhere in module, calculate YYYYMMDD
+            print("Will back up files to directory X/YYYYMMDD_hhmmss")
+
+        if backup_depth:
+            print("Will keep last {backup_depth} backups.")
+
+        if readonly:
+            print("Will stop short of writing to disk or moving files."
+
+        if valid_filename_characters:
+            print("Filenames must consist only of the following characters:")
+            print(f"{valid_filename_chars}")
+
+        if files2dirs:
+            print("Output file of given name to be moved to given directory.")
+
+        print("Edit MKLISTSRC to change settings for future use")
+
+
 
 
 @cli.command()
