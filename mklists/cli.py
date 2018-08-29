@@ -131,7 +131,7 @@ def cli(ctx, datadir, globalrules, rules,
             print("Will keep last {backup_depth} backups.")
 
         if readonly:
-            print("Will stop short of writing to disk or moving files."
+            print("Will stop short of writing to disk or moving files.")
 
         if valid_filename_characters:
             print("Filenames must consist only of the following characters:")
@@ -226,4 +226,11 @@ def debug(ctx):
     print(f"Global rules: {ctx.obj['globalrules']}")
     print(f"Local rules: {ctx.obj['rules']}")
     print(f"Default config: {MKLISTSRC}")
+
+    show_context(**ctx.obj)
+
     sys.exit("Exiting")
+
+# Next - try moving to another module
+def show_context(**kwargs):
+    print(kwargs)
