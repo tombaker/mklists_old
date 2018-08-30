@@ -45,13 +45,6 @@ def cli(ctx, datadir, globalrules, rules,
         readonly, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
-    # 2018-08-29: This should provide way to call an init _module_
-    # Also: make anki cards
-    if ctx.invoked_subcommand == 'init':
-        click.echo(f"I was invoked with {ctx.invoked_subcommand}!!")
-    if ctx.invoked_subcommand != 'init':
-        click.echo(f"I was NOT invoked with init!!")
-
     # If non-default datadir given on command line, change to that directory.
     if datadir is not None:
         try:
@@ -60,8 +53,6 @@ def cli(ctx, datadir, globalrules, rules,
                 print(f"Setting {repr(datadir)} as current data directory.")
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
-
-    print('2')
 
     # Save hardwired default settings to object passed with @pass_context.
     ctx.obj = {
@@ -78,37 +69,36 @@ def cli(ctx, datadir, globalrules, rules,
         'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
         'files2dirs': None}
 
-    # Override default settings with any settings loaded from '.mklistsrc'.
-    # Oops - if MKLISTSRC does not exist, exits before `init` can fire.
-    try:
-        with open(MKLISTSRC) as configfile:
-            ctx.obj.update(yaml.load(configfile))
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-
-    print('3')
-
-    # Override settings with settings explicitly specified on command line.
-    for key, value in [('globalrules', globalrules),
-                       ('rules', rules),
-                       ('urlify', urlify),
-                       ('urlify_dir', urlify_dir),
-                       ('backup', backup),
-                       ('backup_dir', backup_dir),
-                       ('backup_depth', backup_depth),
-                       ('readonly', readonly),
-                       ('verbose', verbose)]:
-        if value is not None:
-            ctx.obj[key] = value
+    if ctx.invoked_subcommand != 'init':
+        # Override default settings with any settings loaded from '.mklistsrc'.
+        try:
+            with open(MKLISTSRC) as configfile:
+                ctx.obj.update(yaml.load(configfile))
+        except FileNotFoundError:
+            raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+    else:
+        # Override settings with settings explicitly specified on command line.
+        for key, value in [('globalrules', globalrules),
+                           ('rules', rules),
+                           ('urlify', urlify),
+                           ('urlify_dir', urlify_dir),
+                           ('backup', backup),
+                           ('backup_dir', backup_dir),
+                           ('backup_depth', backup_depth),
+                           ('readonly', readonly),
+                           ('verbose', verbose)]:
+            if value is not None:
+                ctx.obj[key] = value
 
     if verbose:
-        print('Trying to run explain_configuration')
         explain_configuration(**ctx.obj)
 
 @cli.command()
 @click.pass_context
 def init(ctx):
     """Generate default configuration and rule files"""
+
+    # what if this is run with readonly flag?
 
     if not os.path.exists(MKLISTSRC):
         print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
@@ -135,6 +125,8 @@ def init(ctx):
 @click.pass_context
 def run(ctx):
     """Apply rules to re-write data files"""
+
+    # what if this is run with readonly flag?
 
     verbose = ctx.obj['verbose']
     valid_chars = ctx.obj['valid_filename_chars']
@@ -179,19 +171,3 @@ def debug(ctx):
     print('Running subcommand `debug`.')
     for item in ctx.__dir__():
         print(item)
-
-    print('====')
-    print(ctx.__class__)
-
-    #print(f"Parent context is {ctx.parent.__dir__()}")
-    #print('=====')
-    #print(f"Parent command is {ctx.parent.command.__dir__()}")
-    #print('=====')
-    #print(f"Parent invoked command is {ctx.parent.invoked_subcommand}")
-
-    #print(f"Global rules: {ctx.obj['globalrules']}")
-    #print(f"Local rules: {ctx.obj['rules']}")
-    #print(f"Default config: {MKLISTSRC}")
-
-    #sys.exit("Exiting")
-
