@@ -69,26 +69,27 @@ def cli(ctx, datadir, globalrules, rules,
         'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
         'files2dirs': None}
 
+    # Unless mklists was invoked with 'init',
+    # read '.mklistsrc' and use its settings to override default settings.
     if ctx.invoked_subcommand != 'init':
-        # Override default settings with any settings loaded from '.mklistsrc'.
         try:
             with open(MKLISTSRC) as configfile:
                 ctx.obj.update(yaml.load(configfile))
         except FileNotFoundError:
             raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-    else:
-        # Override settings with settings explicitly specified on command line.
-        for key, value in [('globalrules', globalrules),
-                           ('rules', rules),
-                           ('urlify', urlify),
-                           ('urlify_dir', urlify_dir),
-                           ('backup', backup),
-                           ('backup_dir', backup_dir),
-                           ('backup_depth', backup_depth),
-                           ('readonly', readonly),
-                           ('verbose', verbose)]:
-            if value is not None:
-                ctx.obj[key] = value
+
+    # Override with settings specified on command line.
+    for key, value in [('globalrules', globalrules),
+                       ('rules', rules),
+                       ('urlify', urlify),
+                       ('urlify_dir', urlify_dir),
+                       ('backup', backup),
+                       ('backup_dir', backup_dir),
+                       ('backup_depth', backup_depth),
+                       ('readonly', readonly),
+                       ('verbose', verbose)]:
+        if value is not None:
+            ctx.obj[key] = value
 
     if verbose:
         explain_configuration(**ctx.obj)
