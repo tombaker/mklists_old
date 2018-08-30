@@ -34,8 +34,10 @@ from mklists import (
               help="Copy data, urlified [./.html/]")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
               help="Set non-default urlified directory")
-@click.option('--readonly', type=bool, is_flag=True, help="Enables read-only mode")
-@click.option('--verbose', type=bool, is_flag=True, help="Enables verbose mode")
+@click.option('--readonly', type=bool, is_flag=True, 
+              help="Enable read-only mode")
+@click.option('--verbose', type=bool, is_flag=True, 
+              help="Enable verbose mode")
 @click.version_option('0.1.3', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
@@ -164,3 +166,11 @@ def run(ctx):
     print(f"* Move files outside datadir as per ['files2dirs'].")
 
 
+@cli.command()
+@click.pass_context
+def debug(ctx):
+    """Temporary subcommand for debugging purposes"""
+
+    print('Running subcommand `debug`.')
+    for item in ctx.__dir__():
+        print(item)
