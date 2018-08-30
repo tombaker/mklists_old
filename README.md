@@ -1,3 +1,3 @@
 mklists
 
-Evolve plain-text todo lists by tweaking rules
+Sync plain-text todo lists to evolving rules
