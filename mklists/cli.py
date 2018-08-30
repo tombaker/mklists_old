@@ -16,17 +16,8 @@ from mklists import (
     DatadirNotAccessibleError,
     InitError)
 
-class SubCommand(click.MultiCommand):
 
-    def get_command(self, ctx, name):
-        try:
-            mod = __import__('mklists.commands.cmd_' + name,
-                             None, None, ['cli'])
-        except ImportError:
-            return
-        return mod.cli
-
-@click.group(cls=SubCommand)
+@click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
               help="Use non-default data directory [./]")
 @click.option('--globalrules', type=str, metavar='FILEPATH',
@@ -56,130 +47,140 @@ def cli(ctx, datadir, globalrules, rules,
         readonly, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
-#    # If non-default datadir given on command line, change to that directory.
-#    if datadir is not None:
-#        try:
-#            os.chdir(datadir)
-#            if verbose:
-#                print(f"Changing to data directory {repr(datadir)}.")
-#        except FileNotFoundError:
-#            raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
-#
-#    # Save hardwired default settings to object passed with @pass_context.
-#    ctx.obj = {
-#        'globalrules': '.globalrules',
-#        'rules': '.rules',
-#        'urlify': False,
-#        'urlify_dir': '.urlified',
-#        'backup': False,
-#        'backup_dir': '.backups',
-#        'backup_depth': 3,
-#        'readonly': False,
-#        'verbose': False,
-#        'valid_filename_characters': VALID_FILENAME_CHARS,
-#        'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
-#        'files2dirs': None}
-#
-#    # Unless mklists was invoked with 'init',
-#    # read '.mklistsrc' and use its settings to override default settings.
-#    if ctx.invoked_subcommand != 'init':
-#        try:
-#            with open(MKLISTSRC) as configfile:
-#                ctx.obj.update(yaml.load(configfile))
-#        except FileNotFoundError:
-#            raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-#
-#    # Override with settings specified on command line.
-#    for key, value in [('globalrules', globalrules),
-#                       ('rules', rules),
-#                       ('urlify', urlify),
-#                       ('urlify_dir', urlify_dir),
-#                       ('backup', backup),
-#                       ('backup_dir', backup_dir),
-#                       ('backup_depth', backup_depth),
-#                       ('readonly', readonly),
-#                       ('verbose', verbose)]:
-#        if value is not None:
-#            ctx.obj[key] = value
-#
-#    if verbose:
-#        explain_configuration(**ctx.obj)
-#
-#@cli.command()
-#@click.pass_context
-#def init(ctx):
-#    """Generate default configuration and rule files"""
-#
-#    # If MKLISTSRC already exists, exit and advise to delete it.
-#    # Otherwise, write current settings to MKLISTSRC
-#    if os.path.exists(MKLISTSRC):
-#        raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
-#    else:
-#        if ctx.obj['readonly']:
-#            print(f"READONLY: would have created {repr(MKLISTSRC)}.")
-#        else:
-#            print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
-#            with open(MKLISTSRC, 'w') as fout:
-#                yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
-#
-#    # Check for rare edge case where ctx.obj['rules'] was misconfigured.
-#    if not ctx.obj['rules']:   
-#        raise InitError(f"Filename needed for local rule file (eg, '.rules').")
-#
-#    # Check for global and local rule files, as specified in cxt.obj settings.
-#    # If files already exist with the configured names, leave them untouched.
-#    # Otherwise, create one or both rulefiles with default contents.
-#    for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
-#                          (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
-#        if file:
-#            if os.path.exists(file):
-#                print(f"Found {repr(file)} - leaving untouched.")
-#            else:
-#                if ctx.obj['readonly']:
-#                    print(f"READONLY: would have created {repr(file)}.")
-#                else:
-#                    print(f"Creating {repr(file)} - tweak as needed.")
-#                    with open(file, 'w') as fout:
-#                        fout.write(content)
-#
-#
-#@cli.command()
-#@click.pass_context
-#def run(ctx):
-#    """Apply rules to re-write data files"""
-#
-#    # what if this is run with readonly flag?
-#
-#    verbose = ctx.obj['verbose']
-#    valid_chars = ctx.obj['valid_filename_chars']
-#    invalid_patterns = ctx.obj['invalid_filename_patterns']
-#    #for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
-#    #                      (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
-#    #rule_list = []
-#    #if global_rulefile:
-#    #    if verbose:
-#    #        print(f"Reading global rule file {repr(global_rulefile)}.")
-#    #    grules = parse_rules(global_rulefile,
-#    #                         good_chars=valid_chars,
-#    #                         bad_pats=invalid_patterns)
-#    #    rule_list.extend(grules)
-#    #if verbose:
-#    #    print(f"Reading local rule file {local_rulefile}.")
-#    #lrules = parse_rules(local_rulefile,
-#    #                     good_chars=valid_chars,
-#    #                     bad_pats=invalid_patterns)
-#    #rule_list.extend(lrules)
-#    #if verbose:
-#    #    print(rule_list)
-#
-#    visible_files = [name for name in glob.glob('*')]
-#    print(f"* get_datalines(ls={visible_files}, but_not=bad_patterns)")
-#    print(f"* Check data folder, verbosely.")
-#
-#    print(f"* Get datalines from {visible_files}.")
-#    print(f"* Apply rules to datalines, modifying in-memory datadict.")
-#    print(f"* Backup option: Create time-stamped backup_dir.")
-#    print(f"* Backup option: Move existing files to backup_dir.")
-#    print(f"* Write out datadict values as files in datadir.")
-#    print(f"* HTML option: Write out datadict values as files in urlify_dir.")
-#    print(f"* Move files outside datadir as per ['files2dirs'].")
+    # If non-default datadir given on command line, change to that directory.
+    if datadir is not None:
+        try:
+            os.chdir(datadir)
+            if verbose:
+                print(f"Changing to data directory {repr(datadir)}.")
+        except FileNotFoundError:
+            raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
+
+    # Save hardwired default settings to object passed with @pass_context.
+    ctx.obj = {
+        'globalrules': '.globalrules',
+        'rules': '.rules',
+        'urlify': False,
+        'urlify_dir': '.urlified',
+        'backup': False,
+        'backup_dir': '.backups',
+        'backup_depth': 3,
+        'readonly': False,
+        'verbose': False,
+        'valid_filename_characters': VALID_FILENAME_CHARS,
+        'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
+        'files2dirs': None}
+
+    # Unless mklists was invoked with 'init',
+    # read '.mklistsrc' and use its settings to override default settings.
+    if ctx.invoked_subcommand != 'init':
+        try:
+            with open(MKLISTSRC) as configfile:
+                ctx.obj.update(yaml.load(configfile))
+        except FileNotFoundError:
+            raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+
+    # Override with settings specified on command line.
+    for key, value in [('globalrules', globalrules),
+                       ('rules', rules),
+                       ('urlify', urlify),
+                       ('urlify_dir', urlify_dir),
+                       ('backup', backup),
+                       ('backup_dir', backup_dir),
+                       ('backup_depth', backup_depth),
+                       ('readonly', readonly),
+                       ('verbose', verbose)]:
+        if value is not None:
+            ctx.obj[key] = value
+
+    if verbose:
+        explain_configuration(**ctx.obj)
+
+@cli.command()
+@click.pass_context
+def init(ctx):
+    """Generate default configuration and rule files"""
+
+    # If MKLISTSRC already exists, exit and advise to delete it.
+    # Otherwise, write current settings to MKLISTSRC
+    if os.path.exists(MKLISTSRC):
+        raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
+    else:
+        if ctx.obj['readonly']:
+            print(f"READONLY: would have created {repr(MKLISTSRC)}.")
+        else:
+            print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
+            with open(MKLISTSRC, 'w') as fout:
+                yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+
+    # Check for rare edge case where ctx.obj['rules'] was misconfigured.
+    if not ctx.obj['rules']:   
+        raise InitError(f"Filename needed for local rule file (eg, '.rules').")
+
+    # Check for global and local rule files, as specified in cxt.obj settings.
+    # If files already exist with the configured names, leave them untouched.
+    # Otherwise, create one or both rulefiles with default contents.
+    for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
+                          (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
+        if file:
+            if os.path.exists(file):
+                print(f"Found {repr(file)} - leaving untouched.")
+            else:
+                if ctx.obj['readonly']:
+                    print(f"READONLY: would have created {repr(file)}.")
+                else:
+                    print(f"Creating {repr(file)} - tweak as needed.")
+                    with open(file, 'w') as fout:
+                        fout.write(content)
+
+
+@cli.command()
+@click.pass_context
+def run(ctx):
+    """Apply rules to re-write data files"""
+
+    # what if this is run with readonly flag?
+
+    verbose = ctx.obj['verbose']
+    valid_chars = ctx.obj['valid_filename_chars']
+    invalid_patterns = ctx.obj['invalid_filename_patterns']
+    #for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
+    #                      (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
+    #rule_list = []
+    #if global_rulefile:
+    #    if verbose:
+    #        print(f"Reading global rule file {repr(global_rulefile)}.")
+    #    grules = parse_rules(global_rulefile,
+    #                         good_chars=valid_chars,
+    #                         bad_pats=invalid_patterns)
+    #    rule_list.extend(grules)
+    #if verbose:
+    #    print(f"Reading local rule file {local_rulefile}.")
+    #lrules = parse_rules(local_rulefile,
+    #                     good_chars=valid_chars,
+    #                     bad_pats=invalid_patterns)
+    #rule_list.extend(lrules)
+    #if verbose:
+    #    print(rule_list)
+
+    visible_files = [name for name in glob.glob('*')]
+    print(f"* get_datalines(ls={visible_files}, but_not=bad_patterns)")
+    print(f"* Check data folder, verbosely.")
+
+    print(f"* Get datalines from {visible_files}.")
+    print(f"* Apply rules to datalines, modifying in-memory datadict.")
+    print(f"* Backup option: Create time-stamped backup_dir.")
+    print(f"* Backup option: Move existing files to backup_dir.")
+    print(f"* Write out datadict values as files in datadir.")
+    print(f"* HTML option: Write out datadict values as files in urlify_dir.")
+    print(f"* Move files outside datadir as per ['files2dirs'].")
+
+
+@cli.command()
+@click.pass_context
+def debug(ctx):
+    """Temporary subcommand for debugging purposes"""
+
+    print('Running subcommand `debug`.')
+    for item in ctx.__dir__():
+        print(item)
