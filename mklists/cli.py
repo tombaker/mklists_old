@@ -101,33 +101,37 @@ def cli(ctx, datadir, globalrules, rules,
 def init(ctx):
     """Generate default configuration and rule files"""
 
-    # what if this is run with readonly flag?
-
-    if not os.path.exists(MKLISTSRC):
+    # If MKLISTSRC already exists, exit and advise to delete it.
+    # Otherwise, write current settings to MKLISTSRC
+    if os.path.exists(MKLISTSRC):
+        raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
+    else:
         if ctx.obj['readonly']:
             print(f"READONLY: would have created {repr(MKLISTSRC)}.")
         else:
             print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
             with open(MKLISTSRC, 'w') as fout:
                 yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
-    else:
-        raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
 
-    if not ctx.obj['rules']:   # hopefully a rare edge case
+    # Check for rare edge case where ctx.obj['rules'] was misconfigured.
+    if not ctx.obj['rules']:   
         raise InitError(f"Filename needed for local rule file (eg, '.rules').")
 
+    # Check for global and local rule files, as specified in cxt.obj settings.
+    # If files already exist with the configured names, leave them untouched.
+    # Otherwise, create one or both rulefiles with default contents.
     for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
                           (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
         if file:
-            if not os.path.exists(file):
+            if os.path.exists(file):
+                print(f"Found {repr(file)} - leaving untouched.")
+            else:
                 if ctx.obj['readonly']:
                     print(f"READONLY: would have created {repr(file)}.")
                 else:
                     print(f"Creating {repr(file)} - tweak as needed.")
                     with open(file, 'w') as fout:
                         fout.write(content)
-            else:
-                print(f"Found {repr(file)} - leaving untouched.")
 
 
 @cli.command()
