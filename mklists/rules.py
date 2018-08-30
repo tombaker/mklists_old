@@ -12,6 +12,7 @@ from mklists import (
     BadYamlRuleError)
 
 
+# should this be *rulefiles instead? - not need to be passed as list?
 def parse_rules(rulefiles, good_chars=VALID_FILENAME_CHARS):
     """Returns list of rule objects by parsing list of rule files."""
     parsed_yaml = _parse_yaml(rulefiles)

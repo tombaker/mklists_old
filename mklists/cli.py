@@ -104,9 +104,12 @@ def init(ctx):
     # what if this is run with readonly flag?
 
     if not os.path.exists(MKLISTSRC):
-        print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
-        with open(MKLISTSRC, 'w') as fout:
-            yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+        if ctx.obj['readonly']:
+            print(f"READONLY: would have created {repr(MKLISTSRC)}.")
+        else:
+            print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
+            with open(MKLISTSRC, 'w') as fout:
+                yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
     else:
         raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
 
@@ -117,9 +120,12 @@ def init(ctx):
                           (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
         if file:
             if not os.path.exists(file):
-                print(f"Creating {file} - tweak as needed.")
-                with open(file, 'w') as fout:
-                    fout.write(content)
+                if ctx.obj['readonly']:
+                    print(f"READONLY: would have created {repr(file)}.")
+                else:
+                    print(f"Creating {repr(file)} - tweak as needed.")
+                    with open(file, 'w') as fout:
+                        fout.write(content)
             else:
                 print(f"Found {repr(file)} - leaving untouched.")
 
@@ -134,24 +140,24 @@ def run(ctx):
     verbose = ctx.obj['verbose']
     valid_chars = ctx.obj['valid_filename_chars']
     invalid_patterns = ctx.obj['invalid_filename_patterns']
-    global_rulefile = ctx.obj['globalrules']
-    local_rulefile = ctx.obj['rules']
-    rule_list = []
-    if global_rulefile:
-        if verbose:
-            print(f"Reading global rule file {repr(global_rulefile)}.")
-        grules = parse_rules(global_rulefile,
-                             good_chars=valid_chars,
-                             bad_pats=invalid_patterns)
-        rule_list.extend(grules)
-    if verbose:
-        print(f"Reading local rule file {local_rulefile}.")
-    lrules = parse_rules(local_rulefile,
-                         good_chars=valid_chars,
-                         bad_pats=invalid_patterns)
-    rule_list.extend(lrules)
-    if verbose:
-        print(rule_list)
+    #for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
+    #                      (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
+    #rule_list = []
+    #if global_rulefile:
+    #    if verbose:
+    #        print(f"Reading global rule file {repr(global_rulefile)}.")
+    #    grules = parse_rules(global_rulefile,
+    #                         good_chars=valid_chars,
+    #                         bad_pats=invalid_patterns)
+    #    rule_list.extend(grules)
+    #if verbose:
+    #    print(f"Reading local rule file {local_rulefile}.")
+    #lrules = parse_rules(local_rulefile,
+    #                     good_chars=valid_chars,
+    #                     bad_pats=invalid_patterns)
+    #rule_list.extend(lrules)
+    #if verbose:
+    #    print(rule_list)
 
     visible_files = [name for name in glob.glob('*')]
     print(f"* get_datalines(ls={visible_files}, but_not=bad_patterns)")
