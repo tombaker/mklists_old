@@ -1,8 +1,13 @@
-"""Datadir module"""
+"""Datadir module
+
+Refactor as get_datalines(file) instead of get_datalines(ls)?
+"""
 
 import os
 import re
+import string
 from mklists import (
+    URL_PATTERN,
     BadFilenameError,
     BlankLinesError,
     DatadirHasNonFilesError,
@@ -85,10 +90,14 @@ def _get_datalines_from_visible_files(files_list):
                     raise BlankLinesError(f'{repr(filename)} has blank lines.')
                 aggregated_list_of_lines.append(line)
 
-    # if not aggregated_list_of_lines:
-    #     raise NoDataError('No data to process.')
-
-    print(aggregated_list_of_lines)
+    if not aggregated_list_of_lines:
+        raise NoDataError('No data to process.')
 
     return aggregated_list_of_lines
 
+
+def linkify(string_raw):
+    if '<a href=' in string_raw:
+        return string_raw
+    return re.compile(URL_PATTERN).sub(r'<a href="\1">\1</a>', string_raw)
+    

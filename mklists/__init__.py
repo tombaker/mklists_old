@@ -4,6 +4,8 @@ import datetime
 
 TIMESTAMP = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
 
+URL_PATTERN = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+
 VALID_FILENAME_CHARS = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
 
