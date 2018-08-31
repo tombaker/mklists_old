@@ -9,6 +9,8 @@ from mklists.verbose import explain_configuration
 from mklists.rules import parse_rules
 from mklists import (
     MKLISTSRC,
+    RULEFILE,
+    STARTER_DEFAULTS,
     STARTER_GLOBAL_RULEFILE,
     STARTER_LOCAL_RULEFILE,
     VALID_FILENAME_CHARS,
@@ -38,7 +40,7 @@ from mklists import (
               help="Enable read-only mode")
 @click.option('--verbose', type=bool, is_flag=True, 
               help="Enable verbose mode")
-@click.version_option('0.1.3', help="Show version and exit")
+@click.version_option('0.1.4', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx, datadir, globalrules, rules,
@@ -56,23 +58,11 @@ def cli(ctx, datadir, globalrules, rules,
         except FileNotFoundError:
             raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
 
-    # Save hardwired default settings to object passed with @pass_context.
-    ctx.obj = {
-        'globalrules': '.globalrules',
-        'rules': '.rules',
-        'urlify': False,
-        'urlify_dir': '.urlified',
-        'backup': False,
-        'backup_dir': '.backups',
-        'backup_depth': 3,
-        'readonly': False,
-        'verbose': False,
-        'valid_filename_characters': VALID_FILENAME_CHARS,
-        'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
-        'files2dirs': None}
+    # Save default settings to object passed with @click.pass_context.
+    ctx.obj = STARTER_DEFAULTS
 
-    # Unless mklists was invoked with 'init',
-    # read '.mklistsrc' and use its settings to override default settings.
+    # Load mandatory MKLISTSRC, which may override default settings.
+    # This step is skipped if mklists was invoked with subcommand 'init'.
     if ctx.invoked_subcommand != 'init':
         try:
             with open(MKLISTSRC) as configfile:
@@ -80,7 +70,7 @@ def cli(ctx, datadir, globalrules, rules,
         except FileNotFoundError:
             raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
-    # Override with settings specified on command line.
+    # Read settings specified on command line and use them to override.
     for key, value in [('globalrules', globalrules),
                        ('rules', rules),
                        ('urlify', urlify),
@@ -93,6 +83,7 @@ def cli(ctx, datadir, globalrules, rules,
         if value is not None:
             ctx.obj[key] = value
 
+    # Show detailed explanation of current settings resulting from the above.
     if verbose:
         explain_configuration(**ctx.obj)
 
@@ -101,8 +92,9 @@ def cli(ctx, datadir, globalrules, rules,
 def init(ctx):
     """Generate default configuration and rule files"""
 
-    # If MKLISTSRC already exists, exit and advise to delete it.
-    # Otherwise, write current settings to MKLISTSRC
+    # If MKLISTSRC already exists, exit with advice.
+    # If MKLISTSRC not found, create and populate with current settings.
+    # Note: If 'readyonly' was specified, will not actually write to disk.
     if os.path.exists(MKLISTSRC):
         raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
     else:
@@ -113,13 +105,14 @@ def init(ctx):
             with open(MKLISTSRC, 'w') as fout:
                 yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
 
-    # Check for rare edge case where ctx.obj['rules'] was misconfigured.
-    if not ctx.obj['rules']:   
-        raise InitError(f"Filename needed for local rule file (eg, '.rules').")
 
-    # Check for global and local rule files, as specified in cxt.obj settings.
-    # If files already exist with the configured names, leave them untouched.
-    # Otherwise, create one or both rulefiles with default contents.
+    # Look for global and local rule files named in settings.
+    # If local rule file was not named anywhere (edge case), call it RULEFILE.
+    # If either or both files already exist (atypical), leave them untouched.
+    # Otherwise, create one or both rule files with default contents.
+    # Note: If 'readyonly' was specified, will not actually write to disk.
+    if not ctx.obj['rules']:   
+        ctx.obj['rules'] = RULEFILE
     for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
                           (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
         if file:
@@ -139,7 +132,7 @@ def init(ctx):
 def run(ctx):
     """Apply rules to re-write data files"""
 
-    # what if this is run with readonly flag?
+    ls_visible = [name for name in glob.glob('*')]
 
     verbose = ctx.obj['verbose']
     valid_chars = ctx.obj['valid_filename_chars']
@@ -163,7 +156,6 @@ def run(ctx):
     #if verbose:
     #    print(rule_list)
 
-    visible_files = [name for name in glob.glob('*')]
     print(f"* get_datalines(ls={visible_files}, but_not=bad_patterns)")
     print(f"* Check data folder, verbosely.")
 

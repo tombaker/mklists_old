@@ -2,12 +2,28 @@
 
 import datetime
 
-MKLISTSRC = '.mklistsrc'
-
 TIMESTAMP = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
 
 VALID_FILENAME_CHARS = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
+
+MKLISTSRC = '.mklistsrc'
+
+RULEFILE = '.rules'
+
+STARTER_DEFAULTS = {
+    'globalrules': '.globalrules',
+    'rules': '.rules',
+    'urlify': False,
+    'urlify_dir': '.urlified',
+    'backup': False,
+    'backup_dir': '.backups',
+    'backup_depth': 3,
+    'readonly': False,
+    'verbose': False,
+    'valid_filename_characters': VALID_FILENAME_CHARS,
+    'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
+    'files2dirs': None}
 
 STARTER_GLOBAL_RULEFILE = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
