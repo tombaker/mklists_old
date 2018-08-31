@@ -5,7 +5,12 @@ import os
 import sys
 import click
 import yaml
-from mklists.datadir import get_datalines
+from mklists.utils import (
+    is_file,
+    has_valid_name,
+    is_utf8_encoded,
+    has_no_blank_lines,
+    linkify)
 from mklists.verbose import explain_configuration
 from mklists.rules import parse_rules
 from mklists import (
@@ -133,12 +138,10 @@ def init(ctx):
 def run(ctx):
     """Apply rules to re-write data files"""
 
-    ls_visible = [name for name in glob.glob('*')]
     verbose = ctx.obj['verbose']
     grules = ctx.obj['globalrules']
     lrules = ctx.obj['rules']
     good = ctx.obj['valid_filename_characters']
-    bad = ctx.obj['invalid_filename_patterns']
 
     #print(repr(grules))
     #print(repr(lrules))
@@ -158,9 +161,15 @@ def run(ctx):
             for rule in rule_object_list:
                 print(rule)
             
-    # Check data directory ('.') and get aggregated list of data lines.
-    data_lines = get_datalines(ls=ls_visible, but_not=bad)
-    print(data_lines)
+    # In current directory, get aggregated list of data lines.
+    datalines = []
+    for object in [name for name in glob.glob('*')]:
+        datalines.append(get_lines(object))
+
+    if not datalines:
+        raise NoDataError('No data to process!')
+
+    print(datalines)
 
     #for dir in dirs[3:]:
     #    print(f"del {directory}")

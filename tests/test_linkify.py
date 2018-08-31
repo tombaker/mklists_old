@@ -1,5 +1,5 @@
 import pytest
-from mklists.datadir import linkify
+from mklists.utils import linkify
 
 
 def test_linkified_line_already_linkified():
