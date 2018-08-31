@@ -162,6 +162,12 @@ def run(ctx):
     data_lines = get_datalines(ls=ls_visible, but_not=bad)
     print(data_lines)
 
+    #for dir in dirs[3:]:
+    #    print(f"del {directory}")
+    #hashlib.sha224(datalines.encode('utf-8')).hexdigest()
+    #import hashlib
+    #hashlib.sha224(''.join(sorted(datalines)).encode('utf-8')).hexdigest()
+
     print(f"* Apply rules to datalines, modifying in-memory datadict.")
     print(f"* Backup option: Create time-stamped backup_dir.")
     print(f"* Backup option: Move existing files to backup_dir.")

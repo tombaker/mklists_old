@@ -21,7 +21,14 @@ def parse_rules(rulefile, good_chars=VALID_FILENAME_CHARS):
     return rule_objects_list
 
 def _parse_yaml(rulefile):
-    """Returns pre-validated list of rules parsed from YAML files"""
+    """Returns unvalidated list of split-out rule lines.
+    
+    Args:
+        rulefile: a file of rules in YAML format
+
+    Raises:
+        ParserError??
+    """
     list_parsed_from_yaml = []
     try:
         with open(rulefile) as rfile:
@@ -33,6 +40,11 @@ def _parse_yaml(rulefile):
     return list_parsed_from_yaml
 
 def _create_list_of_rule_objects(rule_list_from_yaml: list = None):
+    """Returns list of rule objects.
+
+    Args:
+        rule_list_from_yaml: list of unvalidated split-out rule lines.
+    """
     list_of_rule_objects = []
     for item in rule_list_from_yaml:
         try:
