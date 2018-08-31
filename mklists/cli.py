@@ -11,8 +11,8 @@ from mklists import (
     MKLISTSRC,
     RULEFILE,
     STARTER_DEFAULTS,
-    STARTER_GLOBAL_RULEFILE,
-    STARTER_LOCAL_RULEFILE,
+    STARTER_GRULES,
+    STARTER_LRULES,
     VALID_FILENAME_CHARS,
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
@@ -94,7 +94,7 @@ def init(ctx):
 
     # If MKLISTSRC already exists, exit with advice.
     # If MKLISTSRC not found, create and populate with current settings.
-    # Note: If 'readyonly' was specified, will not actually write to disk.
+    # Note: If 'readyonly' specified, will not actually write to disk.
     if os.path.exists(MKLISTSRC):
         raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
     else:
@@ -110,11 +110,11 @@ def init(ctx):
     # If local rule file was not named anywhere (edge case), call it RULEFILE.
     # If either or both files already exist (atypical), leave them untouched.
     # Otherwise, create one or both rule files with default contents.
-    # Note: If 'readyonly' was specified, will not actually write to disk.
+    # Note: If 'readyonly' specified, will not actually write to disk.
     if not ctx.obj['rules']:   
         ctx.obj['rules'] = RULEFILE
-    for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
-                          (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
+    for file, content in [(ctx.obj['globalrules'], STARTER_GRULES),
+                          (ctx.obj['rules'], STARTER_LRULES)]:
         if file:
             if os.path.exists(file):
                 print(f"Found {repr(file)} - leaving untouched.")
@@ -133,33 +133,35 @@ def run(ctx):
     """Apply rules to re-write data files"""
 
     ls_visible = [name for name in glob.glob('*')]
-
     verbose = ctx.obj['verbose']
-    valid_chars = ctx.obj['valid_filename_chars']
-    invalid_patterns = ctx.obj['invalid_filename_patterns']
-    #for file, content in [(ctx.obj['globalrules'], STARTER_GLOBAL_RULEFILE),
-    #                      (ctx.obj['rules'], STARTER_LOCAL_RULEFILE)]:
-    #rule_list = []
-    #if global_rulefile:
-    #    if verbose:
-    #        print(f"Reading global rule file {repr(global_rulefile)}.")
-    #    grules = parse_rules(global_rulefile,
-    #                         good_chars=valid_chars,
-    #                         bad_pats=invalid_patterns)
-    #    rule_list.extend(grules)
-    #if verbose:
-    #    print(f"Reading local rule file {local_rulefile}.")
-    #lrules = parse_rules(local_rulefile,
-    #                     good_chars=valid_chars,
-    #                     bad_pats=invalid_patterns)
-    #rule_list.extend(lrules)
-    #if verbose:
-    #    print(rule_list)
+    grules = ctx.obj['globalrules']
+    lrules = ctx.obj['rules']
+    good = ctx.obj['valid_filename_characters']
+    bad = ctx.obj['invalid_filename_patterns']
 
-    print(f"* get_datalines(ls={visible_files}, but_not=bad_patterns)")
-    print(f"* Check data folder, verbosely.")
+    #print(repr(grules))
+    #print(repr(lrules))
 
-    print(f"* Get datalines from {visible_files}.")
+    readonly = True # 2018-08-31: for purposes of testing
+    verbose = True  # 2018-08-31: for purposes of testing
+
+    # Read rule files (if they exist) and parse.
+    rule_object_list = []
+    for rulefile in grules, lrules:
+        if rulefile:
+            print(rulefile)
+            rule_object_list.extend(parse_rules(rulefile, good_chars=good))
+        if not rule_object_list:
+            print("No rules to work with!") # turn this into exception
+        if verbose: # just for debugging
+            for rule in rule_object_list:
+                print(rule)
+            
+    # Check data directory ('.') and get aggregated list of data lines.
+    data_lines = get_datalines(ls=ls_visible, but_not=bad)
+    for line in data_lines:
+        print(line)
+
     print(f"* Apply rules to datalines, modifying in-memory datadict.")
     print(f"* Backup option: Create time-stamped backup_dir.")
     print(f"* Backup option: Move existing files to backup_dir.")

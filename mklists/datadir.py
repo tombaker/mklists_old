@@ -30,7 +30,7 @@ def get_datalines(ls=[], but_not=[]):
     return _get_datalines_from_visible_files(ls)
 
 def _visible_files_are_really_files(objects_list):
-    """Returns true if all visible objects in directory are files.
+    """Returns True if all visible objects in directory are files.
 
     Raises:
         DatadirHasNonFilesError: if object is not a file.

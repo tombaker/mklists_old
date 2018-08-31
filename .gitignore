@@ -6,3 +6,4 @@ Session.vim
 mklists.egg-info/
 snaps/
 mksnaps
+mklistsdata/

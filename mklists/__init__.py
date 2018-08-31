@@ -25,11 +25,11 @@ STARTER_DEFAULTS = {
     'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
     'files2dirs': None}
 
-STARTER_GLOBAL_RULEFILE = """\
+STARTER_GRULES = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
 """
 
-STARTER_LOCAL_RULEFILE = """\
+STARTER_LRULES = """\
 - [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
 - [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
 """
@@ -92,11 +92,14 @@ class BadSourceError(RuleError):
 class RulesError(SystemExit):
     """Category of exceptions related to sets or rules."""
 
-class RuleFileNotFoundError(RulesError):
-    """Rule file not found or not accessible."""
-
 class BadYamlRuleError(RulesError):
     """Rule is badly formed in YAML source."""
 
 class BadYamlError(RulesError):
     """YAML format of the file does not parse correctly."""
+
+class RuleWarningError(Exception):
+    """Super-category for warnings related to rules."""
+
+class RuleFileNotFoundError(RuleWarningError):
+    """Rule file not found or not accessible."""
