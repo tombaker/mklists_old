@@ -5,6 +5,7 @@ import os
 import sys
 import click
 import yaml
+from mklists.datadir import get_datalines
 from mklists.verbose import explain_configuration
 from mklists.rules import parse_rules
 from mklists import (
@@ -159,8 +160,7 @@ def run(ctx):
             
     # Check data directory ('.') and get aggregated list of data lines.
     data_lines = get_datalines(ls=ls_visible, but_not=bad)
-    for line in data_lines:
-        print(line)
+    print(data_lines)
 
     print(f"* Apply rules to datalines, modifying in-memory datadict.")
     print(f"* Backup option: Create time-stamped backup_dir.")

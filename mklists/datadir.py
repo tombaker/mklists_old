@@ -71,19 +71,24 @@ def _visible_files_are_utf8_encoded(files_list):
     return True
 
 def _get_datalines_from_visible_files(files_list):
-    """Returns consolidated list of datalines to process.
+    """Returns aggregated list of datalines to process.
 
     Raises:
         BlankLinesError: if a file is found to have blank lines.
         NoDataError: if there is no data to process at all.
     """
     aggregated_list_of_lines = []
-    for file in files_list:
-        for line in file.readlines():
-            if not line:
-                raise BlankLinesError(f'{repr(file)} has blank lines.')
-            aggregated_list_of_lines.append(line)
-    if not aggregated_list_of_lines:
-        raise NoDataError('No data to process.')
+    for filename in files_list:
+        with open(filename) as rfile:
+            for line in rfile:
+                if not line:
+                    raise BlankLinesError(f'{repr(filename)} has blank lines.')
+                aggregated_list_of_lines.append(line)
+
+    # if not aggregated_list_of_lines:
+    #     raise NoDataError('No data to process.')
+
+    print(aggregated_list_of_lines)
+
     return aggregated_list_of_lines
 
