@@ -2,27 +2,22 @@
 
 import glob
 import os
-import sys
 import click
 import yaml
 from mklists.utils import (
-    is_file,
-    has_valid_name,
-    is_utf8_encoded,
-    has_no_blank_lines,
-    linkify)
+    write_initial_configfile,
+    write_initial_rulefiles,
+    get_rules,
+    get_lines,
+    )
 from mklists.verbose import explain_configuration
-from mklists.rules import parse_rules
 from mklists import (
     MKLISTSRC,
     RULEFILE,
     STARTER_DEFAULTS,
-    STARTER_GRULES,
-    STARTER_LRULES,
-    VALID_FILENAME_CHARS,
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
-    InitError)
+    NoDataError)
 
 
 @click.group()
@@ -42,9 +37,9 @@ from mklists import (
               help="Copy data, urlified [./.html/]")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
               help="Set non-default urlified directory")
-@click.option('--readonly', type=bool, is_flag=True, 
+@click.option('--readonly', type=bool, is_flag=True,
               help="Enable read-only mode")
-@click.option('--verbose', type=bool, is_flag=True, 
+@click.option('--verbose', type=bool, is_flag=True,
               help="Enable verbose mode")
 @click.version_option('0.1.4', help="Show version and exit")
 @click.help_option(help="Show help and exit")
@@ -93,44 +88,23 @@ def cli(ctx, datadir, globalrules, rules,
     if verbose:
         explain_configuration(**ctx.obj)
 
+
 @cli.command()
 @click.pass_context
 def init(ctx):
     """Generate default configuration and rule files"""
 
-    # If MKLISTSRC already exists, exit with advice.
-    # If MKLISTSRC not found, create and populate with current settings.
-    # Note: If 'readyonly' specified, will not actually write to disk.
-    if os.path.exists(MKLISTSRC):
-        raise InitError(f"To re-initialize, first delete {repr(MKLISTSRC)}.")
-    else:
-        if ctx.obj['readonly']:
-            print(f"READONLY: would have created {repr(MKLISTSRC)}.")
-        else:
-            print(f"Creating default {repr(MKLISTSRC)} - customize as needed.")
-            with open(MKLISTSRC, 'w') as fout:
-                yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
-
+    # If configfile already exists, exit with advice.
+    # If configfile not found, create new file, populate with current settings.
+    # Note: if 'readonly' specified, will only print messages to screen.
+    write_initial_configfile(filename=MKLISTSRC)
 
     # Look for global and local rule files named in settings.
-    # If local rule file was not named anywhere (edge case), call it RULEFILE.
-    # If either or both files already exist (atypical), leave them untouched.
-    # Otherwise, create one or both rule files with default contents.
+    # -- If local rule file not named in settings, call it RULEFILE.
+    # -- If either or both files already exist (atypical), leave untouched.
+    # Create one or both rule files with default contents.
     # Note: If 'readyonly' specified, will not actually write to disk.
-    if not ctx.obj['rules']:   
-        ctx.obj['rules'] = RULEFILE
-    for file, content in [(ctx.obj['globalrules'], STARTER_GRULES),
-                          (ctx.obj['rules'], STARTER_LRULES)]:
-        if file:
-            if os.path.exists(file):
-                print(f"Found {repr(file)} - leaving untouched.")
-            else:
-                if ctx.obj['readonly']:
-                    print(f"READONLY: would have created {repr(file)}.")
-                else:
-                    print(f"Creating {repr(file)} - tweak as needed.")
-                    with open(file, 'w') as fout:
-                        fout.write(content)
+    write_initial_rulefiles(grules=None, lrules=RULEFILE)
 
 
 @cli.command()
@@ -138,44 +112,26 @@ def init(ctx):
 def run(ctx):
     """Apply rules to re-write data files"""
 
-    verbose = ctx.obj['verbose']
-    grules = ctx.obj['globalrules']
-    lrules = ctx.obj['rules']
-    good = ctx.obj['valid_filename_characters']
-
-    #print(repr(grules))
-    #print(repr(lrules))
-
-    readonly = True # 2018-08-31: for purposes of testing
     verbose = True  # 2018-08-31: for purposes of testing
 
+    visible_things = [name for name in glob.glob('*')]
+
     # Read rule files (if they exist) and parse.
-    rule_object_list = []
-    for rulefile in grules, lrules:
-        if rulefile:
-            print(rulefile)
-            rule_object_list.extend(parse_rules(rulefile, good_chars=good))
-        if not rule_object_list:
-            print("No rules to work with!") # turn this into exception
-        if verbose: # just for debugging
-            for rule in rule_object_list:
-                print(rule)
-            
+    rules = get_rules(grules=ctx.obj['globalrules'],
+                      lrules=ctx.obj['rules'],
+                      good_chars=ctx.obj['valid_filename_chars'])
+    if verbose:   # just for debugging
+        for rule in rules:
+            print(rule)
+
     # In current directory, get aggregated list of data lines.
     datalines = []
-    for object in [name for name in glob.glob('*')]:
-        datalines.append(get_lines(object))
-
+    for thing in visible_things:
+        datalines.append(get_lines(thing))
+    if verbose:   # just for debugging
+        print(datalines)
     if not datalines:
         raise NoDataError('No data to process!')
-
-    print(datalines)
-
-    #for dir in dirs[3:]:
-    #    print(f"del {directory}")
-    #hashlib.sha224(datalines.encode('utf-8')).hexdigest()
-    #import hashlib
-    #hashlib.sha224(''.join(sorted(datalines)).encode('utf-8')).hexdigest()
 
     print(f"* Apply rules to datalines, modifying in-memory datadict.")
     print(f"* Backup option: Create time-stamped backup_dir.")
@@ -183,6 +139,13 @@ def run(ctx):
     print(f"* Write out datadict values as files in datadir.")
     print(f"* HTML option: Write out datadict values as files in urlify_dir.")
     print(f"* Move files outside datadir as per ['files2dirs'].")
+
+    # Ideas:
+    #    for dir in dirs[3:]:
+    #        print(f"del {directory}")
+    #    hashlib.sha224(datalines.encode('utf-8')).hexdigest()
+    #    import hashlib
+    #    hashlib.sha224(''.join(sorted(datalines)).encode('utf-8')).hexdigest()
 
 
 @cli.command()

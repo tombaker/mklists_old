@@ -97,6 +97,9 @@ class RulesError(SystemExit):
 class BadYamlRuleError(RulesError):
     """Rule is badly formed in YAML source."""
 
+class NoRulesError(RulesError):
+    """Rule file not found or not accessible."""
+
 class BadYamlError(RulesError):
     """YAML format of the file does not parse correctly."""
 

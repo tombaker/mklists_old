@@ -3,7 +3,7 @@
 import pytest
 import yaml
 from mklists.rule import Rule
-from mklists.rules import parse_rules
+from mklists.rules import parse_yamlrules
 
 
 @pytest.mark.skip

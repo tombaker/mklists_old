@@ -12,7 +12,7 @@ from mklists import (
     BadYamlRuleError)
 
 
-def parse_rules(rulefile, good_chars=VALID_FILENAME_CHARS):
+def parse_yamlrules(rulefile, good_chars=VALID_FILENAME_CHARS):
     """Returns list of rule objects from parsing a YAML-format rule file."""
     parsed_yaml = _parse_yaml(rulefile)
     rule_objects_list = _create_list_of_rule_objects(parsed_yaml)
