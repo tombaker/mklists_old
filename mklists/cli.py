@@ -5,6 +5,8 @@ import os
 import click
 import yaml
 from mklists.utils import (
+    set_data_directory,
+    load_mklistsrc,
     write_initial_configfile,
     write_initial_rulefiles,
     get_rules,
@@ -51,25 +53,16 @@ def cli(ctx, datadir, globalrules, rules,
     """Sync your plain-text todo lists to evolving rules"""
 
     # If non-default datadir given on command line, change to that directory.
-    if datadir is not None:
-        try:
-            os.chdir(datadir)
-            if verbose:
-                print(f"Changing to data directory {repr(datadir)}.")
-        except FileNotFoundError:
-            raise DatadirNotAccessibleError(f"{datadir} is not accessible.")
+    # If directory is not accessible, exit with error message.
+    set_data_directory(datadir)
 
     # Save default settings to object passed with @click.pass_context.
     ctx.obj = STARTER_DEFAULTS
 
-    # Load mandatory MKLISTSRC, which may override default settings.
+    # Load mandatory MKLISTSRC, overriding some or all default settings.
     # This step is skipped if mklists was invoked with subcommand 'init'.
     if ctx.invoked_subcommand != 'init':
-        try:
-            with open(MKLISTSRC) as configfile:
-                ctx.obj.update(yaml.load(configfile))
-        except FileNotFoundError:
-            raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+        load_mklistsrc(MKLISTSRC, context=ctx.obj)
 
     # Read settings specified on command line and use them to override.
     for key, value in [('globalrules', globalrules),
@@ -153,6 +146,8 @@ def run(ctx):
 def debug(ctx):
     """Temporary subcommand for debugging purposes"""
 
+    print(os.getcwd())
+
     print('Running subcommand `debug`.')
-    for item in ctx.__dir__():
-        print(item)
+    #for item in ctx.__dir__():
+    #    print(item)

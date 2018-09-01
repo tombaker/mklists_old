@@ -3,6 +3,7 @@
 import os
 import re
 import string
+import yaml
 from mklists import (
     URL_PATTERN,
     MKLISTSRC,
@@ -15,6 +16,23 @@ from mklists import (
     NoDataError,
     NoRulesError,
     NotUTF8Error)
+
+def load_mklistsrc(filename, context=None):
+    print(f"yeah! loading {filename}!")
+    try:
+        with open(MKLISTSRC) as configfile:
+            context.update(yaml.load(configfile))
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+
+def set_data_directory(dirname):
+    """Set current working directory for mklists (data)."""
+    if dirname is not None:
+        try:
+            os.chdir(dirname)
+            print(f"Setting {repr(dirname)} as data directory.")
+        except FileNotFoundError:
+            raise dirnameNotAccessibleError(f"{dirname} is not accessible.")
 
 def write_initial_rulefiles(grules=None, lrules=None):
     if not ctx.obj['rules']:   
