@@ -17,6 +17,11 @@ from mklists import (
     NoRulesError,
     NotUTF8Error)
 
+#def load_values(ctx, globalrules, rules,
+#                            backup, backup_dir, backup_depth,
+#                            urlify, urlify_dir,
+#                            readonly, verbose):
+
 def load_mklistsrc(filename, context=None):
     print(f"yeah! loading {filename}!")
     try:

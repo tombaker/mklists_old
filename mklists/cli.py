@@ -64,18 +64,17 @@ def cli(ctx, datadir, globalrules, rules,
     if ctx.invoked_subcommand != 'init':
         load_mklistsrc(MKLISTSRC, context=ctx.obj)
 
-    # Read settings specified on command line and use them to override.
-    for key, value in [('globalrules', globalrules),
-                       ('rules', rules),
-                       ('urlify', urlify),
-                       ('urlify_dir', urlify_dir),
-                       ('backup', backup),
-                       ('backup_dir', backup_dir),
-                       ('backup_depth', backup_depth),
-                       ('readonly', readonly),
-                       ('verbose', verbose)]:
-        if value is not None:
-            ctx.obj[key] = value
+    # Save settings specified on command line ("not None") to context object.
+    if urlify:        ctx.obj['urlify']       = urlify
+    if globalrules:   ctx.obj['globalrules']  = globalrules
+    if rules:         ctx.obj['rules']        = rules
+    if urlify:        ctx.obj['urlify']       = urlify
+    if urlify_dir:    ctx.obj['urlify_dir']   = urlify_dir
+    if backup:        ctx.obj['backup']       = backup
+    if backup_dir:    ctx.obj['backup_dir']   = backup_dir
+    if backup_depth:  ctx.obj['backup_depth'] = backup_depth
+    if readonly:      ctx.obj['readonly']     = readonly
+    if verbose:       ctx.obj['verbose']      = verbose
 
     # Show detailed explanation of current settings resulting from the above.
     if verbose:

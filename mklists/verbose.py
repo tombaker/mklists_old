@@ -58,7 +58,7 @@ def explain_configuration(**kwargs):
     if backup:
         print("Config sets 'backup', so data files will be backed up ")
         if backup_dir:
-            print(f"to the directory {backup_dir}/{TIMESTAMP}.")
+            print(f"to the directory {backup_dir}/{TIMESTAMP} .")
         else:
             print("However, the command will fail "
                   "because no backup directory has been specified.")
@@ -69,12 +69,8 @@ def explain_configuration(**kwargs):
         print("Config does NOT set 'backup', "
               "so data files will NOT be backed up.")
 
-    if backup_dir:
-        # Somewhere in module, calculate YYYYMMDD
-        print("Will back up files to directory X/YYYYMMDD_hhmmss")
-
     if backup_depth:
-        print("Will keep last {backup_depth} backups.")
+        print(f"Will keep last {backup_depth} backups.")
 
     if readonly:
         print("Will stop short of writing to disk or moving files.")
