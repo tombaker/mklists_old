@@ -36,7 +36,7 @@ def set_data_directory(dirname):
         except FileNotFoundError:
             raise dirnameNotAccessibleError(f"{dirname} is not accessible.")
 
-def write_initial_rulefiles(grules=None, lrules=None):
+def write_initial_rulefiles(grules=None, lrules=None, readonly=True):
     if not ctx.obj['rules']:   
         ctx.obj['rules'] = RULEFILE
     for file, content in [(ctx.obj['globalrules'], STARTER_GRULES),
@@ -62,7 +62,7 @@ def get_rules(grules=None, lrules=[], good_chars=None):
             raise NoRulesError("No rules to work with!")
     return rule_object_list
     
-def write_initial_configfile(filename=MKLISTSRC):
+def write_initial_configfile(filename=MKLISTSRC, readonly=True):
     """Writes initial configuration file to disk."""
     if os.path.exists(filename):
         raise InitError(f"To re-initialize, first delete {repr(filename)}.")

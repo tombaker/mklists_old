@@ -87,14 +87,17 @@ def init(ctx):
     # If configfile already exists, exit with advice.
     # If configfile not found, create new file using current settings.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
-    write_initial_configfile(filename=MKLISTSRC)
+    write_initial_configfile(filename=MKLISTSRC, 
+                             readonly=ctx.obj['readonly'])
 
     # Look for global and local rule files named in settings.
     # -- If local rule file not named in settings, call it RULEFILE.
     # -- If either or both files already exist (atypical), leave untouched.
     # Create one or both rule files with default contents.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
-    write_initial_rulefiles(grules=None, lrules=RULEFILE)
+    write_initial_rulefiles(grules=None, 
+                            lrules=RULEFILE, 
+                            readonly=ctx.obj['readonly'])
 
 
 @cli.command()
