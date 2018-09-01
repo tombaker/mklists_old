@@ -63,7 +63,7 @@ def cli(ctx, datadir, globalrules, rules,
     ctx.obj = STARTER_DEFAULTS
 
     # Load mandatory file MKLISTSRC, overriding some or all default settings.
-    # This step is skipped if mklists was invoked with subcommand 'init'.
+    # -- This step is skipped if mklists was invoked with subcommand 'init'.
     if ctx.invoked_subcommand != 'init':
         load_mklistsrc(MKLISTSRC, context=ctx.obj, verbose=ctx.obj['verbose'])
 
@@ -74,7 +74,7 @@ def cli(ctx, datadir, globalrules, rules,
         if item != 'ctx' and item != 'datadir' and cliargs[item] is not None:
             ctx.obj[item] = cliargs[item]
 
-    # Show detailed explanation of current settings resulting from the above.
+    # Show detailed exposition of current settings resulting from the above.
     if verbose:
         explain_configuration(**ctx.obj)
 
@@ -85,15 +85,15 @@ def init(ctx):
     """Generate default configuration and rule files"""
 
     # If configfile already exists, exit with advice.
-    # If configfile not found, create new file, populate with current settings.
-    # Note: if 'readonly' specified, will only print messages to screen.
+    # If configfile not found, create new file using current settings.
+    # Note: if 'readonly' is ON, will only print messages, not write to disk.
     write_initial_configfile(filename=MKLISTSRC)
 
     # Look for global and local rule files named in settings.
     # -- If local rule file not named in settings, call it RULEFILE.
     # -- If either or both files already exist (atypical), leave untouched.
     # Create one or both rule files with default contents.
-    # Note: If 'readyonly' specified, will not actually write to disk.
+    # Note: if 'readonly' is ON, will only print messages, not write to disk.
     write_initial_rulefiles(grules=None, lrules=RULEFILE)
 
 
@@ -104,7 +104,7 @@ def run(ctx):
 
     verbose = True  # 2018-08-31: for purposes of testing
 
-    visible_things = [name for name in glob.glob('*')]
+    ls_visible = [name for name in glob.glob('*')]
 
     # Read rule files (if they exist) and parse.
     rules = get_rules(grules=ctx.obj['globalrules'],
@@ -116,8 +116,8 @@ def run(ctx):
 
     # In current directory, get aggregated list of data lines.
     datalines = []
-    for thing in visible_things:
-        datalines.append(get_lines(thing))
+    for item in ls_visible:
+        datalines.append(get_lines(item))
     if verbose:   # just for debugging
         print(datalines)
     if not datalines:
