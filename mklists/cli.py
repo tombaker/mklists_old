@@ -52,6 +52,9 @@ def cli(ctx, datadir, globalrules, rules,
         readonly, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
+    # Save dictionary of arguments passed on the command line.
+    cliargs = locals()
+
     # If non-default datadir given on command line, change to that directory.
     # If directory is not accessible, exit with error message.
     set_data_directory(datadir)
@@ -59,22 +62,17 @@ def cli(ctx, datadir, globalrules, rules,
     # Save default settings to object passed with @click.pass_context.
     ctx.obj = STARTER_DEFAULTS
 
-    # Load mandatory MKLISTSRC, overriding some or all default settings.
+    # Load mandatory file MKLISTSRC, overriding some or all default settings.
     # This step is skipped if mklists was invoked with subcommand 'init'.
     if ctx.invoked_subcommand != 'init':
-        load_mklistsrc(MKLISTSRC, context=ctx.obj)
+        load_mklistsrc(MKLISTSRC, context=ctx.obj, verbose=ctx.obj['verbose'])
 
     # Save settings specified on command line ("not None") to context object.
-    if urlify:        ctx.obj['urlify']       = urlify
-    if globalrules:   ctx.obj['globalrules']  = globalrules
-    if rules:         ctx.obj['rules']        = rules
-    if urlify:        ctx.obj['urlify']       = urlify
-    if urlify_dir:    ctx.obj['urlify_dir']   = urlify_dir
-    if backup:        ctx.obj['backup']       = backup
-    if backup_dir:    ctx.obj['backup_dir']   = backup_dir
-    if backup_depth:  ctx.obj['backup_depth'] = backup_depth
-    if readonly:      ctx.obj['readonly']     = readonly
-    if verbose:       ctx.obj['verbose']      = verbose
+    # -- Exception: 'ctx' - the context object itself.
+    # -- Exception: 'datadir' - used once and not saved on context object.
+    for item in cliargs:
+        if item != 'ctx' and item != 'datadir' and cliargs[item] is not None:
+            ctx.obj[item] = cliargs[item]
 
     # Show detailed explanation of current settings resulting from the above.
     if verbose:

@@ -17,16 +17,13 @@ from mklists import (
     NoRulesError,
     NotUTF8Error)
 
-#def load_values(ctx, globalrules, rules,
-#                            backup, backup_dir, backup_depth,
-#                            urlify, urlify_dir,
-#                            readonly, verbose):
 
-def load_mklistsrc(filename, context=None):
-    print(f"yeah! loading {filename}!")
+def load_mklistsrc(filename, context=None, verbose=False):
     try:
         with open(MKLISTSRC) as configfile:
             context.update(yaml.load(configfile))
+        if verbose:
+            print(f"Loading configuration file {repr(MKLISTSRC)}.")
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 

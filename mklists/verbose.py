@@ -24,13 +24,13 @@ def explain_configuration(**kwargs):
     files2dirs = kwargs['files2dirs']
 
     if globalrules:
-        print(f"Config points to global rule file: {globalrules}, "
-               "which will load before local rule file.")
+        print(f"Global rule file {repr(globalrules)} "
+               "(will load before local rule file).")
     else:
         print("Config does not point to an (optional) global rule file.")
 
     if rules:
-        print(f"Config points to required local rule file: {rules}.")
+        print(f"Local rule file (required): {repr(rules)}.")
     else:
         print(f"Uh-oh, config does not point to (required) local rule file.")
         print(f"    Try one of the following:")
@@ -40,7 +40,7 @@ def explain_configuration(**kwargs):
         raise NoRulefileSpecified
 
     if urlify:
-        print(f"Config sets 'urlify', so TXT files will be copied, "
+        print(f"'urlify' option is ON, so TXT files will be copied, "
                 "converted into HTML,")
         if urlify_dir:
             print("and saved in the {repr(urlify_dir)} directory.")
@@ -52,13 +52,14 @@ def explain_configuration(**kwargs):
             print(f"    urlify_dir: /path/to/some/directory")
             print(f"Then make sure that /path/to/some/directory exists.")
     else:
-        print(f"Config does NOT specify 'urlify', so TXT files will NOT "
+        print(f"'urlify' option is OFF, so TXT files will NOT "
                 "be copied and converted into HTML.")
 
     if backup:
-        print("Config sets 'backup', so data files will be backed up ")
+        backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
+        print("'backup' option is ON, so data files will be backed up ")
         if backup_dir:
-            print(f"to the directory {backup_dir}/{TIMESTAMP} .")
+            print(f"...to the directory {repr(backup_dir_timestamped)}.")
         else:
             print("However, the command will fail "
                   "because no backup directory has been specified.")
@@ -70,16 +71,15 @@ def explain_configuration(**kwargs):
               "so data files will NOT be backed up.")
 
     if backup_depth:
-        print(f"Will keep last {backup_depth} backups.")
+        print(f"...where the last {backup_depth} backups will be kept.")
 
     if readonly:
         print("Will stop short of writing to disk or moving files.")
 
     if valid_filename_characters:
-        print("Filenames must consist only of the following characters:")
-        print(f"{valid_filename_characters}")
+        print(f"Valid filename characters: {valid_filename_characters}")
 
     if files2dirs:
         print("Output file of given name to be moved to given directory.")
-
-    print("Edit MKLISTSRC to change settings for future use")
+    else:
+        print("'files2dirs' option not set in MKLISTS - see documentation.")
