@@ -1,16 +1,14 @@
 """CLI - command-line interface module"""
 
 import glob
-import os
 import click
-import yaml
 from mklists.utils import (
     set_data_directory,
     load_mklistsrc,
     write_initial_configfile,
     write_initial_rulefiles,
     get_rules,
-    get_lines,
+    get_datalines,
     )
 from mklists.verbose import explain_configuration
 from mklists import (
@@ -89,7 +87,7 @@ def init(ctx):
     # If configfile not found, create new file using current settings.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
     write_initial_configfile(context=ctx.obj,
-                             filename=MKLISTSRC, 
+                             filename=MKLISTSRC,
                              readonly=True, # later: ctx.obj['readonly'],
                              verbose=ctx.obj['verbose'])
 
@@ -98,8 +96,8 @@ def init(ctx):
     # -- If either or both files already exist (atypical), leave untouched.
     # Create one or both rule files with default contents.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
-    write_initial_rulefiles(grules=None, 
-                            lrules=RULEFILE, 
+    write_initial_rulefiles(grules=None,
+                            lrules=RULEFILE,
                             readonly=True, # later: ctx.obj['readonly'],
                             verbose=ctx.obj['verbose'])
 
@@ -123,8 +121,8 @@ def run(ctx):
     datalines_dict = apply_rules_to_datalines(rules_list=rules,
                                               datalines_list=datalines)
 
-    # If 'backup' is ON: 
-    # before writing datalines_dict contents to disk, 
+    # If 'backup' is ON:
+    # before writing datalines_dict contents to disk,
     # creates timestamped backup directory in specified backup_dir,
     # and moves all visible files in data directory to backup directory.
     if ctx.obj['backup']:
@@ -133,14 +131,14 @@ def run(ctx):
                                  backup_dir=ctx.obj['backup_dir'],
                                  backup_depth=ctx.obj['backup_depth'])
 
-    # Write out items in datalines_dict: 
-    # -- files named for dictionary keys, 
+    # Write out items in datalines_dict:
+    # -- files named for dictionary keys,
     # -- file contents are dictionary values.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
     # Note: if 'backup' is ON, will move existing data to backup directory.
-    write_new_datafiles_to_disk(datalines_d=datalines_dict,
-                                readonly=True,  # later: ctx.obj['readonly'],
-                                verbose=ctx.obj['verbose'])
+    write_new_datafiles(datalines_d=datalines_dict,
+                        readonly=True,  # later: ctx.obj['readonly'],
+                        verbose=ctx.obj['verbose'])
 
     print("2018-09-02: remains to be done:")
     print(f"* Backup option: Create time-stamped backup_dir.")

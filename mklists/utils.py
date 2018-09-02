@@ -97,6 +97,17 @@ def move_datafiles_to_backup(ls_visible=[],
     creates timestamped backup directory in specified backup_dir,
     and moves all visible files in data directory to backup directory.
     """
+
+def write_new_datafiles(datalines_d=None,
+                        readonly=False,
+                        backup=False, 
+                        backup_dir=None,
+                        backup_depth=None,
+                        verbose=False):
+    # will call _move_datafiles_to_backup, using TIMESTAMP
+    # Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
+    # @@@@
+    pass
                   
 def get_datalines(ls_visible=[],
               but_not=None):
@@ -113,17 +124,6 @@ def get_datalines(ls_visible=[],
             print(datalines)  # 2018-09-02: just for debugging
     if not datalines:
         raise NoDataError('No data to process!')
-
-def write_new_datafiles_to_disk(datalines_d=None,
-                                readonly=False,
-                                backup=False, 
-                                backup_dir=None,
-                                backup_depth=None,
-                                verbose=False):
-    # will call _move_datafiles_to_backup, using TIMESTAMP
-    # Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
-    # @@@@
-    pass
 
 def _get_filelines(thing_in_directory, 
                    invalid_patterns=None):
