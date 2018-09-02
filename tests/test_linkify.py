@@ -82,11 +82,12 @@ def test_linkified_line_url_with_https():
     assert linkify(input) == output
 
 
+@pytest.mark.skip
 def test_linkified_line_surrounded_by_brackets():
     input = """see info (https://www.w3.org/2013/data/CG/wiki)"""
     output = """see info (<a href="https://www.w3.org/2013/data/CG/wiki">https://www.w3.org/2013/data/CG/wiki</a>)')"""
 
-
+@pytest.mark.skip
 def test_linkified_line_with_two_urls():
     input = """see info (https://example1.org), http://example2.org"""
     output = """see info (<a href="https://example1.org">https://example1.org</a>), <a href="http://example2.org">http://example2.org</a>)"""

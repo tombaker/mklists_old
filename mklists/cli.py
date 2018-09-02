@@ -87,8 +87,10 @@ def init(ctx):
     # If configfile already exists, exit with advice.
     # If configfile not found, create new file using current settings.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
-    write_initial_configfile(filename=MKLISTSRC, 
-                             readonly=ctx.obj['readonly'])
+    write_initial_configfile(context=ctx.obj,
+                             filename=MKLISTSRC, 
+                             readonly=ctx.obj['readonly'],
+                             verbose=ctx.obj['verbose'])
 
     # Look for global and local rule files named in settings.
     # -- If local rule file not named in settings, call it RULEFILE.
@@ -97,7 +99,8 @@ def init(ctx):
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
     write_initial_rulefiles(grules=None, 
                             lrules=RULEFILE, 
-                            readonly=ctx.obj['readonly'])
+                            readonly=ctx.obj['readonly'],
+                            verbose=ctx.obj['verbose'])
 
 
 @cli.command()
@@ -107,24 +110,16 @@ def run(ctx):
 
     verbose = True  # 2018-08-31: for purposes of testing
 
-    ls_visible = [name for name in glob.glob('*')]
-
-    # Read rule files (if they exist) and parse.
+    # Read rule files, parse, 
     rules = get_rules(grules=ctx.obj['globalrules'],
                       lrules=ctx.obj['rules'],
-                      good_chars=ctx.obj['valid_filename_chars'])
-    if verbose:   # just for debugging
-        for rule in rules:
-            print(rule)
+                      valid_filename_chars=ctx.obj['valid_filename_chars'],
+                      verbose=ctx.obj['verbose'])
 
     # In current directory, get aggregated list of data lines.
-    datalines = []
-    for item in ls_visible:
-        datalines.append(get_lines(item))
-    if verbose:   # just for debugging
-        print(datalines)
-    if not datalines:
-        raise NoDataError('No data to process!')
+    datalines = get_datalines(ls_visible=[name for name in glob.glob('*')],
+                              but_not=ctx.obj['invalid_filename_patterns'],
+                              verbose=ctx.obj['verbose'])
 
     print(f"* Apply rules to datalines, modifying in-memory datadict.")
     print(f"* Backup option: Create time-stamped backup_dir.")

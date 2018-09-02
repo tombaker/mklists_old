@@ -3,6 +3,7 @@
 import os
 import re
 import string
+import pprint
 import yaml
 from mklists import (
     URL_PATTERN,
@@ -16,6 +17,7 @@ from mklists import (
     NoDataError,
     NoRulesError,
     NotUTF8Error)
+from mklists.rules import parse_yamlrules
 
 
 def load_mklistsrc(filename, context=None, verbose=False):
@@ -36,62 +38,85 @@ def set_data_directory(dirname):
         except FileNotFoundError:
             raise dirnameNotAccessibleError(f"{dirname} is not accessible.")
 
-def write_initial_rulefiles(grules=None, lrules=None, readonly=True):
-    if not ctx.obj['rules']:   
-        ctx.obj['rules'] = RULEFILE
-    for file, content in [(ctx.obj['globalrules'], STARTER_GRULES),
-                          (ctx.obj['rules'], STARTER_LRULES)]:
+def write_initial_rulefiles(grules=None, 
+                            lrules=None, 
+                            valid_filename_chars=None,
+                            readonly=True, # 2018-09-02: just for now
+                            verbose=False):
+    for file, content in [(grules, STARTER_GRULES), (lrules, STARTER_LRULES)]:
         if file:
             if os.path.exists(file):
-                print(f"Found {repr(file)} - leaving untouched.")
+                print(f"Found existing {repr(file)} - leaving untouched.")
             else:
-                if ctx.obj['readonly']:
-                    print(f"READONLY: would have created {repr(file)}.")
+                if readonly:
+                    print(f"['readonly' is on] "
+                          "Would have created {repr(file)}.")
                 else:
-                    print(f"Creating {repr(file)} - tweak as needed.")
+                    print(f"Creating starter rule file {repr(file)} - "
+                          "this is meant to be customized before use.")
                     with open(file, 'w') as fout:
                         fout.write(content)
 
-def get_rules(grules=None, lrules=[], good_chars=None):
+def get_rules(grules=None,
+              lrules=None,
+              valid_filename_chars=None,
+              verbose=False):
     rule_object_list = []
     for rulefile in grules, lrules:
         if rulefile:
-            print(rulefile)
-            rule_object_list.extend(parse_yamlrules(rulefile, good_chars=good))
+            rule_object_list.extend(
+                    parse_yamlrules(rulefile, valid_filename_chars))
         if not rule_object_list:
             raise NoRulesError("No rules to work with!")
+    if verbose:
+        pprint.pprint(rule_object_list)
     return rule_object_list
     
-def write_initial_configfile(filename=MKLISTSRC, readonly=True):
-    """Writes initial configuration file to disk."""
+def write_initial_configfile(context=None,
+                             filename=MKLISTSRC,
+                             readonly=True,  # 2018-09-02: just for now?
+                             verbose=False):
+    """Writes initial configuration file to disk (or just says it will)."""
     if os.path.exists(filename):
         raise InitError(f"To re-initialize, first delete {repr(filename)}.")
     else:
-        if ctx.obj['readonly']:
-            print(f"READONLY: would have created {repr(filename)}.")
+        if readonly:
+            print(f"['readonly' is on] Would have created {repr(filename)}.")
         else:
             print(f"Creating default {repr(filename)} - customize as needed.")
             with open(filename, 'w') as fout:
-                yaml.safe_dump(ctx.obj, sys.stdout, default_flow_style=False)
+                yaml.safe_dump(context, sys.stdout, default_flow_style=False)
+                  
+def get_datalines(ls_visible=[],
+              but_not=None):
+    datalines = []
+    for item in ls_visible:
+        datalines.append(_get_lines(item, invalid_patterns=but_not))
+        if verbose:   
+            print(f"Reading {repr(item)}.")
+            print(datalines)  # 2018-09-02: just for debugging
+    if not datalines:
+        raise NoDataError('No data to process!')
 
-def get_lines(thing, invalid_patterns=None):
+def _get_lines(thing_in_directory, 
+              invalid_patterns=None):
     all_lines = []
-    if not is_file(thing):
+    if not is_file(thing_in_directory):
         print("All visible objects in current directory must be files.")
-        raise DatadirHasNonFilesError(f'{thing} is not a file.')
-    if not has_valid_name(thing, bad_names=invalid_patterns):
+        raise DatadirHasNonFilesError(f'{thing_in_directory} is not a file.')
+    if not has_valid_name(thing_in_directory, invalid_patterns):
         print("Invalid filename patterns are intended to detect the "
               "presence of backup files, temporary files, and the like.")
-        raise BadFilenameError(f"{repr(thing)} matches one of "
-                               "{ctx.obj['invalid_filename_patterns']}.")
-    if not is_utf8_encoded(thing):
+        raise BadFilenameError(f"{repr(thing_in_directory)} matches one of "
+                               "{invalid_patterns}.")
+    if not is_utf8_encoded(thing_in_directory):
         print("All visible files in data directory must be UTF8-encoded.")
-        raise NotUTF8Error(f'File {thing} is not UTF8-encoded.')
-    with open(thing) as rfile:
+        raise NotUTF8Error(f'File {thing_in_directory} is not UTF8-encoded.')
+    with open(thing_in_directory) as rfile:
         for line in rfile:
             if not line:
-                print("No file in data directory may contain blank lines.")
-                raise BlankLinesError(f'{repr(thing)} has blank lines.')
+                raise BlankLinesError(f"{thing_in_directory} is not valid as"
+                                      "data because it has blank lines.")
             all_lines.append(line)
 
     return all_lines
