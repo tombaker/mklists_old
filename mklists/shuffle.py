@@ -6,7 +6,7 @@ Called 'shuffle' for historical reasons.
 from collections import defaultdict
 import re
 
-def apply_rules_to_datalines(rules, datalines):
+def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     """Applies rules to datalines.
 
     Args:

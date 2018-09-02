@@ -89,17 +89,22 @@ def write_initial_configfile(context=None,
                   
 def get_datalines(ls_visible=[],
               but_not=None):
+    """Mklists is very strict about contents of data directory.
+    All exceptions encountered in this function, in _get_file(), 
+    and in any of the functions called by _get_file(), will 
+    result in exit from the program, with an error message about 
+    what the user will need to correct in order to get it to run."""
     datalines = []
     for item in ls_visible:
-        datalines.append(_get_lines(item, invalid_patterns=but_not))
+        datalines.append(_get_filelines(item, invalid_patterns=but_not))
         if verbose:   
             print(f"Reading {repr(item)}.")
             print(datalines)  # 2018-09-02: just for debugging
     if not datalines:
         raise NoDataError('No data to process!')
 
-def _get_lines(thing_in_directory, 
-              invalid_patterns=None):
+def _get_filelines(thing_in_directory, 
+                   invalid_patterns=None):
     all_lines = []
     if not is_file(thing_in_directory):
         print("All visible objects in current directory must be files.")

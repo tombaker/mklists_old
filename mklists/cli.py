@@ -20,6 +20,7 @@ from mklists import (
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
     NoDataError)
+from mklists.shuffle import apply_rules_to_datalines
 
 
 @click.group()
@@ -121,10 +122,14 @@ def run(ctx):
                               but_not=ctx.obj['invalid_filename_patterns'],
                               verbose=ctx.obj['verbose'])
 
-    print(f"* Apply rules to datalines, modifying in-memory datadict.")
+    # Apply rules to datalines (loads and modifies in-memory data dictionary).
+    datalines_dict = apply_rules_to_datalines(rules_list=rules,
+                                              datalines_list=datalines)
+    
+    print(f"* Write out datadict values as files in datadir.")
+
     print(f"* Backup option: Create time-stamped backup_dir.")
     print(f"* Backup option: Move existing files to backup_dir.")
-    print(f"* Write out datadict values as files in datadir.")
     print(f"* HTML option: Write out datadict values as files in urlify_dir.")
     print(f"* Move files outside datadir as per ['files2dirs'].")
 
@@ -135,14 +140,3 @@ def run(ctx):
     #    import hashlib
     #    hashlib.sha224(''.join(sorted(datalines)).encode('utf-8')).hexdigest()
 
-
-@cli.command()
-@click.pass_context
-def debug(ctx):
-    """Temporary subcommand for debugging purposes"""
-
-    print(os.getcwd())
-
-    print('Running subcommand `debug`.')
-    #for item in ctx.__dir__():
-    #    print(item)
