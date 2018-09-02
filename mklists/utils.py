@@ -7,6 +7,7 @@ import pprint
 import yaml
 from mklists import (
     URL_PATTERN,
+    TIMESTAMP,
     MKLISTSRC,
     STARTER_GRULES,
     STARTER_LRULES,
@@ -41,7 +42,7 @@ def set_data_directory(dirname):
 def write_initial_rulefiles(grules=None, 
                             lrules=None, 
                             valid_filename_chars=None,
-                            readonly=True, # 2018-09-02: just for now
+                            readonly=False,
                             verbose=False):
     for file, content in [(grules, STARTER_GRULES), (lrules, STARTER_LRULES)]:
         if file:
@@ -74,7 +75,7 @@ def get_rules(grules=None,
     
 def write_initial_configfile(context=None,
                              filename=MKLISTSRC,
-                             readonly=True,  # 2018-09-02: just for now?
+                             readonly=False,
                              verbose=False):
     """Writes initial configuration file to disk (or just says it will)."""
     if os.path.exists(filename):
@@ -86,6 +87,16 @@ def write_initial_configfile(context=None,
             print(f"Creating default {repr(filename)} - customize as needed.")
             with open(filename, 'w') as fout:
                 yaml.safe_dump(context, sys.stdout, default_flow_style=False)
+
+def move_datafiles_to_backup(ls_visible=[],
+                             backup=False,
+                             backup_dir=None,
+                             backup_depth=None):
+    """If 'backup' is ON: 
+    before writing datalines_dict contents to disk, 
+    creates timestamped backup directory in specified backup_dir,
+    and moves all visible files in data directory to backup directory.
+    """
                   
 def get_datalines(ls_visible=[],
               but_not=None):
@@ -102,6 +113,17 @@ def get_datalines(ls_visible=[],
             print(datalines)  # 2018-09-02: just for debugging
     if not datalines:
         raise NoDataError('No data to process!')
+
+def write_new_datafiles_to_disk(datalines_d=None,
+                                readonly=False,
+                                backup=False, 
+                                backup_dir=None,
+                                backup_depth=None,
+                                verbose=False):
+    # will call _move_datafiles_to_backup, using TIMESTAMP
+    # Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
+    # @@@@
+    pass
 
 def _get_filelines(thing_in_directory, 
                    invalid_patterns=None):

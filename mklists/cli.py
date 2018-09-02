@@ -90,7 +90,7 @@ def init(ctx):
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
     write_initial_configfile(context=ctx.obj,
                              filename=MKLISTSRC, 
-                             readonly=ctx.obj['readonly'],
+                             readonly=True, # later: ctx.obj['readonly'],
                              verbose=ctx.obj['verbose'])
 
     # Look for global and local rule files named in settings.
@@ -100,7 +100,7 @@ def init(ctx):
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
     write_initial_rulefiles(grules=None, 
                             lrules=RULEFILE, 
-                            readonly=ctx.obj['readonly'],
+                            readonly=True, # later: ctx.obj['readonly'],
                             verbose=ctx.obj['verbose'])
 
 
@@ -108,10 +108,7 @@ def init(ctx):
 @click.pass_context
 def run(ctx):
     """Apply rules to re-write data files"""
-
-    verbose = True  # 2018-08-31: for purposes of testing
-
-    # Read rule files, parse, 
+    # Read rule files, parse, and get aggregated list of rules objects.
     rules = get_rules(grules=ctx.obj['globalrules'],
                       lrules=ctx.obj['rules'],
                       valid_filename_chars=ctx.obj['valid_filename_chars'],
@@ -125,18 +122,28 @@ def run(ctx):
     # Apply rules to datalines (loads and modifies in-memory data dictionary).
     datalines_dict = apply_rules_to_datalines(rules_list=rules,
                                               datalines_list=datalines)
-    
-    print(f"* Write out datadict values as files in datadir.")
 
+    # If 'backup' is ON: 
+    # before writing datalines_dict contents to disk, 
+    # creates timestamped backup directory in specified backup_dir,
+    # and moves all visible files in data directory to backup directory.
+    if ctx.obj['backup']:
+        move_datafiles_to_backup(ls_visible=[name for name in glob.glob('*')],
+                                 backup=True,   # 2018-09-02: just for now?
+                                 backup_dir=ctx.obj['backup_dir'],
+                                 backup_depth=ctx.obj['backup_depth'])
+
+    # Write out items in datalines_dict: 
+    # -- files named for dictionary keys, 
+    # -- file contents are dictionary values.
+    # Note: if 'readonly' is ON, will only print messages, not write to disk.
+    # Note: if 'backup' is ON, will move existing data to backup directory.
+    write_new_datafiles_to_disk(datalines_d=datalines_dict,
+                                readonly=True,  # later: ctx.obj['readonly'],
+                                verbose=ctx.obj['verbose'])
+
+    print("2018-09-02: remains to be done:")
     print(f"* Backup option: Create time-stamped backup_dir.")
     print(f"* Backup option: Move existing files to backup_dir.")
     print(f"* HTML option: Write out datadict values as files in urlify_dir.")
     print(f"* Move files outside datadir as per ['files2dirs'].")
-
-    # Ideas:
-    #    for dir in dirs[3:]:
-    #        print(f"del {directory}")
-    #    hashlib.sha224(datalines.encode('utf-8')).hexdigest()
-    #    import hashlib
-    #    hashlib.sha224(''.join(sorted(datalines)).encode('utf-8')).hexdigest()
-
