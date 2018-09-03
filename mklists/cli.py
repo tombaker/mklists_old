@@ -145,3 +145,9 @@ def run(ctx):
     print(f"* Backup option: Move existing files to backup_dir.")
     print(f"* HTML option: Write out datadict values as files in urlify_dir.")
     print(f"* Move files outside datadir as per ['files2dirs'].")
+
+    # delete_oldest_backup(backup_dir, backup_depth):
+    #     lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
+    #     while len(lsd_visible) > backup_depth:
+    #         file_to_be_deleted = ls_visible.pop()
+    #         rm file_to_be_deleted

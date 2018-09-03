@@ -12,6 +12,9 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     Args:
         rules: list of (validated) rule objects
         datalines: list of all datalines
+
+    Returns:
+        datalines_dict: filenames (keys) with sets of data lines (values)
     """
 
     datalines_dict = defaultdict(list)
