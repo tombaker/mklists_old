@@ -5,7 +5,6 @@ import string
 from dataclasses import dataclass
 from mklists import (
     VALID_FILENAME_CHARS,
-    RuleError,
     NotIntegerError,
     BadFilenameError,
     SourceEqualsTargetError,
@@ -15,7 +14,7 @@ from mklists import (
 
 @dataclass
 class Rule:
-    """Holds attributes, and methods for self-validation, of a single rule.
+    """Holds attributes and self-validation methods for a single rule.
 
     Attributes:
         source_matchfield: @@@@
@@ -57,7 +56,9 @@ class Rule:
             re.compile(self.source_matchpattern)
         except re.error:
             print(f"In rule: {self}")
-            raise SourceMatchpatternError(f"source_matchpattern is not valid.")
+            raise SourceMatchpatternError(f"source_matchpattern is not valid "
+                                           "as a regular expression -- "
+                                           "try escaping metacharacters.")
         return True
 
     def _source_and_target_filenames_are_valid(self, valid_chars):
@@ -66,15 +67,15 @@ class Rule:
             for char in str(field):
                 if char not in valid_chars:
                     print(f"In rule: {self}")
-                    raise BadFilenameError(
-                        f"{repr(char)} is not a valid filename character.")
+                    raise BadFilenameError(f"{repr(char)} is not a valid "
+                                            "filename character.")
         return True
 
     def _source_is_not_equal_target(self):
         """Returns True if source is not equal to target.
         """
         if self.source == self.target:
-            raise SourceEqualsTargetError("source must not be same as target.")
+            raise SourceEqualsTargetError("source must not equal target.")
         return True
 
     def _source_has_been_initialized(self):

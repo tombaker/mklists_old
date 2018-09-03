@@ -10,3 +10,6 @@ Next steps:
 
 Maybe someday:
 * Event logging?
+* '--verify': Compare hash of data, before and after (really necessary?)
+* Add stringrule as Rule attribute so that error message can show what to edit
+  * Maybe even with filename and line number? (really necessary?)
