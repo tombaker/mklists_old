@@ -102,8 +102,8 @@ def parse_yamlrules(rulefile, good_chars=VALID_FILENAME_CHARS):
     """Returns list of rule objects from parsing a YAML-format rule file."""
     parsed_yaml = _parse_yaml(rulefile)
     rule_objects_list = _create_list_of_rule_objects(parsed_yaml)
-    for rule in rule_objects_list:
-        rule.is_valid(good_chars)
+    for rule_object in rule_objects_list:
+        rule_object.is_valid(good_chars)
     return rule_objects_list
 
 def _parse_yaml(rulefile):
@@ -119,7 +119,7 @@ def _parse_yaml(rulefile):
     try:
         with open(rulefile) as rfile:
             list_parsed_from_yaml.extend(yaml.load(rfile))
-    #except ParserError:
+    #except ParserError: # can this happen here?
     #    raise BadYamlError(f"YAML format of {rulefile} does not parse.")
     except FileNotFoundError:
         print(f"{repr(rulefile)} not found - skipping.")
@@ -137,6 +137,8 @@ def _create_list_of_rule_objects(rule_list_from_yaml: list = None):
             list_of_rule_objects.append(Rule(*item))
         except TypeError:
             raise BadYamlRuleError(f"{item} is badly formed.")
+    # test here for NoRulesError - if function returns empty (False) rule list?
+    # assert list_of_rule_objects, "something"?
     return list_of_rule_objects
 
 def get_datalines(ls_visible=[],
@@ -190,6 +192,15 @@ def move_datafiles_to_backup(ls_visible=[],
     creates timestamped backup directory in specified backup_dir,
     and moves all visible files in data directory to backup directory.
     """
+    # First, make time-stamped backup_dir (and backup_dir itself if not exist)
+    # Move existing files to backup_dir
+    # Delete oldest backups:
+    # delete_oldest_backup(backup_dir, backup_depth):
+    #     lsd_visible = [item for item in glob.glob('*') 
+    #                    if os.path.isdir(item)]
+    #     while len(lsd_visible) > backup_depth:
+    #         file_to_be_deleted = ls_visible.pop()
+    #         rm file_to_be_deleted
 
 def write_new_datafiles(datalines_d=None,
                         readonly=False,
@@ -201,4 +212,10 @@ def write_new_datafiles(datalines_d=None,
     # Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
     # @@@@
     pass
-                  
+
+# Write urlified data files to urlify_dir.
+def write_urlified_datafiles(datalines_d={},
+                             urlify_dir=None,
+                             readonly=True,  # later: ctx.obj['readonly'],
+                             verbose=False):
+    print(f"* Move files outside datadir as per ['files2dirs'].")

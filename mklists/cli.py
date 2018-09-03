@@ -9,6 +9,7 @@ from mklists.subroutines import (
     write_initial_rulefiles,
     get_rules,
     get_datalines,
+    write_urlified_datafiles
     )
 from mklists.verbose import explain_configuration
 from mklists import (
@@ -107,6 +108,7 @@ def init(ctx):
 def run(ctx):
     """Apply rules to re-write data files"""
     # Read rule files, parse, and get aggregated list of rules objects.
+    # Does this complain if there are no rules?
     rules = get_rules(grules=ctx.obj['globalrules'],
                       lrules=ctx.obj['rules'],
                       valid_filename_chars=ctx.obj['valid_filename_chars'],
@@ -140,14 +142,11 @@ def run(ctx):
                         readonly=True,  # later: ctx.obj['readonly'],
                         verbose=ctx.obj['verbose'])
 
-    print("2018-09-02: remains to be done:")
-    print(f"* Backup option: Create time-stamped backup_dir.")
-    print(f"* Backup option: Move existing files to backup_dir.")
-    print(f"* HTML option: Write out datadict values as files in urlify_dir.")
-    print(f"* Move files outside datadir as per ['files2dirs'].")
+    # Write urlified data files to urlify_dir.
+    if ctx.obj['urlify']:
+        write_urlified_datafiles(datalines_d=datalines_dict,
+                                 urlify_dir=ctx.obj['urlify_dir'],
+                                 readonly=True,  # later: ctx.obj['readonly'],
+                                 verbose=ctx.obj['verbose'])
 
-    # delete_oldest_backup(backup_dir, backup_depth):
-    #     lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
-    #     while len(lsd_visible) > backup_depth:
-    #         file_to_be_deleted = ls_visible.pop()
-    #         rm file_to_be_deleted
+    print(f"* Move files outside datadir as per ['files2dirs'].")
