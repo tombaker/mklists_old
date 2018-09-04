@@ -2,7 +2,7 @@
 
 import glob
 import click
-from mklists.subroutines import (
+from mklists.readwrite import (
     set_data_directory,
     load_mklistsrc,
     write_initial_configfile,

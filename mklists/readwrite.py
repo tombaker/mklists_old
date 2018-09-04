@@ -1,9 +1,7 @@
-"""Subroutines module
+"""Read-write module
 
-The now-archaic word "subroutine" sometimes referred to functions 
-that had side effects such as reading from disk, creating files 
-and modifying data structures in memory, as do all of these 
-functions.
+Most of these functions have side effects such as reading from disk, creating
+files and modifying data structures in memory.
 """
 
 import os
