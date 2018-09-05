@@ -154,4 +154,4 @@ def run(ctx):
     # If 'files2dirs' is ON, settable only in MKLISTSRC (not on command line),
     # move selected files to external directories.
     if ctx.obj['files2dirs']:
-        move_files_to_external_directories(files2dirs=ctx.obj['files2dirs'])
+        move_files_to_external_directories(files2dirs_dict=ctx.obj['files2dirs'])
