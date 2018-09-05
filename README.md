@@ -1,7 +1,6 @@
 mklists
 
-Sync plain-text todo lists to evolving rules
-
+Sync your plain-text todo lists to evolving rules
 
 Next steps:
 * http://click.pocoo.org/6/utils/ - Click testing and file system isolation!!

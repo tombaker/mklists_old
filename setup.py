@@ -7,7 +7,7 @@ setup(
     name = 'mklists',
     version = '0.1.4',
     license = 'MIT',
-    description = 'Evolve plain-text todo lists by tweaking rules',
+    description = 'Sync your plain-text todo lists to evolving rules',
     long_description=long_description,
     author = 'Tom Baker',
     author_email='tom@tombaker.org',
