@@ -1,6 +1,6 @@
 """Read-write module
 
-Most of these functions have side effects such as reading from disk, creating
+These functions have side effects such as reading from disk, writing to 
 files and modifying data structures in memory.
 """
 
@@ -28,15 +28,6 @@ from mklists import (
     BadYamlRuleError)
 from mklists.rule import Rule
 
-
-def set_data_directory(dirname):
-    """Set current working directory for mklists (data)."""
-    if dirname is not None:
-        try:
-            os.chdir(dirname)
-            print(f"Setting {repr(dirname)} as data directory.")
-        except FileNotFoundError:
-            raise dirnameNotAccessibleError(f"{dirname} is not accessible.")
 
 def load_mklistsrc(filename, context=None, verbose=False):
     try:

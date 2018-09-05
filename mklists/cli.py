@@ -2,8 +2,8 @@
 
 import glob
 import click
+from mklists.utils import change_working_directory
 from mklists.readwrite import (
-    set_data_directory,
     load_mklistsrc,
     write_initial_configfile,
     write_initial_rulefiles,
@@ -24,21 +24,21 @@ from mklists.shuffle import apply_rules_to_datalines
 
 @click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
-              help="Use non-default data directory [./]")
+              help="Use DIRPATH as working directory [./]")
 @click.option('--globalrules', type=str, metavar='FILEPATH',
               help="Set non-default global rules [./.globalrules]")
 @click.option('--rules', type=str, metavar='FILEPATH',
               help="Set non-default local rules [./.rules]")
 @click.option('--backup', type=bool, is_flag=True,
-              help="Back up input data [./.backups/]")
+              help="Enable backup of input data [./.backups/]")
 @click.option('--backup-dir', type=str, metavar='DIRPATH',
-              help="Set non-default backup directory")
+              help="Set non-default directory for backups")
 @click.option('--backup-depth', type=int, metavar='INTEGER',
               help="Set number of backups to keep [3]")
 @click.option('--urlify', type=bool, is_flag=True,
-              help="Copy data, urlified [./.html/]")
+              help="Enable HTML copies of output files [./.html/]")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
-              help="Set non-default urlified directory")
+              help="Set non-default directory for HTML data")
 @click.option('--readonly', type=bool, is_flag=True,
               help="Enable read-only mode")
 @click.option('--verbose', type=bool, is_flag=True,
@@ -57,7 +57,7 @@ def cli(ctx, datadir, globalrules, rules,
 
     # If non-default datadir given on command line, change to that directory.
     # If directory is not accessible, exit with error message.
-    set_data_directory(datadir)
+    change_working_directory(datadir)
 
     # Save default settings to object passed with @click.pass_context.
     ctx.obj = STARTER_DEFAULTS
