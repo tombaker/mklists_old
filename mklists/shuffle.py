@@ -1,8 +1,3 @@
-"""Shuffle module docstring
-
-Called 'shuffle' for historical reasons.
-"""
-
 from collections import defaultdict
 import re
 
@@ -10,27 +5,27 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     """Applies rules to datalines.
 
     Args:
-        rules: list of (validated) rule objects
-        datalines: list of all datalines
+        rules_list: list of rule objects
+        datalines_list: list of text lines (aggregated from data files)
 
     Returns:
-        datalines_dict: filenames (keys) with sets of data lines (values)
+        datalines_dict: keys are filenames, values their contents (data lines)
     """
-
     datalines_dict = defaultdict(list)
     initialized = False
 
-    for rule in rules:
+    for rule in rules_list:
+        # Sets first key in datalines_dict with value datalines_list.
         if not initialized:
-            datalines_dict[rule.source] = rule.source
+            datalines_dict[rule.source] = datalines_list
             initialized = True
 
         for line in datalines:
-            # skip match if rule.source_matchfield out of range
+            # Skip match if rule.source_matchfield is out of range.
             if rule.source_matchfield > len(line.split()):
                 continue
 
-            # match against entire line if rule.source_matchfield is zero
+            # Match against entire line if rule.source_matchfield is zero.
             if rule.source_matchfield == 0:
                 rgx = rule.source_matchpattern
                 positives = [line for line in rule.source
@@ -40,7 +35,7 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
                 rule.target.extend(positives)
                 rule.source = negatives
 
-            # match field if rule.source_matchfield > 0 and within range
+            # Match field if rule.source_matchfield > 0 and within range.
             if rule.source_matchfield > 0:
                 eth = rule.source_matchfield - 1
                 rgx = rule.source_matchpattern
@@ -51,12 +46,12 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
                 rule.target.extend(positives)
                 rule.source = negatives
 
-            # sort target if rule.target_sortorder greater than zero
+            # Sort target if rule.target_sortorder greater than zero.
             if rule.target_sortorder:
                 eth_sortorder = rule.target_sortorder - 1
                 decorated = [(line.split()[eth_sortorder], __, line)
-                             for __, line in enumerate(rule.target)]
+                             for (__, line) in enumerate(rule.target)]
                 decorated.sort()
-                rule.target = [line for ___, __, line in decorated]
+                rule.target = [line for (___, __, line) in decorated]
 
     return datalines_dict

@@ -46,30 +46,29 @@ from mklists.shuffle import apply_rules_to_datalines
 @click.version_option('0.1.4', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, datadir, globalrules, rules,
-        backup, backup_dir, backup_depth,
-        urlify, urlify_dir,
-        readonly, verbose):
+def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
+        urlify, urlify_dir, readonly, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
-    # Save dictionary of arguments passed on the command line.
+    # "Untoucable" dictionary of cli() parameters snapshotted as mutable dict.
     cliargs = locals()
 
     # If non-default datadir given on command line, change to that directory.
     # If directory is not accessible, exit with error message.
     change_working_directory(datadir)
 
-    # Save default settings to object passed with @click.pass_context.
+    # Save default settings to object to be passed with @click.pass_context.
     ctx.obj = STARTER_DEFAULTS
 
-    # Load mandatory file MKLISTSRC, overriding some or all default settings.
-    # -- This step is skipped if mklists was invoked with subcommand 'init'.
+    # Load config file MKLISTSRC, overriding some settings in context object.
+    # -- If MKLISTSRC not found, terminates with advice to run `mklists init`.
+    # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
     if ctx.invoked_subcommand != 'init':
         load_mklistsrc(MKLISTSRC, context=ctx.obj, verbose=ctx.obj['verbose'])
 
     # Save settings specified on command line ("not None") to context object.
-    # -- Exception: 'ctx' - the context object itself.
-    # -- Exception: 'datadir' - used once and not saved on context object.
+    # -- Omits 'ctx', the context object itself.
+    # -- Omits 'datadir', used just once so not saved on context object.
     for item in cliargs:
         if item != 'ctx' and item != 'datadir' and cliargs[item] is not None:
             ctx.obj[item] = cliargs[item]
@@ -84,7 +83,7 @@ def cli(ctx, datadir, globalrules, rules,
 def init(ctx):
     """Generate default configuration and rule files"""
 
-    # If configfile already exists, exit with advice.
+    # If configfile already exists, exit suggesting to delete it first.
     # If configfile not found, create new file using current settings.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
     write_initial_configfile(context=ctx.obj,
@@ -108,18 +107,19 @@ def init(ctx):
 def run(ctx):
     """Apply rules to re-write data files"""
     # Read rule files, parse, and get aggregated list of rules objects.
-    # Does this complain if there are no rules?
+    # -- Does not complain or exit if rules are empty @@@CHECK
     rules = get_rules(grules=ctx.obj['globalrules'],
                       lrules=ctx.obj['rules'],
                       valid_filename_chars=ctx.obj['valid_filename_chars'],
                       verbose=ctx.obj['verbose'])
 
-    # In current directory, get aggregated list of data lines.
+    # Get aggregated list of lines from files in working directory.
     datalines = get_datalines(ls_visible=[name for name in glob.glob('*')],
                               but_not=ctx.obj['invalid_filename_patterns'],
                               verbose=ctx.obj['verbose'])
 
     # Apply rules to datalines (loads and modifies in-memory data dictionary).
+    # -- Exits with message if 'rules_list' or 'datalines_list' are empty.
     datalines_dict = apply_rules_to_datalines(rules_list=rules,
                                               datalines_list=datalines)
 
@@ -133,20 +133,25 @@ def run(ctx):
                                  backup_dir=ctx.obj['backup_dir'],
                                  backup_depth=ctx.obj['backup_depth'])
 
-    # Write out items in datalines_dict:
-    # -- files named for dictionary keys,
-    # -- file contents are dictionary values.
-    # Note: if 'readonly' is ON, will only print messages, not write to disk.
-    # Note: if 'backup' is ON, will move existing data to backup directory.
+    # If 'backup' is ON, move existing files from working to backup directory.
+    # If 'backup' is OFF, DELETE existing files in working directory.
+    # Write datalines_dict to working directory: 
+    # -- datalines_dict keys are names of files.
+    # -- datalines_dict values are contents of files.
+    # -- If 'readonly' is ON, will only print messages, not write to disk.
     write_new_datafiles(datalines_d=datalines_dict,
                         readonly=True,  # later: ctx.obj['readonly'],
                         verbose=ctx.obj['verbose'])
 
-    # Write urlified data files to urlify_dir.
+    # If 'urlify' is ON, write urlified data files to urlify_dir.
     if ctx.obj['urlify']:
         write_urlified_datafiles(datalines_d=datalines_dict,
                                  urlify_dir=ctx.obj['urlify_dir'],
+                                 urlify_depth=ctx.obj['urlify_depth'],
                                  readonly=True,  # later: ctx.obj['readonly'],
                                  verbose=ctx.obj['verbose'])
 
-    print(f"* Move files outside datadir as per ['files2dirs'].")
+    # If 'files2dirs' is ON, settable only in MKLISTSRC (not on command line),
+    # move selected files to external directories.
+    if ctx.obj['files2dirs']:
+        move_files_to_external_directories(files2dirs=ctx.obj['files2dirs'])

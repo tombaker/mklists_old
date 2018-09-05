@@ -9,23 +9,11 @@ import re
 import string
 import pprint
 import yaml
-from mklists import (
-    VALID_FILENAME_CHARS,
-    URL_PATTERN,
-    TIMESTAMP,
-    MKLISTSRC,
-    STARTER_GRULES,
-    STARTER_LRULES,
-    BadFilenameError,
-    BlankLinesError,
-    DatadirHasNonFilesError,
-    InitError,
-    NoDataError,
-    NoRulesError,
-    NotUTF8Error,
-    RuleFileNotFoundError,
-    BadYamlError, 
-    BadYamlRuleError)
+from collections import defaultdict
+from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
+    STARTER_GRULES, STARTER_LRULES, BadFilenameError, BlankLinesError,
+    DatadirHasNonFilesError, InitError, NoDataError, NoRulesError,
+    NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
 
 

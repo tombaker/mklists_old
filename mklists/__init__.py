@@ -105,6 +105,3 @@ class BadYamlError(RulesError):
 
 class RuleWarningError(Exception):
     """Super-category for warnings related to rules."""
-
-class RuleFileNotFoundError(RuleWarningError):
-    """Rule file not found or not accessible."""
