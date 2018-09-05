@@ -4,6 +4,7 @@ import glob
 import click
 from mklists.utils import change_working_directory
 from mklists.readwrite import (
+    apply_rules_to_datalines,
     load_mklistsrc,
     write_initial_configfile,
     write_initial_rulefiles,
@@ -19,7 +20,6 @@ from mklists import (
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
     NoDataError)
-from mklists.shuffle import apply_rules_to_datalines
 
 
 @click.group()

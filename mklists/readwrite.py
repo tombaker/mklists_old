@@ -2,6 +2,8 @@
 
 These functions have side effects such as reading from disk, writing to 
 files and modifying data structures in memory.
+
+2018-08-05: apply_rules_to_datalines() seems broken - tests needed!
 """
 
 import os
@@ -16,6 +18,66 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
 
+def apply_rules_to_datalines(rules_list=None, datalines_list=None):
+    """Applies rules to datalines.
+
+    Args:
+        rules_list: list of rule objects
+        datalines_list: list of text lines (aggregated from data files)
+
+    Returns:
+        datalines_dict: keys are filenames, values their contents (data lines)
+    """
+    datalines_dict = defaultdict(list)
+    initialized = False
+
+    if not rules_list: # if it is empty - test
+        raise NoRulesError("No rules to use for processing data.")
+
+    if not datalines_list:
+        raise NoDataError("No data to process.")
+
+    for rule in rules_list:
+        # Sets first key in datalines_dict with value datalines_list?
+        if not initialized:
+            datalines_dict[rule.source] = rule.source # or datalines_list?
+            initialized = True
+
+        for line in datalines_list: # or datalines_dict[rule.source]?
+            # Skip match if rule.source_matchfield is out of range.
+            if rule.source_matchfield > len(line.split()):
+                continue
+
+            # Match against entire line if rule.source_matchfield is zero.
+            if rule.source_matchfield == 0:
+                rgx = rule.source_matchpattern
+                positives = [line for line in rule.source
+                             if re.search(rgx, line)]
+                negatives = [line for line in rule.source
+                             if not re.search(rgx, line)]
+                rule.target.extend(positives)
+                rule.source = negatives
+
+            # Match field if rule.source_matchfield > 0 and within range.
+            if rule.source_matchfield > 0:
+                eth = rule.source_matchfield - 1
+                rgx = rule.source_matchpattern
+                positives = [line for line in rule.source
+                             if re.search(rgx, line.split()[eth])]
+                negatives = [line for line in rule.source
+                             if not re.search(rgx, line.split()[eth])]
+                rule.target.extend(positives)
+                rule.source = negatives
+
+            # Sort target if rule.target_sortorder greater than zero.
+            if rule.target_sortorder:
+                eth_sortorder = rule.target_sortorder - 1
+                decorated = [(line.split()[eth_sortorder], __, line)
+                             for (__, line) in enumerate(rule.target)]
+                decorated.sort()
+                rule.target = [line for (___, __, line) in decorated]
+
+    return datalines_dict
 
 def load_mklistsrc(filename, context=None, verbose=False):
     try:
@@ -114,8 +176,6 @@ def _create_list_of_rule_objects(rule_list_from_yaml: list = None):
             list_of_rule_objects.append(Rule(*item))
         except TypeError:
             raise BadYamlRuleError(f"{item} is badly formed.")
-    # test here for NoRulesError - if function returns empty (False) rule list?
-    # assert list_of_rule_objects, "something"?
     return list_of_rule_objects
 
 def get_datalines(ls_visible=[],
@@ -178,6 +238,8 @@ def move_datafiles_to_backup(ls_visible=[],
     #     while len(lsd_visible) > backup_depth:
     #         file_to_be_deleted = ls_visible.pop()
     #         rm file_to_be_deleted
+    # for file in filelist:
+    #     shutil.move(file, backup_dir)
 
 def write_new_datafiles(datalines_d=None,
                         readonly=False,
@@ -195,4 +257,21 @@ def write_urlified_datafiles(datalines_d={},
                              urlify_dir=None,
                              readonly=True,  # later: ctx.obj['readonly'],
                              verbose=False):
+    """Something like: def removefiles(targetdirectory):
+    pwd = os.getcwd()
+    abstargetdir = absdirname(targetdirectory)
+    if os.path.isdir(abstargetdir):
+        os.chdir(abstargetdir)
+        files = datals()
+        if files:
+            for file in files:
+                os.remove(file)
+        os.chdir(pwd)
+    """
     print(f"* Move files outside datadir as per ['files2dirs'].")
+
+def move_files_to_external_directories(files2dirs_dict=None):
+    """
+    Args:
+        files2dirs_dict: filename (key) and destination directory (value)
+    """
