@@ -55,7 +55,7 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
 
     # If non-default datadir given on command line, change to that directory.
     # If directory is not accessible, exit with error message.
-    change_working_directory(datadir)
+    change_working_directory(datadir, verb=verbose)
 
     # Save default settings to object to be passed with @click.pass_context.
     ctx.obj = STARTER_DEFAULTS

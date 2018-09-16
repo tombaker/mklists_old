@@ -6,12 +6,13 @@ import glob
 from mklists import URL_PATTERN
 
 
-def change_working_directory(dirname):
+def change_working_directory(dirname, verb=False):
     """Set current working directory for mklists (data)."""
     if dirname is not None:
         try:
             os.chdir(dirname)
-            print(f"Setting {repr(dirname)} as data directory.")
+            if verb:
+                print(f"Changing to {repr(dirname)} as working directory.")
         except FileNotFoundError:
             raise dirnameNotAccessibleError(f"{dirname} is not accessible.")
 
