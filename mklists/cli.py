@@ -12,7 +12,7 @@ from mklists.readwrite import (
     get_datalines,
     write_urlified_datafiles
     )
-from mklists.verbose import explain_configuration
+from mklists.verbose import explain
 from mklists import (
     MKLISTSRC,
     RULEFILE,
@@ -75,7 +75,7 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
 
     # Show detailed exposition of current settings resulting from the above.
     if verbose:
-        explain_configuration(**ctx.obj)
+        explain(**ctx.obj)
 
 
 @cli.command()

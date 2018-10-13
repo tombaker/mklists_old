@@ -11,7 +11,7 @@ from mklists import (
     TIMESTAMP)
 
 
-def explain_configuration(**sets):
+def explain(**sets):
     """docstring"""
 
     if sets['globalrules']:

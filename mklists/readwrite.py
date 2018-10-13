@@ -1,7 +1,9 @@
 """Read-write module
 
-These functions have side effects such as reading from disk, writing to 
-files and modifying data structures in memory.
+Functions with side effects such as:
+* reading files from disk
+* writing to files on disk 
+* modifying data structures in memory
 
 2018-08-05: apply_rules_to_datalines() seems broken - tests needed!
 """
@@ -11,73 +13,11 @@ import re
 import string
 import pprint
 import yaml
-from collections import defaultdict
 from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
     STARTER_GRULES, STARTER_LRULES, BadFilenameError, BlankLinesError,
     DatadirHasNonFilesError, InitError, NoDataError, NoRulesError,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
-
-def apply_rules_to_datalines(rules_list=None, datalines_list=None):
-    """Applies rules to datalines.
-
-    Args:
-        rules_list: list of rule objects
-        datalines_list: list of text lines (aggregated from data files)
-
-    Returns:
-        datalines_dict: keys are filenames, values their contents (data lines)
-    """
-    datalines_dict = defaultdict(list)
-    initialized = False
-
-    if not rules_list: # if it is empty - test
-        raise NoRulesError("No rules to use for processing data.")
-
-    if not datalines_list:
-        raise NoDataError("No data to process.")
-
-    for rule in rules_list:
-        # Sets first key in datalines_dict with value datalines_list?
-        if not initialized:
-            datalines_dict[rule.source] = rule.source # or datalines_list?
-            initialized = True
-
-        for line in datalines_list: # or datalines_dict[rule.source]?
-            # Skip match if rule.source_matchfield is out of range.
-            if rule.source_matchfield > len(line.split()):
-                continue
-
-            # Match against entire line if rule.source_matchfield is zero.
-            if rule.source_matchfield == 0:
-                rgx = rule.source_matchpattern
-                positives = [line for line in rule.source
-                             if re.search(rgx, line)]
-                negatives = [line for line in rule.source
-                             if not re.search(rgx, line)]
-                rule.target.extend(positives)
-                rule.source = negatives
-
-            # Match field if rule.source_matchfield > 0 and within range.
-            if rule.source_matchfield > 0:
-                eth = rule.source_matchfield - 1
-                rgx = rule.source_matchpattern
-                positives = [line for line in rule.source
-                             if re.search(rgx, line.split()[eth])]
-                negatives = [line for line in rule.source
-                             if not re.search(rgx, line.split()[eth])]
-                rule.target.extend(positives)
-                rule.source = negatives
-
-            # Sort target if rule.target_sortorder greater than zero.
-            if rule.target_sortorder:
-                eth_sortorder = rule.target_sortorder - 1
-                decorated = [(line.split()[eth_sortorder], __, line)
-                             for (__, line) in enumerate(rule.target)]
-                decorated.sort()
-                rule.target = [line for (___, __, line) in decorated]
-
-    return datalines_dict
 
 def load_mklistsrc(filename, context=None, verbose=False):
     try:
@@ -130,14 +70,14 @@ def get_rules(grules=None,
     for rulefile in grules, lrules:
         if rulefile:
             rule_object_list.extend(
-                    parse_yamlrules(rulefile, valid_filename_chars))
+                    _parse_yamlrules(rulefile, valid_filename_chars))
         if not rule_object_list:
             raise NoRulesError("No rules to work with!")
     if verbose:
         pprint.pprint(rule_object_list)
     return rule_object_list
 
-def parse_yamlrules(rulefile, good_chars=VALID_FILENAME_CHARS):
+def _parse_yamlrules(rulefile, good_chars=VALID_FILENAME_CHARS):
     """Returns list of rule objects from parsing a YAML-format rule file."""
     parsed_yaml = _parse_yaml(rulefile)
     rule_objects_list = _create_list_of_rule_objects(parsed_yaml)
