@@ -120,11 +120,11 @@ def run(ctx):
 
     # Apply rules to datalines (loads and modifies in-memory data dictionary).
     # -- Exits with message if 'rules_list' or 'datalines_list' are empty.
-    datalines_dict = apply_rules_to_datalines(rules_list=rules,
+    mklists_dict = apply_rules_to_datalines(rules_list=rules,
                                               datalines_list=datalines)
 
     # If 'backup' is ON:
-    # before writing datalines_dict contents to disk,
+    # before writing mklists_dict contents to disk,
     # creates timestamped backup directory in specified backup_dir,
     # and moves all visible files in data directory to backup directory.
     if ctx.obj['backup']:
@@ -135,17 +135,17 @@ def run(ctx):
 
     # If 'backup' is ON, move existing files from working to backup directory.
     # If 'backup' is OFF, DELETE existing files in working directory.
-    # Write datalines_dict to working directory: 
-    # -- datalines_dict keys are names of files.
-    # -- datalines_dict values are contents of files.
+    # Write mklists_dict to working directory: 
+    # -- mklists_dict keys are names of files.
+    # -- mklists_dict values are contents of files.
     # -- If 'readonly' is ON, will only print messages, not write to disk.
-    write_new_datafiles(datalines_d=datalines_dict,
+    write_new_datafiles(datalines_d=mklists_dict,
                         readonly=True,  # later: ctx.obj['readonly'],
                         verbose=ctx.obj['verbose'])
 
     # If 'urlify' is ON, write urlified data files to urlify_dir.
     if ctx.obj['urlify']:
-        write_urlified_datafiles(datalines_d=datalines_dict,
+        write_urlified_datafiles(datalines_d=mklists_dict,
                                  urlify_dir=ctx.obj['urlify_dir'],
                                  urlify_depth=ctx.obj['urlify_depth'],
                                  readonly=True,  # later: ctx.obj['readonly'],

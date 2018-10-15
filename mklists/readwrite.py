@@ -165,7 +165,7 @@ def move_datafiles_to_backup(ls_visible=[],
                              backup_dir=None,
                              backup_depth=None):
     """If 'backup' is ON: 
-    before writing datalines_dict contents to disk, 
+    before writing mklists_dict contents to disk, 
     creates timestamped backup directory in specified backup_dir,
     and moves all visible files in data directory to backup directory.
     """

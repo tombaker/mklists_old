@@ -13,66 +13,76 @@ from mklists import (
     BadSourceError)
 
 def apply_rules_to_datalines(rules_list=None, datalines_list=None):
-    """Applies rules to datalines.
+    """Applies rules, one by one, to process a list of datalines.
 
     Args:
         rules_list: list of rule objects
-        datalines_list: list of text lines (aggregated from data files)
+        datalines_list: list of all data lines
 
     Returns:
-        datalines_dict: keys are filenames, values their contents (data lines)
+        mklists_dict: 
+        * key: always a string that is valid as a filename
+        * value: always a list of (part of the) data lines
     """
-    datalines_dict = defaultdict(list)
-    initialized = False
+    mklists_dict = defaultdict(list)
+    is_initialized = False
 
-    if not rules_list: # if it is empty - test
-        raise NoRulesError("No rules to use for processing data.")
+    if not rules_list:
+        raise NoRulesError("No rules specified.")
 
     if not datalines_list:
-        raise NoDataError("No data to process.")
+        raise NoDataError("No data specified.")
 
+    # Evaluate rules, one-by-one, to process entries in mklists_dict.
     for rule in rules_list:
-        # Sets first key in datalines_dict with value datalines_list?
-        if not initialized:
-            datalines_dict[rule.source] = rule.source # or datalines_list?
-            initialized = True
 
-        for line in datalines_list: # or datalines_dict[rule.source]?
-            # Skip match if rule.source_matchfield is out of range.
-            if rule.source_matchfield > len(line.split()):
-                continue
+        # Initialize dictionary with
+        #    first key: 'source' field of first rule (a valid filename)
+        #    corresponding value: list of all data lines
+        if not is_initialized:
+            mklists_dict[rule.source] = datalines_list
+            is_initialized = True
 
-            # Match against entire line if rule.source_matchfield is zero.
-            if rule.source_matchfield == 0:
-                rgx = rule.source_matchpattern
-                positives = [line for line in rule.source
-                             if re.search(rgx, line)]
-                negatives = [line for line in rule.source
-                             if not re.search(rgx, line)]
-                rule.target.extend(positives)
-                rule.source = negatives
+        # Evaluate 'source' lines against rule and move matches to 'target'.
+        for line in mklists_dict[rule.source]:
+            if _line_matches(matchpattern=rule.source_matchpattern, 
+                             matchfield=rule.source_matchfield, 
+                             dataline=line):
+                mklists_dict[rule.target].extend([line])
+                mklists_dict[rule.source].remove([line])
 
-            # Match field if rule.source_matchfield > 0 and within range.
-            if rule.source_matchfield > 0:
-                eth = rule.source_matchfield - 1
-                rgx = rule.source_matchpattern
-                positives = [line for line in rule.source
-                             if re.search(rgx, line.split()[eth])]
-                negatives = [line for line in rule.source
-                             if not re.search(rgx, line.split()[eth])]
-                rule.target.extend(positives)
-                rule.source = negatives
+        # Sort matching lines if valid sortorder specified.
+        if rule.target_sortorder:
+            eth_sortorder = rule.target_sortorder - 1
+            decorated = [(line.split()[eth_sortorder], __, line)
+                         for (__, line) 
+                         in enumerate(mklists_dict[rule.target])]
+            decorated.sort()
+            mklists_dict[rule.target] = [line for (___, __, line) 
+                                        in decorated]
 
-            # Sort target if rule.target_sortorder greater than zero.
-            if rule.target_sortorder:
-                eth_sortorder = rule.target_sortorder - 1
-                decorated = [(line.split()[eth_sortorder], __, line)
-                             for (__, line) in enumerate(rule.target)]
-                decorated.sort()
-                rule.target = [line for (___, __, line) in decorated]
+    return mklists_dict
 
-    return datalines_dict
 
+def _line_matches(matchpattern=None, matchfield=None, dataline=None):
+    """Returns True if a given field in a data line matches a given pattern."""
+
+    # Line does not match if given field is greater than length of line.
+    if matchfield > len(dataline.split()):
+        return False
+
+    # Line matches if given field is zero and pattern found anywhere in line.
+    if matchfield == 0:
+        if re.search(matchpattern, dataline):
+            return True
+
+    # Line matches if pattern is found in given field of line.
+    if matchfield > 0:
+        eth = matchfield - 1
+        if re.search(matchpattern, dataline.split()[eth]):
+            return True
+
+    return False
 
 
 @dataclass
@@ -92,7 +102,7 @@ class Rule:
     target: str = None
     target_sortorder: int = 0
 
-    initialized = False
+    is_initialized = False
     sources = []
 
     def is_valid(self, valid_filename_characters):
@@ -143,9 +153,9 @@ class Rule:
 
     def _source_has_been_initialized(self):
         """Returns True if source has previously been initialized."""
-        if not self.__class__.initialized:
+        if not self.__class__.is_initialized:
             self.__class__.sources.append(self.source)
-            self.__class__.initialized = True
+            self.__class__.is_initialized = True
         if self.source not in self.__class__.sources:
             print(f"In rule: {self}")
             print(f"self.__class__.sources = {self.__class__.sources}")
