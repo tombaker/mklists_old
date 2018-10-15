@@ -7,9 +7,9 @@ from mklists import VALID_FILENAME_CHARS
 def test_apply_rules():
     rules = [Rule(1, 'NOW', 'a.txt', 'now.txt', 0),
              Rule(1, 'LATER', 'a.txt', 'later.txt', 0)]
-    lines = ['NOW Summer', 'LATER Winter']
-    mdict = {'now.txt': ['NOW Summer'], 
-             'later.txt': ['LATER Winter'],
+    lines = ['NOW Summer\n', 'LATER Winter\n']
+    mdict = {'now.txt': ['NOW Summer\n'], 
+             'later.txt': ['LATER Winter\n'],
              'a.txt': []}
     apply_rules_to_datalines(rules, lines) == mdict
 

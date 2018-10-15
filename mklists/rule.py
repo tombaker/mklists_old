@@ -44,6 +44,7 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
             source_is_initialized = True
 
         # Evaluate 'source' lines against rule and move matches to 'target'.
+        breakpoint()
         for line in mklists_dict[rule.source]:
             if _line_matches(rule, line):
                 print(f"rule = {rule}")

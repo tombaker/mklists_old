@@ -7,3 +7,5 @@ mklists.egg-info/
 snaps/
 mksnaps
 mklistsdata/
+__pycache__/
+tests/__pycache__/
