@@ -27,11 +27,11 @@ STARTER_DEFAULTS = {
     'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
     'files2dirs': None}
 
-STARTER_GRULES = """\
+STARTER_GLOBALRULES = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
 """
 
-STARTER_LRULES = """\
+STARTER_LOCALRULES = """\
 - [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
 - [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
 """
