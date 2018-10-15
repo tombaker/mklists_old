@@ -13,6 +13,29 @@ def test_apply_rules():
              'a.txt': []}
     apply_rules_to_datalines(rules, lines) == mdict
 
+@pytest.mark.apply_rules
+def test_apply_rules_no_data():
+    rules = [Rule(1, 'NOW', 'a.txt', 'now.txt', 0),
+             Rule(1, 'LATER', 'a.txt', 'later.txt', 0)]
+    lines = []
+    with pytest.raises(SystemExit):
+        apply_rules_to_datalines(rules, lines)
+
+@pytest.mark.apply_rules
+def test_apply_rules_no_rules():
+    rules = []
+    lines = ['NOW Summer\n', 'LATER Winter\n']
+    with pytest.raises(SystemExit):
+        apply_rules_to_datalines(rules, lines)
+
+@pytest.mark.apply_rules
+def test_apply_rules_sorted():
+    rules = [Rule(1, '.', 'a.txt', 'now.txt', 1)]
+    lines = ['LATER Winter\n', 'NOW Summer\n']
+    mdict = {'now.txt': ['NOW Summer\n', 'LATER Winter\n'], 
+             'a.txt': []}
+    apply_rules_to_datalines(rules, lines) == mdict
+
 @pytest.mark.line_matches
 def test_line_matches():
     given_rule = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)

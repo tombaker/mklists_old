@@ -6,6 +6,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 from mklists import (
     VALID_FILENAME_CHARS,
+    NoDataError,
+    NoRulesError,
     NotIntegerError,
     BadFilenameError,
     SourceEqualsTargetError,
@@ -44,13 +46,11 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
             source_is_initialized = True
 
         # Evaluate 'source' lines against rule and move matches to 'target'.
-        breakpoint()
+        # breakpoint()
         for line in mklists_dict[rule.source]:
             if _line_matches(rule, line):
-                print(f"rule = {rule}")
-                print(f"line= {line}")
-                # mklists_dict[rule.target].extend([line])
-                # mklists_dict[rule.source].remove([line])
+                mklists_dict[rule.target].extend([line])
+                mklists_dict[rule.source].remove(line)
 
         # Sort matching lines if valid sortorder specified.
         if rule.target_sortorder:
@@ -62,7 +62,7 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
             mklists_dict[rule.target] = [line for (___, __, line) 
                                         in decorated]
 
-    return mklists_dict
+    return dict(mklists_dict)
 
 
 def _line_matches(given_rule=None, given_line=None):
