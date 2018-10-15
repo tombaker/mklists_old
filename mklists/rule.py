@@ -27,7 +27,7 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
         * value: always a list of (part of the) data lines
     """
     mklists_dict = defaultdict(list)
-    source_is_initialized = False
+    precedented_source_is_initialized = False
 
     if not rules_list:
         raise NoRulesError("No rules specified.")
@@ -41,9 +41,9 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
         # Initialize dictionary with
         #    first key: 'source' field of first rule (a valid filename)
         #    corresponding value: list of all data lines
-        if not source_is_initialized:
+        if not precedented_source_is_initialized:
             mklists_dict[rule.source] = datalines_list
-            source_is_initialized = True
+            precedented_source_is_initialized = True
 
         # Evaluate 'source' lines against rule and move matches to 'target'.
         # breakpoint()
@@ -103,8 +103,15 @@ class Rule:
     target: str = None
     target_sortorder: int = 0
 
-    source_is_initialized = False
-    sources = []
+    precedented_source_is_initialized = False
+    precedented_sources = []
+
+    # Silently convert strings (x.isdecimal()) into integers.
+    try:
+        self.source_matchfield = int(self.source_matchfield)
+        self.target_sortorder = int(self.target_sortorder)
+    except:
+        pass 
 
     def is_valid(self, valid_filename_characters):
         """Returns True if Rule object passes all tests."""
@@ -112,7 +119,7 @@ class Rule:
         self._source_matchpattern_is_valid()
         self._source_and_target_filenames_are_valid(valid_filename_characters)
         self._source_is_not_equal_target()
-        self._source_has_been_initialized()
+        self._source_is_precedented()
         return True
 
     def _source_matchfield_and_target_sortorder_are_integers(self):
@@ -152,16 +159,16 @@ class Rule:
             raise SourceEqualsTargetError("source must not equal target.")
         return True
 
-    def _source_has_been_initialized(self):
+    def _source_is_precedented(self):
         """Returns True if source has previously been initialized."""
-        if not self.__class__.source_is_initialized:
-            self.__class__.sources.append(self.source)
-            self.__class__.source_is_initialized = True
-        if self.source not in self.__class__.sources:
+        if not self.__class__.precedented_source_is_initialized:
+            self.__class__.precedented_sources.append(self.source)
+            self.__class__.precedented_source_is_initialized = True
+        if self.source not in self.__class__.precedented_sources:
             print(f"In rule: {self}")
-            print(f"self.__class__.sources = {self.__class__.sources}")
+            print(f"self.__class__.precedented_sources = {self.__class__.precedented_sources}")
             raise BadSourceError(f"{repr(self.source)} not initialized.")
-        if self.target not in Rule.sources:
-            Rule.sources.append(self.target)
+        if self.target not in Rule.precedented_sources:
+            Rule.precedented_sources.append(self.target)
         return True
 
