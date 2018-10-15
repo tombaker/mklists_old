@@ -20,7 +20,7 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
         datalines_list: list of all data lines
 
     Returns:
-        mklists_dict: 
+        mklists_dict - dictionary where:
         * key: always a string that is valid as a filename
         * value: always a list of (part of the) data lines
     """
@@ -45,11 +45,11 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
 
         # Evaluate 'source' lines against rule and move matches to 'target'.
         for line in mklists_dict[rule.source]:
-            if _line_matches(matchpattern=rule.source_matchpattern, 
-                             matchfield=rule.source_matchfield, 
-                             dataline=line):
-                mklists_dict[rule.target].extend([line])
-                mklists_dict[rule.source].remove([line])
+            if _line_matches(rule, line):
+                print(f"rule = {rule}")
+                print(f"line= {line}")
+                # mklists_dict[rule.target].extend([line])
+                # mklists_dict[rule.source].remove([line])
 
         # Sort matching lines if valid sortorder specified.
         if rule.target_sortorder:
@@ -64,22 +64,22 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     return mklists_dict
 
 
-def _line_matches(matchpattern=None, matchfield=None, dataline=None):
+def _line_matches(given_rule=None, given_line=None):
     """Returns True if a given field in a data line matches a given pattern."""
 
     # Line does not match if given field is greater than length of line.
-    if matchfield > len(dataline.split()):
+    if given_rule.source_matchfield > len(given_line.split()):
         return False
 
     # Line matches if given field is zero and pattern found anywhere in line.
-    if matchfield == 0:
-        if re.search(matchpattern, dataline):
+    if given_rule.source_matchfield == 0:
+        if re.search(given_rule.source_matchpattern, given_line):
             return True
 
     # Line matches if pattern is found in given field of line.
-    if matchfield > 0:
-        eth = matchfield - 1
-        if re.search(matchpattern, dataline.split()[eth]):
+    if given_rule.source_matchfield > 0:
+        eth = given_rule.source_matchfield - 1
+        if re.search(given_rule.source_matchpattern, given_line.split()[eth]):
             return True
 
     return False

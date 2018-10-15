@@ -4,8 +4,6 @@ Functions with side effects such as:
 * reading files from disk
 * writing to files on disk 
 * modifying data structures in memory
-
-2018-08-05: apply_rules_to_datalines() seems broken - tests needed!
 """
 
 import os

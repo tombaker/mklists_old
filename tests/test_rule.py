@@ -1,49 +1,43 @@
 import pytest
 import os
-from mklists.rule import Rule, _line_matches
+from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
 from mklists import VALID_FILENAME_CHARS
+
+@pytest.mark.apply_rules
+def test_apply_rules():
+    rules = [Rule(1, 'NOW', 'a.txt', 'now.txt', 0),
+             Rule(1, 'LATER', 'a.txt', 'later.txt', 0)]
+    lines = ['NOW Summer', 'LATER Winter']
+    mdict = {'now.txt': ['NOW Summer'], 
+             'later.txt': ['LATER Winter'],
+             'a.txt': []}
+    apply_rules_to_datalines(rules, lines) == mdict
 
 @pytest.mark.line_matches
 def test_line_matches():
-    _line_matches(matchpattern='NOW', matchfield=1, dataline='NOW Buy milk') == True
+    given_rule = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
+    _line_matches(given_rule, 'NOW Buy milk') == True
 
 @pytest.mark.line_matches
 def test_line_matches_with_space():
-    _line_matches(matchpattern='NOW', matchfield=1, dataline=' NOW Buy milk') == True
+    given_rule = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
+    _line_matches(given_rule, ' NOW Buy milk') == True
 
 @pytest.mark.line_matches
 def test_line_matches_no_match():
-    _line_matches(matchpattern='NOW', matchfield=1, dataline='LATER Buy milk') == False
+    given_rule = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
+    _line_matches(given_rule, 'LATER Buy milk') == False
 
 @pytest.mark.line_matches
 def test_line_matches_gotcha():
     """True because ' NOW Buy milk'.split() => ['NOW', 'Buy', 'milk']"""
-    _line_matches(matchpattern='^NOW', matchfield=1, dataline=' NOW Buy milk') == True
+    given_rule = Rule(1, '^NOW', 'a.txt', 'b.txt', 0)
+    _line_matches(given_rule, ' NOW Buy milk') == True
 
 @pytest.mark.line_matches
 def test_line_matches_entire_line():
-    _line_matches(matchpattern="^NOW", matchfield=0, dataline='NOW Buy milk') == True
-
-@pytest.mark.line_matches
-def test_line_matches_positional():
-    _line_matches('NOW', 1, 'NOW Buy milk') == True
-
-@pytest.mark.line_matches
-def test_line_matches_positional_with_space():
-    _line_matches('NOW', 1, ' NOW Buy milk') == True
-
-@pytest.mark.line_matches
-def test_line_matches_positional_no_match():
-    _line_matches('NOW', 1, 'LATER Buy milk') == False
-
-@pytest.mark.line_matches
-def test_line_matches_positional_gotcha():
-    """True because ' NOW Buy milk'.split() => ['NOW', 'Buy', 'milk']"""
-    _line_matches('^NOW', 1, ' NOW Buy milk') == True
-
-@pytest.mark.line_matches
-def test_line_matches_positional_entire_line():
-    _line_matches("^NOW", 0, 'NOW Buy milk') == True
+    given_rule = Rule(0, '^NOW', 'a.txt', 'b.txt', 0)
+    _line_matches(given_rule, 'NOW Buy milk') == True
 
 @pytest.mark.rule
 def test_has_been_initialized():

@@ -3,8 +3,10 @@
 import glob
 import click
 from mklists.utils import change_working_directory
-from mklists.readwrite import (
+from mklists.rule import (
     apply_rules_to_datalines,
+    )
+from mklists.readwrite import (
     load_mklistsrc,
     write_initial_configfile,
     write_initial_rulefiles,
