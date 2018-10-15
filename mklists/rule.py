@@ -12,7 +12,7 @@ from mklists import (
     BadFilenameError,
     SourceEqualsTargetError,
     SourceMatchpatternError,
-    BadSourceError)
+    UninitializedSourceError)
 
 def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     """Applies rules, one by one, to process a list of datalines.
@@ -38,21 +38,22 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     # Evaluate rules, one-by-one, to process entries in mklists_dict.
     for rule in rules_list:
 
-        # Initialize dictionary with
-        #    first key: 'source' field of first rule (a valid filename)
-        #    corresponding value: list of all data lines
+        # Initialize dictionary with first entry with the first rule:
+        #    key: a valid filename (from 'source' field of the first rule)
+        #    value: all data lines (consolidated from all files on disk)
         if not first_key_is_initialized:
             mklists_dict[rule.source] = datalines_list
             first_key_is_initialized = True
 
-        # Evaluate 'source' lines against rule and move matches to 'target'.
-        # breakpoint()
+        # Evaluate 'source' lines against the rule
+        #    append matching lines to value of 'rule.target'
+        #    remove matching lines from value of 'rule.source'
         for line in mklists_dict[rule.source]:
             if _line_matches(rule, line):
                 mklists_dict[rule.target].extend([line])
                 mklists_dict[rule.source].remove(line)
 
-        # Sort matching lines if valid sortorder specified.
+        # Sort matching lines by field - if a valid sortorder was specified.
         if rule.target_sortorder:
             eth_sortorder = rule.target_sortorder - 1
             decorated = [(line.split()[eth_sortorder], __, line)
@@ -66,9 +67,9 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
 
 
 def _line_matches(given_rule=None, given_line=None):
-    """Returns True if a given field in a data line matches a given pattern."""
+    """Returns True if data line matches pattern specified in given rule."""
 
-    # Line does not match if given field is greater than length of line.
+    # Line does not match if given field greater than number of fields in line.
     if given_rule.source_matchfield > len(given_line.split()):
         return False
 
@@ -77,7 +78,7 @@ def _line_matches(given_rule=None, given_line=None):
         if re.search(given_rule.source_matchpattern, given_line):
             return True
 
-    # Line matches if pattern is found in given field of line.
+    # Line matches if pattern is found in given field.
     if given_rule.source_matchfield > 0:
         eth = given_rule.source_matchfield - 1
         if re.search(given_rule.source_matchpattern, given_line.split()[eth]):
@@ -88,14 +89,14 @@ def _line_matches(given_rule=None, given_line=None):
 
 @dataclass
 class Rule:
-    """Holds attributes and self-validation methods for a single rule.
+    """Holds fields and self-validation methods for a single rule.
 
     Dataclass Fields:
-        source_matchfield: @@@@
-        source_matchpattern: @@@@
-        source: @@@@
-        target: @@@@
-        target_sortorder: @@@@
+        source_matchfield: number of whitespace-delimited field matched
+        source_matchpattern: regular expression to be matched
+        source: a string valid as a filename
+        target: a string valid as a filename
+        target_sortorder: field on which target contents are to be sorted
     """
     source_matchfield: int = None
     source_matchpattern: str = None
@@ -106,29 +107,26 @@ class Rule:
     sources_list_is_initialized = False
     sources_list = []
 
-    # Silently convert strings (x.isdecimal()) into integers.
-    try:
-        self.source_matchfield = int(self.source_matchfield)
-        self.target_sortorder = int(self.target_sortorder)
-    except:
-        pass 
-
-    def is_valid(self, valid_filename_characters):
+    def is_valid(self, valid_filename_characters=VALID_FILENAME_CHARS):
         """Returns True if Rule object passes all tests."""
         self._source_matchfield_and_target_sortorder_are_integers()
         self._source_matchpattern_is_valid()
-        self._source_and_target_filenames_are_valid(valid_filename_characters)
+        self._filenames_are_valid(valid_filename_characters)
         self._source_is_not_equal_target()
         self._source_is_precedented()
         return True
 
     def _source_matchfield_and_target_sortorder_are_integers(self):
-        """Returns True if source_matchfield and target_sortorder are integers.
-        """
+        """Returns True 
+        * if source_matchfield and target_sortorder are integers - or
+        * if the fields can be silently converted into integers"""
         for field in [self.source_matchfield, self.target_sortorder]:
             if not isinstance(field, int):
-                print(f"In rule: {self}")
-                raise NotIntegerError(f"{field} must be an integer.")
+                try:
+                    field = int(field)
+                except:
+                    print(f"In rule: {self}")
+                    raise NotIntegerError(f"{field} must be an integer.")
         return True
 
     def _source_matchpattern_is_valid(self):
@@ -142,14 +140,14 @@ class Rule:
                 "-- try escaping metacharacters.")
         return True
 
-    def _source_and_target_filenames_are_valid(self, valid_chars):
+    def _filenames_are_valid(self, valid_chars=VALID_FILENAME_CHARS):
         """Returns True if filenames use only valid characters."""
         for field in [self.source, self.target]:
             for char in str(field):
                 if char not in valid_chars:
                     print(f"In rule: {self}")
-                    raise BadFilenameError(f"{repr(char)} is not a valid "
-                                            "filename character.")
+                    raise BadFilenameError(
+                        f"{repr(char)} is not a valid filename character.")
         return True
 
     def _source_is_not_equal_target(self):
@@ -160,14 +158,18 @@ class Rule:
         return True
 
     def _source_is_precedented(self):
-        """Returns True if source has previously been initialized."""
+        """Checks if source in list of previously registered sources:
+        * initializes list of sources from first rule
+        * if source is not in list of sources, raise exception and exit
+        * if source is in list of sources, add target to list of sources"""
         if not Rule.sources_list_is_initialized:
             Rule.sources_list.append(self.source)
             Rule.sources_list_is_initialized = True
         if self.source not in Rule.sources_list:
             print(f"In rule: {self}")
             print(f"Rule.sources_list = {Rule.sources_list}")
-            raise BadSourceError(f"{repr(self.source)} not initialized.")
+            raise UninitializedSourceError(
+                f"{repr(self.source)} not initialized.")
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True

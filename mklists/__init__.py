@@ -87,7 +87,7 @@ class SourceEqualsTargetError(RuleError):
 class SourceMatchpatternError(RuleError):
     """Match pattern does not compile correctly as a regular expression."""
 
-class BadSourceError(RuleError):
+class UninitializedSourceError(RuleError):
     """Source has not been initialized as a source (has no precedent)."""
 
 # Errors related to a set of rules, used in rules module

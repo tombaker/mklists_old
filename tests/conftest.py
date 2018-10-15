@@ -3,6 +3,15 @@ import yaml
 from textwrap import dedent
 from mklists.rule import Rule
 
+@pytest.fixture()
+def initialize_rule():
+    # Class variables must be re-initialized:
+    #     for each test of Rule.isrule
+    #     for each test of x._source_is_precedented
+    #     for each test of Rule.sources_list
+    Rule.sources_list = []
+    Rule.sources_list_is_initialized = False
+
 @pytest.fixture(scope='module')
 def rule_global_yaml(tmpdir_factory):
     """Write some YAML-formatted rules to YAML rule files."""

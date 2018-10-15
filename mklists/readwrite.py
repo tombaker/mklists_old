@@ -35,9 +35,10 @@ def write_initial_configfile(context=None,
         raise InitError(f"To re-initialize, first delete {repr(filename)}.")
     else:
         if readonly:
-            print(f"['readonly' is on] Would have created {repr(filename)}.")
+            raise InitError(
+                f"In read-only mode. Would have created {repr(filename)}.")
         else:
-            print(f"Creating default {repr(filename)} - customize as needed.")
+            print(f"Creating default {repr(filename)}. Customize as needed.")
             with open(filename, 'w') as fout:
                 yaml.safe_dump(context, sys.stdout, default_flow_style=False)
 
