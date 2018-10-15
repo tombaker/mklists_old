@@ -89,7 +89,7 @@ def _line_matches(matchpattern=None, matchfield=None, dataline=None):
 class Rule:
     """Holds attributes and self-validation methods for a single rule.
 
-    Attributes:
+    Dataclass Fields:
         source_matchfield: @@@@
         source_matchpattern: @@@@
         source: @@@@
