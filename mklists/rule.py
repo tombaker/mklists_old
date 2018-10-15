@@ -27,7 +27,7 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
         * value: always a list of (part of the) data lines
     """
     mklists_dict = defaultdict(list)
-    precedented_source_is_initialized = False
+    first_key_is_initialized = False
 
     if not rules_list:
         raise NoRulesError("No rules specified.")
@@ -41,9 +41,9 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
         # Initialize dictionary with
         #    first key: 'source' field of first rule (a valid filename)
         #    corresponding value: list of all data lines
-        if not precedented_source_is_initialized:
+        if not first_key_is_initialized:
             mklists_dict[rule.source] = datalines_list
-            precedented_source_is_initialized = True
+            first_key_is_initialized = True
 
         # Evaluate 'source' lines against rule and move matches to 'target'.
         # breakpoint()
@@ -103,8 +103,8 @@ class Rule:
     target: str = None
     target_sortorder: int = 0
 
-    precedented_source_is_initialized = False
-    precedented_sources = []
+    sources_list_is_initialized = False
+    sources_list = []
 
     # Silently convert strings (x.isdecimal()) into integers.
     try:
@@ -161,14 +161,14 @@ class Rule:
 
     def _source_is_precedented(self):
         """Returns True if source has previously been initialized."""
-        if not self.__class__.precedented_source_is_initialized:
-            self.__class__.precedented_sources.append(self.source)
-            self.__class__.precedented_source_is_initialized = True
-        if self.source not in self.__class__.precedented_sources:
+        if not Rule.sources_list_is_initialized:
+            Rule.sources_list.append(self.source)
+            Rule.sources_list_is_initialized = True
+        if self.source not in Rule.sources_list:
             print(f"In rule: {self}")
-            print(f"self.__class__.precedented_sources = {self.__class__.precedented_sources}")
+            print(f"Rule.sources_list = {Rule.sources_list}")
             raise BadSourceError(f"{repr(self.source)} not initialized.")
-        if self.target not in Rule.precedented_sources:
-            Rule.precedented_sources.append(self.target)
+        if self.target not in Rule.sources_list:
+            Rule.sources_list.append(self.target)
         return True
 

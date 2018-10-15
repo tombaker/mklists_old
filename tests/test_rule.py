@@ -4,7 +4,17 @@ from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
 from mklists import VALID_FILENAME_CHARS
 
 @pytest.mark.rule
+def test_rule_is_valid():
+    """Failing test"""
+    Rule.sources_list = []
+    Rule.sources_list_is_initialized = False
+    x = Rule(1, 'NOW', 'a', 'b', 2)
+    x.is_valid(VALID_FILENAME_CHARS) == True
+
+@pytest.mark.rule
 def test_source_is_precedented():
+    Rule.sources_list = []
+    Rule.sources_list_is_initialized = False
     x = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
     x._source_is_precedented()
     y = Rule(1, 'LATER', 'b.txt', 'c.txt', 0)
@@ -15,21 +25,19 @@ def test_source_is_not_precedented():
     """Rule class keeps track of instances registered, so 
     second rule instance 'y' should raise exception because 
     'c.txt' will not have been registered as a source."""
+    Rule.sources_list = []
+    Rule.sources_list_is_initialized = False
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
     y = Rule('1', 'LATER', 'c.txt', 'd.txt', '0')
     y._source_is_precedented() == False
 
 @pytest.mark.rule
-def test_is_valid():
-    x = Rule(1, 'NOW', 'a', 'b', 2)
-    x.is_valid(VALID_FILENAME_CHARS) == True
-
-@pytest.mark.rule
-def test_is_valid_not():
+def test_rule_is_valid_not():
     x = Rule(1, 'N(OW', 'a', 'b', 2)
     with pytest.raises(SystemExit):
         x.is_valid(VALID_FILENAME_CHARS)
 
+@pytest.mark.rule
 def test_rule():
     x = Rule(1, '.', 'a', 'b', 2)
     assert x.source == 'a'
