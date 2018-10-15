@@ -25,7 +25,7 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
         * value: always a list of (part of the) data lines
     """
     mklists_dict = defaultdict(list)
-    is_initialized = False
+    source_is_initialized = False
 
     if not rules_list:
         raise NoRulesError("No rules specified.")
@@ -39,9 +39,9 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
         # Initialize dictionary with
         #    first key: 'source' field of first rule (a valid filename)
         #    corresponding value: list of all data lines
-        if not is_initialized:
+        if not source_is_initialized:
             mklists_dict[rule.source] = datalines_list
-            is_initialized = True
+            source_is_initialized = True
 
         # Evaluate 'source' lines against rule and move matches to 'target'.
         for line in mklists_dict[rule.source]:
@@ -102,7 +102,7 @@ class Rule:
     target: str = None
     target_sortorder: int = 0
 
-    is_initialized = False
+    source_is_initialized = False
     sources = []
 
     def is_valid(self, valid_filename_characters):
@@ -153,9 +153,9 @@ class Rule:
 
     def _source_has_been_initialized(self):
         """Returns True if source has previously been initialized."""
-        if not self.__class__.is_initialized:
+        if not self.__class__.source_is_initialized:
             self.__class__.sources.append(self.source)
-            self.__class__.is_initialized = True
+            self.__class__.source_is_initialized = True
         if self.source not in self.__class__.sources:
             print(f"In rule: {self}")
             print(f"self.__class__.sources = {self.__class__.sources}")

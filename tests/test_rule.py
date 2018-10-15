@@ -45,21 +45,23 @@ def test_line_matches_positional_gotcha():
 def test_line_matches_positional_entire_line():
     _line_matches("^NOW", 0, 'NOW Buy milk') == True
 
-
+@pytest.mark.rule
 def test_has_been_initialized():
     x = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
     x._source_has_been_initialized()
     y = Rule(1, 'LATER', 'b.txt', 'c.txt', 0)
     assert y._source_has_been_initialized()
 
-@pytest.mark.skip
+@pytest.mark.rule
 def test_source_is_registered_not():
+    """Rule class keeps track of instances registered, so 
+    second rule instance 'y' should raise exception because 
+    'c.txt' will not have been registered as a source."""
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
-    Rule.register(x)
     y = Rule('1', 'LATER', 'c.txt', 'd.txt', '0')
-    with pytest.raises(SystemExit):
-        Rule.register(y)
+    y._source_has_been_initialized() == False
 
+@pytest.mark.rule
 def test_is_valid_not():
     x = Rule(1, 'N(OW', 'a', 'b', 2)
     with pytest.raises(SystemExit):
