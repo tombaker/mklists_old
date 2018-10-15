@@ -98,8 +98,8 @@ def init(ctx):
     # -- If either or both files already exist (atypical), leave untouched.
     # Create one or both rule files with default contents.
     # Note: if 'readonly' is ON, will only print messages, not write to disk.
-    write_initial_rulefiles(grules=None,
-                            lrules=RULEFILE,
+    write_initial_rulefiles(global_rules=None,
+                            local_rules=RULEFILE,
                             readonly=True, # later: ctx.obj['readonly'],
                             verbose=ctx.obj['verbose'])
 
@@ -110,8 +110,8 @@ def run(ctx):
     """Apply rules to re-write data files"""
     # Read rule files, parse, and get aggregated list of rules objects.
     # -- Does not complain or exit if rules are empty @@@CHECK
-    rules = get_rules(grules=ctx.obj['globalrules'],
-                      lrules=ctx.obj['rules'],
+    rules = get_rules(global_rules=ctx.obj['globalrules'],
+                      local_rules=ctx.obj['rules'],
                       valid_filename_chars=ctx.obj['valid_filename_chars'],
                       verbose=ctx.obj['verbose'])
 

@@ -12,7 +12,7 @@ import string
 import pprint
 import yaml
 from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
-    STARTER_GRULES, STARTER_LRULES, BadFilenameError, BlankLinesError,
+    STARTER_GLOBALRULES, STARTER_LOCALRULES, BadFilenameError, BlankLinesError,
     DatadirHasNonFilesError, InitError, NoDataError, NoRulesError,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
@@ -41,12 +41,13 @@ def write_initial_configfile(context=None,
             with open(filename, 'w') as fout:
                 yaml.safe_dump(context, sys.stdout, default_flow_style=False)
 
-def write_initial_rulefiles(grules=None, 
-                            lrules=None, 
+def write_initial_rulefiles(global_rules=None, 
+                            local_rules=None, 
                             valid_filename_chars=None,
                             readonly=False,
                             verbose=False):
-    for file, content in [(grules, STARTER_GRULES), (lrules, STARTER_LRULES)]:
+    for file, content in [(global_rules, STARTER_GLOBALRULES), 
+                          (local_rules, STARTER_LOCALRULES)]:
         if file:
             if os.path.exists(file):
                 print(f"Found existing {repr(file)} - leaving untouched.")
@@ -60,17 +61,17 @@ def write_initial_rulefiles(grules=None,
                     with open(file, 'w') as fout:
                         fout.write(content)
 
-def get_rules(grules=None,
-              lrules=None,
+def get_rules(global_rules=None,
+              local_rules=None,
               valid_filename_chars=None,
               verbose=False):
     rule_object_list = []
-    for rulefile in grules, lrules:
+    for rulefile in global_rules, local_rules:
         if rulefile:
             rule_object_list.extend(
                     _parse_yamlrules(rulefile, valid_filename_chars))
         if not rule_object_list:
-            raise NoRulesError("No rules to work with!")
+            raise NoRulesError("No rules specified.")
     if verbose:
         pprint.pprint(rule_object_list)
     return rule_object_list
