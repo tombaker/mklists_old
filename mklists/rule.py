@@ -1,4 +1,8 @@
-"""Rule module docstring"""
+"""Rule module 
+
+* Function for applying a given set of rules to a give set of data lines.
+* Rule class, which holds fields and self-validation methods for a single rule.
+"""
 
 import re
 import string
@@ -13,6 +17,7 @@ from mklists import (
     SourceEqualsTargetError,
     SourceMatchpatternError,
     UninitializedSourceError)
+from mklists.utils import has_valid_name
 
 def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     """Applies rules, one by one, to process a list of datalines.
@@ -141,13 +146,13 @@ class Rule:
         return True
 
     def _filenames_are_valid(self, valid_chars=VALID_FILENAME_CHARS):
-        """Returns True if filenames use only valid characters."""
-        for field in [self.source, self.target]:
-            for char in str(field):
-                if char not in valid_chars:
-                    print(f"In rule: {self}")
-                    raise BadFilenameError(
-                        f"{repr(char)} is not a valid filename character.")
+        """Returns True if filenames use only valid characters. 
+        TODO Somehow combine this with utils:has_valid_name"""
+        for filename in [self.source, self.target]:
+            if not has_valid_name(filename):
+                print(f"In rule: {self}")
+                raise BadFilenameError(
+                    f"{repr(filename)} is not a valid filename.")
         return True
 
     def _source_is_not_equal_target(self):

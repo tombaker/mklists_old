@@ -9,6 +9,8 @@ URL_PATTERN = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARS = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
 
+INVALID_FILENAME_PATS = [r'\.swp$', r'\.tmp$', r'~$', r'^\.']
+
 MKLISTSRC = '.mklistsrc'
 
 RULEFILE = '.rules'
@@ -24,7 +26,7 @@ STARTER_DEFAULTS = {
     'readonly': False,
     'verbose': False,
     'valid_filename_characters': VALID_FILENAME_CHARS,
-    'invalid_filename_patterns': [r'\.swp$', r'\.tmp$', r'~$', r'^\.'],
+    'invalid_filename_patterns': INVALID_FILENAME_PATS,
     'files2dirs': None}
 
 STARTER_GLOBALRULES = """\
@@ -56,9 +58,6 @@ class NoRulefileSpecified(ConfigError):
 class DataError(SystemExit):
     """Superclass for errors relating to data."""
 
-class BadFilenameError(DataError):
-    """Filename is bad (ie, matches a blacklisted pattern)."""
-
 class BlankLinesError(DataError):
     """File contains blank lines."""
 
@@ -78,8 +77,11 @@ class RuleError(SystemExit):
 class NotIntegerError(RuleError):
     """Value is not an integer."""
 
-class BadFilenameError(RuleError):
-    """Filename uses character not in list of valid characters."""
+class BadFilenameError(RuleError, DataError):
+    """Filename uses invalid characters or name patterns."""
+
+class BadFileFormatError(DataError):
+    """File is not in UTF-8 format."""
 
 class SourceEqualsTargetError(RuleError):
     """Source equals target."""

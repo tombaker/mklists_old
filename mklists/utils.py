@@ -3,7 +3,10 @@
 import os
 import re
 import glob
-from mklists import URL_PATTERN
+from mklists import (URL_PATTERN, INVALID_FILENAME_PATS, 
+    VALID_FILENAME_CHARS, DatadirNotAccessibleError, 
+    DatadirHasNonFilesError, BadFileFormatError, 
+    BadFilenameError)
 
 
 def change_working_directory(dirname, verb=False):
@@ -14,7 +17,7 @@ def change_working_directory(dirname, verb=False):
             if verb:
                 print(f"Changing to {repr(dirname)} as working directory.")
         except FileNotFoundError:
-            raise dirnameNotAccessibleError(f"{dirname} is not accessible.")
+            raise DatadirNotAccessibleError(f"{dirname} is not accessible.")
 
 def is_file(object_path):
     """Returns True if object is a file.
@@ -26,8 +29,10 @@ def is_file(object_path):
         return False
     return True
 
-def has_valid_name(filename, bad_names):
-    """Return True if no filenames match bad patterns.
+def has_valid_name(filename, 
+                   bad_patterns=INVALID_FILENAME_PATS,
+                   valid_chars=VALID_FILENAME_CHARS):
+    """Return True if filename has no invalid characters or patterns.
 
     Used to block execution of mklists if the data
     folder has any files that should not be processed,
@@ -36,29 +41,56 @@ def has_valid_name(filename, bad_names):
     Raises:
         BadFilenameError: if filename matches a bad pattern.
     """
-    for bad_pattern in bad_names:
+    for bad_pattern in bad_patterns:
         if re.search(bad_pattern, filename):
-            print(f"{repr(bad_pattern)} in {filename}.")
+            print(f"Bad pattern {repr(bad_pattern)} "
+                  f"in filename {repr(filename)}.")
+            return False
+    for char in filename:
+        if char not in valid_chars:
+            print(f"{repr(char)} is not a valid filename character.")
             return False
     return True
 
-def is_utf8_encoded(file):
-    """Returns True if all data files are UTF8-encoded.
+def has_valid_contents(filename):
+    """Returns True if file is UTF8-encoded and has no blank lines.
 
     Raises:
-        UnicodeDecodeError: if any file is not UTF8-encoded.
+        BadFileFormatError: if file is not UTF8-encoded.
+
+    TODO Does not tell user whether it is failing because
+    * not UTF8
+    * has blank lines
+    """
+    try:
+        with open(filename) as tf:
+            for line in tf:
+                if not line.rstrip():
+                    return False
+    except UnicodeDecodeError:
+        raise BadFileFormatError(f"{repr(filename)} is not in UTF-8 format.")
+    return True
+
+def _is_utf8_encoded(file):
+    """Returns True if a data files is UTF8-encoded.
+
+    Raises:
+        BadFileFormatError: if any file is not UTF8-encoded.
     """
     try:
         open(file).read()
     except UnicodeDecodeError:
-        return False
+        raise BadFileFormatError(f"{repr(filename)} is not in UTF-8 format.")
     return True
 
-def has_no_blank_lines(text_file):
-    """Note: Does not test whether test file"""
-    for line in text_file:
-        if not line:
-            return False
+def _has_no_blank_lines(text_file):
+    """Returns True if file has no blank lines.
+    
+    Note: Does not test whether text_file is a text file."""
+    with open(text_file) as tf:
+        for line in tf:
+            if not line.rstrip():
+                return False
     return True
 
 def linkify(string_raw):
