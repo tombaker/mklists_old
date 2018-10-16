@@ -2,6 +2,7 @@ import pytest
 import os
 from mklists.utils import _is_utf8_encoded, _has_no_blank_lines
 from mklists import UninitializedSourceError
+from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
 
 
 @pytest.mark.utils
