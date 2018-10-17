@@ -26,21 +26,21 @@ from mklists import (
 
 @click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
-        help="Set working directory [default: ./]")
+        help="Set working directory [default './']")
 @click.option('--globalrules', type=str, metavar='FILEPATH',
-        help="Set global rules [default: ./.globalrules]")
+        help="Set global rules [default './.globalrules']")
 @click.option('--rules', type=str, metavar='FILEPATH',
-        help="Set local rules [default: ./.rules]")
+        help="Set local rules [default './.rules']")
 @click.option('--backup', type=bool, is_flag=True,
         help="Enable backups")
 @click.option('--backup-dir', type=str, metavar='DIRPATH',
-        help="Set backups directory [default: ./.backups/]")
+        help="Set backups directory [default './.backups/']")
 @click.option('--backup-depth', type=int, metavar='INTEGER',
-        help="Set backups to keep [default: 3]")
+        help="Set backups to keep [default: '3']")
 @click.option('--urlify', type=bool, is_flag=True,
         help="Enable generation of HTML output")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
-        help="Set HTML directory [default: ./.html/]")
+        help="Set HTML directory [default: './.html/']")
 @click.option('--dryrun', type=bool, is_flag=True,
         help="Run in read-only mode, for debugging")
 @click.option('--verbose', type=bool, is_flag=True,
@@ -83,24 +83,27 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
 @cli.command()
 @click.pass_context
 def init(ctx):
-    """Generate default configuration and rule files"""
+    """Generate default configuration and rule files.
 
-    # If configfile already exists, exit suggesting to delete it first.
-    # If configfile not found, create new file using current settings.
-    # Note: if 'dryrun' is ON, will only print messages, not write to disk.
+    Calls:
+        write_initial_configfile
+            If configfile already exists, exits suggesting to first delete.
+            If configfile not found, creates new file using current settings.
+            If 'dryrun' is ON, prints messages but does not write to disk.
+        write_initial_rulefiles
+            Checks whether current settings name non-default rule files.
+            If either rule file already exists, leaves untouched.
+            Creates rule files with default contents.
+            If 'dryrun' is ON, prints messages but does not write to disk.
+    
+    """
+
     write_initial_configfile(context=ctx.obj,
                              filename=MKLISTSRC,
-                             dryrun=True, # later: ctx.obj['dryrun'],
                              verbose=ctx.obj['verbose'])
 
-    # Look for global and local rule files named in settings.
-    # -- If local rule file not named in settings, call it RULEFILE.
-    # -- If either or both files already exist (atypical), leave untouched.
-    # Create one or both rule files with default contents.
-    # Note: if 'dryrun' is ON, will only print messages, not write to disk.
-    write_initial_rulefiles(global_rules=None,
-                            local_rules=RULEFILE,
-                            dryrun=True, # later: ctx.obj['dryrun'],
+    write_initial_rulefiles(global_rules_filename=None,
+                            local_rules_filename=RULEFILE,
                             verbose=ctx.obj['verbose'])
 
 
@@ -110,8 +113,8 @@ def run(ctx):
     """Apply rules to re-write data files"""
     # Read rule files, parse, and get aggregated list of rules objects.
     # -- Does not complain or exit if rules are empty @@@CHECK
-    rules = get_rules(global_rules=ctx.obj['globalrules'],
-                      local_rules=ctx.obj['rules'],
+    rules = get_rules(global_rules_filename=ctx.obj['globalrules'],
+                      local_rules_filename=ctx.obj['rules'],
                       valid_filename_chars=ctx.obj['valid_filename_chars'],
                       verbose=ctx.obj['verbose'])
 

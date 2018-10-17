@@ -42,13 +42,12 @@ def write_initial_configfile(context=None,
             with open(filename, 'w') as fout:
                 yaml.safe_dump(context, sys.stdout, default_flow_style=False)
 
-def write_initial_rulefiles(global_rules=None, 
-                            local_rules=None, 
-                            valid_filename_chars=None,
+def write_initial_rulefiles(global_rules_filename=None, 
+                            local_rules_filename=None, 
                             dryrun=False,
                             verbose=False):
-    for file, content in [(global_rules, STARTER_GLOBALRULES), 
-                          (local_rules, STARTER_LOCALRULES)]:
+    for file, content in [(global_rules_filename, STARTER_GLOBALRULES), 
+                          (local_rules_filename, STARTER_LOCALRULES)]:
         if file:
             if os.path.exists(file):
                 print(f"Found existing {repr(file)} - leaving untouched.")
@@ -58,16 +57,16 @@ def write_initial_rulefiles(global_rules=None,
                           "Would have created {repr(file)}.")
                 else:
                     print(f"Creating starter rule file {repr(file)} - "
-                          "this is meant to be customized before use.")
+                          "can be customized.")
                     with open(file, 'w') as fout:
                         fout.write(content)
 
-def get_rules(global_rules=None,
+def get_rules(global_rules_filename=None,
               local_rules=None,
               valid_filename_chars=None,
               verbose=False):
     rule_object_list = []
-    for rulefile in global_rules, local_rules:
+    for rulefile in global_rules_filename, local_rules:
         if rulefile:
             rule_object_list.extend(
                     _parse_yamlrules(rulefile, valid_filename_chars))

@@ -1,14 +1,8 @@
 import pytest
 import os
 from mklists.utils import _is_utf8_encoded, _has_no_blank_lines
-from mklists import UninitializedSourceError
+from mklists import UninitializedSourceError, STARTER_GLOBALRULES
 from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
-
-
-@pytest.mark.tmpdir
-def test_change_directory(tmpdir):
-    os.chdir(tmpdir)
-    assert str(tmpdir) == os.getcwd()
 
 @pytest.mark.utils
 def test_is_utf8_encoded():
