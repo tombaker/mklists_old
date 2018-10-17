@@ -26,25 +26,25 @@ from mklists import (
 
 @click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
-              help="Use DIRPATH as working directory [./]")
+        help="Set working directory [default: ./]")
 @click.option('--globalrules', type=str, metavar='FILEPATH',
-              help="Set non-default global rules [./.globalrules]")
+        help="Set global rules [default: ./.globalrules]")
 @click.option('--rules', type=str, metavar='FILEPATH',
-              help="Set non-default local rules [./.rules]")
+        help="Set local rules [default: ./.rules]")
 @click.option('--backup', type=bool, is_flag=True,
-              help="Enable backup of input data [./.backups/]")
+        help="Enable backups")
 @click.option('--backup-dir', type=str, metavar='DIRPATH',
-              help="Set non-default directory for backups")
+        help="Set backups directory [default: ./.backups/]")
 @click.option('--backup-depth', type=int, metavar='INTEGER',
-              help="Set number of backups to keep [3]")
+        help="Set backups to keep [default: 3]")
 @click.option('--urlify', type=bool, is_flag=True,
-              help="Enable HTML copies of output files [./.html/]")
+        help="Enable generation of HTML output")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
-              help="Set non-default directory for HTML data")
+        help="Set HTML directory [default: ./.html/]")
 @click.option('--readonly', type=bool, is_flag=True,
-              help="Enable read-only mode")
+        help="Enable read-only mode")
 @click.option('--verbose', type=bool, is_flag=True,
-              help="Enable verbose mode")
+        help="Enable verbose mode")
 @click.version_option('0.1.4', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context

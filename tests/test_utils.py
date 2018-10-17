@@ -5,6 +5,11 @@ from mklists import UninitializedSourceError
 from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
 
 
+@pytest.mark.tmpdir
+def test_change_directory(tmpdir):
+    os.chdir(tmpdir)
+    assert str(tmpdir) == os.getcwd()
+
 @pytest.mark.utils
 def test_is_utf8_encoded():
     pass
