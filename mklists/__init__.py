@@ -23,7 +23,7 @@ STARTER_DEFAULTS = {
     'backup': False,
     'backup_dir': '.backups',
     'backup_depth': 3,
-    'readonly': False,
+    'dryrun': False,
     'verbose': False,
     'valid_filename_characters': VALID_FILENAME_CHARS,
     'invalid_filename_patterns': INVALID_FILENAME_PATS,

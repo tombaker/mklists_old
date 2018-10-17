@@ -28,13 +28,13 @@ def load_mklistsrc(filename, context=None, verbose=False):
 
 def write_initial_configfile(context=None,
                              filename=MKLISTSRC,
-                             readonly=False,
+                             dryrun=False,
                              verbose=False):
     """Writes initial configuration file to disk (or just says it will)."""
     if os.path.exists(filename):
         raise InitError(f"To re-initialize, first delete {repr(filename)}.")
     else:
-        if readonly:
+        if dryrun:
             raise InitError(
                 f"In read-only mode. Would have created {repr(filename)}.")
         else:
@@ -45,7 +45,7 @@ def write_initial_configfile(context=None,
 def write_initial_rulefiles(global_rules=None, 
                             local_rules=None, 
                             valid_filename_chars=None,
-                            readonly=False,
+                            dryrun=False,
                             verbose=False):
     for file, content in [(global_rules, STARTER_GLOBALRULES), 
                           (local_rules, STARTER_LOCALRULES)]:
@@ -53,8 +53,8 @@ def write_initial_rulefiles(global_rules=None,
             if os.path.exists(file):
                 print(f"Found existing {repr(file)} - leaving untouched.")
             else:
-                if readonly:
-                    print(f"['readonly' is on] "
+                if dryrun:
+                    print(f"['dryrun' is on] "
                           "Would have created {repr(file)}.")
                 else:
                     print(f"Creating starter rule file {repr(file)} - "
@@ -182,7 +182,7 @@ def move_datafiles_to_backup(ls_visible=[],
     #     shutil.move(file, backup_dir)
 
 def write_new_datafiles(datalines_d=None,
-                        readonly=False,
+                        dryrun=False,
                         backup=False, 
                         backup_dir=None,
                         backup_depth=None,
@@ -195,7 +195,7 @@ def write_new_datafiles(datalines_d=None,
 # Write urlified data files to urlify_dir.
 def write_urlified_datafiles(datalines_d={},
                              urlify_dir=None,
-                             readonly=True,  # later: ctx.obj['readonly'],
+                             dryrun=True,  # later: ctx.obj['dryrun'],
                              verbose=False):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()

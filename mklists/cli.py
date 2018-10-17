@@ -41,15 +41,15 @@ from mklists import (
         help="Enable generation of HTML output")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
         help="Set HTML directory [default: ./.html/]")
-@click.option('--readonly', type=bool, is_flag=True,
-        help="Enable read-only mode")
+@click.option('--dryrun', type=bool, is_flag=True,
+        help="Run in read-only mode, for debugging")
 @click.option('--verbose', type=bool, is_flag=True,
         help="Enable verbose mode")
 @click.version_option('0.1.4', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
-        urlify, urlify_dir, readonly, verbose):
+        urlify, urlify_dir, dryrun, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
     # "Untoucable" dictionary of cli() parameters snapshotted as mutable dict.
@@ -87,20 +87,20 @@ def init(ctx):
 
     # If configfile already exists, exit suggesting to delete it first.
     # If configfile not found, create new file using current settings.
-    # Note: if 'readonly' is ON, will only print messages, not write to disk.
+    # Note: if 'dryrun' is ON, will only print messages, not write to disk.
     write_initial_configfile(context=ctx.obj,
                              filename=MKLISTSRC,
-                             readonly=True, # later: ctx.obj['readonly'],
+                             dryrun=True, # later: ctx.obj['dryrun'],
                              verbose=ctx.obj['verbose'])
 
     # Look for global and local rule files named in settings.
     # -- If local rule file not named in settings, call it RULEFILE.
     # -- If either or both files already exist (atypical), leave untouched.
     # Create one or both rule files with default contents.
-    # Note: if 'readonly' is ON, will only print messages, not write to disk.
+    # Note: if 'dryrun' is ON, will only print messages, not write to disk.
     write_initial_rulefiles(global_rules=None,
                             local_rules=RULEFILE,
-                            readonly=True, # later: ctx.obj['readonly'],
+                            dryrun=True, # later: ctx.obj['dryrun'],
                             verbose=ctx.obj['verbose'])
 
 
@@ -140,9 +140,9 @@ def run(ctx):
     # Write mklists_dict to working directory: 
     # -- mklists_dict keys are names of files.
     # -- mklists_dict values are contents of files.
-    # -- If 'readonly' is ON, will only print messages, not write to disk.
+    # -- If 'dryrun' is ON, will only print messages, not write to disk.
     write_new_datafiles(datalines_d=mklists_dict,
-                        readonly=True,  # later: ctx.obj['readonly'],
+                        dryrun=True,  # later: ctx.obj['dryrun'],
                         verbose=ctx.obj['verbose'])
 
     # If 'urlify' is ON, write urlified data files to urlify_dir.
@@ -150,7 +150,7 @@ def run(ctx):
         write_urlified_datafiles(datalines_d=mklists_dict,
                                  urlify_dir=ctx.obj['urlify_dir'],
                                  urlify_depth=ctx.obj['urlify_depth'],
-                                 readonly=True,  # later: ctx.obj['readonly'],
+                                 dryrun=True,  # later: ctx.obj['dryrun'],
                                  verbose=ctx.obj['verbose'])
 
     # If 'files2dirs' is ON, settable only in MKLISTSRC (not on command line),
