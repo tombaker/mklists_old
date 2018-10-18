@@ -9,6 +9,7 @@ Functions with side effects such as:
 import os
 import re
 import string
+import sys
 import pprint
 import yaml
 from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
@@ -17,14 +18,16 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
 
-def load_mklistsrc(filename, context=None, verbose=False):
+def load_mklistsrc(filename=MKLISTSRC, context=None, verbose=False):
     try:
         with open(MKLISTSRC) as configfile:
-            context.update(yaml.load(configfile))
-        if verbose:
-            print(f"Loading configuration file {repr(MKLISTSRC)}.")
+            if verbose:
+                print(f"Loading configuration file {repr(MKLISTSRC)}.")
+            context.update(yaml.load(open(configfile).read()))
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+    else:
+        return context
 
 def write_initial_configfile(context=None,
                              filename=MKLISTSRC,

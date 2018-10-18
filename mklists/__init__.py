@@ -13,14 +13,14 @@ INVALID_FILENAME_PATS = [r'\.swp$', r'\.tmp$', r'~$', r'^\.']
 
 MKLISTSRC = '.mklistsrc'
 
-RULEFILE = '.rules'
+RULEFILE_NAME='.rules'
 
 STARTER_DEFAULTS = {
     'globalrules': '.globalrules',
     'rules': '.rules',
     'urlify': False,
     'urlify_dir': '.urlified',
-    'backup': False,
+    'backup': True,
     'backup_dir': '.backups',
     'backup_depth': 3,
     'dryrun': False,

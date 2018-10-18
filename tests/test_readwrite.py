@@ -1,8 +1,9 @@
 import pytest
 import os
-from mklists import (MKLISTSRC, STARTER_GLOBALRULES, 
+from mklists import (MKLISTSRC, STARTER_DEFAULTS, STARTER_GLOBALRULES, 
     STARTER_GLOBALRULES, STARTER_LOCALRULES)
-from mklists.readwrite import write_initial_rulefiles
+from mklists.readwrite import (write_initial_rulefiles,
+    write_initial_configfile, load_mklistsrc)
 
 
 @pytest.mark.rules
@@ -27,6 +28,15 @@ def test_write_initial_localrules(tmpdir):
     localrules_content = open(localrules_name).read()
     localrules_hash = hash(localrules_content)
     assert hash(STARTER_LOCALRULES) == localrules_hash
+
+@pytest.mark.write
+def test_write_initial_configfile(tmpdir):
+    os.chdir(tmpdir)
+    mklistsrc_path = tmpdir.join(MKLISTSRC)
+    write_initial_configfile(filename=mklistsrc_path,
+                             context=STARTER_DEFAULTS)
+    ctx = load_mklistsrc(mklistsrc_path, context=STARTER_DEFAULTS)
+    assert ctx['VALID_FILENAME_CHARS'] == VALID_FILENAME_CHARS
 
 @pytest.mark.init_config
 def test_init_configfile():

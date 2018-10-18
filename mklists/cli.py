@@ -17,7 +17,7 @@ from mklists.readwrite import (
 from mklists.verbose import explain
 from mklists import (
     MKLISTSRC,
-    RULEFILE,
+    RULEFILE_NAME,
     STARTER_DEFAULTS,
     ConfigFileNotFoundError,
     DatadirNotAccessibleError,
@@ -103,7 +103,7 @@ def init(ctx):
                              verbose=ctx.obj['verbose'])
 
     write_initial_rulefiles(global_rules_filename=None,
-                            local_rules_filename=RULEFILE,
+                            local_rules_filename=RULEFILE_NAME,
                             verbose=ctx.obj['verbose'])
 
 
