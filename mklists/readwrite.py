@@ -18,9 +18,9 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
 
-def update_settings_from_file(file_name=MKLISTSRC, 
-                              settings_dict=None, 
-                              verbose=False):
+def update_config_from_file(file_name=MKLISTSRC, 
+                            settings_dict=None,
+                            verbose=False):
     """Returns dictionary of settings updated from configuration file.
     
     Reads configuration file from disk:
@@ -36,15 +36,17 @@ def update_settings_from_file(file_name=MKLISTSRC,
         settings_dict: updated settings dictionary
     """
     try:
-        # settings_loaded_str = yaml.load(open('/Users/tbaker/github/tombaker/mklists/mklists/.mklistsrc').read())
-        # 2018-10-18: This is the line causing test to fail
         settings_loaded_str = yaml.load(open(file_name).read())
-        settings_dict.update(settings_loaded_str)
+        given_settings = _update_config(settings_dict, settings_loaded_str)
         if verbose:
             print(f"Updated context from {repr(file_name)}.")
         return settings_dict
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+
+def _update_config(given_settings=None, loaded_settings=None):
+    given_settings.update(loaded_settings)
+    return given_settings
 
 def write_initial_configfile(settings_dict=None,
                              file_name=MKLISTSRC,

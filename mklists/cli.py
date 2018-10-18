@@ -7,7 +7,7 @@ from mklists.rule import (
     apply_rules_to_datalines,
     )
 from mklists.readwrite import (
-    update_settings_from_file,
+    update_config_from_file,
     write_initial_configfile,
     write_initial_rulefiles,
     get_rules,
@@ -65,7 +65,7 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     # Read config file MKLISTSRC, overriding some settings in context object.
     # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
     if ctx.invoked_subcommand != 'init':
-        update_settings_from_file(MKLISTSRC, 
+        update_config_from_file(MKLISTSRC, 
                                 settings_dict=ctx.obj, 
                                 verbose=ctx.obj['verbose'])
 

@@ -3,7 +3,7 @@ import os
 from mklists import (MKLISTSRC, STARTER_DEFAULTS, STARTER_GLOBALRULES, 
     STARTER_GLOBALRULES, STARTER_LOCALRULES, VALID_FILENAME_CHARS)
 from mklists.readwrite import (write_initial_rulefiles,
-    write_initial_configfile, update_settings_from_file)
+    write_initial_configfile, update_config_from_file, _update_config)
 
 
 @pytest.mark.rules
@@ -37,10 +37,17 @@ def test_write_initial_configfile(tmpdir):
     write_initial_configfile(
         file_name=mklistsrc_path,
         settings_dict=STARTER_DEFAULTS)
-    updated_context = update_settings_from_file(
+    updated_context = update_config_from_file(
         file_name=mklistsrc_path, 
         settings_dict=STARTER_DEFAULTS)
     assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
+
+@pytest.mark.write
+def test_update_config(tmpdir):
+    context_given = { 'a': 'foo', 'b': 'bar' }
+    context_from_disk = { 'b': 'baz' }
+    context_expected = { 'a': 'foo', 'b': 'baz' }
+    assert _update_config(context_given, context_from_disk) == context_expected
 
 @pytest.mark.init_config
 def test_init_configfile():
