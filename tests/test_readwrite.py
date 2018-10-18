@@ -1,9 +1,9 @@
 import pytest
 import os
 from mklists import (MKLISTSRC, STARTER_DEFAULTS, STARTER_GLOBALRULES, 
-    STARTER_GLOBALRULES, STARTER_LOCALRULES)
+    STARTER_GLOBALRULES, STARTER_LOCALRULES, VALID_FILENAME_CHARS)
 from mklists.readwrite import (write_initial_rulefiles,
-    write_initial_configfile, load_mklistsrc)
+    write_initial_configfile, update_settings_from_file)
 
 
 @pytest.mark.rules
@@ -31,12 +31,16 @@ def test_write_initial_localrules(tmpdir):
 
 @pytest.mark.write
 def test_write_initial_configfile(tmpdir):
+    """Tests two functions write-to-read round-trip."""
     os.chdir(tmpdir)
     mklistsrc_path = tmpdir.join(MKLISTSRC)
-    write_initial_configfile(filename=mklistsrc_path,
-                             context=STARTER_DEFAULTS)
-    ctx = load_mklistsrc(mklistsrc_path, context=STARTER_DEFAULTS)
-    assert ctx['VALID_FILENAME_CHARS'] == VALID_FILENAME_CHARS
+    write_initial_configfile(
+        file_name=mklistsrc_path,
+        settings_dict=STARTER_DEFAULTS)
+    updated_context = update_settings_from_file(
+        file_name=mklistsrc_path, 
+        settings_dict=STARTER_DEFAULTS)
+    assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
 
 @pytest.mark.init_config
 def test_init_configfile():

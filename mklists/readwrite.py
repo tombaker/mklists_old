@@ -18,37 +18,65 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
 
-def load_mklistsrc(filename=MKLISTSRC, context=None, verbose=False):
+def update_settings_from_file(file_name=MKLISTSRC, 
+                              settings_dict=None, 
+                              verbose=False):
+    """Returns dictionary of settings updated from configuration file.
+    
+    Reads configuration file from disk:
+    * overrides some existing settings in the settings dictionary.
+    * may add some new settings to the settings dictionary.
+    * if MKLISTSRC not found, terminates with advice to run `mklists init`.
+
+    Args:
+        file_name: name of configuration file - by default '.mklistsrc'.
+        settings_dict: dictionary with setting name (key) and value.
+
+    Returns:
+        settings_dict: updated settings dictionary
+    """
     try:
-        with open(MKLISTSRC) as configfile:
-            if verbose:
-                print(f"Loading configuration file {repr(MKLISTSRC)}.")
-            context.update(yaml.load(open(configfile).read()))
+        # settings_loaded_str = yaml.load(open('/Users/tbaker/github/tombaker/mklists/mklists/.mklistsrc').read())
+        # 2018-10-18: This is the line causing test to fail
+        settings_loaded_str = yaml.load(open(file_name).read())
+        settings_dict.update(settings_loaded_str)
+        if verbose:
+            print(f"Updated context from {repr(file_name)}.")
+        return settings_dict
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-    else:
-        return context
 
-def write_initial_configfile(context=None,
-                             filename=MKLISTSRC,
+def write_initial_configfile(settings_dict=None,
+                             file_name=MKLISTSRC,
                              dryrun=False,
                              verbose=False):
-    """Writes initial configuration file to disk (or just says it will)."""
-    if os.path.exists(filename):
-        raise InitError(f"To re-initialize, first delete {repr(filename)}.")
+    """Writes initial configuration file to disk (or just says it will).
+        If configfile already exists, exits suggesting to first delete.
+        If configfile not found, creates new file using current settings.
+        If 'dryrun' is ON, prints messages but does not write to disk.
+    """
+    if os.path.exists(file_name):
+        raise InitError(f"To re-initialize, first delete {repr(file_name)}.")
     else:
         if dryrun:
             raise InitError(
-                f"In read-only mode. Would have created {repr(filename)}.")
+                f"In read-only mode. Would have created {repr(file_name)}.")
         else:
-            print(f"Creating default {repr(filename)}. Customize as needed.")
-            with open(filename, 'w') as fout:
-                yaml.safe_dump(context, sys.stdout, default_flow_style=False)
+            print(f"Creating default {repr(file_name)}. Customize as needed.")
+            with open(file_name, 'w') as fout:
+                fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
 def write_initial_rulefiles(global_rules_filename=None, 
                             local_rules_filename=None, 
                             dryrun=False,
                             verbose=False):
+    """Generate default rule (and global rule) configuration files.
+
+        Checks whether current settings name non-default rule files.
+        If either rule file already exists, leaves untouched.
+        Creates rule files with default contents.
+        If 'dryrun' is ON, prints messages but does not write to disk.
+    """
     for file, content in [(global_rules_filename, STARTER_GLOBALRULES), 
                           (local_rules_filename, STARTER_LOCALRULES)]:
         if file:

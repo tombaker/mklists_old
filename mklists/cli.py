@@ -7,7 +7,7 @@ from mklists.rule import (
     apply_rules_to_datalines,
     )
 from mklists.readwrite import (
-    load_mklistsrc,
+    update_settings_from_file,
     write_initial_configfile,
     write_initial_rulefiles,
     get_rules,
@@ -62,11 +62,12 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     # Save default settings to object to be passed with @click.pass_context.
     ctx.obj = STARTER_DEFAULTS
 
-    # Load config file MKLISTSRC, overriding some settings in context object.
-    # -- If MKLISTSRC not found, terminates with advice to run `mklists init`.
+    # Read config file MKLISTSRC, overriding some settings in context object.
     # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
     if ctx.invoked_subcommand != 'init':
-        load_mklistsrc(MKLISTSRC, context=ctx.obj, verbose=ctx.obj['verbose'])
+        update_settings_from_file(MKLISTSRC, 
+                                settings_dict=ctx.obj, 
+                                verbose=ctx.obj['verbose'])
 
     # Save settings specified on command line ("not None") to context object.
     # -- Omits 'ctx', the context object itself.
@@ -83,20 +84,7 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
 @cli.command()
 @click.pass_context
 def init(ctx):
-    """Generate default configuration and rule files.
-
-    Calls:
-        write_initial_configfile
-            If configfile already exists, exits suggesting to first delete.
-            If configfile not found, creates new file using current settings.
-            If 'dryrun' is ON, prints messages but does not write to disk.
-        write_initial_rulefiles
-            Checks whether current settings name non-default rule files.
-            If either rule file already exists, leaves untouched.
-            Creates rule files with default contents.
-            If 'dryrun' is ON, prints messages but does not write to disk.
-    
-    """
+    """Generate default configuration and rule files."""
 
     write_initial_configfile(context=ctx.obj,
                              filename=MKLISTSRC,
