@@ -94,18 +94,17 @@ def write_initial_rulefiles(global_rules_filename=None,
                     with open(file, 'w') as fout:
                         fout.write(content)
 
-def get_rules(global_rules_filename=None,
-              local_rules=None,
-              valid_filename_chars=None,
-              verbose=False):
+def get_rules(grules_name=None, lrules_name=None, good_chars=None, verb=False):
+    """docstring @@@"""
     rule_object_list = []
-    for rulefile in global_rules_filename, local_rules:
+    for rulefile in grules_name, lrules_name:
         if rulefile:
             rule_object_list.extend(
-                    _parse_yamlrules(rulefile, valid_filename_chars))
+                    _parse_yamlrules(rulefile, good_chars))
         if not rule_object_list:
             raise NoRulesError("No rules specified.")
-    if verbose:
+    if verb:
+        print("Rules read from rule files:")
         pprint.pprint(rule_object_list)
     return rule_object_list
 

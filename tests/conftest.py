@@ -5,6 +5,7 @@ from mklists.rule import Rule
 
 @pytest.fixture()
 def initialize_rule():
+    """docstring@@@"""
     # Class variables must be re-initialized:
     #     for each test of Rule.isrule
     #     for each test of x._source_is_precedented
@@ -44,6 +45,7 @@ def rule_yaml(tmpdir_factory):
 
 @pytest.fixture(scope='module')
 def rules_python():
+    """docstring@@@"""
     return [
                 Rule(source_matchfield=0, source_matchpattern='.', source='lines', target='__RENAME__', target_sortorder=0),
                 Rule(source_matchfield=0, source_matchpattern='^= 20', source='__RENAME__', target='calendar', target_sortorder=1),

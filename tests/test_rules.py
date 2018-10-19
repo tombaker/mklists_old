@@ -6,16 +6,7 @@ from mklists.rule import Rule
 from mklists.readwrite import _parse_yamlrules
 
 
-@pytest.mark.skip
-def test_rules(rule_yaml):
-    """Test whether rule files were written to temporary directory."""
-    with open(rule_yaml) as rf_y:
-        yrules = yaml.load(rf_y)
-    print(yrules)
-    print(type(rule_yaml))
-    assert yrules[0][0] == 0
-
-@pytest.mark.skip
+@pytest.mark.rule
 def test_parse_yaml2rules(rule_global_yaml, rule_yaml, rules_python):
     """2018-08-19: Can't believe I actually got this to work:
     * takes list of rule files
