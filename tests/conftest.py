@@ -4,43 +4,42 @@ from textwrap import dedent
 from mklists.rule import Rule
 
 @pytest.fixture()
-def initialize_rule():
-    """docstring@@@"""
-    # Class variables must be re-initialized:
-    #     for each test of Rule.isrule
-    #     for each test of x._source_is_precedented
-    #     for each test of Rule.sources_list
+def reinitialize_ruleclass_variables():
+    """Class variables must be re-initialized:
+        for each test of Rule.isrule
+        for each test of x._source_is_precedented
+        for each test of Rule.sources_list"""
     Rule.sources_list = []
     Rule.sources_list_is_initialized = False
 
 @pytest.fixture(scope='module')
-def rule_global_yaml(tmpdir_factory):
+def grules_yamlstr(tmpdir_factory):
     """Write some YAML-formatted rules to YAML rule files."""
 
-    yaml_rule_data = """\
+    return """\
     - [0,  '.'        , lines        , __RENAME__   , 0]
-    - [0,  '^= 20'    , __RENAME__   , calendar     , 1]
-    """
-
-    rules = tmpdir_factory.mktemp('datadir').join('rules')
-    print(f"Created 'rules': {repr(rules)}")
-    rules.write(dedent(yaml_rule_data))
-
-    return rules
+    - [0,  '^= 20'    , __RENAME__   , calendar     , 1]"""
 
 @pytest.fixture(scope='module')
-def rule_yaml(tmpdir_factory):
+def lrules_yamlstr(tmpdir_factory):
     """Write some YAML-formatted rules to YAML rule files."""
 
-    yaml_rule_data = """\
+    return """\
     - [0   , 'NOW'    , lines        , __RENAME__   , 0]
-    - [0   , 'LATER'  , __RENAME__   , calendar     , 1]
+    - [0   , 'LATER'  , __RENAME__   , calendar     , 1]"""
+
+@pytest.fixture(scope='module')
+def rules_yamlfile(tmpdir_factory):
+    """Return YAML-formatted file of rules."""
+
+    yaml_rule_data = """\
+    - [0, 'NOW'    , a , b , 0]
+    - [0, 'LATER'  , b , c , 1]
     """
 
     rules = tmpdir_factory.mktemp('datadir').join('rules')
     print(f"Created 'rules': {repr(rules)}")
     rules.write(dedent(yaml_rule_data))
-
     return rules
 
 @pytest.fixture(scope='module')

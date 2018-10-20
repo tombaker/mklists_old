@@ -103,7 +103,7 @@ class NoRulesError(RulesError):
     """Rule file not found or not accessible."""
 
 class BadYamlError(RulesError):
-    """YAML format of the file does not parse correctly."""
+    """File contains badly formatted YAML."""
 
 class RuleWarningError(Exception):
     """Super-category for warnings related to rules."""

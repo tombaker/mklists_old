@@ -9,29 +9,29 @@ def test_is_utf8_encoded():
     pass
 
 @pytest.mark.rule
-def test_rule_is_valid(initialize_rule):
+def test_rule_is_valid(reinitialize_ruleclass_variables):
     x = Rule(1, 'NOW', 'a.txt', 'b.txt', 2)
     assert x.is_valid()
 
 @pytest.mark.rule
-def test_rule_is_valid_even_with_integer_strings(initialize_rule):
+def test_rule_is_valid_even_with_integer_strings(reinitialize_ruleclass_variables):
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '2')
     assert x.is_valid()
 
 @pytest.mark.rule
-def test_number_fields_are_integers(initialize_rule):
+def test_number_fields_are_integers(reinitialize_ruleclass_variables):
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
     assert x.is_valid()
 
 @pytest.mark.rule
-def test_source_is_precedented(initialize_rule):
+def test_source_is_precedented(reinitialize_ruleclass_variables):
     x = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
     x.is_valid()
     y = Rule(1, 'LATER', 'b.txt', 'c.txt', 0)
     assert y.is_valid()
 
 @pytest.mark.rule
-def test_sources_list(initialize_rule):
+def test_sources_list(reinitialize_ruleclass_variables):
     x = Rule(1, 'NOW', 'a.txt', 'b.txt', 0)
     x.is_valid()
     y = Rule(1, 'LATER', 'b.txt', 'c.txt', 0)
@@ -40,7 +40,7 @@ def test_sources_list(initialize_rule):
     assert Rule.sources_list == sources
 
 @pytest.mark.rule
-def test_source_is_not_precedented(initialize_rule):
+def test_source_is_not_precedented(reinitialize_ruleclass_variables):
     """Rule class keeps track of instances registered, so 
     second rule instance 'y' should raise exception because 
     'c.txt' will not have been registered as a source."""
@@ -51,7 +51,7 @@ def test_source_is_not_precedented(initialize_rule):
         y.is_valid()
 
 @pytest.mark.rule
-def test_rule_is_not_valid(initialize_rule):
+def test_rule_is_not_valid(reinitialize_ruleclass_variables):
     x = Rule(1, 'N(OW', 'a', 'b', 2)
     with pytest.raises(SystemExit):
         x.is_valid()
