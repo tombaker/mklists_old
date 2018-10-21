@@ -3,7 +3,39 @@ import os
 from mklists import (MKLISTSRC, STARTER_DEFAULTS, STARTER_GLOBALRULES, 
     STARTER_GLOBALRULES, STARTER_LOCALRULES, VALID_FILENAME_CHARS)
 from mklists.readwrite import (write_initial_rulefiles,
-    write_initial_configfile, update_config_from_file, _update_config)
+    write_initial_configfile, update_config_from_file, _update_config,
+    write_yamlstr_to_yamlfile, read_yamlfile_parseto_pyobject)
+
+@pytest.mark.yaml
+def test_write_yamlstr(tmpdir):
+    os.chdir(tmpdir)
+    lrules_yamlstr = """
+    - [1, 'NOW', a, b, 0]
+    - [1, 'LATER', a, c, 0]"""
+    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
+    some_yamlstr = open('_lrules').read()
+    assert lrules_yamlstr == some_yamlstr
+
+@pytest.mark.yaml
+def test_read_good_yamlfile(tmpdir):
+    os.chdir(tmpdir)
+    lrules_yamlstr = """
+    - [1, 'NOW', a, b, 0]
+    - [1, 'LATER', a, c, 0]"""
+    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
+    pyobject = read_yamlfile_parseto_pyobject('_lrules')
+    good_pyobject = [[1, 'NOW', 'a', 'b', 0], [1, 'LATER', 'a', 'c', 0]]
+    assert pyobject == good_pyobject
+
+@pytest.mark.yaml
+def test_read_bad_yamlfile(tmpdir):
+    os.chdir(tmpdir)
+    bad_yamlstr = """
+    - [1, 'NOW', a, b, 0]
+    + [1, 'LATER', a, c, 0]"""
+    write_yamlstr_to_yamlfile('_lrules_bad', bad_yamlstr)
+    with pytest.raises(SystemExit):
+        read_yamlfile_parseto_pyobject('_lrules_bad')
 
 
 @pytest.mark.rules
@@ -14,7 +46,7 @@ def test_change_directory(tmpdir):
 @pytest.mark.write
 def test_write_initial_globalrules(tmpdir):
     os.chdir(tmpdir)
-    write_initial_rulefiles(global_rules_filename='.globalrules')
+    write_initial_rulefiles(global_rulefile_name='.globalrules')
     globalrules_name = tmpdir.join('.globalrules')
     globalrules_content = open(globalrules_name).read()
     globalrules_hash = hash(globalrules_content)
@@ -23,7 +55,7 @@ def test_write_initial_globalrules(tmpdir):
 @pytest.mark.write
 def test_write_initial_localrules(tmpdir):
     os.chdir(tmpdir)
-    write_initial_rulefiles(local_rules_filename='.localrules')
+    write_initial_rulefiles(local_rulefile_name='.localrules')
     localrules_name = tmpdir.join('.localrules')
     localrules_content = open(localrules_name).read()
     localrules_hash = hash(localrules_content)

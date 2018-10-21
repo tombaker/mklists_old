@@ -18,6 +18,18 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
 
+def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
+    """Writes string in YAML format to file."""
+    with open(yamlfile_name, "w") as fout:
+        fout.write(yamlstr)
+
+def read_yamlfile_parseto_pyobject(yamlfile_name):
+    """Returns Python object parsed from YAML-format file."""
+    try:
+        return yaml.safe_load(open(yamlfile_name))
+    except yaml.YAMLError:
+        raise BadYamlError(f"Bad YAML format in {repr(yamlfile_name)}.")
+
 def update_config_from_file(file_name=MKLISTSRC, settings_dict=None,
                             verbose=False):
     """Returns dictionary of settings updated from configuration file.
@@ -67,8 +79,8 @@ def write_initial_configfile(settings_dict=None,
             with open(file_name, 'w') as fout:
                 fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
-def write_initial_rulefiles(global_rules_filename=None, 
-                            local_rules_filename=None, 
+def write_initial_rulefiles(global_rulefile_name=None, 
+                            local_rulefile_name=None, 
                             dryrun=False,
                             verbose=False):
     """Generate default rule (and global rule) configuration files.
@@ -78,8 +90,8 @@ def write_initial_rulefiles(global_rules_filename=None,
         Creates rule files with default contents.
         If 'dryrun' is ON, prints messages but does not write to disk.
     """
-    for file, content in [(global_rules_filename, STARTER_GLOBALRULES), 
-                          (local_rules_filename, STARTER_LOCALRULES)]:
+    for file, content in [(global_rulefile_name, STARTER_GLOBALRULES), 
+                          (local_rulefile_name, STARTER_LOCALRULES)]:
         if file:
             if os.path.exists(file):
                 print(f"Found existing {repr(file)} - leaving untouched.")

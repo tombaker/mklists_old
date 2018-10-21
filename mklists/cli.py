@@ -90,8 +90,8 @@ def init(ctx):
                              filename=MKLISTSRC,
                              verbose=ctx.obj['verbose'])
 
-    write_initial_rulefiles(global_rules_filename=None,
-                            local_rules_filename=RULEFILE_NAME,
+    write_initial_rulefiles(global_rulefile_name=None,
+                            local_rulefile_name=RULEFILE_NAME,
                             verbose=ctx.obj['verbose'])
 
 
@@ -101,8 +101,8 @@ def run(ctx):
     """Apply rules to re-write data files"""
     # Read rule files, parse, and get aggregated list of rules objects.
     # -- Does not complain or exit if rules are empty @@@CHECK
-    rules = get_rules(global_rules_filename=ctx.obj['globalrules'],
-                      local_rules_filename=ctx.obj['rules'],
+    rules = get_rules(global_rulefile_name=ctx.obj['globalrules'],
+                      local_rulefile_name=ctx.obj['rules'],
                       valid_filename_chars=ctx.obj['valid_filename_chars'],
                       verbose=ctx.obj['verbose'])
 
