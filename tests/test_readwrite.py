@@ -6,42 +6,6 @@ from mklists.readwrite import (write_initial_rulefiles,
     write_initial_configfile, update_config_from_file, _update_config,
     write_yamlstr_to_yamlfile, read_yamlfile_parseto_pyobject)
 
-@pytest.mark.yaml
-def test_write_yamlstr(tmpdir):
-    os.chdir(tmpdir)
-    lrules_yamlstr = """
-    - [1, 'NOW', a, b, 0]
-    - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
-    some_yamlstr = open('_lrules').read()
-    assert lrules_yamlstr == some_yamlstr
-
-@pytest.mark.yaml
-def test_read_good_yamlfile(tmpdir):
-    os.chdir(tmpdir)
-    lrules_yamlstr = """
-    - [1, 'NOW', a, b, 0]
-    - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
-    pyobject = read_yamlfile_parseto_pyobject('_lrules')
-    good_pyobject = [[1, 'NOW', 'a', 'b', 0], [1, 'LATER', 'a', 'c', 0]]
-    assert pyobject == good_pyobject
-
-@pytest.mark.yaml
-def test_read_bad_yamlfile(tmpdir):
-    os.chdir(tmpdir)
-    bad_yamlstr = """
-    - [1, 'NOW', a, b, 0]
-    + [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile('_lrules_bad', bad_yamlstr)
-    with pytest.raises(SystemExit):
-        read_yamlfile_parseto_pyobject('_lrules_bad')
-
-
-@pytest.mark.rules
-def test_change_directory(tmpdir):
-    os.chdir(tmpdir)
-    assert str(tmpdir) == os.getcwd()
 
 @pytest.mark.write
 def test_write_initial_globalrules(tmpdir):

@@ -42,6 +42,19 @@ def rules_yamlfile(tmpdir_factory):
     return rules
 
 @pytest.fixture(scope='module')
+def rules_bad_yamlfile(tmpdir_factory):
+    """Return YAML-formatted file of rules with bad YAML."""
+
+    yaml_string = """\
+    - [0   , 'NOW'    , lines        , __RENAME__   , 0]
+    - [0   , 'LATER'  , __RENAME__   , calendar     , 1, 5]"""
+
+    rules = tmpdir_factory.mktemp('datadir').join('rules')
+    print(f"Created 'rules': {repr(rules)}")
+    rules.write(dedent(yaml_string))
+    return rules
+
+@pytest.fixture(scope='module')
 def rules_yamlfile_bad_scannererror(tmpdir_factory):
     """Return badly-formatted-YAML file.
     

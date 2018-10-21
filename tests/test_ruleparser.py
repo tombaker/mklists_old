@@ -5,23 +5,38 @@ import pytest
 import yaml
 from mklists.rule import Rule
 from mklists import VALID_FILENAME_CHARS
-# from mklists.ruleparser import _parse_yamlrules, read_file2yaml
+from mklists.readwrite import (write_yamlstr_to_yamlfile, 
+    read_yamlfile_parseto_pyobject)
 
 
-@pytest.mark.skip
-def test_parse_yaml2rules(grules_yamlstr, lrules_yamlstr, rules_python):
-    assert _parse_yamlrules([grules_yamlstr, lrules_yamlstr]) == rules_python
+@pytest.mark.yaml
+def test_write_yamlstr(tmpdir):
+    os.chdir(tmpdir)
+    lrules_yamlstr = """
+    - [1, 'NOW', a, b, 0]
+    - [1, 'LATER', a, c, 0]"""
+    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
+    some_yamlstr = open('_lrules').read()
+    assert lrules_yamlstr == some_yamlstr
 
-@pytest.mark.skip
-def test_read_file2yaml(rules_yamlfile, lrules_yamlstr):
-    assert read_file2yaml(rules_yamlfile) == lrules_yamlstr
+@pytest.mark.yaml
+def test_read_good_yamlfile(tmpdir):
+    os.chdir(tmpdir)
+    lrules_yamlstr = """
+    - [1, 'NOW', a, b, 0]
+    - [1, 'LATER', a, c, 0]"""
+    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
+    pyobject = read_yamlfile_parseto_pyobject('_lrules')
+    good_pyobject = [[1, 'NOW', 'a', 'b', 0], [1, 'LATER', 'a', 'c', 0]]
+    assert pyobject == good_pyobject
 
-@pytest.mark.skip
-def test_parse_file2yaml(rules_yamlfile):
-    expected = yaml.load(open(rules_yamlfile, 'r'))
-    assert read_file2yaml(rules_yamlfile) == expected
-
-@pytest.mark.skip
-def test_parse_file2yaml_raise_scannererror(rules_yamlfile_bad_scannererror):
+@pytest.mark.yaml
+def test_read_bad_yamlfile(tmpdir):
+    os.chdir(tmpdir)
+    bad_yamlstr = """
+    - [1, 'NOW', a, b, 0]
+    + [1, 'LATER', a, c, 0]"""
+    write_yamlstr_to_yamlfile('_lrules_bad', bad_yamlstr)
     with pytest.raises(SystemExit):
-        read_file2yaml(rules_yamlfile_bad_scannererror)
+        read_yamlfile_parseto_pyobject('_lrules_bad')
+
