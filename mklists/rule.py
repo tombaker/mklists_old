@@ -115,23 +115,18 @@ class Rule:
     def is_valid(self, valid_filename_characters=VALID_FILENAME_CHARS):
         """Returns True if Rule object passes all tests.
 
-        * has four or five fields.
         * source_matchfield and target_sortorder are integers.
         * source_matchpattern is valid.
         * filenames use valid_filename_characters.
         * source does not equal target.
         * every source (except the first) has been previously declared.
         """
-        self._has_four_or_five_fields()
         self._source_matchfield_and_target_sortorder_are_integers()
         self._source_matchpattern_is_valid()
         self._filenames_are_valid(valid_filename_characters)
         self._source_is_not_equal_target()
         self._source_is_precedented()
         return True
-
-    def _has_four_or_five_fields(self):
-        """Returns True if self has 4 or 5 fields (not counting self)."""
 
     def _source_matchfield_and_target_sortorder_are_integers(self):
         """Returns True 
