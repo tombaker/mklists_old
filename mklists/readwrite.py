@@ -30,6 +30,22 @@ def read_yamlfile_parseto_pyobject(yamlfile_name):
     except yaml.YAMLError:
         raise BadYamlError(f"Bad YAML format in {repr(yamlfile_name)}.")
 
+def get_rules(local_rulefile_name=None, global_rulefile_name=None):
+    aggregated_rules_list = []
+    for rulefile_name in global_rulefile_name, local_rulefile_name:
+        if rulefile_name:
+            rules_list = read_yamlfile_parseto_pyobject(rulefile_name)
+            aggregated_rules_list = aggregated_rules_list + rules_list
+    ruleobj_list = []
+    for item in aggregated_rules_list:
+        try:
+            Rule(*item).is_valid
+        except TypeError:
+            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
+        ruleobj_list.append(Rule(*item))
+                
+    return ruleobj_list
+
 def update_config_from_file(file_name=MKLISTSRC, settings_dict=None,
                             verbose=False):
     """Returns dictionary of settings updated from configuration file.
