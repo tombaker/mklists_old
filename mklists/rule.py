@@ -19,11 +19,11 @@ from mklists import (
     UninitializedSourceError)
 from mklists.utils import has_valid_name
 
-def apply_rules_to_datalines(rules_list=None, datalines_list=None):
+def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
     """Applies rules, one by one, to process a list of datalines.
 
     Args:
-        rules_list: list of rule objects
+        ruleobjs_list: list of rule objects
         datalines_list: list of all data lines
 
     Returns:
@@ -34,38 +34,38 @@ def apply_rules_to_datalines(rules_list=None, datalines_list=None):
     mklists_dict = defaultdict(list)
     first_key_is_initialized = False
 
-    if not rules_list:
+    if not ruleobjs_list:
         raise NoRulesError("No rules specified.")
 
     if not datalines_list:
         raise NoDataError("No data specified.")
 
     # Evaluate rules, one-by-one, to process entries in mklists_dict.
-    for rule in rules_list:
+    for ruleobj in ruleobjs_list:
 
-        # Initialize dictionary with first entry with the first rule:
-        #    key: a valid filename (from 'source' field of the first rule)
+        # Initialize dictionary with first entry with the first ruleobj:
+        #    key: a valid filename (from 'source' field of the first ruleobj)
         #    value: all data lines (consolidated from all files on disk)
         if not first_key_is_initialized:
-            mklists_dict[rule.source] = datalines_list
+            mklists_dict[ruleobj.source] = datalines_list
             first_key_is_initialized = True
 
-        # Evaluate 'source' lines against the rule
-        #    append matching lines to value of 'rule.target'
-        #    remove matching lines from value of 'rule.source'
-        for line in mklists_dict[rule.source]:
-            if _line_matches(rule, line):
-                mklists_dict[rule.target].extend([line])
-                mklists_dict[rule.source].remove(line)
+        # Evaluate 'source' lines against the ruleobj
+        #    append matching lines to value of 'ruleobj.target'
+        #    remove matching lines from value of 'ruleobj.source'
+        for line in mklists_dict[ruleobj.source]:
+            if _line_matches(ruleobj, line):
+                mklists_dict[ruleobj.target].extend([line])
+                mklists_dict[ruleobj.source].remove(line)
 
         # Sort matching lines by field - if a valid sortorder was specified.
-        if rule.target_sortorder:
-            eth_sortorder = rule.target_sortorder - 1
+        if ruleobj.target_sortorder:
+            eth_sortorder = ruleobj.target_sortorder - 1
             decorated = [(line.split()[eth_sortorder], __, line)
                          for (__, line) 
-                         in enumerate(mklists_dict[rule.target])]
+                         in enumerate(mklists_dict[ruleobj.target])]
             decorated.sort()
-            mklists_dict[rule.target] = [line for (___, __, line) 
+            mklists_dict[ruleobj.target] = [line for (___, __, line) 
                                         in decorated]
 
     return dict(mklists_dict)
@@ -98,10 +98,10 @@ class Rule:
 
     Dataclass Fields:
         source_matchfield: number of whitespace-delimited field matched
-        source_matchpattern: regular expression to be matched
-        source: a string valid as a filename
-        target: a string valid as a filename
-        target_sortorder: field on which target contents are to be sorted
+        source_matchpattern: regex for matching to source_matchfield value
+        source: a string valid as a filename (uses valid characters)
+        target: a string valid as a filename (uses valid characters)
+        target_sortorder: field on which target value is to be sorted
     """
     source_matchfield: int = None
     source_matchpattern: str = None
@@ -113,13 +113,25 @@ class Rule:
     sources_list = []
 
     def is_valid(self, valid_filename_characters=VALID_FILENAME_CHARS):
-        """Returns True if Rule object passes all tests."""
+        """Returns True if Rule object passes all tests.
+
+        * has four or five fields.
+        * source_matchfield and target_sortorder are integers.
+        * source_matchpattern is valid.
+        * filenames use valid_filename_characters.
+        * source does not equal target.
+        * every source (except the first) has been previously declared.
+        """
+        self._has_four_or_five_fields()
         self._source_matchfield_and_target_sortorder_are_integers()
         self._source_matchpattern_is_valid()
         self._filenames_are_valid(valid_filename_characters)
         self._source_is_not_equal_target()
         self._source_is_precedented()
         return True
+
+    def _has_four_or_five_fields(self):
+        """Returns True if self has 4 or 5 fields (not counting self)."""
 
     def _source_matchfield_and_target_sortorder_are_integers(self):
         """Returns True 

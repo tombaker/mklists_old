@@ -10,7 +10,7 @@ from mklists.readwrite import (
     update_config_from_file,
     write_initial_configfile,
     write_initial_rulefiles,
-    get_rules,
+    # get_rules,
     get_datalines,
     write_urlified_datafiles
     )
@@ -112,9 +112,9 @@ def run(ctx):
                               verbose=ctx.obj['verbose'])
 
     # Apply rules to datalines (loads and modifies in-memory data dictionary).
-    # -- Exits with message if 'rules_list' or 'datalines_list' are empty.
-    mklists_dict = apply_rules_to_datalines(rules_list=rules,
-                                              datalines_list=datalines)
+    # -- Exits with message if 'ruleobjs_list' or 'datalines_list' are empty.
+    mklists_dict = apply_rules_to_datalines(ruleobjs_list=rules,
+                                            datalines_list=datalines)
 
     # If 'backup' is ON:
     # before writing mklists_dict contents to disk,

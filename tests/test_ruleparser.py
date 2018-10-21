@@ -10,17 +10,18 @@ from mklists import VALID_FILENAME_CHARS
 
 @pytest.mark.skip
 def test_parse_yaml2rules(grules_yamlstr, lrules_yamlstr, rules_python):
-    """2018-08-19: Can't believe I actually got this to work:
-    * takes list of rule files
-    * returns list of rule objects, as it should"""
     assert _parse_yamlrules([grules_yamlstr, lrules_yamlstr]) == rules_python
 
+@pytest.mark.skip
+def test_read_file2yaml(rules_yamlfile, lrules_yamlstr):
+    assert read_file2yaml(rules_yamlfile) == lrules_yamlstr
+
 @pytest.mark.ruleparser
-def test_read_file2yaml(tmpdir):
-    os.chdir(tmpdir)
-    content = """\
-    data_folder: .
-    backup_folder: .backups
-    """
-    # assert read_file2yaml(@@@
-    assert content == content
+def test_parse_file2yaml(rules_yamlfile):
+    expected = yaml.load(open(rules_yamlfile, 'r'))
+    assert read_file2yaml(rules_yamlfile) == expected
+
+@pytest.mark.ruleparser
+def test_parse_file2yaml_raise_scannererror(rules_yamlfile_bad_scannererror):
+    with pytest.raises(SystemExit):
+        read_file2yaml(rules_yamlfile_bad_scannererror)

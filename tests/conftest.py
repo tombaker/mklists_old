@@ -32,15 +32,27 @@ def lrules_yamlstr(tmpdir_factory):
 def rules_yamlfile(tmpdir_factory):
     """Return YAML-formatted file of rules."""
 
-    yaml_rule_data = """\
-    - [0, 'NOW'    , a , b , 0]
-    - [0, 'LATER'  , b , c , 1]
-    """
+    yaml_string = """\
+    - [0   , 'NOW'    , lines        , __RENAME__   , 0]
+    - [0   , 'LATER'  , __RENAME__   , calendar     , 1]"""
 
     rules = tmpdir_factory.mktemp('datadir').join('rules')
     print(f"Created 'rules': {repr(rules)}")
-    rules.write(dedent(yaml_rule_data))
+    rules.write(dedent(yaml_string))
     return rules
+
+@pytest.fixture(scope='module')
+def rules_yamlfile_bad_scannererror(tmpdir_factory):
+    """Return badly-formatted-YAML file.
+    
+    Expected to raise exception ScannerError."""
+
+    yaml_rule_data = """- [1, 2, 3, 4]\n+ [5, 6, 7, 8]"""
+
+    some_yamlfile = tmpdir_factory.mktemp('datadir').join('some_yamlfile')
+    print(f"Created 'some_yamlfile': {repr(some_yamlfile)}")
+    some_yamlfile.write(dedent(yaml_rule_data))
+    return some_yamlfile
 
 @pytest.fixture(scope='module')
 def rules_python():

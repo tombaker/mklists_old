@@ -1,11 +1,20 @@
 import pprint
 import yaml
-from mklists import (VALID_FILENAME_CHARS, NoRulesError, BadYamlRuleError,
-    BadYamlError)
+from mklists import (VALID_FILENAME_CHARS, 
+                     NoRulesError, 
+                     BadYamlRuleError,
+                     BadYamlError)
 from mklists.rule import Rule
 
-def read_file2yaml(yamlfile_name):
-    """Returns Python object"""
+def parse_file2yaml(yamlfile_name: str):
+    """Returns Python object parsed from given YAML file."""
+    try:
+        x = yaml.load(open(yamlfile_name, 'r'))
+    except ScannerError:
+        raise BadYamlError(f"YAML format of {yamlfile_name} does not parse.")
+
+def read_file2yaml(yamlfile_name: str):
+    """Returns Python object parsed from given YAML file."""
     try:
         return yaml.load(open(yamlfile_name, 'r'))
     except:
