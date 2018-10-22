@@ -1,6 +1,6 @@
 import pytest
 import os
-from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
+from mklists.rule import (Rule, apply_rules_to_datalines, _line_matches)
 from mklists import UninitializedSourceError, STARTER_GLOBALRULES
 
 @pytest.mark.rule
@@ -17,6 +17,11 @@ def test_rule_is_valid_even_with_integer_strings(reinitialize_ruleclass_variable
 def test_number_fields_are_integers(reinitialize_ruleclass_variables):
     x = Rule('1', 'NOW', 'a.txt', 'b.txt', '0')
     assert x.is_valid()
+
+@pytest.mark.rule
+def test_rule_has_string_where_integer_required(reinitialize_ruleclass_variables):
+    x = Rule('1', 'N(OW', 'a', 'b', 2)
+    assert x._number_fields_are_integers() == 1
 
 @pytest.mark.rule
 def test_source_is_precedented(reinitialize_ruleclass_variables):

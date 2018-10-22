@@ -121,14 +121,14 @@ class Rule:
         * source does not equal target.
         * every source (except the first) has been previously declared.
         """
-        self._source_matchfield_and_target_sortorder_are_integers()
+        self._number_fields_are_integers()
         self._source_matchpattern_is_valid()
         self._filenames_are_valid(valid_filename_characters)
         self._source_is_not_equal_target()
         self._source_is_precedented()
         return True
 
-    def _source_matchfield_and_target_sortorder_are_integers(self):
+    def _number_fields_are_integers(self):
         """Returns True 
         * if source_matchfield and target_sortorder are integers - or
         * if the fields can be silently converted into integers"""
