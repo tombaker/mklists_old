@@ -13,3 +13,7 @@ Maybe someday:
   * Function expects to be called twice, using 'yield' in non-iterative way?
 * Add stringrule as Rule attribute so that error message can show what to edit
   * Maybe even with filename and line number? (really necessary?)
+
+Note:
+* Assumes that data lines start in first column (and if not, split() will
+  disregard leading whitespace)

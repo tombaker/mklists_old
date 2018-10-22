@@ -43,7 +43,7 @@ def rules_yamlfile(tmpdir_factory):
 
 @pytest.fixture(scope='module')
 def rules_bad_yamlfile(tmpdir_factory):
-    """Return YAML-formatted file of rules with bad YAML."""
+    """Returns bad YAML rulefile object: too many fields."""
 
     yaml_string = """\
     - [0   , 'NOW'    , lines        , __RENAME__   , 0]
@@ -55,13 +55,10 @@ def rules_bad_yamlfile(tmpdir_factory):
     return rules
 
 @pytest.fixture(scope='module')
-def rules_yamlfile_bad_scannererror(tmpdir_factory):
-    """Return badly-formatted-YAML file.
-    
-    Expected to raise exception ScannerError."""
+def rules_bad_yamlfile2(tmpdir_factory):
+    """Returns bad YAML rulefile object: bad YAML syntax."""
 
     yaml_rule_data = """- [1, 2, 3, 4]\n+ [5, 6, 7, 8]"""
-
     some_yamlfile = tmpdir_factory.mktemp('datadir').join('some_yamlfile')
     print(f"Created 'some_yamlfile': {repr(some_yamlfile)}")
     some_yamlfile.write(dedent(yaml_rule_data))
@@ -78,15 +75,3 @@ def rules_python():
            ]
 
 
-
-
-
-
-
-#rules = [['0', 'i', 'a.txt', 'b.txt', '0']]
-#lines = ['two ticks\n', 'an ant\n', 'the mite\n']
-#output = {'a.txt': ['an ant\n'], 'b.txt': ['two ticks\n', 'the mite\n']}
-
-#rules = [['2', 'i', 'a.txt', 'b.txt', '1']]
-#lines = ['two ticks\n', 'an ant\n', 'the mite\n']
-#output = {'a.txt': ['an ant\n'], 'b.txt': ['the mite\n', 'two ticks\n']}

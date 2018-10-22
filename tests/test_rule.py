@@ -1,7 +1,7 @@
 import pytest
 import os
 from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
-from mklists import UninitializedSourceError
+from mklists import UninitializedSourceError, STARTER_GLOBALRULES
 
 @pytest.mark.rule
 def test_rule_is_valid(reinitialize_ruleclass_variables):
@@ -101,6 +101,20 @@ def test_source_matchpattern_is_not_valid():
 
 @pytest.mark.apply_rules
 def test_apply_rules():
+    rules = [Rule(0, 'i', 'a.txt', 'b.txt', 0)]
+    lines = ['two ticks\n', 'an ant\n', 'the mite\n']
+    mdict  = {'a.txt': ['an ant\n'], 'b.txt': ['two ticks\n', 'the mite\n']}
+    apply_rules_to_datalines(rules, lines) == mdict
+
+@pytest.mark.apply_rules
+def test_apply_rules2():
+    rules = [Rule(2, 'i', 'a.txt', 'b.txt', 1)]
+    lines = ['two ticks\n', 'an ant\n', 'the mite\n']
+    mdict  = {'a.txt': ['an ant\n'], 'b.txt': ['the mite\n', 'two ticks\n']}
+    apply_rules_to_datalines(rules, lines) == mdict
+
+@pytest.mark.apply_rules
+def test_apply_rules3():
     rules = [Rule(1, 'NOW', 'a.txt', 'now.txt', 0),
              Rule(1, 'LATER', 'a.txt', 'later.txt', 0)]
     lines = ['NOW Summer\n', 'LATER Winter\n']
