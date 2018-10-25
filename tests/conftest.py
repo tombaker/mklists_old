@@ -14,7 +14,7 @@ def reinitialize_ruleclass_variables():
 
 @pytest.fixture(scope='module')
 def grules_yamlstr(tmpdir_factory):
-    """Write some YAML-formatted rules to YAML rule files."""
+    """Return some YAML-formatted rules for writing to YAML rule files."""
 
     return """\
     - [0,  '.'        , lines        , __RENAME__   , 0]
@@ -22,7 +22,7 @@ def grules_yamlstr(tmpdir_factory):
 
 @pytest.fixture(scope='module')
 def lrules_yamlstr(tmpdir_factory):
-    """Write some YAML-formatted rules to YAML rule files."""
+    """Return some YAML-formatted rules for writing to YAML rule files."""
 
     return """\
     - [0   , 'NOW'    , lines        , __RENAME__   , 0]

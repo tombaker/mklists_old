@@ -19,7 +19,6 @@ from mklists import (
     MKLISTSRC,
     RULEFILE_NAME,
     STARTER_DEFAULTS,
-    ConfigFileNotFoundError,
     DatadirNotAccessibleError,
     NoDataError)
 
@@ -65,9 +64,10 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     # Read config file MKLISTSRC, overriding some settings in context object.
     # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
     if ctx.invoked_subcommand != 'init':
-        update_config_from_file(MKLISTSRC, 
-                                settings_dict=ctx.obj, 
-                                verbose=ctx.obj['verbose'])
+        update_config_from_file(
+            MKLISTSRC, 
+            settings_dict=ctx.obj, 
+            verbose=ctx.obj['verbose'])
 
     # Save settings specified on command line ("not None") to context object.
     # -- Omits 'ctx', the context object itself.

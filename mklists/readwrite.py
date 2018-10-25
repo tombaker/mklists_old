@@ -14,9 +14,9 @@ import pprint
 import yaml
 from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
     STARTER_GLOBALRULES, STARTER_LOCALRULES, STARTER_GRULEFILE_NAME,
-    STARTER_LRULEFILE_NAME, BadFilenameError, BlankLinesError,
+    STARTER_LRULEFILE_NAME, BadFilenameError, BlankLinesError, 
     DatadirHasNonFilesError, InitError, NoDataError, NoRulesError,
-    NotUTF8Error, BadYamlError, BadYamlRuleError)
+    NotUTF8Error, BadYamlError, BadYamlRuleError, ConfigFileNotFoundError)
 from mklists.rule import Rule
 
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
