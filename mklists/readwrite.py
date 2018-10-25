@@ -12,8 +12,8 @@ import string
 import sys
 import pprint
 import yaml
-from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
-    STARTER_GLOBALRULES, STARTER_LOCALRULES, STARTER_GRULEFILE_NAME,
+from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC_NAME,
+    STARTER_GRULES, STARTER_LRULES, STARTER_GRULEFILE_NAME, STARTER_MKLISTSRC,
     STARTER_LRULEFILE_NAME, BadFilenameError, BlankLinesError, 
     DatadirHasNonFilesError, InitError, NoDataError, NoRulesError,
     NotUTF8Error, BadYamlError, BadYamlRuleError, ConfigFileNotFoundError)
@@ -47,37 +47,13 @@ def get_rules(local_rulefile_name=None, global_rulefile_name=None):
                 
     return ruleobj_list
 
-def update_config_from_file(file_name=MKLISTSRC, settings_dict=None,
+def update_config_from_file(file_name=MKLISTSRC_NAME, 
+                            settings_dict=STARTER_MKLISTSRC,
                             verbose=False):
-    """Returns dictionary of settings updated from configuration file.
-    
-    Reads configuration file from disk:
-    * overrides some existing settings in the settings dictionary.
-    * may add some new settings to the settings dictionary.
-    * if MKLISTSRC not found, terminates with advice to run `mklists init`.
-
-    Args:
-        file_name: name of configuration file - by default '.mklistsrc'.
-        settings_dict: dictionary with setting name (key) and value.
-
-    Returns:
-        settings_dict: updated settings dictionary
-    """
-    try:
-        settings_loaded_str = yaml.load(open(file_name).read())
-        given_settings = _update_config(settings_dict, settings_loaded_str)
-        if verbose:
-            print(f"Updated context from {repr(file_name)}.")
-        return settings_dict
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-
-def _update_config(given_settings=None, loaded_settings=None):
-    given_settings.update(loaded_settings)
-    return given_settings
+    """See ../tests/test_update.py"""
 
 def write_initial_configfile(settings_dict=None,
-                             file_name=MKLISTSRC,
+                             file_name=MKLISTSRC_NAME,
                              dryrun=False,
                              verbose=False):
     """Writes initial configuration file to disk (or just says it will).
@@ -98,8 +74,8 @@ def write_initial_configfile(settings_dict=None,
 
 def write_initial_rulefiles(global_rulefile_name=STARTER_GRULEFILE_NAME, 
                             local_rulefile_name=STARTER_LRULEFILE_NAME, 
-                            globalrules_content=STARTER_GLOBALRULES,
-                            localrules_content=STARTER_LOCALRULES,
+                            globalrules_content=STARTER_GRULES,
+                            localrules_content=STARTER_LRULES,
                             dryrun=False,
                             verbose=False):
     """Generate default rule (and global rule) configuration files.

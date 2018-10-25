@@ -7,7 +7,7 @@
 import sys
 from mklists import (
     NoRulefileSpecified,
-    MKLISTSRC,
+    MKLISTSRC_NAME,
     TIMESTAMP)
 
 
@@ -39,7 +39,7 @@ def explain(**sets):
             print("...however the option will fail "
                   "because no destination directory has been "
                   "specified for the urlified files.")
-            print(f"Try editing {repr(sets[MKLISTSRC])}, adding the line:")
+            print(f"Try editing {repr(sets[MKLISTSRC_NAME])}, adding the line:")
             print(f"    urlify_dir: /path/to/some/directory")
             print(f"Then make sure that /path/to/some/directory exists.")
     else:
@@ -56,7 +56,7 @@ def explain(**sets):
         else:
             print("...however the command will fail "
                   "because no backup directory has been specified.")
-            print(f"Try editing {repr(sets[MKLISTSRC])}, adding the line:")
+            print(f"Try editing {repr(sets[MKLISTSRC_NAME])}, adding the line:")
             print(f"    backup_dir: /path/to/some/directory")
             print(f"Then make sure that /path/to/some/directory exists.")
     else:
@@ -77,4 +77,4 @@ def explain(**sets):
         print("Output file of given name to be moved to given directory.")
     else:
         print(f"'files2dirs' option not set in "
-               "{repr(sets[MKLISTSRC])} - see documentation.")
+               "{repr(sets[MKLISTSRC_NAME])} - see documentation.")

@@ -12,11 +12,11 @@ VALID_FILENAME_CHARS = """\
 
 INVALID_FILENAME_PATS = [r'\.swp$', r'\.tmp$', r'~$', r'^\.']
 
-MKLISTSRC = '.mklistsrc'
+MKLISTSRC_NAME = '.mklistsrc'
 
 RULEFILE_NAME='.rules'
 
-STARTER_DEFAULTS = {
+STARTER_MKLISTSRC = {
     'globalrules': '.globalrules',
     'rules': '.rules',
     'urlify': False,
@@ -34,11 +34,11 @@ STARTER_GRULEFILE_NAME = '.globalrules'
 
 STARTER_LRULEFILE_NAME = '.rules'
 
-STARTER_GLOBALRULES = """\
+STARTER_GRULES = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
 """
 
-STARTER_LOCALRULES = """\
+STARTER_LRULES = """\
 - [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
 - [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
 """

@@ -10,15 +10,14 @@ from mklists.readwrite import (
     update_config_from_file,
     write_initial_configfile,
     write_initial_rulefiles,
-    # get_rules,
     get_datalines,
     write_urlified_datafiles
     )
 from mklists.verbose import explain
 from mklists import (
-    MKLISTSRC,
+    MKLISTSRC_NAME,
     RULEFILE_NAME,
-    STARTER_DEFAULTS,
+    STARTER_MKLISTSRC,
     DatadirNotAccessibleError,
     NoDataError)
 
@@ -59,13 +58,13 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     change_working_directory(datadir, verb=verbose)
 
     # Save default settings to object to be passed with @click.pass_context.
-    ctx.obj = STARTER_DEFAULTS
+    ctx.obj = STARTER_MKLISTSRC
 
-    # Read config file MKLISTSRC, overriding some settings in context object.
+    # Read config file MKLISTSRC_NAME, overriding some settings in context object.
     # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
     if ctx.invoked_subcommand != 'init':
         update_config_from_file(
-            MKLISTSRC, 
+            MKLISTSRC_NAME, 
             settings_dict=ctx.obj, 
             verbose=ctx.obj['verbose'])
 
@@ -87,7 +86,7 @@ def init(ctx):
     """Generate default configuration and rule files."""
 
     write_initial_configfile(context=ctx.obj,
-                             filename=MKLISTSRC,
+                             filename=MKLISTSRC_NAME,
                              verbose=ctx.obj['verbose'])
 
     write_initial_rulefiles(global_rulefile_name=None,
@@ -144,7 +143,7 @@ def run(ctx):
                                  dryrun=True,  # later: ctx.obj['dryrun'],
                                  verbose=ctx.obj['verbose'])
 
-    # If 'files2dirs' is ON, settable only in MKLISTSRC (not on command line),
+    # If 'files2dirs' is ON, settable only in MKLISTSRC_NAME (not on command line),
     # move selected files to external directories.
     if ctx.obj['files2dirs']:
         move_files_to_external_directories(files2dirs_dict=ctx.obj['files2dirs'])
