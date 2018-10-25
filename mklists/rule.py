@@ -163,8 +163,7 @@ class Rule:
         return True
 
     def _source_is_not_equal_target(self):
-        """Returns True if source is not equal to target.
-        """
+        """Returns True if source is not equal to target."""
         if self.source == self.target:
             raise SourceEqualsTargetError("source must not equal target.")
         return True

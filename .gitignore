@@ -1,4 +1,6 @@
 .pytest_cache/
+.coverage
+htmlcov/
 .idea/
 mklenv/
 .cache

@@ -13,7 +13,8 @@ import sys
 import pprint
 import yaml
 from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC,
-    STARTER_GLOBALRULES, STARTER_LOCALRULES, BadFilenameError, BlankLinesError,
+    STARTER_GLOBALRULES, STARTER_LOCALRULES, STARTER_GRULEFILE_NAME,
+    STARTER_LRULEFILE_NAME, BadFilenameError, BlankLinesError,
     DatadirHasNonFilesError, InitError, NoDataError, NoRulesError,
     NotUTF8Error, BadYamlError, BadYamlRuleError)
 from mklists.rule import Rule
@@ -95,8 +96,10 @@ def write_initial_configfile(settings_dict=None,
             with open(file_name, 'w') as fout:
                 fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
-def write_initial_rulefiles(global_rulefile_name=None, 
-                            local_rulefile_name=None, 
+def write_initial_rulefiles(global_rulefile_name=STARTER_GRULEFILE_NAME, 
+                            local_rulefile_name=STARTER_LRULEFILE_NAME, 
+                            globalrules_content=STARTER_GLOBALRULES,
+                            localrules_content=STARTER_LOCALRULES,
                             dryrun=False,
                             verbose=False):
     """Generate default rule (and global rule) configuration files.
@@ -106,8 +109,8 @@ def write_initial_rulefiles(global_rulefile_name=None,
         Creates rule files with default contents.
         If 'dryrun' is ON, prints messages but does not write to disk.
     """
-    for file, content in [(global_rulefile_name, STARTER_GLOBALRULES), 
-                          (local_rulefile_name, STARTER_LOCALRULES)]:
+    for file, content in [(global_rulefile_name, globalrules_content), 
+                          (local_rulefile_name, localrules_content)]:
         if file:
             if os.path.exists(file):
                 print(f"Found existing {repr(file)} - leaving untouched.")

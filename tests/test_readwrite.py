@@ -1,11 +1,25 @@
+"""@@@Docstring"""
+
 import pytest
+import click
+from click.testing import CliRunner
 import os
 from mklists import (MKLISTSRC, STARTER_DEFAULTS, STARTER_GLOBALRULES, 
-    STARTER_GLOBALRULES, STARTER_LOCALRULES, VALID_FILENAME_CHARS)
+    STARTER_LOCALRULES, STARTER_GRULEFILE_NAME, STARTER_LRULEFILE_NAME,
+    VALID_FILENAME_CHARS)
 from mklists.readwrite import (write_initial_rulefiles,
     write_initial_configfile, update_config_from_file, _update_config,
     write_yamlstr_to_yamlfile, read_yamlfile_parseto_pyobject)
 
+
+@pytest.mark.write
+def test_write_initial_globalrules_isolated():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        write_initial_rulefiles(
+            global_rulefile_name=STARTER_GRULEFILE_NAME,
+            globalrules_content=STARTER_GLOBALRULES)
+        assert STARTER_GLOBALRULES == open(STARTER_GRULEFILE_NAME).read()
 
 @pytest.mark.write
 def test_write_initial_globalrules(tmpdir):

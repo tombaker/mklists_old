@@ -4,7 +4,8 @@ import datetime
 
 TIMESTAMP = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
 
-URL_PATTERN = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+# URL_PATTERN = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+URL_PATTERN = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 VALID_FILENAME_CHARS = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
@@ -28,6 +29,10 @@ STARTER_DEFAULTS = {
     'valid_filename_characters': VALID_FILENAME_CHARS,
     'invalid_filename_patterns': INVALID_FILENAME_PATS,
     'files2dirs': None}
+
+STARTER_GRULEFILE_NAME = '.globalrules'
+
+STARTER_LRULEFILE_NAME = '.rules'
 
 STARTER_GLOBALRULES = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...

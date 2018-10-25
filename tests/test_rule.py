@@ -4,6 +4,16 @@ from mklists.rule import (Rule, apply_rules_to_datalines, _line_matches)
 from mklists import UninitializedSourceError, STARTER_GLOBALRULES
 
 @pytest.mark.rule
+def test_no_rules_specified():
+    with pytest.raises(SystemExit):
+        apply_rules_to_datalines(datalines_list=[['a line\n']])
+
+@pytest.mark.rule
+def test_no_data_specified():
+    with pytest.raises(SystemExit):
+        apply_rules_to_datalines(ruleobjs_list=[[Rule(1, 'a', 'b', 'c', 2)]])
+
+@pytest.mark.rule
 def test_rule_is_valid(reinitialize_ruleclass_variables):
     x = Rule(1, 'NOW', 'a.txt', 'b.txt', 2)
     assert x.is_valid()
