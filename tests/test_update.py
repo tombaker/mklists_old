@@ -9,9 +9,11 @@ from mklists import (MKLISTSRC_NAME, STARTER_MKLISTSRC, STARTER_GRULES,
     VALID_FILENAME_CHARS)
 from mklists.readwrite import write_initial_configfile
 
+NEW_MKLISTSRC = { 'rules': '.local_rules' }
 
-def update_config_from_file(file_name=MKLISTSRC_NAME, 
-                            settings_dict=STARTER_MKLISTSRC,
+
+def update_config_from_file(ctxfile_name=MKLISTSRC_NAME, 
+                            ctx_dict=STARTER_MKLISTSRC,
                             verbose=False):
     """Returns dictionary of settings updated from configuration file.
     
@@ -21,34 +23,30 @@ def update_config_from_file(file_name=MKLISTSRC_NAME,
     * if MKLISTSRC_NAME not found, terminates with advice to run `mklists init`.
 
     Args:
-        file_name: name of configuration file - by default '.mklistsrc'.
-        settings_dict: dictionary with setting name (key) and value.
+        ctxfile_name: name of configuration file - by default '.mklistsrc'.
+        ctx_dict: dictionary with setting name (key) and value.
 
     Returns:
-        settings_dict: updated settings dictionary
+        ctx_dict: updated settings dictionary
     """
     try:
         print('Hello, world!')
-        #print(yaml.load(open(file_name).read()))
-        #settings_loaded_str = yaml.load(open(file_name).read())
+        #print(yaml.load(open(ctxfile_name).read()))
+        #settings_loaded_str = yaml.load(open(ctxfile_name).read())
         #print(f"settings_loaded_str: {settings_loaded_str}")
-        #given_settings = _update_config(settings_dict, settings_loaded_str)
+        #given_settings = _update_config(ctx_dict, settings_loaded_str)
         #print(f"given_settings: {given_settings}")
-        #print(f"Updated context from {repr(file_name)}.")
+        #print(f"Updated context from {repr(ctxfile_name)}.")
         #if verbose:
-        #    print(f"Updated context from {repr(file_name)}.")
-        #return settings_dict
+        #    print(f"Updated context from {repr(ctxfile_name)}.")
+        #return ctx_dict
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
-def _update_config(given_settings=None, loaded_settings=None):
-    given_settings.update(loaded_settings)
-    return given_settings
 
 
-
-@pytest.fixture()
-def working_directory_with_config_files(tmpdir):
+@pytest.fixture(name='working_directory_with_config_files1')
+def fixture_working_directory_with_config_files1(tmpdir):
     """Return temporary working directory with .rules and .mklistsrc."""
 
     os.getcwd()
@@ -62,7 +60,7 @@ def working_directory_with_config_files(tmpdir):
     return tmpdir
 
 @pytest.fixture(scope='module')
-def working_directory_with_config_files():
+def working_directory_with_config_files2():
     """Return temporary working directory with .rules and .mklistsrc."""
 
     runner = CliRunner()
@@ -79,13 +77,13 @@ def working_directory_with_config_files():
 def test_write_initial_configfile(tmpdir):
     """Tests two functions write-to-read round-trip."""
     os.chdir(tmpdir)
-    mklistsrc_path = tmpdir.join(MKLISTSRC_NAME)
+    configfile_name = tmpdir.join(MKLISTSRC_NAME)
     write_initial_configfile(
-        file_name=mklistsrc_path,
-        settings_dict=STARTER_MKLISTSRC)
+        ctxfile_name=configfile_name,
+        ctx_dict=STARTER_MKLISTSRC)
     updated_context = update_config_from_file(
-        file_name=mklistsrc_path, 
-        settings_dict=STARTER_MKLISTSRC)
+        ctxfile_name=configfile_name, 
+        ctx_dict=STARTER_MKLISTSRC)
     assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
 
 @pytest.mark.skip
@@ -100,6 +98,10 @@ def test_update_config(tmpdir):
     if ctx.invoked_subcommand != 'init':
         update_config_from_file(
             MKLISTSRC_NAME, 
-            settings_dict=ctx.obj, 
+            ctx_dict=ctx.obj, 
             verbose=ctx.obj['verbose'])
 
+def _update_config(given_settings=None, new_settings=None):
+    """Returns settings with some values overridden by new settings."""
+    given_settings.update(new_settings)
+    return given_settings
