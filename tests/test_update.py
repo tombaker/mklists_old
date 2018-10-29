@@ -42,8 +42,8 @@ def fixture_cwd_configured(tmpdir_factory):
 
 @pytest.mark.udconfig
 def test_update_config_from_file(cwd_configured):
-    # assert update_config_from_file(
-    pass
+    """@@@docstring"""
+    print(type(cwd_configured))
 
 def update_config_from_file(ctxfile_name=MKLISTSRC_NAME, 
                             givenctx_dict=STARTER_MKLISTSRC,
