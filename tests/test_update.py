@@ -8,6 +8,7 @@ from mklists import (MKLISTSRC_NAME, STARTER_MKLISTSRC, STARTER_GRULES,
     STARTER_LRULES, STARTER_GRULEFILE_NAME, STARTER_LRULEFILE_NAME,
     VALID_FILENAME_CHARS)
 from mklists.readwrite import write_initial_configfile
+from glob import glob
 
 OVERRIDE_MKLISTSRC = { 'rules': '.local_rules' }
 
@@ -40,13 +41,21 @@ def fixture_cwd_configured(tmpdir_factory):
     # Return subdirectory with three new files.
     return cwd_dir
 
-@pytest.mark.udconfig
-def test_update_config_from_file(cwd_configured):
+@pytest.mark.updconfig
+def test_update_config_experiment(cwd_configured):
     """@@@docstring"""
     print(type(cwd_configured))
+    os.chdir(cwd_configured)
+    print(os.getcwd())
+    print(os.listdir())
 
-def update_config_from_file(ctxfile_name=MKLISTSRC_NAME, 
-                            givenctx_dict=STARTER_MKLISTSRC,
+@pytest.mark.updconfig
+def test_update_config_from_file(cwd_configured):
+    """@@@docstring"""
+    os.chdir(cwd_configured)
+
+def update_config_from_file(givenctx_dict=STARTER_MKLISTSRC,
+                            mklistsrc=MKLISTSRC_NAME, 
                             verbose=False):
     """Returns dictionary of settings updated from configuration file.
     
@@ -56,19 +65,19 @@ def update_config_from_file(ctxfile_name=MKLISTSRC_NAME,
     * if MKLISTSRC_NAME not found, terminates with advice to run `mklists init`.
 
     Args:
-        ctxfile_name: name of configuration file - by default '.mklistsrc'.
+        mklistsrc: name of configuration file - by default '.mklistsrc'.
         givenctx_dict: dictionary with setting name (key) and value.
 
     Returns:
         givenctx_dict: updated settings dictionary
     """
     try:
-        ctx_loaded_str = yaml.load(open(ctxfile_name).read())
+        ctx_loaded_str = yaml.load(open(mklistsrc).read())
         #given_settings = _update_config(givenctx_dict, ctx_loaded_str)
         #print(f"given_settings: {given_settings}")
-        #print(f"Updated context from {repr(ctxfile_name)}.")
+        #print(f"Updated context from {repr(mklistsrc)}.")
         #if verbose:
-        #    print(f"Updated context from {repr(ctxfile_name)}.")
+        #    print(f"Updated context from {repr(mklistsrc)}.")
         #return givenctx_dict
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
