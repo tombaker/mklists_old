@@ -16,7 +16,7 @@ MKLISTSRC_NAME = '.mklistsrc'
 
 RULEFILE_NAME='.rules'
 
-STARTER_MKLISTSRC = {
+BUILTIN_MKLISTSRC = {
     'globalrules': '.globalrules',
     'rules': '.rules',
     'urlify': False,
@@ -30,15 +30,15 @@ STARTER_MKLISTSRC = {
     'invalid_filename_patterns': INVALID_FILENAME_PATS,
     'files2dirs': None}
 
-STARTER_GRULEFILE_NAME = '.globalrules'
+BUILTIN_GRULEFILE_NAME = '.globalrules'
 
-STARTER_LRULEFILE_NAME = '.rules'
+BUILTIN_LRULEFILE_NAME = '.rules'
 
-STARTER_GRULES = """\
+BUILTIN_GRULES = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
 """
 
-STARTER_LRULES = """\
+BUILTIN_LRULES = """\
 - [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
 - [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
 """

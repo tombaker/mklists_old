@@ -17,7 +17,7 @@ from mklists.verbose import explain
 from mklists import (
     MKLISTSRC_NAME,
     RULEFILE_NAME,
-    STARTER_MKLISTSRC,
+    BUILTIN_MKLISTSRC,
     DatadirNotAccessibleError,
     NoDataError)
 
@@ -58,10 +58,10 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     change_working_directory(datadir, verb=verbose)
 
     # Settings dict: saved as ctx.obj for passing with @click.pass_context.
-    # 1. Initialized from string constant STARTER_MKLISTSRC.
+    # 1. Initialized from string constant BUILTIN_MKLISTSRC.
     # 2. Updated with any different settings found in file MKLISTSRC_NAME.
     # 3. Updated with any settings specified on command line.
-    ctx.obj = STARTER_MKLISTSRC
+    ctx.obj = BUILTIN_MKLISTSRC
 
     # Read config file MKLISTSRC_NAME, overriding some settings in context object.
     # -- If `mklists` was invoked with subcommand 'init', this step is skipped.

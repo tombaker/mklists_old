@@ -54,7 +54,7 @@ def test_update_config_from_file(cwd_configured):
     """@@@docstring"""
     os.chdir(cwd_configured)
 
-def update_config_from_file(givenctx_dict=STARTER_MKLISTSRC,
+def update_config_from_file(builtinctx_dict=STARTER_MKLISTSRC,
                             mklistsrc=MKLISTSRC_NAME, 
                             verbose=False):
     """Returns dictionary of settings updated from configuration file.
@@ -65,20 +65,20 @@ def update_config_from_file(givenctx_dict=STARTER_MKLISTSRC,
     * if MKLISTSRC_NAME not found, terminates with advice to run `mklists init`.
 
     Args:
-        mklistsrc: name of configuration file - by default '.mklistsrc'.
-        givenctx_dict: dictionary with setting name (key) and value.
+        mklistsrc: name of configuration file, by default '.mklistsrc'.
+        builtinctx_dict: dictionary with setting name (key) and value.
 
     Returns:
-        givenctx_dict: updated settings dictionary
+        updatedctx_dict: updated settings dictionary
     """
     try:
-        ctx_loaded_str = yaml.load(open(mklistsrc).read())
-        #given_settings = _update_config(givenctx_dict, ctx_loaded_str)
+        loadedctx_dict = yaml.load(open(mklistsrc).read())
+        #given_settings = _update_config(builtinctx_dict, loadedctx_dict)
         #print(f"given_settings: {given_settings}")
         #print(f"Updated context from {repr(mklistsrc)}.")
         #if verbose:
         #    print(f"Updated context from {repr(mklistsrc)}.")
-        #return givenctx_dict
+        return updatedctx_dict
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 

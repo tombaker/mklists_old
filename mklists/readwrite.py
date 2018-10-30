@@ -13,8 +13,8 @@ import sys
 import pprint
 import yaml
 from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC_NAME,
-    STARTER_GRULES, STARTER_LRULES, STARTER_GRULEFILE_NAME, STARTER_MKLISTSRC,
-    STARTER_LRULEFILE_NAME, BadFilenameError, BlankLinesError, 
+    BUILTIN_GRULES, BUILTIN_LRULES, BUILTIN_GRULEFILE_NAME, BUILTIN_MKLISTSRC,
+    BUILTIN_LRULEFILE_NAME, BadFilenameError, BlankLinesError, 
     DatadirHasNonFilesError, InitError, NoDataError, NoRulesError,
     NotUTF8Error, BadYamlError, BadYamlRuleError, ConfigFileNotFoundError)
 from mklists.rule import Rule
@@ -48,7 +48,7 @@ def get_rules(local_rulefile_name=None, global_rulefile_name=None):
     return ruleobj_list
 
 def update_config_from_file(file_name=MKLISTSRC_NAME, 
-                            settings_dict=STARTER_MKLISTSRC,
+                            settings_dict=BUILTIN_MKLISTSRC,
                             verbose=False):
     """See ../tests/test_update.py"""
 
@@ -72,10 +72,10 @@ def write_initial_configfile(settings_dict=None,
             with open(file_name, 'w') as fout:
                 fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
-def write_initial_rulefiles(global_rulefile_name=STARTER_GRULEFILE_NAME, 
-                            local_rulefile_name=STARTER_LRULEFILE_NAME, 
-                            globalrules_content=STARTER_GRULES,
-                            localrules_content=STARTER_LRULES,
+def write_initial_rulefiles(global_rulefile_name=BUILTIN_GRULEFILE_NAME, 
+                            local_rulefile_name=BUILTIN_LRULEFILE_NAME, 
+                            globalrules_content=BUILTIN_GRULES,
+                            localrules_content=BUILTIN_LRULES,
                             dryrun=False,
                             verbose=False):
     """Generate default rule (and global rule) configuration files.
@@ -95,8 +95,8 @@ def write_initial_rulefiles(global_rulefile_name=STARTER_GRULEFILE_NAME,
                     print(f"['dryrun' is on] "
                           "Would have created {repr(file)}.")
                 else:
-                    print(f"Creating starter rule file {repr(file)} - "
-                          "can be customized.")
+                    print(f"Creating starter rule file {repr(file)} "
+                          "from built-in settings - can be customized.")
                     with open(file, 'w') as fout:
                         fout.write(content)
 
