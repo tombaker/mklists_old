@@ -5,8 +5,8 @@ import os
 from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rule import Rule
-from mklists import (STARTER_MKLISTSRC, STARTER_GRULES, STARTER_LRULES,
-    STARTER_GRULEFILE_NAME, STARTER_LRULEFILE_NAME, MKLISTSRC_NAME)
+from mklists import (BUILTIN_MKLISTSRC, BUILTIN_GRULES, BUILTIN_LRULES,
+    BUILTIN_GRULEFILE_NAME, BUILTIN_LRULEFILE_NAME, MKLISTSRC_NAME)
 
 @pytest.fixture()
 def reinitialize_ruleclass_variables():
@@ -21,19 +21,19 @@ def reinitialize_ruleclass_variables():
 def mklistsrc_yamlstr():
     """Return some YAML-formatted rules for writing to rule files."""
 
-    return STARTER_MKLISTSRC
+    return BUILTIN_MKLISTSRC
 
 @pytest.fixture()
 def grules_yamlstr():
     """Return some YAML-formatted rules for writing to rule files."""
 
-    return STARTER_GRULES
+    return BUILTIN_GRULES
 
 @pytest.fixture()
 def lrules_yamlstr():
     """Returns some YAML-formatted rules for writing to rule files."""
 
-    return STARTER_LRULES
+    return BUILTIN_LRULES
 
 #@pytest.fixture(scope='module')
 #def rules_yamlfile(tmpdir_factory):

@@ -1,7 +1,7 @@
 import pytest
 import os
 from mklists.rule import (Rule, apply_rules_to_datalines, _line_matches)
-from mklists import UninitializedSourceError, STARTER_GRULES
+from mklists import UninitializedSourceError, BUILTIN_GRULES
 
 @pytest.mark.rule
 def test_no_rules_specified():

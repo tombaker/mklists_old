@@ -4,8 +4,8 @@ import pytest
 import click
 from click.testing import CliRunner
 import os
-from mklists import (MKLISTSRC_NAME, STARTER_MKLISTSRC, STARTER_GRULES, 
-    STARTER_LRULES, STARTER_GRULEFILE_NAME, STARTER_LRULEFILE_NAME,
+from mklists import (MKLISTSRC_NAME, BUILTIN_MKLISTSRC, BUILTIN_GRULES, 
+    BUILTIN_LRULES, BUILTIN_GRULEFILE_NAME, BUILTIN_LRULEFILE_NAME,
     VALID_FILENAME_CHARS)
 from mklists.readwrite import write_initial_configfile
 from glob import glob
@@ -29,14 +29,14 @@ def fixture_cwd_configured(tmpdir_factory):
     cwd_dir = tmpdir_factory.mktemp('mydir')   
 
     # Create filehandles with basename 'cwd_dir'.
-    lrules = cwd_dir.join(STARTER_LRULEFILE_NAME)
-    grules = cwd_dir.join(STARTER_GRULEFILE_NAME)
+    lrules = cwd_dir.join(BUILTIN_LRULEFILE_NAME)
+    grules = cwd_dir.join(BUILTIN_GRULEFILE_NAME)
     nrules = cwd_dir.join('.local_rules')
 
     # Write to filehandles.
-    lrules.write(STARTER_LRULES)
-    grules.write(STARTER_GRULES)
-    nrules.write(STARTER_LRULES)
+    lrules.write(BUILTIN_LRULES)
+    grules.write(BUILTIN_GRULES)
+    nrules.write(BUILTIN_LRULES)
 
     # Return subdirectory with three new files.
     return cwd_dir
@@ -54,7 +54,7 @@ def test_update_config_from_file(cwd_configured):
     """@@@docstring"""
     os.chdir(cwd_configured)
 
-def update_config_from_file(builtinctx_dict=STARTER_MKLISTSRC,
+def update_config_from_file(builtinctx_dict=BUILTIN_MKLISTSRC,
                             mklistsrc=MKLISTSRC_NAME, 
                             verbose=False):
     """Returns dictionary of settings updated from configuration file.
@@ -91,10 +91,10 @@ def update_config_from_file(builtinctx_dict=STARTER_MKLISTSRC,
 # 
 #     runner = CliRunner()
 #     with runner.isolated_filesystem():
-#         with open(STARTER_LRULEFILE_NAME, 'w') as f:
-#             f.write(STARTER_LRULES)
+#         with open(BUILTIN_LRULEFILE_NAME, 'w') as f:
+#             f.write(BUILTIN_LRULES)
 #         with open(MKLISTSRC_NAME, 'w') as f:
-#             f.write(str(STARTER_MKLISTSRC))
+#             f.write(str(BUILTIN_MKLISTSRC))
 #         yield
 
 
@@ -106,10 +106,10 @@ def test_write_initial_configfile(tmpdir):
     configfile_name = tmpdir.join(MKLISTSRC_NAME)
     write_initial_configfile(
         ctxfile_name=configfile_name,
-        givenctx_dict=STARTER_MKLISTSRC)
+        givenctx_dict=BUILTIN_MKLISTSRC)
     updated_context = update_config_from_file(
         ctxfile_name=configfile_name, 
-        givenctx_dict=STARTER_MKLISTSRC)
+        givenctx_dict=BUILTIN_MKLISTSRC)
     assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
 
 @pytest.mark.skip
