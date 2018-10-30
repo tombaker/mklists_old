@@ -19,6 +19,8 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC_NAM
     NotUTF8Error, BadYamlError, BadYamlRuleError, ConfigFileNotFoundError)
 from mklists.rule import Rule
 
+
+
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
     """Writes string in YAML format to file."""
     with open(yamlfile_name, "w") as fout:
@@ -71,6 +73,42 @@ def write_initial_configfile(settings_dict=None,
             print(f"Creating default {repr(configfile_name)}. Customize as needed.")
             with open(configfile_name, 'w') as fout:
                 fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
+
+
+def update_settings_from_configfile(builtinctx_dict=BUILTIN_MKLISTSRC,
+                                    configfile_name=MKLISTSRC_NAME,
+                                    verbose=False):
+    """Returns settings dict of built-ins updated from config file.
+
+    Reads mklists config file from disk:
+    * Settings read from file may override some of the builtin settings.
+    * Handles empty config file.
+    * If config file is not found, exits, advises to run `mklists init`.
+
+    Args:
+        configfile_name: name of config file, by default '.mklistsrc'.
+        builtinctx_dict: dictionary with setting name (key) and value.
+
+    Returns:
+        updatedctx_dict: updated settings dictionary
+    """
+    try:
+        loadedctx_dict = yaml.load(open(configfile_name).read())
+        if not loadedctx_dict:
+            loadedctx_dict = dict()
+        updatedctx_dict = _update_config(builtinctx_dict, loadedctx_dict)
+        if verbose:
+            print(f"Updated context from {repr(configfile_name)}.")
+        return updatedctx_dict
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
+
+
+def _update_config(given_settings=None, new_settings=None):
+    """Returns settings with some values overridden by new settings."""
+    given_settings.update(new_settings)
+    return given_settings
+
 
 def write_initial_rulefiles(global_rulefile_name=BUILTIN_GRULEFILE_NAME, 
                             local_rulefile_name=BUILTIN_LRULEFILE_NAME, 

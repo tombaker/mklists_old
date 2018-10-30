@@ -12,34 +12,10 @@ from mklists import (
     MKLISTSRC_NAME,
     VALID_FILENAME_CHARS,
     ConfigFileNotFoundError)
-from mklists.readwrite import write_initial_configfile
-
-
-@pytest.fixture(name='cwd_configured')
-def fixture_cwd_configured(tmpdir_factory):
-    """Return temporary directory configured with .rules and .mklistsrc."""
-
-    # Create subdirectory of base temp directory, return, assign to 'cwd_dir'.
-    cwd_dir = tmpdir_factory.mktemp('mydir')
-
-    # Create filehandles with basename 'cwd_dir'.
-    lrules = cwd_dir.join(BUILTIN_LRULEFILE_NAME)
-    grules = cwd_dir.join(BUILTIN_GRULEFILE_NAME)
-    nrules = cwd_dir.join('.local_rules')     # rule file with different name
-    mklistsrc = cwd_dir.join(MKLISTSRC_NAME)
-    mklistsrc2 = cwd_dir.join('.mklistsrc2')  # minimal .mklistsrc
-    mklistsrc3 = cwd_dir.join('.mklistsrc3')  # empty .mklistsrc
-
-    # Write to filehandles.
-    lrules.write(BUILTIN_LRULES)
-    grules.write(BUILTIN_GRULES)
-    nrules.write(BUILTIN_LRULES)
-    mklistsrc.write(BUILTIN_MKLISTSRC)
-    mklistsrc2.write("{ 'rules': '.local_rules' }")
-    mklistsrc3.write("")
-
-    # Return subdirectory with six new files.
-    return cwd_dir
+from mklists.readwrite import (
+    write_initial_configfile,
+    update_settings_from_configfile,
+    _update_config)
 
 
 @pytest.mark.updconfig
@@ -80,35 +56,6 @@ def test_update_settings_from_configfile_empty(cwd_configured):
     assert updated_config_dict == BUILTIN_MKLISTSRC
 
 
-def update_settings_from_configfile(builtinctx_dict=BUILTIN_MKLISTSRC,
-                                    configfile_name=MKLISTSRC_NAME,
-                                    verbose=False):
-    """Returns settings dict of built-ins updated from config file.
-
-    Reads mklists config file from disk:
-    * Settings read from file may override some of the builtin settings.
-    * Handles empty config file.
-    * If config file is not found, exits, advises to run `mklists init`.
-
-    Args:
-        configfile_name: name of config file, by default '.mklistsrc'.
-        builtinctx_dict: dictionary with setting name (key) and value.
-
-    Returns:
-        updatedctx_dict: updated settings dictionary
-    """
-    try:
-        loadedctx_dict = yaml.load(open(configfile_name).read())
-        if not loadedctx_dict:
-            loadedctx_dict = dict()
-        updatedctx_dict = _update_config(builtinctx_dict, loadedctx_dict)
-        if verbose:
-            print(f"Updated context from {repr(configfile_name)}.")
-        return updatedctx_dict
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-
-
 @pytest.mark.updconfig
 def test_write_initial_configfile(tmpdir):
     """Tests two functions write-to-read round-trip."""
@@ -130,9 +77,3 @@ def test_update_config():
     context_from_disk = {'b': 'baz'}
     context_expected = {'a': 'foo', 'b': 'baz'}
     assert _update_config(context_given, context_from_disk) == context_expected
-
-
-def _update_config(given_settings=None, new_settings=None):
-    """Returns settings with some values overridden by new settings."""
-    given_settings.update(new_settings)
-    return given_settings

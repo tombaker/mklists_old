@@ -8,6 +8,34 @@ from mklists.rule import Rule
 from mklists import (BUILTIN_MKLISTSRC, BUILTIN_GRULES, BUILTIN_LRULES,
     BUILTIN_GRULEFILE_NAME, BUILTIN_LRULEFILE_NAME, MKLISTSRC_NAME)
 
+
+@pytest.fixture(name='cwd_configured')
+def fixture_cwd_configured(tmpdir_factory):
+    """Return temporary directory configured with .rules and .mklistsrc."""
+
+    # Create subdirectory of base temp directory, return, assign to 'cwd_dir'.
+    cwd_dir = tmpdir_factory.mktemp('mydir')
+
+    # Create filehandles with basename 'cwd_dir'.
+    lrules = cwd_dir.join(BUILTIN_LRULEFILE_NAME)
+    grules = cwd_dir.join(BUILTIN_GRULEFILE_NAME)
+    nrules = cwd_dir.join('.local_rules')     # rule file with different name
+    mklistsrc = cwd_dir.join(MKLISTSRC_NAME)
+    mklistsrc2 = cwd_dir.join('.mklistsrc2')  # minimal .mklistsrc
+    mklistsrc3 = cwd_dir.join('.mklistsrc3')  # empty .mklistsrc
+
+    # Write to filehandles.
+    lrules.write(BUILTIN_LRULES)
+    grules.write(BUILTIN_GRULES)
+    nrules.write(BUILTIN_LRULES)
+    mklistsrc.write(BUILTIN_MKLISTSRC)
+    mklistsrc2.write("{ 'rules': '.local_rules' }")
+    mklistsrc3.write("")
+
+    # Return subdirectory with six new files.
+    return cwd_dir
+
+
 @pytest.fixture()
 def reinitialize_ruleclass_variables():
     """Class variables must be re-initialized:
