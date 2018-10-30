@@ -14,7 +14,7 @@ from mklists import (MKLISTSRC_NAME, BUILTIN_MKLISTSRC, BUILTIN_GRULES,
 from pathlib import Path
 
 
-@pytest.mark.skip
+@pytest.mark.cli
 def test_cli_set_datadir(cwd_configured):
     """@@@docstring"""
     runner = CliRunner()
@@ -22,11 +22,18 @@ def test_cli_set_datadir(cwd_configured):
         '--datadir', 
         '/Users/tbaker/mydata', 
         'run'])
-    print(get_settings_from_cli(cli_settings=locals()))
+    print(locals())
+    print(locals())
+    print(locals())
+    print(locals())
+    print(locals())
+    print(locals())
+    print(locals())
+    #print(get_settings_from_cli(cli_settings=locals()))
     #print(get_settings_from_cli(cli_settings=locals())['datadir'])
     #print(apply_overrides_from_cli())
     #assert get_settings_from_cli()['datadir'] == apply_overrides_from_cli()['datadir']
-    assert get_settings_from_cli() == 'what'
+    assert get_settings_from_cli(cli_settings=locals()) == 'what'
     assert 0
 
 #   --datadir DIRPATH       Set working directory [default './']
