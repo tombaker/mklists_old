@@ -2,16 +2,10 @@
 
 import os
 import pytest
-import yaml
 from mklists import (
-    BUILTIN_GRULEFILE_NAME,
-    BUILTIN_GRULES,
-    BUILTIN_LRULEFILE_NAME,
-    BUILTIN_LRULES,
     BUILTIN_MKLISTSRC,
     MKLISTSRC_NAME,
-    VALID_FILENAME_CHARS,
-    ConfigFileNotFoundError)
+    VALID_FILENAME_CHARS)
 from mklists.readwrite import (
     write_initial_configfile,
     update_settings_from_configfile,
@@ -19,20 +13,10 @@ from mklists.readwrite import (
 
 
 @pytest.mark.updconfig
-def test_update_config_experiment(cwd_configured):
-    """@@@docstring"""
-    print(type(cwd_configured))
-    os.chdir(cwd_configured)
-    print(os.getcwd())
-    print(os.listdir())
-
-
-@pytest.mark.updconfig
 def test_update_settings_from_configfile(cwd_configured):
-    """@@@docstring"""
+    """update_settings_from_configfile() should return builtin settings."""
     os.chdir(cwd_configured)
     updated_config_dict = update_settings_from_configfile()
-    print(type(BUILTIN_MKLISTSRC))
     assert updated_config_dict == BUILTIN_MKLISTSRC
 
 
@@ -57,22 +41,28 @@ def test_update_settings_from_configfile_empty(cwd_configured):
 
 
 @pytest.mark.updconfig
+def test_update_settings_from_configfile_not_found(tmpdir):
+    """Mklists exits if configfile is not found."""
+    os.chdir(tmpdir)
+    with pytest.raises(SystemExit):
+        update_settings_from_configfile()
+
+
+@pytest.mark.updconfig
 def test_write_initial_configfile(tmpdir):
-    """Tests two functions write-to-read round-trip."""
+    """Tests that two functions correctly round-trip:
+    * write_initial_configfile()
+    * update_settings_from_configfile()"""
     os.chdir(tmpdir)
     mklistsrc = tmpdir.join(MKLISTSRC_NAME)
-    write_initial_configfile(
-        settings_dict=BUILTIN_MKLISTSRC,
-        configfile_name=mklistsrc)
-    updated_context = update_settings_from_configfile(
-        builtinctx_dict=BUILTIN_MKLISTSRC,
-        configfile_name=mklistsrc)
+    write_initial_configfile(configfile_name=mklistsrc)
+    updated_context = update_settings_from_configfile()
     assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
 
 
 @pytest.mark.updconfig
 def test_update_config():
-    """@@@docstring"""
+    """_update_config() correctly updates one dict with another."""
     context_given = {'a': 'foo', 'b': 'bar'}
     context_from_disk = {'b': 'baz'}
     context_expected = {'a': 'foo', 'b': 'baz'}
