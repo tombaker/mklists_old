@@ -66,9 +66,9 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     # Read config file MKLISTSRC_NAME, overriding some settings in context object.
     # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
     if ctx.invoked_subcommand != 'init':
-        update_config_from_file(
-            MKLISTSRC_NAME, 
-            settings_dict=ctx.obj, 
+        update_settings_from_configfile(
+            builtinctx_dict=ctx.obj, 
+            configfile_name=MKLISTSRC_NAME, 
             verbose=ctx.obj['verbose'])
 
     # Save settings specified on command line ("not None") to context object.

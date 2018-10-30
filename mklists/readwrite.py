@@ -53,7 +53,7 @@ def update_config_from_file(file_name=MKLISTSRC_NAME,
     """See ../tests/test_update.py"""
 
 def write_initial_configfile(settings_dict=None,
-                             file_name=MKLISTSRC_NAME,
+                             configfile_name=MKLISTSRC_NAME,
                              dryrun=False,
                              verbose=False):
     """Writes initial configuration file to disk (or just says it will).
@@ -61,15 +61,15 @@ def write_initial_configfile(settings_dict=None,
         If configfile not found, creates new file using current settings.
         If 'dryrun' is ON, prints messages but does not write to disk.
     """
-    if os.path.exists(file_name):
-        raise InitError(f"To re-initialize, first delete {repr(file_name)}.")
+    if os.path.exists(configfile_name):
+        raise InitError(f"To re-initialize, first delete {repr(configfile_name)}.")
     else:
         if dryrun:
             raise InitError(
-                f"In read-only mode. Would have created {repr(file_name)}.")
+                f"In read-only mode. Would have created {repr(configfile_name)}.")
         else:
-            print(f"Creating default {repr(file_name)}. Customize as needed.")
-            with open(file_name, 'w') as fout:
+            print(f"Creating default {repr(configfile_name)}. Customize as needed.")
+            with open(configfile_name, 'w') as fout:
                 fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
 def write_initial_rulefiles(global_rulefile_name=BUILTIN_GRULEFILE_NAME, 
