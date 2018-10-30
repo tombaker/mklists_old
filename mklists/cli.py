@@ -51,7 +51,7 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     """Sync your plain-text todo lists to evolving rules"""
 
     # "Untoucable" dictionary of cli() parameters snapshotted as mutable dict:
-    settings_from_cli = locals()
+    settings_from_cli = get_settings_from_cli(cli_settings=locals())
 
     # If non-default datadir given on command line, change to that directory.
     # If directory is not accessible, exit with error message.
@@ -72,7 +72,7 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
             verbose=ctx.obj['verbose'])
 
     # Override context-object settings with CLI-specified settings.
-    apply_overrides_from_cli(settings=ctx.obj, clisettings=settings_from_cli)
+    apply_overrides_from_cli(clisettings=settings_from_cli)
 
     # Show explanation of settings that result from the above.
     if verbose:
