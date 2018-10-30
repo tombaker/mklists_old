@@ -1,44 +1,34 @@
 """@@@Docstring"""
 
-import pytest
-import click
-from click.testing import CliRunner
 import os
+import pytest
 import yaml
 from mklists import (
-        BUILTIN_GRULEFILE_NAME, 
-        BUILTIN_GRULES, 
-        BUILTIN_LRULEFILE_NAME,
-        BUILTIN_LRULES, 
-        BUILTIN_MKLISTSRC, 
-        MKLISTSRC_NAME, 
-        VALID_FILENAME_CHARS)
+    BUILTIN_GRULEFILE_NAME,
+    BUILTIN_GRULES,
+    BUILTIN_LRULEFILE_NAME,
+    BUILTIN_LRULES,
+    BUILTIN_MKLISTSRC,
+    MKLISTSRC_NAME,
+    VALID_FILENAME_CHARS,
+    ConfigFileNotFoundError)
 from mklists.readwrite import write_initial_configfile
-from glob import glob
 
-
-#    # Read config file MKLISTSRC_NAME, overriding some settings in context object.
-#    # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
-#    if ctx.invoked_subcommand != 'init':
-#        update_settings_from_configfile(
-#            MKLISTSRC_NAME, 
-#            givenctx_dict=ctx.obj, 
-#            verbose=ctx.obj['verbose'])
 
 @pytest.fixture(name='cwd_configured')
 def fixture_cwd_configured(tmpdir_factory):
     """Return temporary directory configured with .rules and .mklistsrc."""
 
     # Create subdirectory of base temp directory, return, assign to 'cwd_dir'.
-    cwd_dir = tmpdir_factory.mktemp('mydir')   
+    cwd_dir = tmpdir_factory.mktemp('mydir')
 
     # Create filehandles with basename 'cwd_dir'.
     lrules = cwd_dir.join(BUILTIN_LRULEFILE_NAME)
     grules = cwd_dir.join(BUILTIN_GRULEFILE_NAME)
-    nrules = cwd_dir.join('.local_rules')
+    nrules = cwd_dir.join('.local_rules')     # rule file with different name
     mklistsrc = cwd_dir.join(MKLISTSRC_NAME)
-    mklistsrc2 = cwd_dir.join('.mklistsrc2')
-    mklistsrc3 = cwd_dir.join('.mklistsrc3')
+    mklistsrc2 = cwd_dir.join('.mklistsrc2')  # minimal .mklistsrc
+    mklistsrc3 = cwd_dir.join('.mklistsrc3')  # empty .mklistsrc
 
     # Write to filehandles.
     lrules.write(BUILTIN_LRULES)
@@ -48,8 +38,9 @@ def fixture_cwd_configured(tmpdir_factory):
     mklistsrc2.write("{ 'rules': '.local_rules' }")
     mklistsrc3.write("")
 
-    # Return subdirectory with three new files.
+    # Return subdirectory with six new files.
     return cwd_dir
+
 
 @pytest.mark.updconfig
 def test_update_config_experiment(cwd_configured):
@@ -59,6 +50,7 @@ def test_update_config_experiment(cwd_configured):
     print(os.getcwd())
     print(os.listdir())
 
+
 @pytest.mark.updconfig
 def test_update_settings_from_configfile(cwd_configured):
     """@@@docstring"""
@@ -67,27 +59,32 @@ def test_update_settings_from_configfile(cwd_configured):
     print(type(BUILTIN_MKLISTSRC))
     assert updated_config_dict == BUILTIN_MKLISTSRC
 
+
 @pytest.mark.updconfig
 def test_update_settings_from_configfile_something_changed(cwd_configured):
     """Config file consists of just one key/value pair.
     Illustrates that .mklistsrc need not cover all mklists settings.
     Note: cwd_configured directory fixture has file '.mklistsrc2'."""
     os.chdir(cwd_configured)
-    updated_config_dict = update_settings_from_configfile(configfile_name='.mklistsrc2')
+    updated_config_dict = update_settings_from_configfile(
+        configfile_name='.mklistsrc2')
     assert updated_config_dict['rules'] == BUILTIN_MKLISTSRC['rules']
+
 
 @pytest.mark.updconfig
 def test_update_settings_from_configfile_empty(cwd_configured):
     """Config file '.mklistsrc3' is empty (length=0)."""
     os.chdir(cwd_configured)
-    updated_config_dict = update_settings_from_configfile(configfile_name='.mklistsrc3')
+    updated_config_dict = update_settings_from_configfile(
+        configfile_name='.mklistsrc3')
     assert updated_config_dict == BUILTIN_MKLISTSRC
 
+
 def update_settings_from_configfile(builtinctx_dict=BUILTIN_MKLISTSRC,
-                                    configfile_name=MKLISTSRC_NAME, 
+                                    configfile_name=MKLISTSRC_NAME,
                                     verbose=False):
     """Returns settings dict of built-ins updated from config file.
-    
+
     Reads mklists config file from disk:
     * Settings read from file may override some of the builtin settings.
     * Handles empty config file.
@@ -112,35 +109,6 @@ def update_settings_from_configfile(builtinctx_dict=BUILTIN_MKLISTSRC,
         raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
 
 
-
-# 2018-10-26: Will not work unless function can return dir obj with files.
-# @pytest.fixture(scope='module')
-# def working_directory_with_config_files2():
-#     """Return temporary working directory with .rules and .mklistsrc."""
-# 
-#     runner = CliRunner()
-#     with runner.isolated_filesystem():
-#         with open(BUILTIN_LRULEFILE_NAME, 'w') as f:
-#             f.write(BUILTIN_LRULES)
-#         with open(MKLISTSRC_NAME, 'w') as f:
-#             f.write(str(BUILTIN_MKLISTSRC))
-#         yield
-
-
-
-@pytest.mark.skip
-def test_write_initial_configfile(tmpdir):
-    """Tests two functions write-to-read round-trip."""
-    os.chdir(tmpdir)
-    configfile_name = tmpdir.join(MKLISTSRC_NAME)
-    write_initial_configfile(
-        ctxfile_name=configfile_name,
-        givenctx_dict=BUILTIN_MKLISTSRC)
-    updated_context = update_settings_from_configfile(
-                          ctxfile_name=configfile_name, 
-                          givenctx_dict=BUILTIN_MKLISTSRC)
-    assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
-
 @pytest.mark.updconfig
 def test_write_initial_configfile(tmpdir):
     """Tests two functions write-to-read round-trip."""
@@ -150,16 +118,19 @@ def test_write_initial_configfile(tmpdir):
         settings_dict=BUILTIN_MKLISTSRC,
         configfile_name=mklistsrc)
     updated_context = update_settings_from_configfile(
-                          builtinctx_dict=BUILTIN_MKLISTSRC,
-                          configfile_name=mklistsrc)
+        builtinctx_dict=BUILTIN_MKLISTSRC,
+        configfile_name=mklistsrc)
     assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
 
+
 @pytest.mark.updconfig
-def test_update_config(tmpdir):
-    context_given = { 'a': 'foo', 'b': 'bar' }
-    context_from_disk = { 'b': 'baz' }
-    context_expected = { 'a': 'foo', 'b': 'baz' }
+def test_update_config():
+    """@@@docstring"""
+    context_given = {'a': 'foo', 'b': 'bar'}
+    context_from_disk = {'b': 'baz'}
+    context_expected = {'a': 'foo', 'b': 'baz'}
     assert _update_config(context_given, context_from_disk) == context_expected
+
 
 def _update_config(given_settings=None, new_settings=None):
     """Returns settings with some values overridden by new settings."""
