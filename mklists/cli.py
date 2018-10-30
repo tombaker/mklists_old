@@ -51,11 +51,7 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     """Sync your plain-text todo lists to evolving rules"""
 
     # "Untoucable" dictionary of cli() parameters snapshotted as mutable dict:
-    # -- Omits 'ctx', the context object itself.
-    # -- Omits 'datadir', used just once so not saved on context object.
-    cliargs = locals()
-    cliargs.pop('ctx', None)
-    cliargs.pop('datadir', None)
+    settings_from_cli = locals()
 
     # If non-default datadir given on command line, change to that directory.
     # If directory is not accessible, exit with error message.
@@ -75,12 +71,10 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
             configfile_name=MKLISTSRC_NAME, 
             verbose=ctx.obj['verbose'])
 
-    # Override context-object settings with CLI-specified settings ("not None").
-    for item in cliargs:
-        if cliargs[item] is not None:
-            ctx.obj[item] = cliargs[item]
+    # Override context-object settings with CLI-specified settings.
+    apply_overrides_from_cli(settings=ctx.obj, clisettings=settings_from_cli)
 
-    # Show detailed exposition of current settings resulting from the above.
+    # Show explanation of settings that result from the above.
     if verbose:
         explain(**ctx.obj)
 
