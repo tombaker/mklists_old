@@ -20,7 +20,6 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC_NAM
 from mklists.rule import Rule
 
 
-
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
     """Writes string in YAML format to file."""
     with open(yamlfile_name, "w") as fout:
@@ -75,7 +74,7 @@ def write_initial_configfile(settings_dict=None,
                 fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
 
-def update_settings_from_configfile(builtinctx_dict=BUILTIN_MKLISTSRC,
+def apply_overrides_from_file(builtinctx_dict=BUILTIN_MKLISTSRC,
                                     configfile_name=MKLISTSRC_NAME,
                                     verbose=False):
     """Returns settings dict of built-ins updated from config file.

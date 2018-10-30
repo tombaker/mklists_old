@@ -50,8 +50,12 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
         urlify, urlify_dir, dryrun, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
-    # "Untoucable" dictionary of cli() parameters snapshotted as mutable dict.
+    # "Untoucable" dictionary of cli() parameters snapshotted as mutable dict:
+    # -- Omits 'ctx', the context object itself.
+    # -- Omits 'datadir', used just once so not saved on context object.
     cliargs = locals()
+    cliargs.pop('ctx', None)
+    cliargs.pop('datadir', None)
 
     # If non-default datadir given on command line, change to that directory.
     # If directory is not accessible, exit with error message.
@@ -66,16 +70,14 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
     # Read config file MKLISTSRC_NAME, overriding some settings in context object.
     # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
     if ctx.invoked_subcommand != 'init':
-        update_settings_from_configfile(
+        apply_overrides_from_file(
             builtinctx_dict=ctx.obj, 
             configfile_name=MKLISTSRC_NAME, 
             verbose=ctx.obj['verbose'])
 
-    # Save settings specified on command line ("not None") to context object.
-    # -- Omits 'ctx', the context object itself.
-    # -- Omits 'datadir', used just once so not saved on context object.
+    # Override context-object settings with CLI-specified settings ("not None").
     for item in cliargs:
-        if item != 'ctx' and item != 'datadir' and cliargs[item] is not None:
+        if cliargs[item] is not None:
             ctx.obj[item] = cliargs[item]
 
     # Show detailed exposition of current settings resulting from the above.

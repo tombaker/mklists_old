@@ -8,55 +8,55 @@ from mklists import (
     VALID_FILENAME_CHARS)
 from mklists.readwrite import (
     write_initial_configfile,
-    update_settings_from_configfile,
+    apply_overrides_from_file,
     _update_config)
 
 
 @pytest.mark.updconfig
-def test_update_settings_from_configfile(cwd_configured):
-    """update_settings_from_configfile() should return builtin settings."""
+def test_apply_overrides_from_file(cwd_configured):
+    """apply_overrides_from_file() should return builtin settings."""
     os.chdir(cwd_configured)
-    updated_config_dict = update_settings_from_configfile()
+    updated_config_dict = apply_overrides_from_file()
     assert updated_config_dict == BUILTIN_MKLISTSRC
 
 
 @pytest.mark.updconfig
-def test_update_settings_from_configfile_something_changed(cwd_configured):
+def test_apply_overrides_from_file_something_changed(cwd_configured):
     """Config file consists of just one key/value pair.
     Illustrates that .mklistsrc need not cover all mklists settings.
     Note: cwd_configured directory fixture has file '.mklistsrc2'."""
     os.chdir(cwd_configured)
-    updated_config_dict = update_settings_from_configfile(
+    updated_config_dict = apply_overrides_from_file(
         configfile_name='.mklistsrc2')
     assert updated_config_dict['rules'] == BUILTIN_MKLISTSRC['rules']
 
 
 @pytest.mark.updconfig
-def test_update_settings_from_configfile_empty(cwd_configured):
+def test_apply_overrides_from_file_empty(cwd_configured):
     """Config file '.mklistsrc3' is empty (length=0)."""
     os.chdir(cwd_configured)
-    updated_config_dict = update_settings_from_configfile(
+    updated_config_dict = apply_overrides_from_file(
         configfile_name='.mklistsrc3')
     assert updated_config_dict == BUILTIN_MKLISTSRC
 
 
 @pytest.mark.updconfig
-def test_update_settings_from_configfile_not_found(tmpdir):
+def test_apply_overrides_from_file_not_found(tmpdir):
     """Mklists exits if configfile is not found."""
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
-        update_settings_from_configfile()
+        apply_overrides_from_file()
 
 
 @pytest.mark.updconfig
 def test_write_initial_configfile(tmpdir):
     """Tests that two functions correctly round-trip:
     * write_initial_configfile()
-    * update_settings_from_configfile()"""
+    * apply_overrides_from_file()"""
     os.chdir(tmpdir)
     mklistsrc = tmpdir.join(MKLISTSRC_NAME)
     write_initial_configfile(configfile_name=mklistsrc)
-    updated_context = update_settings_from_configfile()
+    updated_context = apply_overrides_from_file()
     assert updated_context['valid_filename_characters'] == VALID_FILENAME_CHARS
 
 
