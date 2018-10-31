@@ -5,9 +5,10 @@ import click
 import os
 from click.testing import CliRunner
 from mklists.cli import cli
-from mklists.readwrite import (
-    get_settings_from_cli, 
-    apply_overrides_from_cli)
+from mklists.cli.cli import apply_overrides_from_cli
+#from mklists.readwrite import (
+#    get_settings_from_cli, 
+#    apply_overrides_from_cli)
 from mklists import (MKLISTSRC_NAME, BUILTIN_MKLISTSRC, BUILTIN_GRULES, 
     BUILTIN_LRULES, BUILTIN_GRULEFILE_NAME, BUILTIN_LRULEFILE_NAME,
     VALID_FILENAME_CHARS)
@@ -22,19 +23,12 @@ def test_cli_set_datadir(cwd_configured):
         '--datadir', 
         '/Users/tbaker/mydata', 
         'run'])
-    print(locals())
-    print(locals())
-    print(locals())
-    print(locals())
-    print(locals())
-    print(locals())
-    print(locals())
-    #print(get_settings_from_cli(cli_settings=locals()))
+    print(cli.apply_overrides_from_cli())
     #print(get_settings_from_cli(cli_settings=locals())['datadir'])
     #print(apply_overrides_from_cli())
     #assert get_settings_from_cli()['datadir'] == apply_overrides_from_cli()['datadir']
-    assert get_settings_from_cli(cli_settings=locals()) == 'what'
-    assert 0
+    #assert get_settings_from_cli() == 'what'
+    #assert 0
 
 #   --datadir DIRPATH       Set working directory [default './']
 #   --globalrules FILEPATH  Set global rules [default './.globalrules']

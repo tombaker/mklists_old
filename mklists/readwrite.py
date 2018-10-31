@@ -109,21 +109,6 @@ def _update_config(given_settings=None, new_settings=None):
     return given_settings
 
 
-def get_settings_from_cli(cli_settings=None):
-    return cli_settings
-
-def apply_overrides_from_cli(clisettings=None):
-    """@@@docstring
-    Note that by default, all click parameters are set to None. (check)
-    -- Omits 'ctx', the context object itself.
-    -- Omits 'datadir', used just once so not saved on context object."""
-    clisettings.pop('ctx', None)
-    clisettings.pop('datadir', None)
-    for item in clisettings:
-        if clisettings[item] is not None:
-            ctx.obj[item] = clisettings[item]
-    return ctx.obj
-
 
 def write_initial_rulefiles(global_rulefile_name=BUILTIN_GRULEFILE_NAME, 
                             local_rulefile_name=BUILTIN_LRULEFILE_NAME, 
