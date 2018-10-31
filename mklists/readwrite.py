@@ -19,6 +19,17 @@ from mklists import (VALID_FILENAME_CHARS, URL_PATTERN, TIMESTAMP, MKLISTSRC_NAM
     NotUTF8Error, BadYamlError, BadYamlRuleError, ConfigFileNotFoundError)
 from mklists.rule import Rule
 
+def read_overrides_from_file(configfile_name):
+    """docstring"""
+    return yaml.load(open(configfile_name).read())
+
+def apply_overrides(context, overrides):
+    """docstring"""
+    overrides.pop('ctx', None)
+    overrides = {key: overrides[key] for key in overrides 
+                 if overrides[key] is not None}
+    context.update(overrides)
+    return context
 
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
     """Writes string in YAML format to file."""
@@ -72,42 +83,6 @@ def write_initial_configfile(settings_dict=None,
             print(f"Creating default {repr(configfile_name)}. Customize as needed.")
             with open(configfile_name, 'w') as fout:
                 fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-
-
-def apply_overrides_from_file(builtinctx_dict=BUILTIN_MKLISTSRC,
-                                    configfile_name=MKLISTSRC_NAME,
-                                    verbose=False):
-    """Returns settings dict of built-ins updated from config file.
-
-    Reads mklists config file from disk:
-    * Settings read from file may override some of the builtin settings.
-    * Handles empty config file.
-    * If config file is not found, exits, advises to run `mklists init`.
-
-    Args:
-        configfile_name: name of config file, by default '.mklistsrc'.
-        builtinctx_dict: dictionary with setting name (key) and value.
-
-    Returns:
-        updatedctx_dict: updated settings dictionary
-    """
-    try:
-        loadedctx_dict = yaml.load(open(configfile_name).read())
-        if not loadedctx_dict:
-            loadedctx_dict = dict()
-        updatedctx_dict = _update_config(builtinctx_dict, loadedctx_dict)
-        if verbose:
-            print(f"Updated context from {repr(configfile_name)}.")
-        return updatedctx_dict
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"First set up with `mklists init`.")
-
-
-def _update_config(given_settings=None, new_settings=None):
-    """Returns settings with some values overridden by new settings."""
-    given_settings.update(new_settings)
-    return given_settings
-
 
 
 def write_initial_rulefiles(global_rulefile_name=BUILTIN_GRULEFILE_NAME, 

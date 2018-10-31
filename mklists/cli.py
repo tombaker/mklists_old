@@ -10,8 +10,8 @@ from mklists.readwrite import (
     update_config_from_file,
     write_initial_configfile,
     write_initial_rulefiles,
-    apply_overrides_from_file,
-    #apply_overrides_from_cli,
+    read_overrides_from_file,
+    apply_overrides,
     get_datalines,
     write_urlified_datafiles
     )
@@ -52,40 +52,24 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
         urlify, urlify_dir, dryrun, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
-    # Snapshot a _copy_ of cli() parameters, a mutable dict.
-    settings_from_cli = locals().copy()
-    def apply_overrides_from_cli(context_object=None):
-        """@@@docstring
-        Note that by default, all click parameters are set to None. (check)
-        -- Omits 'ctx', the context object itself.
-        -- Omits 'datadir', used just once so not saved on context object."""
-        settings_from_cli.pop('ctx', None)
-        settings_from_cli.pop('datadir', None)
-        for item in settings_from_cli:
-            if settings_from_cli[item] is not None:
-                context_object[item] = settings_from_cli[item]
-        return context_object
+    # Snapshot CLI argument dictionary for items with values not None.
+    overrides_from_cli = locals().copy()
 
-    # If non-default datadir given on command line, change to that directory.
-    # If directory is not accessible, exit with error message.
+    # If non-default datadir provided, change to that directory.
     change_working_directory(datadir, verb=verbose)
 
-    # Settings dict: saved as ctx.obj for passing with @click.pass_context.
-    # 1. Initialized from string constant BUILTIN_MKLISTSRC.
-    # 2. Updated with any different settings found in file MKLISTSRC_NAME.
-    # 3. Updated with any settings specified on command line.
+    # Initialize settings dictionary initialized with string constant.
     ctx.obj = BUILTIN_MKLISTSRC
 
-    # Read config file MKLISTSRC_NAME, overriding some settings in context object.
-    # -- If `mklists` was invoked with subcommand 'init', this step is skipped.
+    # Update settings dictionary with overrides from config file.
+    # Skip this step if mklists was invoked with subcommand init.
     if ctx.invoked_subcommand != 'init':
-        apply_overrides_from_file(
-            builtinctx_dict=ctx.obj, 
-            configfile_name=MKLISTSRC_NAME, 
-            verbose=ctx.obj['verbose'])
+        overrides_from_file = read_overrides_from_file(MKLISTSRC_NAME)
+        ctx.obj = apply_overrides(ctx.obj, overrides_from_file)
 
-    # Override context-object settings with CLI-specified settings.
-    apply_overrides_from_cli(context_object=ctx.obj)
+    # Update settings dictionary with snapshot of CLI arguments.
+    ctx.obj = apply_overrides(ctx.obj, overrides_from_cli)
+    print(ctx.obj)
 
     # Show explanation of settings that result from the above.
     if verbose:
@@ -105,6 +89,11 @@ def init(ctx):
                             local_rulefile_name=RULEFILE_NAME,
                             verbose=ctx.obj['verbose'])
 
+
+@cli.command()
+@click.pass_context
+def nothing(ctx):
+    pass
 
 @cli.command()
 @click.pass_context

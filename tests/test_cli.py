@@ -1,48 +1,52 @@
 """@@@Docstring"""
 
-import pytest
-import click
 import os
-from click.testing import CliRunner
-from mklists.cli import cli
-from mklists.cli.cli import apply_overrides_from_cli
-#from mklists.readwrite import (
-#    get_settings_from_cli, 
-#    apply_overrides_from_cli)
-from mklists import (MKLISTSRC_NAME, BUILTIN_MKLISTSRC, BUILTIN_GRULES, 
-    BUILTIN_LRULES, BUILTIN_GRULEFILE_NAME, BUILTIN_LRULEFILE_NAME,
-    VALID_FILENAME_CHARS)
-from pathlib import Path
+import pytest
+import yaml
+from mklists.readwrite import (apply_overrides, read_overrides_from_file)
 
 
 @pytest.mark.cli
-def test_cli_set_datadir(cwd_configured):
-    """@@@docstring"""
-    runner = CliRunner()
-    runner.invoke(cli, args=[
-        '--datadir', 
-        '/Users/tbaker/mydata', 
-        'run'])
-    print(cli.apply_overrides_from_cli())
-    #print(get_settings_from_cli(cli_settings=locals())['datadir'])
-    #print(apply_overrides_from_cli())
-    #assert get_settings_from_cli()['datadir'] == apply_overrides_from_cli()['datadir']
-    #assert get_settings_from_cli() == 'what'
-    #assert 0
+def test_apply_overrides():
+    initial_context = {
+        'ctx': 'something',
+        'datadir': '.data',
+        'backup_dir': '.backups',
+        'backup_depth': 1}
+    overrides_from_file = {'backup_depth': 500}
+    updated_context = apply_overrides(initial_context, overrides_from_file)
+    expected_context = {
+        'ctx': 'something',
+        'datadir': '.data',
+        'backup_dir': '.backups',
+        'backup_depth': 500}
+    assert updated_context == expected_context
 
-#   --datadir DIRPATH       Set working directory [default './']
-#   --globalrules FILEPATH  Set global rules [default './.globalrules']
-#   --rules FILEPATH        Set local rules [default './.rules']
-#   --backup                Enable backups
-#   --backup-dir DIRPATH    Set backups directory [default './.backups/']
-#   --backup-depth INTEGER  Set backups to keep [default: '3']
-#   --urlify                Enable generation of HTML output
-#   --urlify-dir DIRPATH    Set HTML directory [default: './.html/']
-#   --dryrun                Run in read-only mode, for debugging
-#   --verbose               Enable verbose mode
-#   --version               Show version and exit
-#   --help                  Show help and exit
-# 
-# Commands:
-#   init  Generate default configuration and rule...
-#   run   Apply rules to re-write data files
+
+@pytest.mark.cli
+def test_apply_overrides2():
+    updated_context = {
+        'ctx': 'something',
+        'datadir': '.data',
+        'backup_dir': '.backups',
+        'backup_depth': 500}
+    overrides_from_cli = {
+        'datadir': None,
+        'backup_dir': None,
+        'backup_depth': 1000}
+    updated_context2 = apply_overrides(updated_context, overrides_from_cli)
+    expected_context = {
+        'ctx': 'something',
+        'datadir': '.data',
+        'backup_dir': '.backups',
+        'backup_depth': 1000}
+    assert updated_context2 == expected_context
+
+
+@pytest.mark.cli
+def test_read_overrides_from_file(tmpdir):
+    os.chdir(tmpdir)
+    settings_dict = {'backup_dir': '.backups', 'backup_depth': 6}
+    with open('.config', 'w') as fout:
+        fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
+    assert read_overrides_from_file('.config') == settings_dict

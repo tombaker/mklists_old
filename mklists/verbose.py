@@ -49,7 +49,7 @@ def explain(**sets):
     if sets['backup']:
         backup_dir_timestamped = '/'.join([sets['backup_dir'], TIMESTAMP])
         print("'backup' option is ON, so data files will be backed up ")
-        if backup_dir:
+        if backup_dir_timestamped:
             print(f"...to the directory {repr(backup_dir_timestamped)}.")
             print(f"...where the {repr(sets['backup_depth'])} most "
                    "recent backups will be kept.")
@@ -66,7 +66,7 @@ def explain(**sets):
     if sets['backup_depth']:
         print(f"...where last {sets['backup_depth']} backups will be kept.")
 
-    if sets['readonly']:
+    if sets['dryrun']:
         print("Will stop short of writing to disk or moving files.")
 
     if sets['valid_filename_characters']:
