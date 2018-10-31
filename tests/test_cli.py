@@ -3,7 +3,25 @@
 import os
 import pytest
 import yaml
-from mklists.readwrite import (apply_overrides, read_overrides_from_file)
+from mklists import (
+    BUILTIN_MKLISTSRC,
+    MKLISTSRC_NAME,
+    VALID_FILENAME_CHARS)
+from mklists.readwrite import (
+    write_initial_configfile,
+    read_overrides_from_file,
+    apply_overrides)
+
+
+@pytest.mark.cli
+def test_apply_overrides_from_file(cwd_configured):
+    """apply_overrides_from_file() should return builtin settings."""
+    os.chdir(cwd_configured)
+    context = {}
+    overrides_from_file = read_overrides_from_file(MKLISTSRC_NAME)
+    print(apply_overrides(context, overrides_from_file))
+    print(apply_overrides(context, overrides_from_file))
+    assert apply_overrides(context, overrides_from_file) == BUILTIN_MKLISTSRC
 
 
 @pytest.mark.cli

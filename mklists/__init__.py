@@ -28,7 +28,7 @@ BUILTIN_MKLISTSRC = {
     'verbose': False,
     'valid_filename_characters': VALID_FILENAME_CHARS,
     'invalid_filename_patterns': INVALID_FILENAME_PATS,
-    'files2dirs': None}
+    'files2dirs': ''}
 
 BUILTIN_GRULEFILE_NAME = '.globalrules'
 

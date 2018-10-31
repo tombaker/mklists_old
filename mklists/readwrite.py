@@ -59,11 +59,6 @@ def get_rules(local_rulefile_name=None, global_rulefile_name=None):
                 
     return ruleobj_list
 
-def update_config_from_file(file_name=MKLISTSRC_NAME, 
-                            settings_dict=BUILTIN_MKLISTSRC,
-                            verbose=False):
-    """See ../tests/test_update.py"""
-
 def write_initial_configfile(settings_dict=None,
                              configfile_name=MKLISTSRC_NAME,
                              dryrun=False,

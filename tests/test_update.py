@@ -12,13 +12,6 @@ from mklists.readwrite import (
     apply_overrides)
 
 
-@pytest.mark.skip
-def test_apply_overrides_from_file(cwd_configured):
-    """apply_overrides_from_file() should return builtin settings."""
-    os.chdir(cwd_configured)
-    updated_config_dict = apply_overrides_from_file()
-    assert updated_config_dict == BUILTIN_MKLISTSRC
-
 
 @pytest.mark.skip
 def test_apply_overrides_from_file_something_changed(cwd_configured):

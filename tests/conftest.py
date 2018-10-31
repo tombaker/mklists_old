@@ -28,7 +28,10 @@ def fixture_cwd_configured(tmpdir_factory):
     lrules.write(BUILTIN_LRULES)
     grules.write(BUILTIN_GRULES)
     nrules.write(BUILTIN_LRULES)
-    mklistsrc.write(BUILTIN_MKLISTSRC)
+    with open(mklistsrc, 'w') as fout:
+        fout.write(
+            yaml.safe_dump(BUILTIN_MKLISTSRC, 
+            default_flow_style=False))
     mklistsrc2.write("{ 'rules': '.local_rules' }")
     mklistsrc3.write("")
 
