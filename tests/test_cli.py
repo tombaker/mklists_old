@@ -14,6 +14,16 @@ from mklists.readwrite import (
 
 
 @pytest.mark.cli
+def test_apply_overrides_from_file_something_changed(cwd_configured):
+    """Config file consists of just one key/value pair.
+    Illustrates that .mklistsrc need not cover all mklists settings.
+    Note: cwd_configured directory fixture has file '.mklistsrc2'."""
+    os.chdir(cwd_configured)
+    updated_config_dict = read_overrides_from_file('.mklistsrc2')
+    print(f"rules: {updated_config_dict['rules']}")
+    assert updated_config_dict['rules'] != BUILTIN_MKLISTSRC['rules']
+
+@pytest.mark.cli
 def test_apply_overrides_from_file(cwd_configured):
     """apply_overrides_from_file() should return builtin settings."""
     os.chdir(cwd_configured)

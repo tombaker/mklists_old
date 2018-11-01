@@ -7,7 +7,6 @@ from mklists.rule import (
     apply_rules_to_datalines,
     )
 from mklists.readwrite import (
-    update_config_from_file,
     write_initial_configfile,
     write_initial_rulefiles,
     read_overrides_from_file,
@@ -19,32 +18,30 @@ from mklists.verbose import explain
 from mklists import (
     MKLISTSRC_NAME,
     RULEFILE_NAME,
-    BUILTIN_MKLISTSRC,
-    DatadirNotAccessibleError,
-    NoDataError)
+    BUILTIN_MKLISTSRC)
 
 
 @click.group()
 @click.option('--datadir', type=str, metavar='DIRPATH',
-        help="Set working directory [default './']")
+              help="Set working directory [default './']")
 @click.option('--globalrules', type=str, metavar='FILEPATH',
-        help="Set global rules [default './.globalrules']")
+              help="Set global rules [default './.globalrules']")
 @click.option('--rules', type=str, metavar='FILEPATH',
-        help="Set local rules [default './.rules']")
+              help="Set local rules [default './.rules']")
 @click.option('--backup', type=bool, is_flag=True,
-        help="Enable backups")
+              help="Enable backups")
 @click.option('--backup-dir', type=str, metavar='DIRPATH',
-        help="Set backups directory [default './.backups/']")
+              help="Set backups directory [default './.backups/']")
 @click.option('--backup-depth', type=int, metavar='INTEGER',
-        help="Set backups to keep [default: '3']")
+              help="Set backups to keep [default: '3']")
 @click.option('--urlify', type=bool, is_flag=True,
-        help="Enable generation of HTML output")
+              help="Enable generation of HTML output")
 @click.option('--urlify-dir', type=str, metavar='DIRPATH',
-        help="Set HTML directory [default: './.html/']")
+              help="Set HTML directory [default: './.html/']")
 @click.option('--dryrun', type=bool, is_flag=True,
-        help="Run in read-only mode, for debugging")
+              help="Run in read-only mode, for debugging")
 @click.option('--verbose', type=bool, is_flag=True,
-        help="Enable verbose mode")
+              help="Enable verbose mode")
 @click.version_option('0.1.4', help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
@@ -81,19 +78,16 @@ def cli(ctx, datadir, globalrules, rules, backup, backup_dir, backup_depth,
 def init(ctx):
     """Generate default configuration and rule files."""
 
-    write_initial_configfile(context=ctx.obj,
-                             filename=MKLISTSRC_NAME,
-                             verbose=ctx.obj['verbose'])
+    write_initial_configfile(
+        context=ctx.obj,
+        filename=MKLISTSRC_NAME,
+        verbose=ctx.obj['verbose'])
 
-    write_initial_rulefiles(global_rulefile_name=None,
-                            local_rulefile_name=RULEFILE_NAME,
-                            verbose=ctx.obj['verbose'])
+    write_initial_rulefiles(
+        global_rulefile_name=None,
+        local_rulefile_name=RULEFILE_NAME,
+        verbose=ctx.obj['verbose'])
 
-
-@cli.command()
-@click.pass_context
-def nothing(ctx):
-    pass
 
 @cli.command()
 @click.pass_context
@@ -144,7 +138,13 @@ def run(ctx):
                                  dryrun=True,  # later: ctx.obj['dryrun'],
                                  verbose=ctx.obj['verbose'])
 
-    # If 'files2dirs' is ON, settable only in MKLISTSRC_NAME (not on command line),
+    # If 'files2dirs' is ON, settable only in MKLISTSRC_NAME (not command line),
     # move selected files to external directories.
     if ctx.obj['files2dirs']:
-        move_files_to_external_directories(files2dirs_dict=ctx.obj['files2dirs'])
+        move_files_to_external_directories(ctx.obj['files2dirs'])
+
+
+@cli.command()
+@click.pass_context
+def nothing(ctx):
+    pass
