@@ -3,7 +3,7 @@
 import glob
 import click
 from mklists.utils import change_working_directory
-from mklists.rule import apply_rules_to_datalines
+from mklists.rules import apply_rules_to_datalines
 from mklists.readwrite import (
     apply_overrides,
     get_datalines,

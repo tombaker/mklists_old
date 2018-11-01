@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from mklists.rule import Rule, apply_rules_to_datalines, _line_matches
+from mklists.rules import Rule, apply_rules_to_datalines, _line_matches
 from mklists import UninitializedSourceError, BUILTIN_GRULES
 from mklists.readwrite import (write_yamlstr_to_yamlfile, 
     read_yamlfile_return_pyobject)

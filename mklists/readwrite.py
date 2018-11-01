@@ -33,7 +33,7 @@ from mklists import (
     NoRulesError,
     NotUTF8Error,
 )
-from mklists.rule import Rule
+from mklists.rules import Rule
 
 
 def read_overrides_from_file(configfile_name):
