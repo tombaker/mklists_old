@@ -47,7 +47,7 @@ def fixture_cwd_configured(tmpdir_factory):
 def reinitialize_ruleclass_variables():
     """Class variables must be re-initialized:
         for each test of Rule.isrule
-        for each test of x._source_is_precedented
+        for each test of x._source_was_previously_declared
         for each test of Rule.sources_list"""
     Rule.sources_list = []
     Rule.sources_list_is_initialized = False

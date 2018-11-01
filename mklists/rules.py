@@ -1,7 +1,8 @@
 """Rule module
 
-* Function for applying a given set of rules to a give set of data lines.
-* Rule class, which holds fields and self-validation methods for a single rule.
+* Initializes, self-tests, and lightly corrects the data object for a 
+  single rule.
+* Applies rules, one by one, to process an aggregated list of datalines.
 """
 
 import re
@@ -22,11 +23,11 @@ from mklists.utils import has_valid_name
 
 
 def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
-    """Applies rules, one by one, to process a list of datalines.
+    """Applies rules, one by one, to process an aggregated list of datalines.
 
     Args:
         ruleobjs_list: list of rule objects
-        datalines_list: list of all data lines
+        datalines_list: list of strings (all data lines)
 
     Returns:
         mklists_dict - dictionary where:
@@ -45,14 +46,14 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
     # Evaluate rules, one-by-one, to process entries in mklists_dict.
     for ruleobj in ruleobjs_list:
 
-        # Initialize dictionary with first entry with the first ruleobj:
-        #    key: a valid filename (from 'source' field of the first ruleobj)
-        #    value: all data lines (consolidated from all files on disk)
+        # Initialize mklists_dict with first rule.
+        #    key: valid filename (from 'source' field of first ruleobj)
+        #    value: list of all data lines
         if not first_key_is_initialized:
             mklists_dict[ruleobj.source] = datalines_list
             first_key_is_initialized = True
 
-        # Evaluate 'source' lines against the ruleobj
+        # Match lines in 'ruleobj.source' against 'rulesobj.regex'.
         #    append matching lines to value of 'ruleobj.target'
         #    remove matching lines from value of 'ruleobj.source'
         for line in mklists_dict[ruleobj.source]:
@@ -60,7 +61,7 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
                 mklists_dict[ruleobj.target].extend([line])
                 mklists_dict[ruleobj.source].remove(line)
 
-        # Sort matching lines by field - if a valid sortorder was specified.
+        # Sort 'ruleobj.target' lines by field if sortorder was specified.
         if ruleobj.target_sortorder:
             eth_sortorder = ruleobj.target_sortorder - 1
             decorated = [
@@ -103,8 +104,8 @@ class Rule:
     Dataclass Fields:
         source_matchfield: number of whitespace-delimited field matched
         source_matchpattern: regex for matching to source_matchfield value
-        source: a string valid as a filename (uses valid characters)
-        target: a string valid as a filename (uses valid characters)
+        source: string valid as filename (uses valid characters)
+        target: string valid as filename (uses valid characters)
         target_sortorder: field on which target value is to be sorted
     """
 
@@ -122,7 +123,7 @@ class Rule:
 
         * source_matchfield and target_sortorder are integers.
         * source_matchpattern is valid.
-        * filenames use valid_filename_characters.
+        * filenames consist of valid characters and patterns.
         * source does not equal target.
         * every source (except the first) has been previously declared.
         """
@@ -130,13 +131,12 @@ class Rule:
         self._source_matchpattern_is_valid()
         self._filenames_are_valid(valid_filename_characters)
         self._source_is_not_equal_target()
-        self._source_is_precedented()
+        self._source_was_previously_declared()
         return True
 
     def _number_fields_are_integers(self):
-        """Returns True
-        * if source_matchfield and target_sortorder are integers - or
-        * if the fields can be silently converted into integers"""
+        """Returns True if source_matchfield, target_sortorder are integers.
+        Silently converts string integers into integers."""
         for field in [self.source_matchfield, self.target_sortorder]:
             if not isinstance(field, int):
                 try:
@@ -153,7 +153,7 @@ class Rule:
         except re.error:
             print(f"In rule: {self}")
             raise SourceMatchpatternError(
-                f"source_matchpattern is not valid as a regular expression "
+                f"source_matchpattern is not valid as a regex "
                 "-- try escaping metacharacters."
             )
         return True
@@ -175,11 +175,8 @@ class Rule:
             raise SourceEqualsTargetError("source must not equal target.")
         return True
 
-    def _source_is_precedented(self):
-        """Checks if source in list of previously registered sources:
-        * initializes list of sources from first rule
-        * if source is not in list of sources, raise exception and exit
-        * if source is in list of sources, add target to list of sources"""
+    def _source_was_previously_declared(self):
+        """Returns True if 'source' filename is registered as a source."""
         if not Rule.sources_list_is_initialized:
             Rule.sources_list.append(self.source)
             Rule.sources_list_is_initialized = True

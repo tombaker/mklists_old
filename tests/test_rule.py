@@ -81,7 +81,7 @@ def test_rule_has_string_where_integer_required(
 
 
 @pytest.mark.rule
-def test_source_is_precedented(reinitialize_ruleclass_variables):
+def test_source_was_previously_declared(reinitialize_ruleclass_variables):
     x = Rule(1, "NOW", "a.txt", "b.txt", 0)
     x.is_valid()
     y = Rule(1, "LATER", "b.txt", "c.txt", 0)
