@@ -187,7 +187,7 @@ def _get_filelines(thing_in_directory, invalid_patterns=None):
         for line in rfile:
             if not line:
                 raise BlankLinesError(
-                    f"{thing_in_directory} is not valid as"
+                    f"{thing_in_directory} is not valid as "
                     "data because it has blank lines."
                 )
             all_lines.append(line)

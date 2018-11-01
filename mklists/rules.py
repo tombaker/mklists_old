@@ -1,4 +1,4 @@
-"""Rule module
+"""Rules module
 
 * Initializes, self-tests, and lightly corrects the data object for a 
   single rule.
