@@ -1,4 +1,4 @@
-"""Rule module 
+"""Rule module
 
 * Function for applying a given set of rules to a give set of data lines.
 * Rule class, which holds fields and self-validation methods for a single rule.
@@ -16,8 +16,10 @@ from mklists import (
     BadFilenameError,
     SourceEqualsTargetError,
     SourceMatchpatternError,
-    UninitializedSourceError)
+    UninitializedSourceError,
+)
 from mklists.utils import has_valid_name
+
 
 def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
     """Applies rules, one by one, to process a list of datalines.
@@ -61,12 +63,14 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
         # Sort matching lines by field - if a valid sortorder was specified.
         if ruleobj.target_sortorder:
             eth_sortorder = ruleobj.target_sortorder - 1
-            decorated = [(line.split()[eth_sortorder], __, line)
-                         for (__, line) 
-                         in enumerate(mklists_dict[ruleobj.target])]
+            decorated = [
+                (line.split()[eth_sortorder], __, line)
+                for (__, line) in enumerate(mklists_dict[ruleobj.target])
+            ]
             decorated.sort()
-            mklists_dict[ruleobj.target] = [line for (___, __, line) 
-                                        in decorated]
+            mklists_dict[ruleobj.target] = [
+                line for (___, __, line) in decorated
+            ]
 
     return dict(mklists_dict)
 
@@ -103,6 +107,7 @@ class Rule:
         target: a string valid as a filename (uses valid characters)
         target_sortorder: field on which target value is to be sorted
     """
+
     source_matchfield: int = None
     source_matchpattern: str = None
     source: str = None
@@ -129,7 +134,7 @@ class Rule:
         return True
 
     def _number_fields_are_integers(self):
-        """Returns True 
+        """Returns True
         * if source_matchfield and target_sortorder are integers - or
         * if the fields can be silently converted into integers"""
         for field in [self.source_matchfield, self.target_sortorder]:
@@ -149,17 +154,19 @@ class Rule:
             print(f"In rule: {self}")
             raise SourceMatchpatternError(
                 f"source_matchpattern is not valid as a regular expression "
-                "-- try escaping metacharacters.")
+                "-- try escaping metacharacters."
+            )
         return True
 
     def _filenames_are_valid(self, valid_chars=VALID_FILENAME_CHARS):
-        """Returns True if filenames use only valid characters. 
+        """Returns True if filenames use only valid characters.
         TODO Somehow combine this with utils:has_valid_name"""
         for filename in [self.source, self.target]:
             if not has_valid_name(filename):
                 print(f"In rule: {self}")
                 raise BadFilenameError(
-                    f"{repr(filename)} is not a valid filename.")
+                    f"{repr(filename)} is not a valid filename."
+                )
         return True
 
     def _source_is_not_equal_target(self):
@@ -180,8 +187,8 @@ class Rule:
             print(f"In rule: {self}")
             print(f"Rule.sources_list = {Rule.sources_list}")
             raise UninitializedSourceError(
-                f"{repr(self.source)} not initialized.")
+                f"{repr(self.source)} not initialized."
+            )
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
-

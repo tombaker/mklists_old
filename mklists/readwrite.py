@@ -13,25 +13,25 @@ import sys
 import pprint
 import yaml
 from mklists import (
-    VALID_FILENAME_CHARS,
-    URL_PATTERN,
-    TIMESTAMP,
-    MKLISTSRC_NAME,
-    BUILTIN_GRULES,
-    BUILTIN_LRULES,
     BUILTIN_GRULEFILE_NAME,
-    BUILTIN_MKLISTSRC,
+    BUILTIN_GRULES,
     BUILTIN_LRULEFILE_NAME,
+    BUILTIN_LRULES,
+    BUILTIN_MKLISTSRC,
+    MKLISTSRC_NAME,
+    TIMESTAMP,
+    URL_PATTERN,
+    VALID_FILENAME_CHARS,
     BadFilenameError,
+    BadYamlError,
+    BadYamlRuleError,
     BlankLinesError,
+    ConfigFileNotFoundError,
     DatadirHasNonFilesError,
     InitError,
     NoDataError,
     NoRulesError,
     NotUTF8Error,
-    BadYamlError,
-    BadYamlRuleError,
-    ConfigFileNotFoundError,
 )
 from mklists.rule import Rule
 

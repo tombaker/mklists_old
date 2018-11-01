@@ -5,11 +5,15 @@ import click
 from mklists.utils import change_working_directory
 from mklists.rule import apply_rules_to_datalines
 from mklists.readwrite import (
-    write_initial_configfile,
-    write_initial_rulefiles,
-    read_overrides_from_file,
     apply_overrides,
     get_datalines,
+    get_rules,
+    move_datafiles_to_backup,
+    move_files_to_external_directories,
+    read_overrides_from_file,
+    write_initial_configfile,
+    write_initial_rulefiles,
+    write_new_datafiles,
     write_urlified_datafiles,
 )
 from mklists.verbose import explain
@@ -30,7 +34,10 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
     help="Set global rules [default './.globalrules']",
 )
 @click.option(
-    "--rules", type=str, metavar="FILEPATH", help="Set local rules [default './.rules']"
+    "--rules",
+    type=str,
+    metavar="FILEPATH",
+    help="Set local rules [default './.rules']",
 )
 @click.option("--backup", type=bool, is_flag=True, help="Enable backups")
 @click.option(
@@ -46,7 +53,10 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
     help="Set backups to keep [default: '3']",
 )
 @click.option(
-    "--urlify", type=bool, is_flag=True, help="Enable generation of HTML output"
+    "--urlify",
+    type=bool,
+    is_flag=True,
+    help="Enable generation of HTML output",
 )
 @click.option(
     "--urlify-dir",
@@ -55,7 +65,10 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
     help="Set HTML directory [default: './.html/']",
 )
 @click.option(
-    "--dryrun", type=bool, is_flag=True, help="Run in read-only mode, for debugging"
+    "--dryrun",
+    type=bool,
+    is_flag=True,
+    help="Run in read-only mode, for debugging",
 )
 @click.option("--verbose", type=bool, is_flag=True, help="Enable verbose mode")
 @click.version_option("0.1.4", help="Show version and exit")
@@ -176,8 +189,7 @@ def run(ctx):
             verbose=ctx.obj["verbose"],
         )
 
-    # If 'files2dirs' is ON, settable only in MKLISTSRC_NAME (not command line),
-    # move selected files to external directories.
+    # If 'files2dirs' is ON, move selected files to external directories.
     if ctx.obj["files2dirs"]:
         move_files_to_external_directories(ctx.obj["files2dirs"])
 
