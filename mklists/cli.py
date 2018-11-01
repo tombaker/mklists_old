@@ -92,7 +92,7 @@ def cli(
     # Snapshot CLI argument dictionary for items with values not None.
     overrides_from_cli = locals().copy()
 
-    # If non-default datadir provided, change to that directory.
+    # If non-default datadir was specified, change to that directory.
     change_working_directory(datadir, verb=verbose)
 
     # Initialize settings dictionary initialized with string constant.
