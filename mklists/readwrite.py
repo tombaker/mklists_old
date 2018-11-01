@@ -57,7 +57,7 @@ def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
         fout.write(yamlstr)
 
 
-def read_yamlfile_parseto_pyobject(yamlfile_name):
+def read_yamlfile_return_pyobject(yamlfile_name):
     """Returns Python object parsed from YAML-format file."""
     try:
         return yaml.safe_load(open(yamlfile_name))
@@ -69,7 +69,7 @@ def get_rules(local_rulefile_name=None, global_rulefile_name=None):
     aggregated_rules_list = []
     for rulefile_name in global_rulefile_name, local_rulefile_name:
         if rulefile_name:
-            rules_list = read_yamlfile_parseto_pyobject(rulefile_name)
+            rules_list = read_yamlfile_return_pyobject(rulefile_name)
             aggregated_rules_list = aggregated_rules_list + rules_list
     ruleobj_list = []
     for item in aggregated_rules_list:

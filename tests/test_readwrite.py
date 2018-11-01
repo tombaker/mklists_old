@@ -17,7 +17,6 @@ from mklists.readwrite import (
     write_initial_rulefiles,
     write_initial_configfile,
     write_yamlstr_to_yamlfile,
-    read_yamlfile_parseto_pyobject,
 )
 
 
