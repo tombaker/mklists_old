@@ -5,33 +5,37 @@ import os
 from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rule import Rule
-from mklists import (BUILTIN_MKLISTSRC, BUILTIN_GRULES, BUILTIN_LRULES,
-    BUILTIN_GRULEFILE_NAME, BUILTIN_LRULEFILE_NAME, MKLISTSRC_NAME)
+from mklists import (
+    BUILTIN_MKLISTSRC,
+    BUILTIN_GRULES,
+    BUILTIN_LRULES,
+    BUILTIN_GRULEFILE_NAME,
+    BUILTIN_LRULEFILE_NAME,
+    MKLISTSRC_NAME,
+)
 
 
-@pytest.fixture(name='cwd_configured')
+@pytest.fixture(name="cwd_configured")
 def fixture_cwd_configured(tmpdir_factory):
     """Return temporary directory configured with .rules and .mklistsrc."""
 
     # Create subdirectory of base temp directory, return, assign to 'cwd_dir'.
-    cwd_dir = tmpdir_factory.mktemp('mydir')
+    cwd_dir = tmpdir_factory.mktemp("mydir")
 
     # Create filehandles with basename 'cwd_dir'.
     lrules = cwd_dir.join(BUILTIN_LRULEFILE_NAME)
     grules = cwd_dir.join(BUILTIN_GRULEFILE_NAME)
-    nrules = cwd_dir.join('.local_rules')     # rule file with different name
+    nrules = cwd_dir.join(".local_rules")  # rule file with different name
     mklistsrc = cwd_dir.join(MKLISTSRC_NAME)
-    mklistsrc2 = cwd_dir.join('.mklistsrc2')  # minimal .mklistsrc
-    mklistsrc3 = cwd_dir.join('.mklistsrc3')  # empty .mklistsrc
+    mklistsrc2 = cwd_dir.join(".mklistsrc2")  # minimal .mklistsrc
+    mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
 
     # Write to filehandles.
     lrules.write(BUILTIN_LRULES)
     grules.write(BUILTIN_GRULES)
     nrules.write(BUILTIN_LRULES)
-    with open(mklistsrc, 'w') as fout:
-        fout.write(
-            yaml.safe_dump(BUILTIN_MKLISTSRC, 
-            default_flow_style=False))
+    with open(mklistsrc, "w") as fout:
+        fout.write(yaml.safe_dump(BUILTIN_MKLISTSRC, default_flow_style=False))
     mklistsrc2.write("{ 'rules': '.local_rules' }")
     mklistsrc3.write("")
 
@@ -48,11 +52,13 @@ def reinitialize_ruleclass_variables():
     Rule.sources_list = []
     Rule.sources_list_is_initialized = False
 
-@pytest.fixture(scope='module')
+
+@pytest.fixture(scope="module")
 def mklistsrc_yamlstr():
     """Return some YAML-formatted rules for writing to rule files."""
 
     return BUILTIN_MKLISTSRC
+
 
 @pytest.fixture()
 def grules_yamlstr():
@@ -60,14 +66,16 @@ def grules_yamlstr():
 
     return BUILTIN_GRULES
 
+
 @pytest.fixture()
 def lrules_yamlstr():
     """Returns some YAML-formatted rules for writing to rule files."""
 
     return BUILTIN_LRULES
 
-#@pytest.fixture(scope='module')
-#def rules_yamlfile(tmpdir_factory):
+
+# @pytest.fixture(scope='module')
+# def rules_yamlfile(tmpdir_factory):
 #    """Returns YAML-formatted file of rules."""
 #
 #    rules = tmpdir_factory.mktemp('datadir').join('rules')
@@ -75,7 +83,8 @@ def lrules_yamlstr():
 #    rules.write(dedent(lrules_yamlstr))
 #    return rules
 
-@pytest.fixture(scope='module')
+
+@pytest.fixture(scope="module")
 def rules_bad_yamlfile(tmpdir_factory):
     """Returns badly formatted YAML rulefile object: too many fields."""
 
@@ -83,29 +92,53 @@ def rules_bad_yamlfile(tmpdir_factory):
     - [0   , 'NOW'    , lines        , __RENAME__   , 0]
     - [0   , 'LATER'  , __RENAME__   , calendar     , 1, 5]"""
 
-    rules = tmpdir_factory.mktemp('datadir').join('rules')
+    rules = tmpdir_factory.mktemp("datadir").join("rules")
     print(f"Created 'rules': {repr(rules)}")
     rules.write(dedent(yaml_string))
     return rules
 
-@pytest.fixture(scope='module')
+
+@pytest.fixture(scope="module")
 def rules_bad_yamlfile2(tmpdir_factory):
     """Returns badly formatted YAML rulefile object: bad YAML syntax."""
 
     yaml_rule_data = """- [1, 2, 3, 4]\n+ [5, 6, 7, 8]"""
-    some_yamlfile = tmpdir_factory.mktemp('datadir').join('some_yamlfile')
+    some_yamlfile = tmpdir_factory.mktemp("datadir").join("some_yamlfile")
     print(f"Created 'some_yamlfile': {repr(some_yamlfile)}")
     some_yamlfile.write(dedent(yaml_rule_data))
     return some_yamlfile
 
-@pytest.fixture(scope='module')
+
+@pytest.fixture(scope="module")
 def rules_python():
     """Returns list of Rule objects."""
     return [
-                Rule(source_matchfield=0, source_matchpattern='.', source='lines', target='__RENAME__', target_sortorder=0),
-                Rule(source_matchfield=0, source_matchpattern='^= 20', source='__RENAME__', target='calendar', target_sortorder=1),
-                Rule(source_matchfield=0, source_matchpattern='NOW', source='lines', target='__RENAME__', target_sortorder=0),
-                Rule(source_matchfield=0, source_matchpattern='LATER', source='__RENAME__', target='calendar', target_sortorder=1)
-           ]
-
-
+        Rule(
+            source_matchfield=0,
+            source_matchpattern=".",
+            source="lines",
+            target="__RENAME__",
+            target_sortorder=0,
+        ),
+        Rule(
+            source_matchfield=0,
+            source_matchpattern="^= 20",
+            source="__RENAME__",
+            target="calendar",
+            target_sortorder=1,
+        ),
+        Rule(
+            source_matchfield=0,
+            source_matchpattern="NOW",
+            source="lines",
+            target="__RENAME__",
+            target_sortorder=0,
+        ),
+        Rule(
+            source_matchfield=0,
+            source_matchpattern="LATER",
+            source="__RENAME__",
+            target="calendar",
+            target_sortorder=1,
+        ),
+    ]

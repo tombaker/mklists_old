@@ -107,4 +107,3 @@ def test_linkified_line_with_two_urls():
     input = """see info (https://example1.org), http://example2.org)"""
     output = """see info (<a href="https://example1.org">https://example1.org</a>), <a href="http://example2.org">http://example2.org</a>)"""
     assert linkify(input) == output
-
