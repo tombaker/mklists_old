@@ -133,8 +133,7 @@ def init(ctx):
 @click.pass_context
 def run(ctx):
     """Apply rules to re-write data files"""
-    # Read rule files, parse, and get aggregated list of rules objects.
-    # -- Does not complain or exit if rules are empty @@@CHECK
+    # Read rule files and return aggregated list of rules objects.
     rules = get_rules(
         global_rulefile_name=ctx.obj["globalrules"],
         local_rulefile_name=ctx.obj["rules"],
@@ -142,15 +141,14 @@ def run(ctx):
         verbose=ctx.obj["verbose"],
     )
 
-    # Get aggregated list of lines from files in working directory.
+    # Read files in working directory and return aggregated list of lines.
     datalines = get_datalines(
         ls_visible=[name for name in glob.glob("*")],
         but_not=ctx.obj["invalid_filename_patterns"],
         verbose=ctx.obj["verbose"],
     )
 
-    # Apply rules to datalines (loads and modifies in-memory data dictionary).
-    # -- Exits with message if 'ruleobjs_list' or 'datalines_list' are empty.
+    # Apply rules (keys) to datalines (values) within a dictionary.
     mklists_dict = apply_rules_to_datalines(
         ruleobjs_list=rules, datalines_list=datalines
     )
