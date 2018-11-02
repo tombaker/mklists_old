@@ -82,23 +82,22 @@ def cli(
 ):
     """Sync your plain-text todo lists to evolving rules"""
 
-    # Snapshot CLI argument dictionary for items with values not None.
+    # Snapshot CLI arguments.
     overrides_from_cli = locals().copy()
 
-    # Initialize settings dictionary initialized with string constant.
+    # Initialize context object with default settings dictionary.
     ctx.obj = BUILTIN_MKLISTSRC
 
-    # Update settings dictionary with overrides from config file.
-    # Skip this step if mklists was invoked with subcommand init.
+    # Override settings in context object from configuration file.
     if ctx.invoked_subcommand != "init":
         overrides_from_file = read_overrides_from_file(MKLISTSRC_NAME)
         ctx.obj = apply_overrides(ctx.obj, overrides_from_file)
 
-    # Update settings dictionary with snapshot of CLI arguments.
+    # Override settings in context object from snapshot of CLI arguments.
     ctx.obj = apply_overrides(ctx.obj, overrides_from_cli)
     print(ctx.obj)
 
-    # Show explanation of settings that result from the above.
+    # Explain settings in context object.
     if verbose:
         explain(**ctx.obj)
 

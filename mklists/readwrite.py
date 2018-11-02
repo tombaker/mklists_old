@@ -195,43 +195,28 @@ def _get_filelines(thing_in_directory, invalid_patterns=None):
     return all_lines
 
 
-def move_datafiles_to_backup(
-    ls_visible=[], backup=False, backup_dir=None, backup_depth=None
-):
-    """If 'backup' is ON: 
-    before writing mklists_dict contents to disk, 
-    creates timestamped backup directory in specified backup_dir,
-    and moves all visible files in data directory to backup directory.
+def move_datafiles_to_backup(backup_depth=None):
     """
-    # First, make time-stamped backup_dir (and backup_dir itself if not exist)
-    # Move existing files to backup_dir
-    # Delete oldest backups:
-    # delete_oldest_backup(backup_dir, backup_depth):
-    #     lsd_visible = [item for item in glob.glob('*')
-    #                    if os.path.isdir(item)]
-    #     while len(lsd_visible) > backup_depth:
-    #         file_to_be_deleted = ls_visible.pop()
-    #         rm file_to_be_deleted
-    # for file in filelist:
-    #     shutil.move(file, backup_dir)
+    Make time-stamped directory in BACKUP_DIR_NAME (create constant!)
+    Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
+    Move existing files to backup_dir
+    Delete oldest backups:
+    delete_oldest_backup(backup_dir, backup_depth):
+        lsd_visible = [item for item in glob.glob('*')
+                       if os.path.isdir(item)]
+        while len(lsd_visible) > backup_depth:
+            file_to_be_deleted = ls_visible.pop()
+            rm file_to_be_deleted
+    for file in filelist:
+        shutil.move(file, backup_dir)
+    """
 
-
-def write_new_datafiles(
-    datalines_d=None,
-    dryrun=False,
-    backup=False,
-    backup_dir=None,
-    backup_depth=None,
-    verbose=False,
-):
-    # will call _move_datafiles_to_backup, using TIMESTAMP
-    # Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
-    # @@@@
+def write_data_to_disk_files(datalines_d=None, dryrun=False, verbose=False):
     pass
 
 
 # Write urlified data files to urlify_dir.
-def write_urlified_datafiles(
+def write_data_urlified_to_diskfiles(
     datalines_d={},
     urlify_dir=None,
     dryrun=True,  # later: ctx.obj['dryrun'],
