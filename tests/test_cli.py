@@ -37,7 +37,6 @@ def test_apply_overrides_from_file(cwd_configured):
 def test_apply_overrides():
     initial_context = {
         "ctx": "something",
-        "datadir": ".data",
         "backup_dir": ".backups",
         "backup_depth": 1,
     }
@@ -45,7 +44,6 @@ def test_apply_overrides():
     updated_context = apply_overrides(initial_context, overrides_from_file)
     expected_context = {
         "ctx": "something",
-        "datadir": ".data",
         "backup_dir": ".backups",
         "backup_depth": 500,
     }
@@ -56,19 +54,16 @@ def test_apply_overrides():
 def test_apply_overrides2():
     updated_context = {
         "ctx": "something",
-        "datadir": ".data",
         "backup_dir": ".backups",
         "backup_depth": 500,
     }
     overrides_from_cli = {
-        "datadir": None,
         "backup_dir": None,
         "backup_depth": 1000,
     }
     updated_context2 = apply_overrides(updated_context, overrides_from_cli)
     expected_context = {
         "ctx": "something",
-        "datadir": ".data",
         "backup_dir": ".backups",
         "backup_depth": 1000,
     }
