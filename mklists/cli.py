@@ -22,12 +22,6 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
 
 @click.group()
 @click.option(
-    "--datadir",
-    type=str,
-    metavar="DIRPATH",
-    help="Set working directory [default './']",
-)
-@click.option(
     "--globalrules",
     type=str,
     metavar="FILEPATH",
@@ -76,7 +70,6 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
 @click.pass_context
 def cli(
     ctx,
-    datadir,
     globalrules,
     rules,
     backup,
@@ -91,9 +84,6 @@ def cli(
 
     # Snapshot CLI argument dictionary for items with values not None.
     overrides_from_cli = locals().copy()
-
-    # If non-default datadir was specified, change to that directory.
-    change_working_directory(datadir, verb=verbose)
 
     # Initialize settings dictionary initialized with string constant.
     ctx.obj = BUILTIN_MKLISTSRC
