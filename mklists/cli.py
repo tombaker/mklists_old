@@ -13,8 +13,8 @@ from mklists.readwrite import (
     read_overrides_from_file,
     write_initial_configfile,
     write_initial_rulefiles,
-    write_new_datafiles,
-    write_urlified_datafiles,
+    write_data_to_disk_files,
+    write_data_urlified_to_disk_files,
 )
 from mklists.verbose import explain
 from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
@@ -160,7 +160,7 @@ def run(ctx):
     # -- mklists_dict keys are names of files.
     # -- mklists_dict values are contents of files.
     # -- If 'dryrun' is ON, will only print messages, not write to disk.
-    write_new_datafiles(
+    write_data_to_disk_files(
         datalines_d=mklists_dict,
         dryrun=True,  # later: ctx.obj['dryrun'],
         verbose=ctx.obj["verbose"],
@@ -168,7 +168,7 @@ def run(ctx):
 
     # If 'urlify' is ON, write urlified data files to urlify_dir.
     if ctx.obj["urlify"]:
-        write_urlified_datafiles(
+        write_data_urlified_to_disk_files(
             datalines_d=mklists_dict,
             urlify_dir=ctx.obj["urlify_dir"],
             urlify_depth=ctx.obj["urlify_depth"],
