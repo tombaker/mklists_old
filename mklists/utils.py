@@ -91,8 +91,8 @@ def _has_no_blank_lines(text_file):
     """Returns True if file has no blank lines.
 
     Note: Does not test whether text_file is a text file."""
-    with open(text_file) as f:
-        for line in f:
+    with open(text_file) as fin:
+        for line in fin:
             if not line.rstrip():
                 return False
     return True

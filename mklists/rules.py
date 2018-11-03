@@ -1,12 +1,11 @@
 """Rules module
 
-* Initializes, self-tests, and lightly corrects the data object for a 
+* Initializes, self-tests, and lightly corrects the data object for a
   single rule.
 * Applies rules, one by one, to process an aggregated list of datalines.
 """
 
 import re
-import string
 from collections import defaultdict
 from dataclasses import dataclass
 from mklists import (
@@ -118,7 +117,7 @@ class Rule:
     sources_list_is_initialized = False
     sources_list = []
 
-    def is_valid(self, valid_filename_characters=VALID_FILENAME_CHARS):
+    def is_valid(self):
         """Returns True if Rule object passes all tests.
 
         * source_matchfield and target_sortorder are integers.
@@ -129,7 +128,7 @@ class Rule:
         """
         self._number_fields_are_integers()
         self._source_matchpattern_is_valid()
-        self._filenames_are_valid(valid_filename_characters)
+        self._filenames_are_valid()
         self._source_is_not_equal_target()
         self._source_was_previously_declared()
         return True
@@ -158,7 +157,7 @@ class Rule:
             )
         return True
 
-    def _filenames_are_valid(self, valid_chars=VALID_FILENAME_CHARS):
+    def _filenames_are_valid(self):
         """Returns True if filenames use only valid characters.
         TODO Somehow combine this with utils:has_valid_name"""
         for filename in [self.source, self.target]:
