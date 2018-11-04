@@ -44,6 +44,6 @@ def test_write_initial_configfile(tmpdir):
 def test_update_config():
     """_update_config() correctly updates one dict with another."""
     context_given = {"a": "foo", "b": "bar"}
-    context_from_disk = {"b": "baz"}
+    context_from_file = {"b": "baz"}
     context_expected = {"a": "foo", "b": "baz"}
-    assert _update_config(context_given, context_from_disk) == context_expected
+    assert _update_config(context_given, context_from_file) == context_expected

@@ -211,12 +211,12 @@ def move_datafiles_to_backup(backup_depth=None):
         shutil.move(file, backup_dir)
     """
 
-def write_data_to_disk_files(datalines_d=None, dryrun=False, verbose=False):
+def write_data_to_files(datalines_d=None, dryrun=False, verbose=False):
     pass
 
 
 # Write urlified data files to urlify_dir.
-def write_data_urlified_to_diskfiles(
+def write_data_urlified_to_files(
     datalines_d={},
     urlify_dir=None,
     dryrun=True,  # later: ctx.obj['dryrun'],
