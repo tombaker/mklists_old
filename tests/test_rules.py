@@ -10,6 +10,7 @@ from mklists.readwrite import (write_yamlstr_to_yamlfile,
 
 @pytest.mark.yaml
 def test_write_yamlstr(tmpdir):
+    """Writes string to YAML rulefile, reads it back to string."""
     os.chdir(tmpdir)
     lrules_yamlstr = """
     - [1, 'NOW', a, b, 0]
@@ -20,6 +21,7 @@ def test_write_yamlstr(tmpdir):
 
 @pytest.mark.yaml
 def test_read_good_yamlfile(tmpdir):
+    """Writes string to YAML rulefile, reads back to list of lists."""
     os.chdir(tmpdir)
     lrules_yamlstr = """
     - [1, 'NOW', a, b, 0]
@@ -31,6 +33,7 @@ def test_read_good_yamlfile(tmpdir):
 
 @pytest.mark.yaml
 def test_read_bad_yamlfile(tmpdir):
+    """Trying to write bad string to YAML rulefile raises SystemExit."""
     os.chdir(tmpdir)
     bad_yamlstr = """
     - [1, 'NOW', a, b, 0]
@@ -42,46 +45,48 @@ def test_read_bad_yamlfile(tmpdir):
 
 @pytest.mark.rule
 def test_no_rules_specified():
+    """Not passing rules to apply_rules_to_datalines raises SystemExit."""
     with pytest.raises(SystemExit):
         apply_rules_to_datalines(datalines_list=[["a line\n"]])
 
 
 @pytest.mark.rule
 def test_no_data_specified():
+    """Not passing data to apply_rules_to_datalines raises SystemExit."""
     with pytest.raises(SystemExit):
         apply_rules_to_datalines(ruleobjs_list=[[Rule(1, "a", "b", "c", 2)]])
 
 
 @pytest.mark.rule
 def test_rule_is_valid(reinitialize_ruleclass_variables):
+    """A well-formed rule object is valid."""
     x = Rule(1, "NOW", "a.txt", "b.txt", 2)
     assert x.is_valid()
 
 
 @pytest.mark.rule
-def test_rule_is_valid_even_with_integer_strings(
-    reinitialize_ruleclass_variables
-):
+def test_rule_is_valid_with_integer_strings(reinitialize_ruleclass_variables):
+    """Rule object is valid even if initialized with string integers."""
     x = Rule("1", "NOW", "a.txt", "b.txt", "2")
     assert x.is_valid()
 
 
 @pytest.mark.rule
-def test_number_fields_are_integers(reinitialize_ruleclass_variables):
-    x = Rule("1", "NOW", "a.txt", "b.txt", "0")
-    assert x.is_valid()
-
-
-@pytest.mark.rule
-def test_rule_has_string_where_integer_required(
-    reinitialize_ruleclass_variables
-):
+def test_rule_is_valid_with_integer_string2(reinitialize_ruleclass_variables):
     x = Rule("1", "N(OW", "a", "b", 2)
     assert x._number_fields_are_integers() == 1
 
 
 @pytest.mark.rule
+def test_number_fields_are_integers(reinitialize_ruleclass_variables):
+    """First and last fields of rule object are integers."""
+    x = Rule("1", "NOW", "a.txt", "b.txt", "0")
+    assert x.is_valid()
+
+
+@pytest.mark.rule
 def test_source_was_previously_declared(reinitialize_ruleclass_variables):
+    """Rule object was initialized with 'source' of first rule."""
     x = Rule(1, "NOW", "a.txt", "b.txt", 0)
     x.is_valid()
     y = Rule(1, "LATER", "b.txt", "c.txt", 0)
@@ -90,6 +95,7 @@ def test_source_was_previously_declared(reinitialize_ruleclass_variables):
 
 @pytest.mark.rule
 def test_sources_list(reinitialize_ruleclass_variables):
+    """Rule object correctly registered sources from multiple rules."""
     x = Rule(1, "NOW", "a.txt", "b.txt", 0)
     x.is_valid()
     y = Rule(1, "LATER", "b.txt", "c.txt", 0)
@@ -111,38 +117,58 @@ def test_source_is_not_precedented(reinitialize_ruleclass_variables):
 
 
 @pytest.mark.rule
-def test_rule_is_not_valid(reinitialize_ruleclass_variables):
-    x = Rule(1, "N(OW", "a", "b", 2)
-    with pytest.raises(SystemExit):
-        x.is_valid()
-
-
-@pytest.mark.rule
 def test_rule():
+    """Third field of Rule object is 'source'."""
     x = Rule(1, ".", "a", "b", 2)
     assert x.source == "a"
 
 
 @pytest.mark.rule
 def test_rulestring_regex_has_space():
+    """Second field of Rule object, a regex, has an allowable space."""
     x = Rule(1, "^X 19", "a", "b", 2)
     assert x.source_matchpattern == "^X 19"
 
 
 @pytest.mark.rule
+def test_rule_is_not_valid(reinitialize_ruleclass_variables):
+    """Rule object fails self-validation because regex is bad."""
+    x = Rule(1, "N(OW", "a", "b", 2)
+    with pytest.raises(SystemExit):
+        x.is_valid()
+
+
+@pytest.mark.rule
+def test_source_matchpattern_is_not_valid():
+    """Regex in rule object is bad, raises SystemExit."""
+    x = Rule("1", "N(OW", "a.txt", "a.txt", "0")
+    with pytest.raises(SystemExit):
+        x._source_matchpattern_is_valid()
+
+@pytest.mark.rule
+def test_source_matchpattern_is_valid():
+    """Regex in rule object is valid."""
+    x = Rule("1", "NOW", "a.txt", "a.txt", "0")
+    assert x._source_matchpattern_is_valid
+
+
+@pytest.mark.rule
 def test_source_filename_valid():
+    """Third field of Rule object ('source') is valid as a filename."""
     x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
     assert x._filenames_are_valid()
 
 
 @pytest.mark.rule
 def test_target_filename_valid():
+    """Fourth field of Rule object ('target') is valid as a filename."""
     x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
     assert x._filenames_are_valid()
 
 
 @pytest.mark.rule
 def test_target_filename_not_valid():
+    """Fourth field of Rule object ('target') not valid, raises SystemExit."""
     x = Rule(1, "^X 19", "a.txt", "b^.txt", 2)
     with pytest.raises(SystemExit):
         x._filenames_are_valid()
@@ -150,32 +176,22 @@ def test_target_filename_not_valid():
 
 @pytest.mark.rule
 def test_source_ne_target():
+    """Source and target fields of rule object are not equivalent."""
     x = Rule("1", "NOW", "a.txt", "b.txt", "0")
     assert x._source_is_not_equal_target
 
 
 @pytest.mark.rule
 def test_source_equals_target_oops():
+    """Source and target fields of rule object are same, raises SystemExit."""
     x = Rule("1", "NOW", "a.txt", "a.txt", "0")
     with pytest.raises(SystemExit):
         x._source_is_not_equal_target()
 
 
-@pytest.mark.rule
-def test_source_matchpattern_is_valid():
-    x = Rule("1", "NOW", "a.txt", "a.txt", "0")
-    assert x._source_matchpattern_is_valid
-
-
-@pytest.mark.rule
-def test_source_matchpattern_is_not_valid():
-    x = Rule("1", "N(OW", "a.txt", "a.txt", "0")
-    with pytest.raises(SystemExit):
-        x._source_matchpattern_is_valid()
-
-
 @pytest.mark.apply_rules
 def test_apply_rules():
+    """apply_rules_to_datalines works as it should."""
     rules = [Rule(0, "i", "a.txt", "b.txt", 0)]
     lines = ["two ticks\n", "an ant\n", "the mite\n"]
     mdict = {"a.txt": ["an ant\n"], "b.txt": ["two ticks\n", "the mite\n"]}
