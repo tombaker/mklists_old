@@ -1,6 +1,6 @@
 mklists
 
-Sync folders of plain-text todo lists to evolving rules
+Re-arrange folders of plain-text lists using rules
 
 Next steps:
 * http://click.pocoo.org/6/utils/ - Click testing and file system isolation

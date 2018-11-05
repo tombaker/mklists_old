@@ -21,8 +21,7 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
 
 
 @click.group()
-@click.option("--globalrules", type=str, metavar="FILEPATH",
-    help="Set global rules [default './.globalrules']",
+@click.option("--globalrules", type=str, metavar="FILEPATH", help="Set global rules [default './.globalrules']",
 )
 @click.option(
     "--rules",
