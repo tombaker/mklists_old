@@ -35,33 +35,19 @@ def test_apply_overrides_from_file(cwd_configured):
 
 @pytest.mark.cli
 def test_apply_overrides():
-    initial_context = {
-        "ctx": "something",
-        "backup_depth": 1,
-    }
+    initial_context = {"ctx": "something", "backup_depth": 1}
     overrides_from_file = {"backup_depth": 500}
     updated_context = apply_overrides(initial_context, overrides_from_file)
-    expected_context = {
-        "ctx": "something",
-        "backup_depth": 500,
-    }
+    expected_context = {"ctx": "something", "backup_depth": 500}
     assert updated_context == expected_context
 
 
 @pytest.mark.cli
 def test_apply_overrides2():
-    updated_context = {
-        "ctx": "something",
-        "backup_depth": 500,
-    }
-    overrides_from_cli = {
-        "backup_depth": 1000,
-    }
+    updated_context = {"ctx": "something", "backup_depth": 500}
+    overrides_from_cli = {"backup_depth": 1000}
     updated_context2 = apply_overrides(updated_context, overrides_from_cli)
-    expected_context = {
-        "ctx": "something",
-        "backup_depth": 1000,
-    }
+    expected_context = {"ctx": "something", "backup_depth": 1000}
     assert updated_context2 == expected_context
 
 

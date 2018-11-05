@@ -4,8 +4,10 @@ import os
 import pytest
 from mklists.rules import Rule, apply_rules_to_datalines, _line_matches
 from mklists import UninitializedSourceError, BUILTIN_GRULES
-from mklists.readwrite import (write_yamlstr_to_yamlfile, 
-    read_yamlfile_return_pyobject)
+from mklists.readwrite import (
+    write_yamlstr_to_yamlfile,
+    read_yamlfile_return_pyobject,
+)
 
 
 @pytest.mark.yaml
@@ -15,9 +17,10 @@ def test_write_yamlstr(tmpdir):
     lrules_yamlstr = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
-    some_yamlstr = open('_lrules').read()
+    write_yamlstr_to_yamlfile("_lrules", lrules_yamlstr)
+    some_yamlstr = open("_lrules").read()
     assert lrules_yamlstr == some_yamlstr
+
 
 @pytest.mark.yaml
 def test_read_good_yamlfile(tmpdir):
@@ -26,10 +29,11 @@ def test_read_good_yamlfile(tmpdir):
     lrules_yamlstr = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile('_lrules', lrules_yamlstr)
-    pyobject = read_yamlfile_return_pyobject('_lrules')
-    good_pyobject = [[1, 'NOW', 'a', 'b', 0], [1, 'LATER', 'a', 'c', 0]]
+    write_yamlstr_to_yamlfile("_lrules", lrules_yamlstr)
+    pyobject = read_yamlfile_return_pyobject("_lrules")
+    good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
     assert pyobject == good_pyobject
+
 
 @pytest.mark.yaml
 def test_read_bad_yamlfile(tmpdir):
@@ -38,9 +42,9 @@ def test_read_bad_yamlfile(tmpdir):
     bad_yamlstr = """
     - [1, 'NOW', a, b, 0]
     + [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile('_lrules_bad', bad_yamlstr)
+    write_yamlstr_to_yamlfile("_lrules_bad", bad_yamlstr)
     with pytest.raises(SystemExit):
-        read_yamlfile_return_pyobject('_lrules_bad')
+        read_yamlfile_return_pyobject("_lrules_bad")
 
 
 @pytest.mark.rule
@@ -144,6 +148,7 @@ def test_source_matchpattern_is_not_valid():
     x = Rule("1", "N(OW", "a.txt", "a.txt", "0")
     with pytest.raises(SystemExit):
         x._source_matchpattern_is_valid()
+
 
 @pytest.mark.rule
 def test_source_matchpattern_is_valid():
