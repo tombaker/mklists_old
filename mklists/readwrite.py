@@ -125,11 +125,13 @@ def write_initial_configfile(
     else:
         if dryrun:
             raise InitError(
-                f"In read-only mode. Would have created {repr(configfile_name)}."
+                f"In read-only mode. Would have created "
+                f"{repr(configfile_name)}."
             )
         else:
             print(
-                f"Creating default {repr(configfile_name)}. Customize as needed."
+                f"Creating default {repr(configfile_name)}. "
+                f"Customize as needed."
             )
             with open(configfile_name, "w") as fout:
                 fout.write(
@@ -162,7 +164,8 @@ def write_initial_rulefiles(
             else:
                 if dryrun:
                     print(
-                        f"['dryrun' is on] " "Would have created {repr(file)}."
+                        f"['dryrun' is on] "
+                        f"Would have created {repr(file)}."
                     )
                 else:
                     print(
