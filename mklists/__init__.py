@@ -12,7 +12,6 @@ VALID_FILENAME_CHARS = """\
 
 INVALID_FILENAME_PATS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 
-
 MKLISTSRC_GLOBAL_NAME = "mklistsrc"
 MKLISTSRC_LOCAL_NAME = ".mklistsrc"
 MKLISTSRC_STARTER_CONTENT = {

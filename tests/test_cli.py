@@ -3,7 +3,11 @@
 import os
 import pytest
 import yaml
-from mklists import MKLISTSRC_DEFAULTS, MKLISTSRC_NAME, VALID_FILENAME_CHARS
+from mklists import (
+    MKLISTSRC_STARTER_CONTENT,
+    MKLISTSRC_LOCAL_NAME,
+    VALID_FILENAME_CHARS,
+)
 from mklists.readwrite import (
     write_initial_configfile,
     read_overrides_from_file,
@@ -19,7 +23,7 @@ def test_apply_overrides_from_file_something_changed(singledir_configured):
     os.chdir(singledir_configured)
     updated_config_dict = read_overrides_from_file(".mklistsrc2")
     print(f"rules: {updated_config_dict['rules']}")
-    assert updated_config_dict["rules"] != MKLISTSRC_DEFAULTS["rules"]
+    assert updated_config_dict["rules"] != MKLISTSRC_STARTER_CONTENT["rules"]
 
 
 @pytest.mark.cli
@@ -27,10 +31,13 @@ def test_apply_overrides_from_file(singledir_configured):
     """apply_overrides_from_file() should return builtin settings."""
     os.chdir(singledir_configured)
     context = {}
-    overrides_from_file = read_overrides_from_file(MKLISTSRC_NAME)
+    overrides_from_file = read_overrides_from_file(MKLISTSRC_LOCAL_NAME)
     print(apply_overrides(context, overrides_from_file))
     print(apply_overrides(context, overrides_from_file))
-    assert apply_overrides(context, overrides_from_file) == MKLISTSRC_DEFAULTS
+    assert (
+        apply_overrides(context, overrides_from_file)
+        == MKLISTSRC_STARTER_CONTENT
+    )
 
 
 @pytest.mark.cli

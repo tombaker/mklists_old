@@ -2,7 +2,11 @@
 
 import os
 import pytest
-from mklists import MKLISTSRC_DEFAULTS, MKLISTSRC_NAME, VALID_FILENAME_CHARS
+from mklists import (
+    MKLISTSRC_STARTER_CONTENT,
+    MKLISTSRC_LOCAL_NAME,
+    VALID_FILENAME_CHARS,
+)
 from mklists.readwrite import (
     write_initial_configfile,
     read_overrides_from_file,
