@@ -3,7 +3,7 @@
 import os
 import pytest
 import yaml
-from mklists import BUILTIN_MKLISTSRC, MKLISTSRC_NAME, VALID_FILENAME_CHARS
+from mklists import MKLISTSRC_DEFAULTS, MKLISTSRC_NAME, VALID_FILENAME_CHARS
 from mklists.readwrite import (
     write_initial_configfile,
     read_overrides_from_file,
@@ -12,25 +12,25 @@ from mklists.readwrite import (
 
 
 @pytest.mark.cli
-def test_apply_overrides_from_file_something_changed(cwd_configured):
+def test_apply_overrides_from_file_something_changed(singledir_configured):
     """Config file consists of just one key/value pair.
     Illustrates that .mklistsrc need not cover all mklists settings.
-    Note: cwd_configured directory fixture has file '.mklistsrc2'."""
-    os.chdir(cwd_configured)
+    Note: singledir_configured directory fixture has file '.mklistsrc2'."""
+    os.chdir(singledir_configured)
     updated_config_dict = read_overrides_from_file(".mklistsrc2")
     print(f"rules: {updated_config_dict['rules']}")
-    assert updated_config_dict["rules"] != BUILTIN_MKLISTSRC["rules"]
+    assert updated_config_dict["rules"] != MKLISTSRC_DEFAULTS["rules"]
 
 
 @pytest.mark.cli
-def test_apply_overrides_from_file(cwd_configured):
+def test_apply_overrides_from_file(singledir_configured):
     """apply_overrides_from_file() should return builtin settings."""
-    os.chdir(cwd_configured)
+    os.chdir(singledir_configured)
     context = {}
     overrides_from_file = read_overrides_from_file(MKLISTSRC_NAME)
     print(apply_overrides(context, overrides_from_file))
     print(apply_overrides(context, overrides_from_file))
-    assert apply_overrides(context, overrides_from_file) == BUILTIN_MKLISTSRC
+    assert apply_overrides(context, overrides_from_file) == MKLISTSRC_DEFAULTS
 
 
 @pytest.mark.cli

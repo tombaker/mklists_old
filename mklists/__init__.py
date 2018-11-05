@@ -4,7 +4,7 @@ import datetime
 
 TIMESTAMP = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
 
-# URL_PATTERN = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+# 2018-11-05: Does it make a difference if this is a raw string?
 URL_PATTERN = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 VALID_FILENAME_CHARS = """\
@@ -12,9 +12,10 @@ VALID_FILENAME_CHARS = """\
 
 INVALID_FILENAME_PATS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 
-MKLISTSRC_NAME = ".mklistsrc"
 
-BUILTIN_MKLISTSRC = {
+MKLISTSRC_GLOBAL_NAME = "mklistsrc"
+MKLISTSRC_LOCAL_NAME = ".mklistsrc"
+MKLISTSRC_STARTER_CONTENT = {
     "globalrules": ".globalrules",
     "rules": ".rules",
     "urlify": False,
@@ -29,17 +30,15 @@ BUILTIN_MKLISTSRC = {
     "files2dirs": "",
 }
 
-BUILTIN_GRULEFILE_NAME = ".globalrules"
 
-BUILTIN_LRULEFILE_NAME = ".rules"
-
-BUILTIN_RULEFILE_NAME = ".rules"
-
-BUILTIN_GRULES = """\
+GLOBAL_RULEFILE_NAME = ".globalrules"
+GLOBAL_RULES_STARTER_CONTENT = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
 """
 
-BUILTIN_LRULES = """\
+
+LOCAL_RULEFILE_NAME = ".rules"
+LOCAL_RULES_STARTER_CONTENT = """\
 - [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
 - [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
 """

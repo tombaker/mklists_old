@@ -17,7 +17,7 @@ from mklists.readwrite import (
     write_data_urlified_to_files,
 )
 from mklists.verbose import explain
-from mklists import MKLISTSRC_NAME, RULEFILE_NAME, BUILTIN_MKLISTSRC
+from mklists import MKLISTSRC_NAME, RULEFILE_NAME, MKLISTSRC_DEFAULTS
 
 
 @click.group()
@@ -86,7 +86,7 @@ def cli(
     overrides_from_cli = locals().copy()
 
     # Initialize context object with default settings dictionary.
-    ctx.obj = BUILTIN_MKLISTSRC
+    ctx.obj = MKLISTSRC_DEFAULTS
 
     # Override settings in context object from configuration file.
     if ctx.invoked_subcommand != "init":

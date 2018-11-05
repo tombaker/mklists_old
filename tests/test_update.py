@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from mklists import BUILTIN_MKLISTSRC, MKLISTSRC_NAME, VALID_FILENAME_CHARS
+from mklists import MKLISTSRC_DEFAULTS, MKLISTSRC_NAME, VALID_FILENAME_CHARS
 from mklists.readwrite import (
     write_initial_configfile,
     read_overrides_from_file,
@@ -11,13 +11,13 @@ from mklists.readwrite import (
 
 
 @pytest.mark.skip
-def test_apply_overrides_from_file_empty(cwd_configured):
+def test_apply_overrides_from_file_empty(singledir_configured):
     """Config file '.mklistsrc3' is empty (length=0)."""
-    os.chdir(cwd_configured)
+    os.chdir(singledir_configured)
     updated_config_dict = apply_overrides_from_file(
         configfile_name=".mklistsrc3"
     )
-    assert updated_config_dict == BUILTIN_MKLISTSRC
+    assert updated_config_dict == MKLISTSRC_DEFAULTS
 
 
 @pytest.mark.skip

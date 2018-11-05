@@ -3,7 +3,7 @@
 import os
 import pytest
 from mklists.rules import Rule, apply_rules_to_datalines, _line_matches
-from mklists import UninitializedSourceError, BUILTIN_GRULES
+from mklists import UninitializedSourceError, GLOBAL_RULES_STARTER_CONTENT
 from mklists.readwrite import (
     write_yamlstr_to_yamlfile,
     read_yamlfile_return_pyobject,
@@ -110,8 +110,8 @@ def test_sources_list(reinitialize_ruleclass_variables):
 
 @pytest.mark.rule
 def test_source_is_not_precedented(reinitialize_ruleclass_variables):
-    """Rule class keeps track of instances registered, so 
-    second rule instance 'y' should raise exception because 
+    """Rule class keeps track of instances registered, so
+    second rule instance 'y' should raise exception because
     'c.txt' will not have been registered as a source."""
     x = Rule("1", "NOW", "a.txt", "b.txt", "0")
     x.is_valid()

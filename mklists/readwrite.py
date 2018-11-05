@@ -2,7 +2,7 @@
 
 Functions with side effects such as:
 * reading files from disk
-* writing to files on disk 
+* writing to files on disk
 * modifying data structures in memory
 """
 
@@ -13,12 +13,12 @@ import sys
 import pprint
 import yaml
 from mklists import (
-    BUILTIN_GRULEFILE_NAME,
-    BUILTIN_GRULES,
-    BUILTIN_LRULEFILE_NAME,
-    BUILTIN_LRULES,
-    BUILTIN_MKLISTSRC,
-    MKLISTSRC_NAME,
+    GLOBAL_RULEFILE_NAME,
+    GLOBAL_RULES_STARTER_CONTENT,
+    LOCAL_RULEFILE_NAME,
+    LOCAL_RULES_STARTER_CONTENT,
+    MKLISTSRC_STARTER_CONTENT,
+    MKLISTSRC_LOCAL_NAME,
     TIMESTAMP,
     URL_PATTERN,
     VALID_FILENAME_CHARS,
@@ -82,7 +82,7 @@ def get_rules(local_rulefile_name=None, global_rulefile_name=None):
     return ruleobj_list
 
 
-def get_rules2(lrules=BUILTIN_LRULEFILE_NAME, grules=BUILTIN_GRULEFILE_NAME):
+def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
     rules_list = []
     try:
         rules_to_add = read_yamlfile_return_pyobject(grules)
@@ -109,7 +109,7 @@ def get_rules2(lrules=BUILTIN_LRULEFILE_NAME, grules=BUILTIN_GRULEFILE_NAME):
 
 def write_initial_configfile(
     settings_dict=None,
-    configfile_name=MKLISTSRC_NAME,
+    configfile_name=MKLISTSRC_LOCAL_NAME,
     dryrun=False,
     verbose=False,
 ):
@@ -140,10 +140,10 @@ def write_initial_configfile(
 
 
 def write_initial_rulefiles(
-    global_rulefile_name=BUILTIN_GRULEFILE_NAME,
-    local_rulefile_name=BUILTIN_LRULEFILE_NAME,
-    globalrules_content=BUILTIN_GRULES,
-    localrules_content=BUILTIN_LRULES,
+    global_rulefile_name=GLOBAL_RULEFILE_NAME,
+    local_rulefile_name=LOCAL_RULEFILE_NAME,
+    globalrules_content=GLOBAL_RULES_STARTER_CONTENT,
+    localrules_content=LOCAL_RULES_STARTER_CONTENT,
     dryrun=False,
     verbose=False,
 ):
@@ -178,11 +178,11 @@ def write_initial_rulefiles(
 
 def get_datalines(ls_visible=[], but_not=None):
     """Returns aggregated list of lines from data files.
-    
+
     Mklists is very strict about contents of data directory.
-    All exceptions encountered in this function, in _get_file(), 
-    and in any of the functions called by _get_file(), will 
-    result in exit from the program, with an error message about 
+    All exceptions encountered in this function, in _get_file(),
+    and in any of the functions called by _get_file(), will
+    result in exit from the program, with an error message about
     what the user will need to correct in order to get it to run."""
     datalines = []
     for item in ls_visible:
