@@ -3,7 +3,10 @@
 import os
 import pytest
 from mklists.rules import Rule, apply_rules_to_datalines, _line_matches
-from mklists import UninitializedSourceError, GLOBAL_RULES_STARTER_CONTENT
+from mklists import (
+    UninitializedSourceError,
+    GLOBAL_RULEFILE_STARTER_YAMLSTRING,
+)
 from mklists.readwrite import (
     write_yamlstr_to_yamlfile,
     read_yamlfile_return_pyobject,

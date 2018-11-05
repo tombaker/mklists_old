@@ -6,13 +6,15 @@ from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rules import Rule
 from mklists import (
-    GLOBAL_RULES_STARTER_CONTENT,
+    GLOBAL_RULEFILE_STARTER_YAMLSTRING,
     GLOBAL_RULEFILE_NAME,
-    LOCAL_RULES_STARTER_CONTENT,
+    LOCAL_RULEFILE_STARTER_YAMLSTRING,
     LOCAL_RULEFILE_NAME,
-    MKLISTSRC_STARTER_CONTENT,
+    MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
     MKLISTSRC_GLOBAL_NAME,
+    BACKUP_DIR_NAME,
+    HTMLFILES_DIR_NAME,
 )
 
 
@@ -25,14 +27,24 @@ def fixture_multidir_configured(tmpdir_factory):
     # Create subdir of base temp dir, return, assign to 'cwd_dir'.
     cwd_dir = tmpdir_factory.mktemp("mydir")
     mklistsrc = cwd_dir.join(MKLISTSRC_GLOBAL_NAME)
-    mklistsrc.write(GLOBAL_RULES_STARTER_CONTENT)
-    subdir_a = cwd_dir.mkdir("a")
-    mklistsrc_a = subdir_a.join(LOCAL_RULEFILE_NAME)
+    mklistsrc.write(MKLISTSRC_STARTER_DICT)
 
-    mklistsrc.write(MKLISTSRC_STARTER_CONTENT)
-    another_file.write("something different")
-    assert mklistsrc.read() == MKLISTSRC_STARTER_CONTENT
-    assert mklistsrc_a.read() == "something different"
+    rules_global = cwd_dir.join(GLOBAL_RULEFILE_NAME)
+
+    mklistsrc.write(GLOBAL_RULEFILE_STARTER_YAMLSTRING)
+
+    subdir_a = cwd_dir.mkdir("a")
+    rules_a = subdir_a.join(LOCAL_RULEFILE_NAME)
+    rules_a.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+
+    subdir_b = cwd_dir.mkdir("b")
+    rules_b = subdir_b.join(LOCAL_RULEFILE_NAME)
+    rules_b.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+
+    backup_dir = cwd_dir.mkdir(BACKUP_DIR_NAME)
+    htmlfiles_dir = cwd_dir.mkdir(HTMLFILES_DIR_NAME)
+
+    assert mklistsrc.read() == MKLISTSRC_STARTER_DICT
 
     # Create filehandles with basename 'cwd_dir'.
     lrules = cwd_dir.join(LOCAL_RULEFILE_NAME)
@@ -43,14 +55,14 @@ def fixture_multidir_configured(tmpdir_factory):
     mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
 
     # Write to filehandles.
-    lrules.write(LOCAL_RULES_STARTER_CONTENT)
-    grules.write(GLOBAL_RULES_STARTER_CONTENT)
-    nrules.write(LOCAL_RULES_STARTER_CONTENT)
+    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTRING)
+    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
     with open(mklistsrc, "w") as fout:
         fout.write(
-            yaml.safe_dump(MKLISTSRC_STARTER_CONTENT, default_flow_style=False)
+            yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
         )
-    mklistsrc2.write("{ 'rules': '.local_rules' }")
+    mklistsrc2.write("{ 'verbose': True }")
     mklistsrc3.write("")
 
     # Return subdirectory with six new files.
@@ -73,12 +85,12 @@ def fixture_singledir_configured(tmpdir_factory):
     mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
 
     # Write to filehandles.
-    lrules.write(LOCAL_RULES_STARTER_CONTENT)
-    grules.write(GLOBAL_RULES_STARTER_CONTENT)
-    nrules.write(LOCAL_RULES_STARTER_CONTENT)
+    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTRING)
+    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
     with open(mklistsrc, "w") as fout:
         fout.write(
-            yaml.safe_dump(MKLISTSRC_STARTER_CONTENT, default_flow_style=False)
+            yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
         )
     mklistsrc2.write("{ 'rules': '.local_rules' }")
     mklistsrc3.write("")
@@ -101,21 +113,21 @@ def reinitialize_ruleclass_variables():
 def mklistsrc_yamlstr():
     """Return some YAML-formatted rules for writing to rule files."""
 
-    return MKLISTSRC_STARTER_CONTENT
+    return MKLISTSRC_STARTER_DICT
 
 
 @pytest.fixture()
 def grules_yamlstr():
     """Return some YAML-formatted rules for writing to rule files."""
 
-    return GLOBAL_RULES_STARTER_CONTENT
+    return GLOBAL_RULEFILE_STARTER_YAMLSTRING
 
 
 @pytest.fixture()
 def lrules_yamlstr():
     """Returns some YAML-formatted rules for writing to rule files."""
 
-    return LOCAL_RULES_STARTER_CONTENT
+    return LOCAL_RULEFILE_STARTER_YAMLSTRING
 
 
 # @pytest.fixture(scope='module')

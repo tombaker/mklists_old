@@ -14,10 +14,10 @@ import pprint
 import yaml
 from mklists import (
     GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULES_STARTER_CONTENT,
+    GLOBAL_RULEFILE_STARTER_YAMLSTRING,
     LOCAL_RULEFILE_NAME,
-    LOCAL_RULES_STARTER_CONTENT,
-    MKLISTSRC_STARTER_CONTENT,
+    LOCAL_RULEFILE_STARTER_YAMLSTRING,
+    MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
     TIMESTAMP,
     URL_PATTERN,
@@ -142,8 +142,8 @@ def write_initial_configfile(
 def write_initial_rulefiles(
     global_rulefile_name=GLOBAL_RULEFILE_NAME,
     local_rulefile_name=LOCAL_RULEFILE_NAME,
-    globalrules_content=GLOBAL_RULES_STARTER_CONTENT,
-    localrules_content=LOCAL_RULES_STARTER_CONTENT,
+    globalrules_content=GLOBAL_RULEFILE_STARTER_YAMLSTRING,
+    localrules_content=LOCAL_RULEFILE_STARTER_YAMLSTRING,
     dryrun=False,
     verbose=False,
 ):

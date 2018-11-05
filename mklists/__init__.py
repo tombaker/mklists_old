@@ -12,32 +12,32 @@ VALID_FILENAME_CHARS = """\
 
 INVALID_FILENAME_PATS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 
+BACKUP_DIR_NAME = ".backups"
+
+HTMLFILES_DIR_NAME = ".html"
+
 MKLISTSRC_GLOBAL_NAME = "mklistsrc"
 MKLISTSRC_LOCAL_NAME = ".mklistsrc"
-MKLISTSRC_STARTER_CONTENT = {
-    "globalrules": ".globalrules",
-    "rules": ".rules",
+# Do I need to turn this into a YAML string as well?
+MKLISTSRC_STARTER_DICT = {
     "urlify": False,
-    "urlify_dir": ".urlified",
-    "backup": True,
-    "backup_dir": ".backups",
     "backup_depth": 3,
     "dryrun": False,
     "verbose": False,
     "valid_filename_characters": VALID_FILENAME_CHARS,
     "invalid_filename_patterns": INVALID_FILENAME_PATS,
-    "files2dirs": "",
+    "files2dirs": {},
 }
 
 
 GLOBAL_RULEFILE_NAME = ".globalrules"
-GLOBAL_RULES_STARTER_CONTENT = """\
+GLOBAL_RULEFILE_STARTER_YAMLSTRING = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
 """
 
 
 LOCAL_RULEFILE_NAME = ".rules"
-LOCAL_RULES_STARTER_CONTENT = """\
+LOCAL_RULEFILE_STARTER_YAMLSTRING = """\
 - [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
 - [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
 """

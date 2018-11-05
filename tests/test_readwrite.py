@@ -6,9 +6,9 @@ from click.testing import CliRunner
 import os
 from mklists import (
     MKLISTSRC_LOCAL_NAME,
-    MKLISTSRC_STARTER_CONTENT,
-    GLOBAL_RULES_STARTER_CONTENT,
-    LOCAL_RULES_STARTER_CONTENT,
+    MKLISTSRC_STARTER_DICT,
+    GLOBAL_RULEFILE_STARTER_YAMLSTRING,
+    LOCAL_RULEFILE_STARTER_YAMLSTRING,
     GLOBAL_RULEFILE_NAME,
     LOCAL_RULEFILE_NAME,
     VALID_FILENAME_CHARS,
@@ -26,10 +26,11 @@ def test_write_initial_globalrules_isolated():
     with runner.isolated_filesystem():
         write_initial_rulefiles(
             global_rulefile_name=GLOBAL_RULEFILE_NAME,
-            globalrules_content=GLOBAL_RULES_STARTER_CONTENT,
+            globalrules_content=GLOBAL_RULEFILE_STARTER_YAMLSTRING,
         )
         assert (
-            GLOBAL_RULES_STARTER_CONTENT == open(GLOBAL_RULEFILE_NAME).read()
+            GLOBAL_RULEFILE_STARTER_YAMLSTRING
+            == open(GLOBAL_RULEFILE_NAME).read()
         )
 
 
@@ -40,7 +41,7 @@ def test_write_initial_globalrules(tmpdir):
     globalrules_name = tmpdir.join(".globalrules")
     globalrules_content = open(globalrules_name).read()
     globalrules_hash = hash(globalrules_content)
-    assert hash(GLOBAL_RULES_STARTER_CONTENT) == globalrules_hash
+    assert hash(GLOBAL_RULEFILE_STARTER_YAMLSTRING) == globalrules_hash
 
 
 @pytest.mark.write
@@ -50,4 +51,4 @@ def test_write_initial_localrules(tmpdir):
     localrules_name = tmpdir.join(".localrules")
     localrules_content = open(localrules_name).read()
     localrules_hash = hash(localrules_content)
-    assert hash(LOCAL_RULES_STARTER_CONTENT) == localrules_hash
+    assert hash(LOCAL_RULEFILE_STARTER_YAMLSTRING) == localrules_hash

@@ -3,7 +3,7 @@
 import os
 import pytest
 from mklists import (
-    MKLISTSRC_STARTER_CONTENT,
+    MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
     VALID_FILENAME_CHARS,
 )
