@@ -14,8 +14,6 @@ INVALID_FILENAME_PATS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 
 MKLISTSRC_NAME = ".mklistsrc"
 
-RULEFILE_NAME = ".rules"
-
 BUILTIN_MKLISTSRC = {
     "globalrules": ".globalrules",
     "rules": ".rules",
@@ -34,6 +32,8 @@ BUILTIN_MKLISTSRC = {
 BUILTIN_GRULEFILE_NAME = ".globalrules"
 
 BUILTIN_LRULEFILE_NAME = ".rules"
+
+BUILTIN_RULEFILE_NAME = ".rules"
 
 BUILTIN_GRULES = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
@@ -61,8 +61,8 @@ class InitError(ConfigError):
     """Data directory has already been initialized"""
 
 
-class NoRulefileSpecified(ConfigError):
-    """Configuration does not even specify a rule file."""
+class RulefileNotFoundError(ConfigError):
+    """Rule file was not found."""
 
 
 # Errors related to data directory, used in datadir module

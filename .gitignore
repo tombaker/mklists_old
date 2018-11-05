@@ -8,3 +8,4 @@ Session.vim
 mklists.egg-info/
 __pycache__/
 tests/__pycache__/
+tags

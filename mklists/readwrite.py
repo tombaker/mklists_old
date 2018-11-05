@@ -82,6 +82,31 @@ def get_rules(local_rulefile_name=None, global_rulefile_name=None):
     return ruleobj_list
 
 
+def get_rules2(lrules=BUILTIN_LRULEFILE_NAME, grules=BUILTIN_GRULEFILE_NAME):
+    rules_list = []
+    try:
+        rules_to_add = read_yamlfile_return_pyobject(grules)
+        rules_list.append(rules_to_add)
+    except FileNotFoundError:
+        print("File was not found")
+    except TypeError:
+        print("NoneType")
+    return rules_list
+
+    # for rulefile_name in grules, lrules:
+    #     if rulefile_name:
+    #         rules_list = rules_list + rules_list
+    # ruleobj_list = []
+    # for item in rules_list:
+    #     try:
+    #         Rule(*item).is_valid
+    #     except TypeError:
+    #         raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
+    #     ruleobj_list.append(Rule(*item))
+
+    # return ruleobj_list
+
+
 def write_initial_configfile(
     settings_dict=None,
     configfile_name=MKLISTSRC_NAME,
