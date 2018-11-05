@@ -17,29 +17,14 @@ from mklists.readwrite import (
     write_data_urlified_to_files,
 )
 from mklists.verbose import explain
-from mklists import MKLISTSRC_NAME, RULEFILE_NAME, MKLISTSRC_DEFAULTS
+from mklists import (
+    MKLISTSRC_LOCAL_NAME,
+    LOCAL_RULEFILE_NAME,
+    MKLISTSRC_STARTER_DICT,
+)
 
 
 @click.group()
-@click.option(
-    "--globalrules",
-    type=str,
-    metavar="FILEPATH",
-    help="Set global rules [default './.globalrules']",
-)
-@click.option(
-    "--rules",
-    type=str,
-    metavar="FILEPATH",
-    help="Set local rules [default './.rules']",
-)
-@click.option("--backup", type=bool, is_flag=True, help="Enable backups")
-@click.option(
-    "--backup-dir",
-    type=str,
-    metavar="DIRPATH",
-    help="Set backups directory [default './.backups/']",
-)
 @click.option(
     "--backup-depth",
     type=int,
@@ -53,12 +38,6 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, MKLISTSRC_DEFAULTS
     help="Enable generation of HTML output",
 )
 @click.option(
-    "--urlify-dir",
-    type=str,
-    metavar="DIRPATH",
-    help="Set HTML directory [default: './.html/']",
-)
-@click.option(
     "--dryrun",
     type=bool,
     is_flag=True,
@@ -68,18 +47,7 @@ from mklists import MKLISTSRC_NAME, RULEFILE_NAME, MKLISTSRC_DEFAULTS
 @click.version_option("0.1.4", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(
-    ctx,
-    globalrules,
-    rules,
-    backup,
-    backup_dir,
-    backup_depth,
-    urlify,
-    urlify_dir,
-    dryrun,
-    verbose,
-):
+def cli(ctx, backup_depth, urlify, dryrun, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
     # Snapshot CLI arguments.
@@ -121,7 +89,7 @@ def init(ctx):
 @cli.command()
 @click.pass_context
 def run(ctx):
-    """Apply rules to re-write data files"""
+    """Read and apply rules to re-write data files"""
     # Read rule files and return aggregated list of rules objects.
     rules = get_rules(
         global_rulefile_name=ctx.obj["globalrules"],
@@ -183,5 +151,5 @@ def run(ctx):
 
 @cli.command()
 @click.pass_context
-def nothing(ctx):
+def test(ctx):
     pass

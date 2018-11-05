@@ -5,7 +5,7 @@
 """
 
 import sys
-from mklists import NoRulefileSpecified, MKLISTSRC_NAME, TIMESTAMP
+from mklists import NoRulefileError, MKLISTSRC_LOCAL_NAME, TIMESTAMP
 
 
 def explain(**sets):
@@ -27,7 +27,7 @@ def explain(**sets):
         print(f"    1. Edit .mklistsrc, adding the line:")
         print(f"       rules: .rules")
         print(f"    2. Run `mklists --rule FILE`, pointing to any rule file.")
-        raise NoRulefileSpecified
+        raise NoRulefileError
 
     if sets["urlify"]:
         print(

@@ -120,8 +120,12 @@ class BadYamlRuleError(RulesError):
     """Rule is badly formed in YAML source."""
 
 
-class NoRulesError(RulesError):
+class NoRulefileError(RulesError):
     """Rule file not found or not accessible."""
+
+
+class NoRulesError(RulesError):
+    """No rules to process."""
 
 
 class BadYamlError(RulesError):
