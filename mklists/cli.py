@@ -4,17 +4,16 @@ import glob
 import click
 from mklists.utils import change_working_directory
 from mklists.rules import apply_rules_to_datalines
+from mklists.rw_cli import read_overrides_from_file, apply_overrides
 from mklists.rw_init import (
     get_rules,
     write_initial_configfile,
     write_initial_rulefiles,
 )
 from mklists.readwrite import (
-    apply_overrides,
     get_datalines,
     move_datafiles_to_backup,
     move_files_to_external_directories,
-    read_overrides_from_file,
     write_data_to_files,
     write_data_urlified_to_files,
 )
