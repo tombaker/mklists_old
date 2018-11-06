@@ -107,12 +107,10 @@ def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
     # return ruleobj_list
 
 
-def write_initial_configfile(
-    settings_dict=None, configfile_name=MKLISTSRC_LOCAL_NAME, verbose=False
-):
+def write_initial_configfile(settings_dict=None, verbose=False):
     """Writes initial configuration file to disk (or just says it will).
-        If configfile already exists, exits suggesting to first delete.
-        If configfile not found, creates new file using current settings.
+    * If configfile already exists, exits suggesting to first delete.
+    * If configfile not found, creates new file using current settings.
     """
     if os.path.exists(configfile_name):
         raise InitError(

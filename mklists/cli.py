@@ -48,7 +48,7 @@ def cli(ctx, backup_depth, urlify, verbose):
     overrides_from_cli = locals().copy()
 
     # Initialize context object with default settings dictionary.
-    ctx.obj = MKLISTSRC_DEFAULTS
+    ctx.obj = MKLISTSRC_STARTER_DICT
 
     # Override settings in context object from configuration file.
     if ctx.invoked_subcommand != "init":
@@ -65,19 +65,19 @@ def cli(ctx, backup_depth, urlify, verbose):
 
 
 @cli.command()
+@click.option(
+    "--repo",
+    type=bool,
+    is_flag=True,
+    help="Initialize as multi-list-folder repo",
+)
 @click.pass_context
-def init(ctx):
+def init(ctx, repo):
     """Generate default configuration and rule files."""
 
-    write_initial_configfile(
-        context=ctx.obj, filename=MKLISTSRC_NAME, verbose=ctx.obj["verbose"]
-    )
-
-    write_initial_rulefiles(
-        global_rulefile_name=None,
-        local_rulefile_name=RULEFILE_NAME,
-        verbose=ctx.obj["verbose"],
-    )
+    verbose_bool = ctx.obj["verbose"]
+    write_initial_configfile(settings_dict=ctx.obj, verbose=verbose_bool)
+    write_initial_rulefiles(verbose=verbose_bool)
 
 
 @cli.command()
