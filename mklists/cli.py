@@ -29,13 +29,13 @@ from mklists import (
     "--backup-depth",
     type=int,
     metavar="INT",
-    help="Rolling backups to keep [default: '3']",
+    help="Backups to keep [default: '3']",
 )
 @click.option(
     "--urlify",
     type=bool,
     is_flag=True,
-    help="Copy data to clickable-link HTML",
+    help="Copy lists as clickable-link HTML files",
 )
 @click.option("--verbose", type=bool, is_flag=True, help="Enable verbose mode")
 @click.version_option("0.1.4", help="Show version and exit")
@@ -67,7 +67,7 @@ def cli(ctx, backup_depth, urlify, verbose):
 )
 @click.pass_context
 def init(ctx, repo):
-    """Generate default configuration and rule files."""
+    """Write new configuration and rule file(s)."""
 
     verbose_bool = ctx.obj["verbose"]
     write_initial_configfile(settings_dict=ctx.obj, verbose=verbose_bool)
@@ -80,8 +80,6 @@ def run(ctx):
     """Read and apply rules to re-write data files"""
     # Read rule files and return aggregated list of rules objects.
     rules = get_rules(
-        global_rulefile_name=ctx.obj["globalrules"],
-        local_rulefile_name=ctx.obj["rules"],
         valid_filename_chars=ctx.obj["valid_filename_chars"],
         verbose=ctx.obj["verbose"],
     )
@@ -105,8 +103,6 @@ def run(ctx):
     if ctx.obj["backup"]:
         move_datafiles_to_backup(
             ls_visible=[name for name in glob.glob("*")],
-            backup=True,  # 2018-09-02: just for now?
-            backup_dir=ctx.obj["backup_dir"],
             backup_depth=ctx.obj["backup_depth"],
         )
 
@@ -120,10 +116,7 @@ def run(ctx):
     # If 'urlify' is ON, write urlified data files to urlify_dir.
     if ctx.obj["urlify"]:
         write_data_urlified_to_files(
-            datalines_d=mklists_dict,
-            urlify_dir=ctx.obj["urlify_dir"],
-            urlify_depth=ctx.obj["urlify_depth"],
-            verbose=ctx.obj["verbose"],
+            datalines_d=mklists_dict, verbose=ctx.obj["verbose"]
         )
 
     # If 'files2dirs' is ON, move selected files to external directories.
