@@ -9,7 +9,7 @@ from mklists import (
     VALID_FILENAME_CHARS_STR,
 )
 from mklists.cli import read_overrides_from_file, apply_overrides
-from mklists.rw_init import write_initial_configfile
+from mklists.cli_init import write_initial_configfile
 
 
 @pytest.mark.skip

@@ -5,12 +5,12 @@ import click
 import yaml
 from mklists.utils import change_working_directory
 from mklists.rules import apply_rules_to_datalines
-from mklists.rw_init import (
+from mklists.cli_init import (
     get_rules,
     write_initial_configfile,
     write_initial_rulefiles,
 )
-from mklists.rw_run import (
+from mklists.cli_run import (
     get_datalines,
     move_datafiles_to_backup,
     move_files_between_folders,
