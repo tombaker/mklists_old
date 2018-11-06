@@ -108,35 +108,23 @@ def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
 
 
 def write_initial_configfile(
-    settings_dict=None,
-    configfile_name=MKLISTSRC_LOCAL_NAME,
-    dryrun=False,
-    verbose=False,
+    settings_dict=None, configfile_name=MKLISTSRC_LOCAL_NAME, verbose=False
 ):
     """Writes initial configuration file to disk (or just says it will).
         If configfile already exists, exits suggesting to first delete.
         If configfile not found, creates new file using current settings.
-        If 'dryrun' is ON, prints messages but does not write to disk.
     """
     if os.path.exists(configfile_name):
         raise InitError(
             f"To re-initialize, first delete {repr(configfile_name)}."
         )
     else:
-        if dryrun:
-            raise InitError(
-                f"In read-only mode. Would have created "
-                f"{repr(configfile_name)}."
-            )
-        else:
-            print(
-                f"Creating default {repr(configfile_name)}. "
-                f"Customize as needed."
-            )
-            with open(configfile_name, "w") as fout:
-                fout.write(
-                    yaml.safe_dump(settings_dict, default_flow_style=False)
-                )
+        print(
+            f"Creating default {repr(configfile_name)}. "
+            f"Customize as needed."
+        )
+        with open(configfile_name, "w") as fout:
+            fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
 
 def write_initial_rulefiles(
@@ -144,7 +132,6 @@ def write_initial_rulefiles(
     local_rulefile_name=LOCAL_RULEFILE_NAME,
     globalrules_content=GLOBAL_RULEFILE_STARTER_YAMLSTRING,
     localrules_content=LOCAL_RULEFILE_STARTER_YAMLSTRING,
-    dryrun=False,
     verbose=False,
 ):
     """Generate default rule (and global rule) configuration files.
@@ -152,7 +139,6 @@ def write_initial_rulefiles(
         Checks whether current settings name non-default rule files.
         If either rule file already exists, leaves untouched.
         Creates rule files with default contents.
-        If 'dryrun' is ON, prints messages but does not write to disk.
     """
     for file, content in [
         (global_rulefile_name, globalrules_content),
@@ -162,18 +148,12 @@ def write_initial_rulefiles(
             if os.path.exists(file):
                 print(f"Found existing {repr(file)} - leaving untouched.")
             else:
-                if dryrun:
-                    print(
-                        f"['dryrun' is on] "
-                        f"Would have created {repr(file)}."
-                    )
-                else:
-                    print(
-                        f"Creating starter rule file {repr(file)} "
-                        "from built-in settings - can be customized."
-                    )
-                    with open(file, "w") as fout:
-                        fout.write(content)
+                print(
+                    f"Creating starter rule file {repr(file)} "
+                    "from built-in settings - can be customized."
+                )
+                with open(file, "w") as fout:
+                    fout.write(content)
 
 
 def get_datalines(ls_visible=[], but_not=None):
@@ -240,16 +220,13 @@ def move_datafiles_to_backup(backup_depth=None):
     """
 
 
-def write_data_to_files(datalines_d=None, dryrun=False, verbose=False):
+def write_data_to_files(datalines_d=None, verbose=False):
     pass
 
 
 # Write urlified data files to urlify_dir.
 def write_data_urlified_to_files(
-    datalines_d={},
-    urlify_dir=None,
-    dryrun=True,  # later: ctx.obj['dryrun'],
-    verbose=False,
+    datalines_d={}, urlify_dir=None, verbose=False
 ):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()

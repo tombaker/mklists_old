@@ -81,9 +81,6 @@ def explain(**sets):
     if sets["backup_depth"]:
         print(f"...where last {sets['backup_depth']} backups will be kept.")
 
-    if sets["dryrun"]:
-        print("Will stop short of writing to disk or moving files.")
-
     if sets["valid_filename_characters"]:
         print(
             f"Valid filename characters: "

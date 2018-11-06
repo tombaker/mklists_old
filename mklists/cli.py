@@ -28,26 +28,20 @@ from mklists import (
 @click.option(
     "--backup-depth",
     type=int,
-    metavar="INTEGER",
-    help="Set backups to keep [default: '3']",
+    metavar="INT",
+    help="Rolling backups to keep [default: '3']",
 )
 @click.option(
     "--urlify",
     type=bool,
     is_flag=True,
-    help="Enable generation of HTML output",
-)
-@click.option(
-    "--dryrun",
-    type=bool,
-    is_flag=True,
-    help="Run in read-only mode, for debugging",
+    help="Copy data to clickable-link HTML",
 )
 @click.option("--verbose", type=bool, is_flag=True, help="Enable verbose mode")
 @click.version_option("0.1.4", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, backup_depth, urlify, dryrun, verbose):
+def cli(ctx, backup_depth, urlify, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
     # Snapshot CLI arguments.
@@ -127,12 +121,7 @@ def run(ctx):
     # Write mklists_dict to working directory:
     # -- mklists_dict keys are names of files.
     # -- mklists_dict values are contents of files.
-    # -- If 'dryrun' is ON, will only print messages, not write to disk.
-    write_data_to_files(
-        datalines_d=mklists_dict,
-        dryrun=True,  # later: ctx.obj['dryrun'],
-        verbose=ctx.obj["verbose"],
-    )
+    write_data_to_files(datalines_d=mklists_dict, verbose=ctx.obj["verbose"])
 
     # If 'urlify' is ON, write urlified data files to urlify_dir.
     if ctx.obj["urlify"]:
@@ -140,7 +129,6 @@ def run(ctx):
             datalines_d=mklists_dict,
             urlify_dir=ctx.obj["urlify_dir"],
             urlify_depth=ctx.obj["urlify_depth"],
-            dryrun=True,  # later: ctx.obj['dryrun'],
             verbose=ctx.obj["verbose"],
         )
 

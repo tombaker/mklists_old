@@ -22,7 +22,6 @@ MKLISTSRC_LOCAL_NAME = ".mklistsrc"
 MKLISTSRC_STARTER_DICT = {
     "urlify": False,
     "backup_depth": 3,
-    "dryrun": False,
     "verbose": False,
     "valid_filename_characters": VALID_FILENAME_CHARS,
     "invalid_filename_patterns": INVALID_FILENAME_PATS,
