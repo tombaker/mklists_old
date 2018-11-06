@@ -1,4 +1,5 @@
-"""Utility module"""
+"""Utilities used by other modules"""
+
 
 import os
 import re
@@ -8,19 +9,8 @@ from mklists import (
     INVALID_FILENAME_PATS,
     VALID_FILENAME_CHARS_STR,
     DatadirNotAccessibleError,
-    BadFileFormatError,
+    NotUTF8Error,
 )
-
-
-def change_working_directory(dirname, verb=False):
-    """Set current working directory for mklists (data)."""
-    if dirname is not None:
-        try:
-            os.chdir(dirname)
-            if verb:
-                print(f"Changing to {repr(dirname)} as working directory.")
-        except FileNotFoundError:
-            raise DatadirNotAccessibleError(f"{dirname} is not accessible.")
 
 
 def is_file(object_path):
@@ -58,7 +48,7 @@ def has_valid_contents(filename):
     """Returns True if file is UTF8-encoded and has no blank lines.
 
     Raises:
-        BadFileFormatError: if file is not UTF8-encoded.
+        NotUTF8Error: if file is not UTF8-encoded.
 
     TODO Does not tell user whether it is failing because
     * not UTF8
@@ -70,7 +60,7 @@ def has_valid_contents(filename):
                 if not line.rstrip():
                     return False
     except UnicodeDecodeError:
-        raise BadFileFormatError(f"{repr(filename)} is not in UTF-8 format.")
+        raise NotUTF8Error(f"{repr(filename)} is not in UTF-8 format.")
     return True
 
 
@@ -78,12 +68,12 @@ def _is_utf8_encoded(file_name):
     """Returns True if file is UTF8-encoded.
 
     Raises:
-        BadFileFormatError: if file is not UTF8-encoded.
+        NotUTF8Error: if file is not UTF8-encoded.
     """
     try:
         open(file_name).read()
     except UnicodeDecodeError:
-        raise BadFileFormatError(f"{repr(file_name)} is not in UTF-8 format.")
+        raise NotUTF8Error(f"{repr(file_name)} is not in UTF-8 format.")
     return True
 
 

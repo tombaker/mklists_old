@@ -95,7 +95,7 @@ class BadFilenameError(RuleError, DataError):
     """Filename uses invalid characters or name patterns."""
 
 
-class BadFileFormatError(DataError):
+class NotUTF8Error(DataError):
     """File is not in UTF-8 format."""
 
 

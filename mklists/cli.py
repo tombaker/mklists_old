@@ -3,7 +3,6 @@
 import glob
 import click
 import yaml
-from mklists.utils import change_working_directory
 from mklists.rules import apply_rules_to_datalines
 from mklists.cli_init import (
     get_rules,
