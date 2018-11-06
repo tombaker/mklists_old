@@ -3,10 +3,7 @@
 import os
 import pytest
 from mklists.rules import Rule, apply_rules_to_datalines, _line_matches
-from mklists import (
-    UninitializedSourceError,
-    GLOBAL_RULEFILE_STARTER_YAMLSTRING,
-)
+from mklists import UninitializedSourceError, GLOBAL_RULEFILE_STARTER_YAMLSTR
 from mklists.readwrite import (
     write_yamlstr_to_yamlfile,
     read_yamlfile_return_pyobject,
@@ -92,7 +89,7 @@ def test_number_fields_are_integers(reinitialize_ruleclass_variables):
 
 
 @pytest.mark.rule
-def test_source_was_previously_declared(reinitialize_ruleclass_variables):
+def test_source_was_properly_registered(reinitialize_ruleclass_variables):
     """Rule object was initialized with 'source' of first rule."""
     x = Rule(1, "NOW", "a.txt", "b.txt", 0)
     x.is_valid()

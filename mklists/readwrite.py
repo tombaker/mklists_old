@@ -14,14 +14,14 @@ import pprint
 import yaml
 from mklists import (
     GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULEFILE_STARTER_YAMLSTRING,
+    GLOBAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_RULEFILE_NAME,
-    LOCAL_RULEFILE_STARTER_YAMLSTRING,
+    LOCAL_RULEFILE_STARTER_YAMLSTR,
     MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
-    TIMESTAMP,
-    URL_PATTERN,
-    VALID_FILENAME_CHARS,
+    TIMESTAMP_STR,
+    URL_PATTERN_REGEX,
+    VALID_FILENAME_CHARS_STR,
     BadFilenameError,
     BadYamlError,
     BadYamlRuleError,
@@ -41,14 +41,14 @@ def read_overrides_from_file(configfile_name):
     return yaml.load(open(configfile_name).read())
 
 
-def apply_overrides(context, overrides):
+def apply_overrides(settings_dict, overrides):
     """docstring"""
     overrides.pop("ctx", None)
     overrides = {
         key: overrides[key] for key in overrides if overrides[key] is not None
     }
-    context.update(overrides)
-    return context
+    settings_dict.update(overrides)
+    return settings_dict
 
 
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
@@ -128,8 +128,8 @@ def write_initial_configfile(settings_dict=None, verbose=False):
 def write_initial_rulefiles(
     global_rulefile_name=GLOBAL_RULEFILE_NAME,
     local_rulefile_name=LOCAL_RULEFILE_NAME,
-    globalrules_content=GLOBAL_RULEFILE_STARTER_YAMLSTRING,
-    localrules_content=LOCAL_RULEFILE_STARTER_YAMLSTRING,
+    globalrules_content=GLOBAL_RULEFILE_STARTER_YAMLSTR,
+    localrules_content=LOCAL_RULEFILE_STARTER_YAMLSTR,
     verbose=False,
 ):
     """Generate default rule (and global rule) configuration files.
@@ -204,7 +204,7 @@ def _get_filelines(thing_in_directory, invalid_patterns=None):
 def move_datafiles_to_backup(backup_depth=None):
     """
     Make time-stamped directory in BACKUP_DIR_NAME (create constant!)
-    Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP])
+    Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP_STR])
     Move existing files to backup_dir
     Delete oldest backups:
     delete_oldest_backup(backup_dir, backup_depth):

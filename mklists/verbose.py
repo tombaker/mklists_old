@@ -5,7 +5,7 @@
 """
 
 import sys
-from mklists import NoRulefileError, MKLISTSRC_LOCAL_NAME, TIMESTAMP
+from mklists import NoRulefileError, MKLISTSRC_LOCAL_NAME, TIMESTAMP_STR
 
 
 def explain(**sets):
@@ -54,7 +54,7 @@ def explain(**sets):
         )
 
     if sets["backup"]:
-        backup_dir_timestamped = "/".join([sets["backup_dir"], TIMESTAMP])
+        backup_dir_timestamped = "/".join([sets["backup_dir"], TIMESTAMP_STR])
         print("'backup' option is ON, so data files will be backed up ")
         if backup_dir_timestamped:
             print(f"...to the directory {repr(backup_dir_timestamped)}.")

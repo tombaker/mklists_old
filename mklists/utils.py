@@ -4,9 +4,9 @@ import os
 import re
 import glob
 from mklists import (
-    URL_PATTERN,
+    URL_PATTERN_REGEX,
     INVALID_FILENAME_PATS,
-    VALID_FILENAME_CHARS,
+    VALID_FILENAME_CHARS_STR,
     DatadirNotAccessibleError,
     BadFileFormatError,
 )
@@ -33,7 +33,7 @@ def is_file(object_path):
 def has_valid_name(
     file_name,
     bad_patterns=INVALID_FILENAME_PATS,
-    valid_chars=VALID_FILENAME_CHARS,
+    valid_chars=VALID_FILENAME_CHARS_STR,
 ):
     """Return True if filename has no invalid characters or patterns.
 
@@ -102,7 +102,9 @@ def linkify(string_raw):
     """docstring"""
     if "<a href=" in string_raw:
         return string_raw
-    return re.compile(URL_PATTERN).sub(r'<a href="\1">\1</a>', string_raw)
+    return re.compile(URL_PATTERN_REGEX).sub(
+        r'<a href="\1">\1</a>', string_raw
+    )
 
 
 def ls_visible(cwd=os.getcwd()):

@@ -6,7 +6,7 @@ import yaml
 from mklists import (
     MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
-    VALID_FILENAME_CHARS,
+    VALID_FILENAME_CHARS_STR,
 )
 from mklists.readwrite import (
     write_initial_configfile,

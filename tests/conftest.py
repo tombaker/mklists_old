@@ -6,9 +6,9 @@ from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rules import Rule
 from mklists import (
-    GLOBAL_RULEFILE_STARTER_YAMLSTRING,
+    GLOBAL_RULEFILE_STARTER_YAMLSTR,
     GLOBAL_RULEFILE_NAME,
-    LOCAL_RULEFILE_STARTER_YAMLSTRING,
+    LOCAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_RULEFILE_NAME,
     MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
@@ -31,15 +31,15 @@ def fixture_multidir_configured(tmpdir_factory):
 
     rules_global = cwd_dir.join(GLOBAL_RULEFILE_NAME)
 
-    mklistsrc.write(GLOBAL_RULEFILE_STARTER_YAMLSTRING)
+    mklistsrc.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
 
     subdir_a = cwd_dir.mkdir("a")
     rules_a = subdir_a.join(LOCAL_RULEFILE_NAME)
-    rules_a.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+    rules_a.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
 
     subdir_b = cwd_dir.mkdir("b")
     rules_b = subdir_b.join(LOCAL_RULEFILE_NAME)
-    rules_b.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+    rules_b.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
 
     backup_dir = cwd_dir.mkdir(BACKUP_DIR_NAME)
     htmlfiles_dir = cwd_dir.mkdir(HTMLFILES_DIR_NAME)
@@ -55,9 +55,9 @@ def fixture_multidir_configured(tmpdir_factory):
     mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
 
     # Write to filehandles.
-    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
-    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTRING)
-    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
+    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
+    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
     with open(mklistsrc, "w") as fout:
         fout.write(
             yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
@@ -85,9 +85,9 @@ def fixture_singledir_configured(tmpdir_factory):
     mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
 
     # Write to filehandles.
-    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
-    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTRING)
-    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTRING)
+    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
+    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
+    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
     with open(mklistsrc, "w") as fout:
         fout.write(
             yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
@@ -103,7 +103,7 @@ def fixture_singledir_configured(tmpdir_factory):
 def reinitialize_ruleclass_variables():
     """Class variables must be re-initialized:
         for each test of Rule.isrule
-        for each test of x._source_was_previously_declared
+        for each test of x._source_was_properly_registered
         for each test of Rule.sources_list"""
     Rule.sources_list = []
     Rule.sources_list_is_initialized = False
@@ -120,14 +120,14 @@ def mklistsrc_yamlstr():
 def grules_yamlstr():
     """Return some YAML-formatted rules for writing to rule files."""
 
-    return GLOBAL_RULEFILE_STARTER_YAMLSTRING
+    return GLOBAL_RULEFILE_STARTER_YAMLSTR
 
 
 @pytest.fixture()
 def lrules_yamlstr():
     """Returns some YAML-formatted rules for writing to rule files."""
 
-    return LOCAL_RULEFILE_STARTER_YAMLSTRING
+    return LOCAL_RULEFILE_STARTER_YAMLSTR
 
 
 # @pytest.fixture(scope='module')

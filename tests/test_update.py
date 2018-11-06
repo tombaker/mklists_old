@@ -5,7 +5,7 @@ import pytest
 from mklists import (
     MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
-    VALID_FILENAME_CHARS,
+    VALID_FILENAME_CHARS_STR,
 )
 from mklists.readwrite import (
     write_initial_configfile,
@@ -41,7 +41,10 @@ def test_write_initial_configfile(tmpdir):
     mklistsrc = tmpdir.join(MKLISTSRC_NAME)
     write_initial_configfile(configfile_name=mklistsrc)
     updated_context = apply_overrides_from_file()
-    assert updated_context["valid_filename_characters"] == VALID_FILENAME_CHARS
+    assert (
+        updated_context["valid_filename_characters"]
+        == VALID_FILENAME_CHARS_STR
+    )
 
 
 @pytest.mark.skip

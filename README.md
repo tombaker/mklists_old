@@ -7,6 +7,7 @@ Next steps:
 * http://mklists.org/wishlist/ - compare to (delete someday)
 * Update pip distribution
 * mklists equivalent of git-grep?
+* /.globalrules exists only if /mklistsrc exists
 
 Maybe someday:
 * Event logging?

@@ -2,12 +2,12 @@
 
 import datetime
 
-TIMESTAMP = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
+TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
 
 # 2018-11-05: Does it make a difference if this is a raw string?
-URL_PATTERN = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
-VALID_FILENAME_CHARS = """\
+VALID_FILENAME_CHARS_STR = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
 
 INVALID_FILENAME_PATS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
@@ -23,20 +23,20 @@ MKLISTSRC_STARTER_DICT = {
     "urlify": False,
     "backup_depth": 3,
     "verbose": False,
-    "valid_filename_characters": VALID_FILENAME_CHARS,
+    "valid_filename_characters": VALID_FILENAME_CHARS_STR,
     "invalid_filename_patterns": INVALID_FILENAME_PATS,
     "files2dirs": {},
 }
 
 
 GLOBAL_RULEFILE_NAME = ".globalrules"
-GLOBAL_RULEFILE_STARTER_YAMLSTRING = """\
+GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
 - [0,  '.',         lines,         todo.txt,   0]  # notes...
 """
 
 
 LOCAL_RULEFILE_NAME = ".rules"
-LOCAL_RULEFILE_STARTER_YAMLSTRING = """\
+LOCAL_RULEFILE_STARTER_YAMLSTR = """\
 - [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
 - [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
 """

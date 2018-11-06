@@ -9,7 +9,7 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass
 from mklists import (
-    VALID_FILENAME_CHARS,
+    VALID_FILENAME_CHARS_STR,
     NoDataError,
     NoRulesError,
     NotIntegerError,
@@ -130,7 +130,7 @@ class Rule:
         self._source_matchpattern_is_valid()
         self._filenames_are_valid()
         self._source_is_not_equal_target()
-        self._source_was_previously_declared()
+        self._source_was_properly_registered()
         return True
 
     def _number_fields_are_integers(self):
@@ -174,7 +174,7 @@ class Rule:
             raise SourceEqualsTargetError("source must not equal target.")
         return True
 
-    def _source_was_previously_declared(self):
+    def _source_was_properly_registered(self):
         """Returns True if 'source' filename is registered as a source."""
         if not Rule.sources_list_is_initialized:
             Rule.sources_list.append(self.source)
