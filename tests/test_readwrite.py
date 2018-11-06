@@ -14,7 +14,7 @@ from mklists import (
     VALID_FILENAME_CHARS_STR,
 )
 from mklists.rw_init import write_initial_rulefiles, write_initial_configfile
-from mklists.readwrite import write_yamlstr_to_yamlfile
+from mklists.rw_run import write_yamlstr_to_yamlfile
 
 
 @pytest.mark.write

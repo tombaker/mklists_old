@@ -10,7 +10,7 @@ from mklists.rw_init import (
     write_initial_configfile,
     write_initial_rulefiles,
 )
-from mklists.readwrite import (
+from mklists.rw_run import (
     get_datalines,
     move_datafiles_to_backup,
     move_files_between_folders,
