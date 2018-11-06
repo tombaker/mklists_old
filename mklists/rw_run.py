@@ -6,34 +6,16 @@ Functions with side effects such as:
 * modifying data structures in memory
 """
 
-import os
-import re
-import string
-import sys
-import pprint
 import yaml
 from mklists import (
-    GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULEFILE_STARTER_YAMLSTR,
-    LOCAL_RULEFILE_NAME,
-    LOCAL_RULEFILE_STARTER_YAMLSTR,
-    MKLISTSRC_STARTER_DICT,
-    MKLISTSRC_LOCAL_NAME,
-    TIMESTAMP_STR,
-    URL_PATTERN_REGEX,
-    VALID_FILENAME_CHARS_STR,
     BadFilenameError,
     BadYamlError,
-    BadYamlRuleError,
     BlankLinesError,
-    ConfigFileNotFoundError,
     DatadirHasNonFilesError,
-    InitError,
     NoDataError,
-    NoRulesError,
     NotUTF8Error,
 )
-from mklists.rules import Rule
+from mklists.utils import is_file, has_valid_name, _is_utf8_encoded
 
 
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
@@ -61,9 +43,6 @@ def get_datalines(ls_visible=[], but_not=None):
     datalines = []
     for item in ls_visible:
         datalines.append(_get_filelines(item, invalid_patterns=but_not))
-        if verbose:
-            print(f"Reading {repr(item)}.")
-            print(datalines)  # 2018-09-02: just for debugging
     if not datalines:
         raise NoDataError("No data to process!")
     return datalines
@@ -118,7 +97,6 @@ def write_data_to_files(datalines_d=None, verbose=False):
     pass
 
 
-# Write urlified data files to urlify_dir.
 def write_data_urlified_to_files(
     datalines_d={}, urlify_dir=None, verbose=False
 ):
@@ -136,7 +114,7 @@ def write_data_urlified_to_files(
     print(f"* Move files outside datadir as per ['files2dirs'].")
 
 
-def move_files_to_external_directories(files2dirs_dict=None):
+def move_files_between_folders(files2dirs_dict=None):
     """
     Args:
         files2dirs_dict: filename (key) and destination directory (value)

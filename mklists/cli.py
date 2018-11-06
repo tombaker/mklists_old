@@ -13,7 +13,7 @@ from mklists.rw_init import (
 from mklists.readwrite import (
     get_datalines,
     move_datafiles_to_backup,
-    move_files_to_external_directories,
+    move_files_between_folders,
     write_data_to_files,
     write_data_urlified_to_files,
 )
