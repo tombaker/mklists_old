@@ -2,9 +2,9 @@
 
 import glob
 import click
+import yaml
 from mklists.utils import change_working_directory
 from mklists.rules import apply_rules_to_datalines
-from mklists.rw_cli import read_overrides_from_file, apply_overrides
 from mklists.rw_init import (
     get_rules,
     write_initial_configfile,
@@ -45,20 +45,14 @@ from mklists import (
 def cli(ctx, backup_depth, urlify, verbose):
     """Sync your plain-text todo lists to evolving rules"""
 
-    # Snapshot CLI arguments.
     overrides_from_cli = locals().copy()
-
-    # Initialize context object with default settings dictionary.
     ctx.obj = MKLISTSRC_STARTER_DICT
-
-    # Override settings in context object from configuration file.
     if ctx.invoked_subcommand != "init":
         overrides_from_file = read_overrides_from_file(MKLISTSRC_NAME)
         ctx.obj = apply_overrides(ctx.obj, overrides_from_file)
 
     # Override settings in context object from snapshot of CLI arguments.
     ctx.obj = apply_overrides(ctx.obj, overrides_from_cli)
-    print(ctx.obj)
 
     # Explain settings in context object.
     if verbose:
@@ -138,7 +132,16 @@ def run(ctx):
         move_files_to_external_directories(ctx.obj["files2dirs"])
 
 
-@cli.command()
-@click.pass_context
-def test(ctx):
-    pass
+def read_overrides_from_file(configfile_name):
+    """docstring"""
+    return yaml.load(open(configfile_name).read())
+
+
+def apply_overrides(settings_dict, overrides):
+    """docstring"""
+    overrides.pop("ctx", None)
+    overrides = {
+        key: overrides[key] for key in overrides if overrides[key] is not None
+    }
+    settings_dict.update(overrides)
+    return settings_dict
