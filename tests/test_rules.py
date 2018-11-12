@@ -10,6 +10,13 @@ from mklists.cli_run import (
 )
 
 
+"""Try:
+    yaml_string =
+    - [0   , 'NOW'    , lines        , __RENAME__   , 0]
+    - [0   , 'LATER'  , __RENAME__   , calendar     , 1, 5]
+"""
+
+
 @pytest.mark.yaml
 def test_write_yamlstr(tmpdir):
     """Writes string to YAML rulefile, reads it back to string."""

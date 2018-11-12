@@ -110,51 +110,6 @@ def reinitialize_ruleclass_variables():
 
 
 @pytest.fixture(scope="module")
-def mklistsrc_yamlstr():
-    """Return some YAML-formatted rules for writing to rule files."""
-
-    return MKLISTSRC_STARTER_DICT
-
-
-@pytest.fixture()
-def grules_yamlstr():
-    """Return some YAML-formatted rules for writing to rule files."""
-
-    return GLOBAL_RULEFILE_STARTER_YAMLSTR
-
-
-@pytest.fixture()
-def lrules_yamlstr():
-    """Returns some YAML-formatted rules for writing to rule files."""
-
-    return LOCAL_RULEFILEA_STARTER_YAMLSTR
-
-
-# @pytest.fixture(scope='module')
-# def rules_yamlfile(tmpdir_factory):
-#    """Returns YAML-formatted file of rules."""
-#
-#    rules = tmpdir_factory.mktemp('datadir').join('rules')
-#    print(f"Created 'rules': {repr(rules)}")
-#    rules.write(dedent(lrules_yamlstr))
-#    return rules
-
-
-@pytest.fixture(scope="module")
-def rules_bad_yamlfile(tmpdir_factory):
-    """Returns badly formatted YAML rulefile object: too many fields."""
-
-    yaml_string = """\
-    - [0   , 'NOW'    , lines        , __RENAME__   , 0]
-    - [0   , 'LATER'  , __RENAME__   , calendar     , 1, 5]"""
-
-    rules = tmpdir_factory.mktemp("datadir").join("rules")
-    print(f"Created 'rules': {repr(rules)}")
-    rules.write(dedent(yaml_string))
-    return rules
-
-
-@pytest.fixture(scope="module")
 def rules_bad_yamlfile2(tmpdir_factory):
     """Returns badly formatted YAML rulefile object: bad YAML syntax."""
 
