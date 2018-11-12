@@ -15,21 +15,7 @@ from mklists import (
     NoDataError,
     NotUTF8Error,
 )
-from mklists.utils import is_file, has_valid_name, _is_utf8_encoded
-
-
-def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
-    """Writes string in YAML format to file."""
-    with open(yamlfile_name, "w") as fout:
-        fout.write(yamlstr)
-
-
-def read_yamlfile_return_pyobject(yamlfile_name):
-    """Returns Python object parsed from YAML-format file."""
-    try:
-        return yaml.safe_load(open(yamlfile_name))
-    except yaml.YAMLError:
-        raise BadYamlError(f"Bad YAML format in {repr(yamlfile_name)}.")
+from mklists.utils import is_file, has_valid_name, is_utf8_encoded
 
 
 def get_datalines(ls_visible=[], but_not=None):
@@ -93,11 +79,11 @@ def move_datafiles_to_backup(backup_depth=None):
     """
 
 
-def write_data_to_files(datalines_d=None, verbose=False):
+def write_mklists_dict_to_file(datalines_d=None, verbose=False):
     pass
 
 
-def write_data_urlified_to_files(
+def write_mklists_dict_urlified_to_file(
     datalines_d={}, urlify_dir=None, verbose=False
 ):
     """Something like: def removefiles(targetdirectory):
@@ -114,7 +100,7 @@ def write_data_urlified_to_files(
     print(f"* Move files outside datadir as per ['files2dirs'].")
 
 
-def move_files_between_folders(files2dirs_dict=None):
+def move_files_to_given_destinations(files2dirs_dict=None):
     """
     Args:
         files2dirs_dict: filename (key) and destination directory (value)

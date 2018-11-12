@@ -12,9 +12,9 @@ from mklists.cli_init import (
 from mklists.cli_run import (
     get_datalines,
     move_datafiles_to_backup,
-    move_files_between_folders,
-    write_data_to_files,
-    write_data_urlified_to_files,
+    move_files_to_given_destinations,
+    write_mklists_dict_to_file,
+    write_mklists_dict_urlified_to_file,
 )
 from mklists.verbose import explain
 from mklists import (
@@ -43,16 +43,16 @@ from mklists import (
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx, backup_depth, urlify, verbose):
-    """Sync your plain-text todo lists to evolving rules"""
+    """Organize your todo lists by tweaking rules"""
 
     overrides_from_cli = locals().copy()
     ctx.obj = MKLISTSRC_STARTER_DICT
     if ctx.invoked_subcommand != "init":
-        overrides_from_file = read_overrides_from_file(MKLISTSRC_NAME)
-        ctx.obj = apply_overrides(ctx.obj, overrides_from_file)
+        overrides_from_file = _read_overrides_from_file(MKLISTSRC_NAME)
+        ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
 
     # Override settings in context object from snapshot of CLI arguments.
-    ctx.obj = apply_overrides(ctx.obj, overrides_from_cli)
+    ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
 
     # Explain settings in context object.
     if verbose:
@@ -64,7 +64,7 @@ def cli(ctx, backup_depth, urlify, verbose):
     "--repo",
     type=bool,
     is_flag=True,
-    help="Initialize as multi-list-folder repo",
+    help="Initialize as multi-listfolder repo",
 )
 @click.pass_context
 def init(ctx, repo):
@@ -112,25 +112,27 @@ def run(ctx):
     # Write mklists_dict to working directory:
     # -- mklists_dict keys are names of files.
     # -- mklists_dict values are contents of files.
-    write_data_to_files(datalines_d=mklists_dict, verbose=ctx.obj["verbose"])
+    write_mklists_dict_to_file(
+        datalines_d=mklists_dict, verbose=ctx.obj["verbose"]
+    )
 
     # If 'urlify' is ON, write urlified data files to urlify_dir.
     if ctx.obj["urlify"]:
-        write_data_urlified_to_files(
+        write_mklists_dict_urlified_to_file(
             datalines_d=mklists_dict, verbose=ctx.obj["verbose"]
         )
 
     # If 'files2dirs' is ON, move selected files to external directories.
     if ctx.obj["files2dirs"]:
-        move_files_to_external_directories(ctx.obj["files2dirs"])
+        move_files_to_given_destinations(ctx.obj["files2dirs"])
 
 
-def read_overrides_from_file(configfile_name):
+def _read_overrides_from_file(configfile_name):
     """docstring"""
     return yaml.load(open(configfile_name).read())
 
 
-def apply_overrides(settings_dict, overrides):
+def _apply_overrides(settings_dict, overrides):
     """docstring"""
     overrides.pop("ctx", None)
     overrides = {

@@ -1,6 +1,6 @@
 mklists
 
-Re-arrange folders of plain-text lists using rules
+Organize your todo lists by tweaking rules
 
 Next steps:
 * http://click.pocoo.org/6/utils/ - Click testing and file system isolation

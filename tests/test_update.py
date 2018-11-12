@@ -7,37 +7,37 @@ from mklists import (
     MKLISTSRC_LOCAL_NAME,
     VALID_FILENAME_CHARS_STR,
 )
-from mklists.cli import read_overrides_from_file, apply_overrides
+from mklists.cli import _read_overrides_from_file, _apply_overrides
 from mklists.cli_init import write_initial_configfile
 
 
 @pytest.mark.skip
-def test_apply_overrides_from_file_empty(singledir_configured):
+def test__apply_overrides_from_file_empty(singledir_configured):
     """Config file '.mklistsrc3' is empty (length=0)."""
     os.chdir(singledir_configured)
-    updated_config_dict = apply_overrides_from_file(
+    updated_config_dict = _apply_overrides_from_file(
         configfile_name=".mklistsrc3"
     )
     assert updated_config_dict == MKLISTSRC_DEFAULTS
 
 
 @pytest.mark.skip
-def test_apply_overrides_from_file_not_found(tmpdir):
+def test__apply_overrides_from_file_not_found(tmpdir):
     """Mklists exits if configfile is not found."""
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
-        apply_overrides_from_file()
+        _apply_overrides_from_file()
 
 
 @pytest.mark.skip
 def test_write_initial_configfile(tmpdir):
     """Tests that two functions correctly round-trip:
     * write_initial_configfile()
-    * apply_overrides_from_file()"""
+    * _apply_overrides_from_file()"""
     os.chdir(tmpdir)
     mklistsrc = tmpdir.join(MKLISTSRC_NAME)
     write_initial_configfile(configfile_name=mklistsrc)
-    updated_context = apply_overrides_from_file()
+    updated_context = _apply_overrides_from_file()
     assert (
         updated_context["valid_filename_characters"]
         == VALID_FILENAME_CHARS_STR

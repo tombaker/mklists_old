@@ -10,6 +10,7 @@ from mklists import (
     InitError,
 )
 from mklists.rules import Rule
+from mklists.utils import read_yamlfile_return_pyobject
 
 
 def get_rules(local_rulefile_name=None, global_rulefile_name=None):
