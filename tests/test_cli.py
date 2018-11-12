@@ -11,9 +11,31 @@ from mklists import (
 from mklists.cli import _read_overrides_from_file, _apply_overrides
 from mklists.cli_init import write_initial_configfile
 
+"""Things to test:
+    Note: other directories in repo root created when functions called:
+    * .backups/ - when @@@ is called
+    * .html/    - when @@@ is called
+
+    Note: find way to test:
+    * mklistsrc2 = cwd_dir.join(".mklistsrc2")  # minimal .mklistsrc
+    * mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
+    Perhaps replace default .mklistsrc not here,
+    but in test functions themselves:
+    * mklistsrc2.write("{ 'verbose': True }")
+    * mklistsrc3.write("")
+    backup_dir = root_dir.mkdir(BACKUP_DIR_NAME)
+    htmlfiles_dir = root_dir.mkdir(HTMLFILES_DIR_NAME)
+    assert mklistsrc.read() == MKLISTSRC_STARTER_DICT
+    Note: .globalrules and .rules should never exist in same directory:
+    * .globalrules always one level up.
+    What about:
+    * mklistsrc2.write("{ 'rules': '.local_rules' }")
+    * mklistsrc3.write("")
+"""
+
 
 @pytest.mark.skip
-def test__apply_overrides_from_file_something_changed(singledir_configured):
+def test_apply_overrides_from_file_something_changed(singledir_configured):
     """Config file consists of just one key/value pair.
     Illustrates that .mklistsrc need not cover all mklists settings.
     Note: singledir_configured directory fixture has file '.mklistsrc2'.
@@ -28,7 +50,7 @@ def test__apply_overrides_from_file_something_changed(singledir_configured):
 
 
 @pytest.mark.cli
-def test__apply_overrides_from_file(singledir_configured):
+def test_apply_overrides_from_file(singledir_configured):
     """_apply_overrides_from_file() should return builtin settings."""
     os.chdir(singledir_configured)
     context = {}
@@ -42,7 +64,7 @@ def test__apply_overrides_from_file(singledir_configured):
 
 
 @pytest.mark.cli
-def test__apply_overrides():
+def test_apply_overrides():
     initial_context = {"ctx": "something", "backup_depth": 1}
     overrides_from_file = {"backup_depth": 500}
     updated_context = _apply_overrides(initial_context, overrides_from_file)
@@ -51,7 +73,7 @@ def test__apply_overrides():
 
 
 @pytest.mark.cli
-def test__apply_overrides2():
+def test_apply_overrides2():
     updated_context = {"ctx": "something", "backup_depth": 500}
     overrides_from_cli = {"backup_depth": 1000}
     updated_context2 = _apply_overrides(updated_context, overrides_from_cli)
@@ -60,7 +82,7 @@ def test__apply_overrides2():
 
 
 @pytest.mark.cli
-def test__read_overrides_from_file(tmpdir):
+def test_read_overrides_from_file(tmpdir):
     os.chdir(tmpdir)
     settings_dict = {"backup_depth": 6}
     with open(".config", "w") as fout:
