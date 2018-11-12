@@ -52,15 +52,14 @@ def fixture_singledir_configured(tmpdir_factory):
         mydir/.mklistsrc"""
 
     cwd_dir = tmpdir_factory.mktemp("mydir")
-    rules = cwd_dir.join(RULEFILE_NAME)
-    rules.write(RULEFILE_STARTER_YAMLSTR)
-
     mklistsrc = cwd_dir.join(MKLISTSRC_LOCAL_NAME)
     with open(mklistsrc, "w") as fout:
         fout.write(
             yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
         )
 
+    rules = cwd_dir.join(RULEFILE_NAME)
+    rules.write(RULEFILE_STARTER_YAMLSTR)
     return cwd_dir
 
 
