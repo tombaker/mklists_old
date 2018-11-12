@@ -6,23 +6,23 @@ from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rules import Rule
 from mklists import (
-    GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULEFILE_STARTER_YAMLSTR,
+    MKLISTSRC_LOCAL_NAME,
+    MKLISTSRC_GLOBAL_NAME,
+    MKLISTSRC_STARTER_DICT,
     RULEFILE_NAME,
     RULEFILE_STARTER_YAMLSTR,
+    GLOBAL_RULEFILE_NAME,
+    GLOBAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_RULEFILE_NAME,
     LOCAL_RULEFILEA_STARTER_YAMLSTR,
     LOCAL_RULEFILEB_STARTER_YAMLSTR,
-    MKLISTSRC_STARTER_DICT,
-    MKLISTSRC_LOCAL_NAME,
-    MKLISTSRC_GLOBAL_NAME,
     BACKUP_DIR_NAME,
     HTMLFILES_DIR_NAME,
 )
 
 
-@pytest.fixture(name="multidir_configured")
-def fixture_multidir_configured(tmpdir_factory):
+@pytest.fixture(name="multidir_repo_configured")
+def fixture_multidir_repo_configured(tmpdir_factory):
     """Return temporary mklists "repo" configured with:
     * files .globalrules and mklistsrc in root directory
     * file .rules in data subdirectory
