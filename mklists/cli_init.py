@@ -3,8 +3,9 @@ import yaml
 from mklists import (
     GLOBAL_RULEFILE_NAME,
     GLOBAL_RULEFILE_STARTER_YAMLSTR,
+    RULEFILE_NAME,
     LOCAL_RULEFILE_NAME,
-    LOCAL_RULEFILE_STARTER_YAMLSTR,
+    LOCAL_RULEFILEA_STARTER_YAMLSTR,
     BadYamlRuleError,
     InitError,
 )
@@ -75,7 +76,7 @@ def write_initial_rulefiles(
     global_rulefile_name=GLOBAL_RULEFILE_NAME,
     local_rulefile_name=LOCAL_RULEFILE_NAME,
     globalrules_content=GLOBAL_RULEFILE_STARTER_YAMLSTR,
-    localrules_content=LOCAL_RULEFILE_STARTER_YAMLSTR,
+    localrules_content=LOCAL_RULEFILEA_STARTER_YAMLSTR,
     verbose=False,
 ):
     """Generate default rule (and global rule) configuration files.

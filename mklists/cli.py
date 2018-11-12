@@ -19,6 +19,7 @@ from mklists.cli_run import (
 from mklists.verbose import explain
 from mklists import (
     MKLISTSRC_LOCAL_NAME,
+    RULEFILE_NAME,
     LOCAL_RULEFILE_NAME,
     MKLISTSRC_STARTER_DICT,
 )

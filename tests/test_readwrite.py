@@ -8,7 +8,7 @@ from mklists import (
     MKLISTSRC_LOCAL_NAME,
     MKLISTSRC_STARTER_DICT,
     GLOBAL_RULEFILE_STARTER_YAMLSTR,
-    LOCAL_RULEFILE_STARTER_YAMLSTR,
+    LOCAL_RULEFILEA_STARTER_YAMLSTR,
     GLOBAL_RULEFILE_NAME,
     LOCAL_RULEFILE_NAME,
     VALID_FILENAME_CHARS_STR,
@@ -48,4 +48,4 @@ def test_write_initial_localrules(tmpdir):
     localrules_name = tmpdir.join(".localrules")
     localrules_content = open(localrules_name).read()
     localrules_hash = hash(localrules_content)
-    assert hash(LOCAL_RULEFILE_STARTER_YAMLSTR) == localrules_hash
+    assert hash(LOCAL_RULEFILEA_STARTER_YAMLSTR) == localrules_hash

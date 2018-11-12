@@ -16,9 +16,12 @@ BACKUP_DIR_NAME = ".backups"
 
 HTMLFILES_DIR_NAME = ".html"
 
-MKLISTSRC_GLOBAL_NAME = "mklistsrc"
-MKLISTSRC_LOCAL_NAME = ".mklistsrc"
-# Do I need to turn this into a YAML string as well?
+MKLISTSRC_GLOBAL_NAME = "mklists.yaml"  # only in root directory
+MKLISTSRC_LOCAL_NAME = ".mklistsrc"  # optional?
+
+# 2018-11-12: Cannot just save string - must do:
+# fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
+# See /Users/tbaker/github/tombaker/mklists/mklists/cli_init.py
 MKLISTSRC_STARTER_DICT = {
     "urlify": False,
     "backup_depth": 3,
@@ -29,16 +32,33 @@ MKLISTSRC_STARTER_DICT = {
 }
 
 
+RULEFILE_NAME = ".rules"
+RULEFILE_STARTER_YAMLSTR = """\
+- [1, 'NOW',   todo.txt,   now.txt, 0]
+- [1, 'LATER', todo.txt, later.txt, 0]
+"""
+
+
 GLOBAL_RULEFILE_NAME = ".globalrules"
 GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
-- [0,  '.',         lines,         todo.txt,   0]  # notes...
+- [0, '.',   all_lines, lines,    1]
+- [0, '^A ', all_lines, to_a.txt, 1]
+- [0, '^B ', all_lines, to_b.txt, 1]
 """
 
 
 LOCAL_RULEFILE_NAME = ".rules"
-LOCAL_RULEFILE_STARTER_YAMLSTR = """\
-- [1,  'NOW',       todo.txt,      now.txt,    0]  # notes...
-- [1,  'LATER',     todo.txt,      later.txt,  0]  # notes...
+LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
+- [0, '.',       lines,      todo.txt,   0]
+- [0, '.',       to_a.txt    todo.txt,   1]
+- [2, 'NOW',     todo.txt,    now.txt,   1]
+- [2, 'LATER',   todo.txt,  later.txt,   0]
+"""
+
+LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
+- [0, '.',           lines,   other.txt, 1]
+- [0, '.',        to_b.txt,   other.txt, 1]
+- [2, 'SOMEDAY', other.txt, someday.txt, 0]
 """
 
 

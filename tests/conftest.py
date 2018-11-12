@@ -6,10 +6,13 @@ from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rules import Rule
 from mklists import (
-    GLOBAL_RULEFILE_STARTER_YAMLSTR,
     GLOBAL_RULEFILE_NAME,
-    LOCAL_RULEFILE_STARTER_YAMLSTR,
+    GLOBAL_RULEFILE_STARTER_YAMLSTR,
+    RULEFILE_NAME,
+    RULEFILE_STARTER_YAMLSTR,
     LOCAL_RULEFILE_NAME,
+    LOCAL_RULEFILEA_STARTER_YAMLSTR,
+    LOCAL_RULEFILEB_STARTER_YAMLSTR,
     MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
     MKLISTSRC_GLOBAL_NAME,
@@ -20,80 +23,77 @@ from mklists import (
 
 @pytest.fixture(name="multidir_configured")
 def fixture_multidir_configured(tmpdir_factory):
-    """Return temporary directory configured with:
-    * .rules and mklistsrc in root directory
-    * .rules in data subdirectory"""
+    """Return temporary mklists "repo" configured with:
+    * files .globalrules and mklistsrc in root directory
+    * file .rules in data subdirectory
+    Note: other directories in repo root created when functions called:
+    * .backups/ - when @@@ is called
+    * .html/    - when @@@ is called
 
-    # Create subdir of base temp dir, return, assign to 'cwd_dir'.
-    cwd_dir = tmpdir_factory.mktemp("mydir")
-    mklistsrc = cwd_dir.join(MKLISTSRC_GLOBAL_NAME)
-    mklistsrc.write(MKLISTSRC_STARTER_DICT)
+    Note: find way to test:
+    * mklistsrc2 = cwd_dir.join(".mklistsrc2")  # minimal .mklistsrc
+    * mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
+    Perhaps replace default .mklistsrc not here,
+    but in test functions themselves:
+    * mklistsrc2.write("{ 'verbose': True }")
+    * mklistsrc3.write("")"""
 
-    rules_global = cwd_dir.join(GLOBAL_RULEFILE_NAME)
-
-    mklistsrc.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
-
-    subdir_a = cwd_dir.mkdir("a")
-    rules_a = subdir_a.join(LOCAL_RULEFILE_NAME)
-    rules_a.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
-
-    subdir_b = cwd_dir.mkdir("b")
-    rules_b = subdir_b.join(LOCAL_RULEFILE_NAME)
-    rules_b.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
-
-    backup_dir = cwd_dir.mkdir(BACKUP_DIR_NAME)
-    htmlfiles_dir = cwd_dir.mkdir(HTMLFILES_DIR_NAME)
-
-    assert mklistsrc.read() == MKLISTSRC_STARTER_DICT
-
-    # Create filehandles with basename 'cwd_dir'.
-    lrules = cwd_dir.join(LOCAL_RULEFILE_NAME)
-    grules = cwd_dir.join(GLOBAL_RULEFILE_NAME)
-    nrules = cwd_dir.join(".local_rules")  # rule file with different name
-    mklistsrc = cwd_dir.join(MKLISTSRC_LOCAL_NAME)
-    mklistsrc2 = cwd_dir.join(".mklistsrc2")  # minimal .mklistsrc
-    mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
-
-    # Write to filehandles.
-    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
-    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
-    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
+    # Create subdir of (temporary) base directory and assign to 'root_dir'.
+    root_dir = tmpdir_factory.mktemp("mydir")
+    mklistsrc = root_dir.join(MKLISTSRC_GLOBAL_NAME)
     with open(mklistsrc, "w") as fout:
         fout.write(
             yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
         )
-    mklistsrc2.write("{ 'verbose': True }")
-    mklistsrc3.write("")
 
-    # Return subdirectory with six new files.
-    return cwd_dir
+    # .globalrules
+    rules_global = root_dir.join(GLOBAL_RULEFILE_NAME)
+    mklistsrc.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
+
+    # a/.rules
+    subdir_a = root_dir.mkdir("a")
+    rules_a = subdir_a.join(LOCAL_RULEFILE_NAME)
+    rules_a.write(LOCAL_RULEFILEA_STARTER_YAMLSTR)
+
+    # b/.rules
+    subdir_b = root_dir.mkdir("b")
+    rules_b = subdir_b.join(LOCAL_RULEFILEB_NAME)
+    rules_b.write(LOCAL_RULEFILEB_STARTER_YAMLSTR)
+
+    backup_dir = root_dir.mkdir(BACKUP_DIR_NAME)
+    htmlfiles_dir = root_dir.mkdir(HTMLFILES_DIR_NAME)
+
+    assert mklistsrc.read() == MKLISTSRC_STARTER_DICT
+
+    # Return subdirectory with four new files.
+    return root_dir
 
 
 @pytest.fixture(name="singledir_configured")
 def fixture_singledir_configured(tmpdir_factory):
-    """Return temporary directory configured with .rules and .mklistsrc."""
+    """Return temporary directory configured with .rules and .mklistsrc.
 
-    # Create subdirectory of base temp directory, return, assign to 'cwd_dir'.
+    Note: .globalrules and .rules should never exist in same directory:
+    * .globalrules always one level up.
+
+    What about:
+    * mklistsrc2.write("{ 'rules': '.local_rules' }")
+    * mklistsrc3.write("")
+    """
+
+    # Create (temporary) subdir of base temp directory, assign to 'cwd_dir'.
     cwd_dir = tmpdir_factory.mktemp("mydir")
 
     # Create filehandles with basename 'cwd_dir'.
-    lrules = cwd_dir.join(LOCAL_RULEFILE_NAME)
-    grules = cwd_dir.join(GLOBAL_RULEFILE_NAME)
-    nrules = cwd_dir.join(".local_rules")  # rule file with different name
+    rules = cwd_dir.join(RULEFILE_NAME)
     mklistsrc = cwd_dir.join(MKLISTSRC_LOCAL_NAME)
-    mklistsrc2 = cwd_dir.join(".mklistsrc2")  # minimal .mklistsrc
-    mklistsrc3 = cwd_dir.join(".mklistsrc3")  # empty .mklistsrc
 
     # Write to filehandles.
-    lrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
-    grules.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
-    nrules.write(LOCAL_RULEFILE_STARTER_YAMLSTR)
+    rules.write(RULEFILE_STARTER_YAMLSTR)
     with open(mklistsrc, "w") as fout:
         fout.write(
             yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
         )
-    mklistsrc2.write("{ 'rules': '.local_rules' }")
-    mklistsrc3.write("")
 
     # Return subdirectory with six new files.
     return cwd_dir
@@ -127,7 +127,7 @@ def grules_yamlstr():
 def lrules_yamlstr():
     """Returns some YAML-formatted rules for writing to rule files."""
 
-    return LOCAL_RULEFILE_STARTER_YAMLSTR
+    return LOCAL_RULEFILEA_STARTER_YAMLSTR
 
 
 # @pytest.fixture(scope='module')
@@ -169,32 +169,8 @@ def rules_bad_yamlfile2(tmpdir_factory):
 def rules_python():
     """Returns list of Rule objects."""
     return [
-        Rule(
-            source_matchfield=0,
-            source_matchpattern=".",
-            source="lines",
-            target="__RENAME__",
-            target_sortorder=0,
-        ),
-        Rule(
-            source_matchfield=0,
-            source_matchpattern="^= 20",
-            source="__RENAME__",
-            target="calendar",
-            target_sortorder=1,
-        ),
-        Rule(
-            source_matchfield=0,
-            source_matchpattern="NOW",
-            source="lines",
-            target="__RENAME__",
-            target_sortorder=0,
-        ),
-        Rule(
-            source_matchfield=0,
-            source_matchpattern="LATER",
-            source="__RENAME__",
-            target="calendar",
-            target_sortorder=1,
-        ),
+        Rule(0, ".", "lines", "__RENAME__", 0),
+        Rule(0, "^= 20", "__RENAME__", "calendar", 1),
+        Rule(0, "NOW", "lines", "__RENAME__", 0),
+        Rule(0, "LATER", "__RENAME__", "calendar", 1),
     ]
