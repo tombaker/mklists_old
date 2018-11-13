@@ -65,26 +65,26 @@ def test_apply_overrides_from_file(singledir_configured):
 
 @pytest.mark.cli
 def test_apply_overrides():
-    initial_context = {"ctx": "something", "backup_depth": 1}
-    overrides_from_file = {"backup_depth": 500}
+    initial_context = {"ctx": "something", "backups": 1}
+    overrides_from_file = {"backups": 500}
     updated_context = _apply_overrides(initial_context, overrides_from_file)
-    expected_context = {"ctx": "something", "backup_depth": 500}
+    expected_context = {"ctx": "something", "backups": 500}
     assert updated_context == expected_context
 
 
 @pytest.mark.cli
 def test_apply_overrides2():
-    updated_context = {"ctx": "something", "backup_depth": 500}
-    overrides_from_cli = {"backup_depth": 1000}
+    updated_context = {"ctx": "something", "backups": 500}
+    overrides_from_cli = {"backups": 1000}
     updated_context2 = _apply_overrides(updated_context, overrides_from_cli)
-    expected_context = {"ctx": "something", "backup_depth": 1000}
+    expected_context = {"ctx": "something", "backups": 1000}
     assert updated_context2 == expected_context
 
 
 @pytest.mark.cli
 def test_read_overrides_from_file(tmpdir):
     os.chdir(tmpdir)
-    settings_dict = {"backup_depth": 6}
+    settings_dict = {"backups": 6}
     with open(".config", "w") as fout:
         fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
     assert _read_overrides_from_file(".config") == settings_dict

@@ -23,8 +23,8 @@ MKLISTSRC_LOCAL_NAME = ".mklistsrc"  # optional?
 # fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 # See /Users/tbaker/github/tombaker/mklists/mklists/cli_init.py
 MKLISTSRC_STARTER_DICT = {
-    "urlify": False,
-    "backup_depth": 3,
+    "html": False,
+    "backups": 3,
     "verbose": False,
     "valid_filename_characters": VALID_FILENAME_CHARS_STR,
     "invalid_filename_patterns": INVALID_FILENAME_PATS,

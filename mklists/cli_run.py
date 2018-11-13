@@ -64,14 +64,18 @@ def _get_filelines(thing_in_directory, invalid_patterns=None):
 
 def move_datafiles_to_backup(backup_depth=None):
     """
+    If 'backup' is ON:
+    before writing mklists_dict contents to disk,
+    creates timestamped backup directory in specified backup_dir,
+    and moves all visible files in data directory to backup directory.
     Make time-stamped directory in BACKUP_DIR_NAME (create constant!)
     Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP_STR])
     Move existing files to backup_dir
     Delete oldest backups:
-    delete_oldest_backup(backup_dir, backup_depth):
+    delete_oldest_backup(backup_dir, backups):
         lsd_visible = [item for item in glob.glob('*')
                        if os.path.isdir(item)]
-        while len(lsd_visible) > backup_depth:
+        while len(lsd_visible) > backups:
             file_to_be_deleted = ls_visible.pop()
             rm file_to_be_deleted
     for file in filelist:
@@ -79,13 +83,15 @@ def move_datafiles_to_backup(backup_depth=None):
     """
 
 
-def write_mklists_dict_to_file(datalines_d=None, verbose=False):
-    pass
+def write_mklists_dict_to_diskfiles(data_dict=None, verbose=False):
+    """If 'backup' is ON, move existing files from working to backup directory.
+    If 'backup' is OFF, DELETE existing files in working directory.
+    Write mklists_dict to working directory:
+    -- mklists_dict keys are names of files.
+    -- mklists_dict values are contents of files."""
 
 
-def write_mklists_dict_urlified_to_file(
-    datalines_d={}, urlify_dir=None, verbose=False
-):
+def write_mklists_dict_urlified_to_file(data_dict={}, verbose=False):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()
     abstargetdir = absdirname(targetdirectory)

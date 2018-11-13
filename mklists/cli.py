@@ -13,10 +13,9 @@ from mklists.cli_run import (
     get_datalines,
     move_datafiles_to_backup,
     move_files_to_given_destinations,
-    write_mklists_dict_to_file,
+    write_mklists_dict_to_diskfiles,
     write_mklists_dict_urlified_to_file,
 )
-from mklists.verbose import explain
 from mklists import (
     MKLISTSRC_LOCAL_NAME,
     RULEFILE_NAME,
@@ -26,23 +25,13 @@ from mklists import (
 
 
 @click.group()
-@click.option(
-    "--backup-depth",
-    type=int,
-    metavar="INT",
-    help="Backups to keep [default: '3']",
-)
-@click.option(
-    "--urlify",
-    type=bool,
-    is_flag=True,
-    help="Copy lists as clickable-link HTML files",
-)
+@click.option("--backups", type=int, metavar="INT", help="Enable [3] backups")
+@click.option("--html", type=bool, is_flag=True, help="Enable urlified copies")
 @click.option("--verbose", type=bool, is_flag=True, help="Enable verbose mode")
 @click.version_option("0.1.4", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, backup_depth, urlify, verbose):
+def cli(ctx, backups, html, verbose):
     """Organize your todo lists by tweaking rules"""
 
     overrides_from_cli = locals().copy()
@@ -51,80 +40,52 @@ def cli(ctx, backup_depth, urlify, verbose):
         overrides_from_file = _read_overrides_from_file(MKLISTSRC_NAME)
         ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
 
-    # Override settings in context object from snapshot of CLI arguments.
     ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
-
-    # Explain settings in context object.
-    if verbose:
-        explain(**ctx.obj)
 
 
 @cli.command()
 @click.option(
-    "--repo",
-    type=bool,
-    is_flag=True,
-    help="Initialize as multi-listfolder repo",
+    "--repo", type=bool, is_flag=True, help="Initialize as multi-folder repo"
 )
 @click.pass_context
 def init(ctx, repo):
-    """Write new configuration and rule file(s)."""
+    """Initialize folder with config and rule files"""
 
-    verbose_bool = ctx.obj["verbose"]
-    write_initial_configfile(settings_dict=ctx.obj, verbose=verbose_bool)
-    write_initial_rulefiles(verbose=verbose_bool)
+    verbose = ctx.obj["verbose"]
+    write_initial_configfile(ctx.obj, verbose)
+    write_initial_rulefiles(verbose)
 
 
 @cli.command()
 @click.pass_context
 def run(ctx):
-    """Read and apply rules to re-write data files"""
-    # Read rule files and return aggregated list of rules objects.
-    rules = get_rules(
-        valid_filename_chars=ctx.obj["valid_filename_chars"],
-        verbose=ctx.obj["verbose"],
-    )
+    """Apply rules to re-write data files"""
 
-    # Read files in working directory and return aggregated list of lines.
-    datalines = get_datalines(
-        ls_visible=[name for name in glob.glob("*")],
-        but_not=ctx.obj["invalid_filename_patterns"],
-        verbose=ctx.obj["verbose"],
-    )
-
-    # Apply rules (keys) to datalines (values) within a dictionary.
-    mklists_dict = apply_rules_to_datalines(
-        ruleobjs_list=rules, datalines_list=datalines
-    )
-
-    # If 'backup' is ON:
-    # before writing mklists_dict contents to disk,
-    # creates timestamped backup directory in specified backup_dir,
-    # and moves all visible files in data directory to backup directory.
-    if ctx.obj["backup"]:
-        move_datafiles_to_backup(
-            ls_visible=[name for name in glob.glob("*")],
-            backup_depth=ctx.obj["backup_depth"],
-        )
-
-    # If 'backup' is ON, move existing files from working to backup directory.
-    # If 'backup' is OFF, DELETE existing files in working directory.
-    # Write mklists_dict to working directory:
-    # -- mklists_dict keys are names of files.
-    # -- mklists_dict values are contents of files.
-    write_mklists_dict_to_file(
-        datalines_d=mklists_dict, verbose=ctx.obj["verbose"]
-    )
-
-    # If 'urlify' is ON, write urlified data files to urlify_dir.
-    if ctx.obj["urlify"]:
-        write_mklists_dict_urlified_to_file(
-            datalines_d=mklists_dict, verbose=ctx.obj["verbose"]
-        )
-
-    # If 'files2dirs' is ON, move selected files to external directories.
+    good_chars = ctx.obj["valid_filename_chars"]
+    bad_patterns = ctx.obj["invalid_filename_patterns"]
+    verbose = ctx.obj["verbose"]
+    html = ctx.obj["html"]
+    if backups:
+        backup_depth = ctx.obj["backup_depth"]
     if ctx.obj["files2dirs"]:
-        move_files_to_given_destinations(ctx.obj["files2dirs"])
+        files2dirs = ctx.obj["files2dirs"]
+
+    ruleobj_list = get_rules(good_chars, bad_patterns, verbose)
+    datalines_list = get_datalines(good_chars, bad_patterns, verbose)
+    mklists_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
+
+    if backups:
+        move_datafiles_to_backup(backup_depth)
+    else:
+        delete_datafiles()
+
+    write_mklists_dict_to_diskfiles(mklists_dict, verbose)
+
+    if html:
+        write_mklists_dict_urlified_to_file(mklists_dict, verbose)
+
+    if files2dirs:
+        move_files_to_given_destinations(files2dirs)
 
 
 def _read_overrides_from_file(configfile_name):
