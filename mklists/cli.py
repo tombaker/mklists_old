@@ -3,7 +3,7 @@
 import glob
 import click
 import yaml
-from mklists.rules import apply_rules_to_datalines
+from mklists.apply import apply_rules_to_datalines
 from mklists.cli_init import (
     get_rules,
     write_initial_configfile,

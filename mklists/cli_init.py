@@ -9,7 +9,7 @@ from mklists import (
     BadYamlRuleError,
     InitError,
 )
-from mklists.rules import Rule
+from mklists.ruleclass import Rule
 from mklists.utils import read_yamlfile_return_pyobject
 
 
