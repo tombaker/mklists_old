@@ -4,15 +4,13 @@ import glob
 import click
 import yaml
 from mklists.apply import apply_rules_to_datalines
-from mklists.cli_init import (
-    get_rules,
-    write_initial_configfile,
-    write_initial_rulefiles,
-)
-from mklists.cli_run import (
+from mklists.readwrite import (
     get_datalines,
+    get_rules,
     move_datafiles_to_backup,
     move_files_to_given_destinations,
+    write_initial_configfile,
+    write_initial_rulefiles,
     write_mklists_dict_to_diskfiles,
     write_mklists_dict_urlified_to_file,
 )

@@ -13,7 +13,7 @@ from mklists import (
     LOCAL_RULEFILE_NAME,
     VALID_FILENAME_CHARS_STR,
 )
-from mklists.cli_init import write_initial_rulefiles, write_initial_configfile
+from mklists.readwrite import write_initial_configfile, write_initial_rulefiles
 from mklists.utils import write_yamlstr_to_yamlfile
 
 
