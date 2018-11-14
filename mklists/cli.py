@@ -47,7 +47,7 @@ def cli(ctx, backups, html, verbose):
 )
 @click.pass_context
 def init(ctx, repo):
-    """Initialize folder with config and rule files"""
+    """Write starter configuration files"""
 
     verbose = ctx.obj["verbose"]
     write_initial_configfile(ctx.obj, verbose)

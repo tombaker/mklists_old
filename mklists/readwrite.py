@@ -31,8 +31,32 @@ from mklists.utils import (
     is_utf8_encoded,
 )
 
+"""2018-11-14: Decision decision needed: allow two styles?
+1. Single-directory
+   a/.mklistsrc       - configuration
+   a/.rules           - rules
+
+2. Repository
+   mydir/mklists.yaml - configuration
+   mydir/.globalrules - global rules
+   mydir/a/.rules     - list A rules
+   mydir/b/.rules     - list B rules
+
+   Rule- and config-finding algorithm:
+   a. Look for mklists.yaml
+      * in current directory, then
+      * in parent directory
+   b. When mklists.yaml found (i.e., in root directory)
+      * look in root directory for (optional) .globalrules
+      * look under all subdirectories for .rules files
+
+Question: Is there any downside to supporting _just_ #2?
+"""
+
 
 def get_rules(local_rulefile_name=None, global_rulefile_name=None):
+    """Knows where to find rules"""
+
     aggregated_rules_list = []
     for rulefile_name in global_rulefile_name, local_rulefile_name:
         if rulefile_name:
@@ -79,13 +103,7 @@ def write_initial_configfile(settings_dict=None, verbose=False):
             fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
 
-def write_initial_rulefiles(
-    global_rulefile_name=GLOBAL_RULEFILE_NAME,
-    local_rulefile_name=LOCAL_RULEFILE_NAME,
-    globalrules_content=GLOBAL_RULEFILE_STARTER_YAMLSTR,
-    localrules_content=LOCAL_RULEFILEA_STARTER_YAMLSTR,
-    verbose=False,
-):
+def write_initial_rulefiles(verbose=False):
     """Generate default rule (and global rule) configuration files.
 
         Checks whether current settings name non-default rule files.
@@ -93,8 +111,8 @@ def write_initial_rulefiles(
         Creates rule files with default contents.
     """
     for file, content in [
-        (global_rulefile_name, globalrules_content),
-        (local_rulefile_name, localrules_content),
+        (GLOBAL_RULEFILE_NAME, GLOBAL_RULEFILE_STARTER_YAMLSTR),
+        (LOCAL_RULEFILE_NAME, LOCAL_RULEFILEA_STARTER_YAMLSTR),
     ]:
         if file:
             if os.path.exists(file):

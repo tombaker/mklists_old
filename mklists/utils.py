@@ -60,26 +60,6 @@ def has_valid_name(
     return True
 
 
-def has_valid_contents(listfile_name):
-    """Returns True if file is UTF8-encoded and has no blank lines.
-
-    Raises:
-        NotUTF8Error: if file is not UTF8-encoded.
-
-    TODO Does not tell user whether it is failing because
-    * not UTF8
-    * has blank lines
-    """
-    try:
-        with open(listfile_name) as chk_for_blank_lines:
-            for line in chk_for_blank_lines:
-                if not line.rstrip():
-                    return False
-    except UnicodeDecodeError:
-        raise NotUTF8Error(f"{repr(listfile_name)} is not in UTF-8 format.")
-    return True
-
-
 def is_utf8_encoded(file_name):
     """Returns True if file is UTF8-encoded.
 
