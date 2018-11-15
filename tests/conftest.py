@@ -6,7 +6,6 @@ from click.testing import CliRunner
 from textwrap import dedent
 from mklists.ruleclass import Rule
 from mklists import (
-    MKLISTSRC_LOCAL_NAME,
     MKLISTSRC_GLOBAL_NAME,
     MKLISTSRC_STARTER_DICT,
     GLOBAL_RULEFILE_NAME,

@@ -1,23 +1,33 @@
-"""Marks mklists package directory, sets constants."""
+"""Defines Mklists constants and exception classes."""
 
 import datetime
 
-TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
-
-# 2018-11-05: Does it make a difference if this is a raw string?
+TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-
 VALID_FILENAME_CHARACTERS_STR = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
-
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-
-BACKUP_DIR_NAME = ".backups"
-
-HTMLFILES_DIR_NAME = ".html"
-
 MKLISTSRC_GLOBAL_NAME = "mklists.yml"  # only in root directory
-MKLISTSRC_LOCAL_NAME = ".mklistsrc"  # optional?
+GLOBAL_RULEFILE_NAME = ".globalrules"
+GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
+- [0, '.',   all_lines, lines,    1]
+- [0, '^A ', all_lines, to_a.txt, 1]
+- [0, '^B ', all_lines, to_b.txt, 1]
+"""
+LOCAL_RULEFILE_NAME = ".rules"
+LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
+- [0, '.',       lines,      todo.txt,   0]
+- [0, '.',       to_a.txt    todo.txt,   1]
+- [2, 'NOW',     todo.txt,    now.txt,   1]
+- [2, 'LATER',   todo.txt,  later.txt,   0]
+"""
+LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
+- [0, '.',           lines,   other.txt, 1]
+- [0, '.',        to_b.txt,   other.txt, 1]
+- [2, 'SOMEDAY', other.txt, someday.txt, 0]
+"""
+BACKUP_DIR_NAME = "backups"
+HTMLFILES_DIR_NAME = "html"
 
 # 2018-11-12: Cannot just save string - must do:
 # fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
@@ -30,29 +40,6 @@ MKLISTSRC_STARTER_DICT = {
     "invalid_filename_patterns": INVALID_FILENAME_PATTERNS,
     "files2dirs": {},
 }
-
-
-GLOBAL_RULEFILE_NAME = ".globalrules"
-GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
-- [0, '.',   all_lines, lines,    1]
-- [0, '^A ', all_lines, to_a.txt, 1]
-- [0, '^B ', all_lines, to_b.txt, 1]
-"""
-
-
-LOCAL_RULEFILE_NAME = ".rules"
-LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
-- [0, '.',       lines,      todo.txt,   0]
-- [0, '.',       to_a.txt    todo.txt,   1]
-- [2, 'NOW',     todo.txt,    now.txt,   1]
-- [2, 'LATER',   todo.txt,  later.txt,   0]
-"""
-
-LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
-- [0, '.',           lines,   other.txt, 1]
-- [0, '.',        to_b.txt,   other.txt, 1]
-- [2, 'SOMEDAY', other.txt, someday.txt, 0]
-"""
 
 
 # ConfigError

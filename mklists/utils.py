@@ -7,6 +7,7 @@ import glob
 import yaml
 import datetime
 from mklists import (
+    TIMESTAMP_STR,
     URL_PATTERN_REGEX,
     INVALID_FILENAME_PATTERNS,
     VALID_FILENAME_CHARACTERS_STR,
@@ -17,7 +18,7 @@ from mklists import (
 
 
 def get_timestamped_dirname_for_cwd():
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    timestamp = TIMESTAMP_STR
     cwd_name = os.path.split(os.getcwd())[1]
     return "_".join([cwd_name, timestamp])
 

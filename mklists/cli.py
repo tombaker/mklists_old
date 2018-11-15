@@ -26,7 +26,6 @@ from mklists import MKLISTSRC_STARTER_DICT
 @click.pass_context
 def cli(ctx, backups, html, verbose):
     """Organize your todo lists by tweaking rules"""
-
     overrides_from_cli = locals().copy()
     ctx.obj = MKLISTSRC_STARTER_DICT
     if ctx.invoked_subcommand != "init":
@@ -40,7 +39,6 @@ def cli(ctx, backups, html, verbose):
 @click.pass_context
 def init(ctx):
     """Write starter configuration and rule files"""
-
     verbose = ctx.obj["verbose"]
     write_initial_configfile(ctx.obj, verbose)
     write_initial_rulefiles(verbose)
@@ -50,7 +48,6 @@ def init(ctx):
 @click.pass_context
 def run(ctx):
     """Apply rules to re-write data files"""
-
     good_chars = ctx.obj["valid_filename_chars"]
     bad_patterns = ctx.obj["invalid_filename_patterns"]
     verbose = ctx.obj["verbose"]
