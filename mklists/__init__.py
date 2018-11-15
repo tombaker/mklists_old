@@ -7,7 +7,20 @@ URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_STR = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-MKLISTSRC_GLOBAL_NAME = "mklists.yml"  # only in root directory
+
+# 2018-11-12: Cannot just save string - must do:
+# fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
+# See /Users/tbaker/github/tombaker/mklists/mklists/cli_init.py
+MKLISTS_YML_NAME = "mklists.yml"  # only in root directory
+MKLISTS_YML_STARTER_DICT = {
+    "html": False,
+    "backups": 3,
+    "verbose": False,
+    "valid_filename_characters": VALID_FILENAME_CHARACTERS_STR,
+    "invalid_filename_patterns": INVALID_FILENAME_PATTERNS,
+    "files2dirs": {},
+}
+
 GLOBAL_RULEFILE_NAME = ".globalrules"
 GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
 - [0, '.',   all_lines, lines,    1]
@@ -28,18 +41,6 @@ LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
 """
 BACKUP_DIR_NAME = "backups"
 HTMLFILES_DIR_NAME = "html"
-
-# 2018-11-12: Cannot just save string - must do:
-# fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-# See /Users/tbaker/github/tombaker/mklists/mklists/cli_init.py
-MKLISTSRC_STARTER_DICT = {
-    "html": False,
-    "backups": 3,
-    "verbose": False,
-    "valid_filename_characters": VALID_FILENAME_CHARACTERS_STR,
-    "invalid_filename_patterns": INVALID_FILENAME_PATTERNS,
-    "files2dirs": {},
-}
 
 
 # ConfigError

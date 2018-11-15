@@ -5,7 +5,7 @@ import click
 from click.testing import CliRunner
 import os
 from mklists import (
-    MKLISTSRC_STARTER_DICT,
+    MKLISTS_YML_STARTER_DICT,
     GLOBAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_RULEFILEA_STARTER_YAMLSTR,
     GLOBAL_RULEFILE_NAME,

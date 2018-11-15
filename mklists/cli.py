@@ -14,7 +14,7 @@ from mklists.readwrite import (
     write_mklists_dict_to_diskfiles,
     write_mklists_dict_urlified_to_file,
 )
-from mklists import MKLISTSRC_STARTER_DICT
+from mklists import MKLISTS_YML_STARTER_DICT
 
 
 @click.group()
@@ -27,7 +27,7 @@ from mklists import MKLISTSRC_STARTER_DICT
 def cli(ctx, backups, html, verbose):
     """Organize your todo lists by tweaking rules"""
     overrides_from_cli = locals().copy()
-    ctx.obj = MKLISTSRC_STARTER_DICT
+    ctx.obj = MKLISTS_YML_STARTER_DICT
     if ctx.invoked_subcommand != "init":
         overrides_from_file = _read_overrides_from_file(MKLISTSRC_NAME)
         ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)

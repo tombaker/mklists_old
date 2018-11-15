@@ -3,7 +3,7 @@
 import os
 import pytest
 import yaml
-from mklists import MKLISTSRC_STARTER_DICT, VALID_FILENAME_CHARACTERS_STR
+from mklists import MKLISTS_YML_STARTER_DICT, VALID_FILENAME_CHARACTERS_STR
 from mklists.cli import _read_overrides_from_file, _apply_overrides
 from mklists.readwrite import write_initial_configfile
 
@@ -21,7 +21,7 @@ from mklists.readwrite import write_initial_configfile
     * mklistsrc3.write("")
     backup_dir = root_dir.mkdir(BACKUP_DIR_NAME)
     htmlfiles_dir = root_dir.mkdir(HTMLFILES_DIR_NAME)
-    assert mklistsrc.read() == MKLISTSRC_STARTER_DICT
+    assert mklistsrc.read() == MKLISTS_YML_STARTER_DICT
     Note: .globalrules and .rules should never exist in same directory:
     * .globalrules always one level up.
     What about:
@@ -42,7 +42,9 @@ def test_apply_overrides_from_file_something_changed(singledir_configured):
     os.chdir(singledir_configured)
     updated_config_dict = _read_overrides_from_file(".mklistsrc2")
     print(f"verbose: {updated_config_dict['verbose']}")
-    assert updated_config_dict["verbose"] != MKLISTSRC_STARTER_DICT["verbose"]
+    assert (
+        updated_config_dict["verbose"] != MKLISTS_YML_STARTER_DICT["verbose"]
+    )
 
 
 @pytest.mark.skip
@@ -55,7 +57,7 @@ def test_apply_overrides_from_file(singledir_configured):
     print(_apply_overrides(context, overrides_from_file))
     assert (
         _apply_overrides(context, overrides_from_file)
-        == MKLISTSRC_STARTER_DICT
+        == MKLISTS_YML_STARTER_DICT
     )
 
 
