@@ -5,6 +5,7 @@ import os
 import re
 import glob
 import yaml
+import datetime
 from mklists import (
     URL_PATTERN_REGEX,
     INVALID_FILENAME_PATS,
@@ -13,6 +14,24 @@ from mklists import (
     DatadirNotAccessibleError,
     NotUTF8Error,
 )
+
+
+def get_timestamped_dirname_for_cwd():
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    cwd_name = os.path.split(os.getcwd())[1]
+    return "_".join([cwd_name, timestamp])
+
+
+def keep_latest_x_list_values(some_list):
+    """Maybe split into two functions:
+    * Read dict, get key/values for 'mklists_2018...'
+    * Keep just the last x number
+
+    @@@Unfinished
+    """
+    y = defaultdict(list)
+    for item in some_list:
+        y[item.split("_")[0]].append(item)
 
 
 def read_yamlfile_return_pyobject(yamlfile_name):
