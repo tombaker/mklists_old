@@ -30,12 +30,7 @@ from mklists.utils import (
     has_valid_name,
 )
 
-"""2018-11-14: Decision decision needed: allow two styles?
-1. Single-directory
-   a/.mklistsrc       - configuration
-   a/.rules           - rules
-
-2. Repository
+"""Repository
    mydir/mklists.yaml - configuration
    mydir/.globalrules - global rules
    mydir/a/.rules     - list A rules
@@ -47,13 +42,10 @@ from mklists.utils import (
       * in parent directory
    b. When mklists.yaml found (i.e., in root directory)
       * look in root directory for (optional) .globalrules
-      * look under all subdirectories for .rules files
-
-Question: Is there any downside to supporting _just_ #2?
-"""
+      * look under all subdirectories for .rules files"""
 
 
-def get_rules(local_rulefile_name=None, global_rulefile_name=None):
+def get_rules():
     """Knows where to find rules"""
 
     aggregated_rules_list = []

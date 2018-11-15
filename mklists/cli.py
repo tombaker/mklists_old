@@ -68,8 +68,8 @@ def run(ctx):
     if ctx.obj["files2dirs"]:
         files2dirs = ctx.obj["files2dirs"]
 
-    ruleobj_list = get_rules(good_chars, bad_patterns, verbose)
-    datalines_list = get_datalines(good_chars, bad_patterns, verbose)
+    ruleobj_list = get_rules()
+    datalines_list = get_datalines()
     mklists_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
 
     if backups:
