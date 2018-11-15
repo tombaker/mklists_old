@@ -16,7 +16,7 @@ BACKUP_DIR_NAME = ".backups"
 
 HTMLFILES_DIR_NAME = ".html"
 
-MKLISTSRC_GLOBAL_NAME = "mklists.yaml"  # only in root directory
+MKLISTSRC_GLOBAL_NAME = "mklists.yml"  # only in root directory
 MKLISTSRC_LOCAL_NAME = ".mklistsrc"  # optional?
 
 # 2018-11-12: Cannot just save string - must do:
@@ -30,13 +30,6 @@ MKLISTSRC_STARTER_DICT = {
     "invalid_filename_patterns": INVALID_FILENAME_PATTERNS,
     "files2dirs": {},
 }
-
-
-RULEFILE_NAME = ".rules"
-RULEFILE_STARTER_YAMLSTR = """\
-- [1, 'NOW',   todo.txt,   now.txt, 0]
-- [1, 'LATER', todo.txt, later.txt, 0]
-"""
 
 
 GLOBAL_RULEFILE_NAME = ".globalrules"

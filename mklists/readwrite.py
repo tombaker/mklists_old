@@ -11,7 +11,6 @@ import yaml
 from mklists import (
     GLOBAL_RULEFILE_NAME,
     GLOBAL_RULEFILE_STARTER_YAMLSTR,
-    RULEFILE_NAME,
     LOCAL_RULEFILE_NAME,
     LOCAL_RULEFILEA_STARTER_YAMLSTR,
     BadFilenameError,

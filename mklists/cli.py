@@ -14,12 +14,7 @@ from mklists.readwrite import (
     write_mklists_dict_to_diskfiles,
     write_mklists_dict_urlified_to_file,
 )
-from mklists import (
-    MKLISTSRC_LOCAL_NAME,
-    RULEFILE_NAME,
-    LOCAL_RULEFILE_NAME,
-    MKLISTSRC_STARTER_DICT,
-)
+from mklists import MKLISTSRC_STARTER_DICT
 
 
 @click.group()
