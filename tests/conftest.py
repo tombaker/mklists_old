@@ -45,24 +45,6 @@ def fixture_multidir_repo_configured(tmpdir_factory):
     return root_dir
 
 
-@pytest.fixture(name="singledir_configured")
-def fixture_singledir_configured(tmpdir_factory):
-    """Return temporary directory "mydir":
-        mydir/.rules
-        mydir/.mklistsrc"""
-
-    cwd_dir = tmpdir_factory.mktemp("mydir")
-    mklistsrc = cwd_dir.join(MKLISTSRC_LOCAL_NAME)
-    with open(mklistsrc, "w") as fout:
-        fout.write(
-            yaml.safe_dump(MKLISTSRC_STARTER_DICT, default_flow_style=False)
-        )
-
-    rules = cwd_dir.join(RULEFILE_NAME)
-    rules.write(RULEFILE_STARTER_YAMLSTR)
-    return cwd_dir
-
-
 @pytest.fixture()
 def reinitialize_ruleclass_variables():
     """Class variables must be re-initialized:
@@ -75,8 +57,9 @@ def reinitialize_ruleclass_variables():
 
 @pytest.fixture(scope="module")
 def rules_bad_yamlfile2(tmpdir_factory):
-    """Returns badly formatted YAML rulefile object: bad YAML syntax."""
+    """Return YAML rulefile object with syntactically bad YAML.
 
+    @@@Could this be moved into the tests themselves?"""
     yaml_rule_data = """- [1, 2, 3, 4]\n+ [5, 6, 7, 8]"""
     some_yamlfile = tmpdir_factory.mktemp("datadir").join("some_yamlfile")
     print(f"Created 'some_yamlfile': {repr(some_yamlfile)}")

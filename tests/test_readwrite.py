@@ -17,6 +17,21 @@ from mklists.readwrite import write_initial_configfile, write_initial_rulefiles
 from mklists.utils import write_yamlstr_to_yamlfile
 
 
+@pytest.mark.skip
+def test_write_initial_configfile(tmpdir):
+    """Tests that two functions correctly round-trip:
+    * write_initial_configfile()
+    * _apply_overrides_from_file()"""
+    os.chdir(tmpdir)
+    mklistsrc = tmpdir.join(MKLISTSRC_NAME)
+    write_initial_configfile(configfile_name=mklistsrc)
+    updated_context = _apply_overrides_from_file()
+    assert (
+        updated_context["valid_filename_characters"]
+        == VALID_FILENAME_CHARACTERS_STR
+    )
+
+
 @pytest.mark.write
 def test_write_initial_globalrules_isolated():
     runner = CliRunner()

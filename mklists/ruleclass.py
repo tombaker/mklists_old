@@ -1,8 +1,4 @@
-"""Rule class
-
-* Initializes, self-tests, and lightly corrects the data object for a
-  single rule.
-"""
+"""Factory to create, self-test, and lightly correct a rule object."""
 
 import re
 from dataclasses import dataclass

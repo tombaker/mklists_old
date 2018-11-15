@@ -49,7 +49,7 @@ def test_apply_overrides_from_file_something_changed(singledir_configured):
     assert updated_config_dict["verbose"] != MKLISTSRC_STARTER_DICT["verbose"]
 
 
-@pytest.mark.cli
+@pytest.mark.skip
 def test_apply_overrides_from_file(singledir_configured):
     """_apply_overrides_from_file() should return builtin settings."""
     os.chdir(singledir_configured)
@@ -88,3 +88,30 @@ def test_read_overrides_from_file(tmpdir):
     with open(".config", "w") as fout:
         fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
     assert _read_overrides_from_file(".config") == settings_dict
+
+
+@pytest.mark.skip
+def test_apply_overrides_from_file_empty(singledir_configured):
+    """Config file '.mklistsrc3' is empty (length=0)."""
+    os.chdir(singledir_configured)
+    updated_config_dict = _apply_overrides_from_file(
+        configfile_name=".mklistsrc3"
+    )
+    assert updated_config_dict == MKLISTSRC_DEFAULTS
+
+
+@pytest.mark.skip
+def test_apply_overrides_from_file_not_found(tmpdir):
+    """Mklists exits if configfile is not found."""
+    os.chdir(tmpdir)
+    with pytest.raises(SystemExit):
+        _apply_overrides_from_file()
+
+
+@pytest.mark.skip
+def test_update_config():
+    """_update_config() correctly updates one dict with another."""
+    context_given = {"a": "foo", "b": "bar"}
+    context_from_file = {"b": "baz"}
+    context_expected = {"a": "foo", "b": "baz"}
+    assert _update_config(context_given, context_from_file) == context_expected
