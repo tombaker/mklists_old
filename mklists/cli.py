@@ -23,11 +23,11 @@ from mklists import (
 
 
 @click.group()
-@click.option("--backups", type=int, metavar="INT", help="Enable [3] backups")
-@click.option("--html", type=bool, is_flag=True, help="Enable urlified copies")
+@click.option("--backups", type=int, metavar="INT", help="Keep [3] backups")
+@click.option("--html", type=bool, is_flag=True, help="Make urlified copies")
 @click.option("--verbose", type=bool, is_flag=True, help="Enable verbose mode")
-@click.version_option("0.1.4", help="Show version and exit")
-@click.help_option(help="Show help and exit")
+@click.version_option("0.1.5", help="Show version number")
+@click.help_option(help="Show this help and exit")
 @click.pass_context
 def cli(ctx, backups, html, verbose):
     """Organize your todo lists by tweaking rules"""
@@ -42,12 +42,9 @@ def cli(ctx, backups, html, verbose):
 
 
 @cli.command()
-@click.option(
-    "--repo", type=bool, is_flag=True, help="Initialize as multi-folder repo"
-)
 @click.pass_context
-def init(ctx, repo):
-    """Write starter configuration files"""
+def init(ctx):
+    """Write starter configuration and rule files"""
 
     verbose = ctx.obj["verbose"]
     write_initial_configfile(ctx.obj, verbose)
@@ -75,13 +72,11 @@ def run(ctx):
     if backups:
         move_datafiles_to_backup(backup_depth)
     else:
-        delete_datafiles()
-
+        delete_datafiles()  # TODO
     write_mklists_dict_to_diskfiles(mklists_dict, verbose)
 
     if html:
         write_mklists_dict_urlified_to_file(mklists_dict, verbose)
-
     if files2dirs:
         move_files_to_given_destinations(files2dirs)
 

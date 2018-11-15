@@ -1,4 +1,4 @@
-"""Applies rules, one by one, to process an aggregated list of datalines."""
+"""Apply rules to process datalines."""
 
 import re
 from collections import defaultdict

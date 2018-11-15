@@ -62,6 +62,7 @@ LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
 """
 
 
+# ConfigError
 class ConfigError(SystemExit):
     """Category of errors related to configuration"""
 
@@ -82,7 +83,7 @@ class RulefileNotFoundError(ConfigError):
     """Rule file was not found."""
 
 
-# Errors related to data directory, used in datadir module
+# DataError
 class DataError(SystemExit):
     """Superclass for errors relating to data."""
 
@@ -103,6 +104,11 @@ class NotUTF8Error(DataError):
     """File is not UTF8-encoded."""
 
 
+class NotUTF8Error(DataError):
+    """File is not in UTF-8 format."""
+
+
+# RuleError
 class RuleError(SystemExit):
     """Super-category for exceptions related to rules."""
 
@@ -113,10 +119,6 @@ class NotIntegerError(RuleError):
 
 class BadFilenameError(RuleError, DataError):
     """Filename uses invalid characters or name patterns."""
-
-
-class NotUTF8Error(DataError):
-    """File is not in UTF-8 format."""
 
 
 class SourceEqualsTargetError(RuleError):
@@ -131,6 +133,7 @@ class UninitializedSourceError(RuleError):
     """Source has not been initialized as a source (has no precedent)."""
 
 
+# RulesError
 class RulesError(SystemExit):
     """Category of exceptions related to sets or rules."""
 
@@ -149,7 +152,3 @@ class NoRulesError(RulesError):
 
 class BadYamlError(RulesError):
     """File contains badly formatted YAML."""
-
-
-class RuleWarningError(Exception):
-    """Super-category for warnings related to rules."""
