@@ -8,8 +8,8 @@ import yaml
 import datetime
 from mklists import (
     URL_PATTERN_REGEX,
-    INVALID_FILENAME_PATS,
-    VALID_FILENAME_CHARS_STR,
+    INVALID_FILENAME_PATTERNS,
+    VALID_FILENAME_CHARACTERS_STR,
     BadYamlError,
     DatadirNotAccessibleError,
     NotUTF8Error,
@@ -55,51 +55,20 @@ def is_file(object_path):
     return True
 
 
-def has_valid_name(
-    listfile_name,
-    bad_patterns=INVALID_FILENAME_PATS,
-    valid_chars=VALID_FILENAME_CHARS_STR,
-):
+def has_valid_name(file_name):
     """Return True if filename has no invalid characters or patterns.
 
     Used to stop execution of mklists if data folder has files that
     should not be processed, such as temporary or backup files.
     """
-    for bad_pattern in bad_patterns:
-        if re.search(bad_pattern, listfile_name):
-            print(
-                f"Bad pattern {repr(bad_pattern)} "
-                f"in filename {repr(listfile_name)}."
-            )
+    for bad_pat in INVALID_FILENAME_PATTERNS:
+        if re.search(bad_pat, file_name):
+            print(f"{repr(file_name)} matches bad pattern {repr(bad_pat)}")
             return False
-    for char in listfile_name:
-        if char not in valid_chars:
-            print(f"{repr(char)} is not a valid filename character.")
+    for char in file_name:
+        if char not in VALID_FILENAME_CHARACTERS_STR:
+            print(f"{repr(file_name)} has invalid character {repr(char)}.")
             return False
-    return True
-
-
-def is_utf8_encoded(file_name):
-    """Returns True if file is UTF8-encoded.
-
-    Raises:
-        NotUTF8Error: if file is not UTF8-encoded.
-    """
-    try:
-        open(file_name).read()
-    except UnicodeDecodeError:
-        raise NotUTF8Error(f"{repr(file_name)} is not in UTF-8 format.")
-    return True
-
-
-def has_no_blank_lines(text_file):
-    """Returns True if file has no blank lines.
-
-    Note: Does not test whether text_file is a text file."""
-    with open(text_file) as fin:
-        for line in fin:
-            if not line.rstrip():
-                return False
     return True
 
 
@@ -113,6 +82,6 @@ def linkify(string_raw):
 
 
 def ls_visible(cwd=os.getcwd()):
-    """Do I need to break this out into separate function?"""
+    """Returns list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
     return [name for name in glob.glob("*")]

@@ -28,7 +28,6 @@ from mklists.utils import (
     read_yamlfile_return_pyobject,
     is_file,
     has_valid_name,
-    is_utf8_encoded,
 )
 
 """2018-11-14: Decision decision needed: allow two styles?
@@ -126,48 +125,37 @@ def write_initial_rulefiles(verbose=False):
                     fout.write(content)
 
 
-def get_datalines(ls_visible=[], but_not=None):
-    """Returns aggregated list of lines from data files.
+def get_datalines():
+    """Returns lines from files with valid names, UTF8, with no blank lines."""
 
-    Mklists is very strict about contents of data directory.
-    All exceptions encountered in this function, in _get_file(),
-    and in any of the functions called by _get_file(), will
-    result in exit from the program, with an error message about
-    what the user will need to correct in order to get it to run."""
-    datalines = []
-    for item in ls_visible:
-        datalines.append(_get_filelines(item, invalid_patterns=but_not))
-    if not datalines:
-        raise NoDataError("No data to process!")
-    return datalines
-
-
-def _get_filelines(thing_in_directory, invalid_patterns=None):
     all_lines = []
-    if not is_file(thing_in_directory):
-        print("All visible objects in current directory must be files.")
-        raise DatadirHasNonFilesError(f"{thing_in_directory} is not a file.")
-    if not has_valid_name(thing_in_directory, invalid_patterns):
-        print(
-            "Invalid filename patterns are intended to detect the "
-            "presence of backup files, temporary files, and the like."
-        )
-        raise BadFilenameError(
-            f"{repr(thing_in_directory)} matches one of " "{invalid_patterns}."
-        )
-    if not is_utf8_encoded(thing_in_directory):
-        print("All visible files in data directory must be UTF8-encoded.")
-        raise NotUTF8Error(f"File {thing_in_directory} is not UTF8-encoded.")
-    with open(thing_in_directory) as rfile:
-        for line in rfile:
-            if not line:
-                raise BlankLinesError(
-                    f"{thing_in_directory} is not valid as "
-                    "data because it has blank lines."
-                )
-            all_lines.append(line)
+    for path_name in ls_visible():
+        if not has_valid_name(path_name):
+            raise BadFilenameError
+        if not is_file(path_name):
+            print("Mklists data directories must contain files only.")
+            raise DatadirHasNonFilesError(f"{repr(path_name)} is not a file.")
+        try:
+            file_lines = open(path_name).readlines()
+        except UnicodeDecodeError:
+            print("All visible files in data directory must be UTF8-encoded.")
+            raise NotUTF8Error(f"{repr(path_name)} is not in UTF8-encoded.")
+
+        for line in file_lines:
+            if not line.rstrip():
+                print("Files in data directory must contain no blank lines.")
+                raise BlankLinesError(f"{repr(path_name)} has blank lines.")
+
+    if not all_lines:
+        raise NoDataError("No data to process!")
 
     return all_lines
+
+
+def get_lines_valid_list_file(path_name):
+    """Returns if pathname has valid name, is UTF8, has no blank lines."""
+
+    return True
 
 
 def move_datafiles_to_backup(backup_depth=None):

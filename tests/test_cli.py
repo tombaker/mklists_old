@@ -6,7 +6,7 @@ import yaml
 from mklists import (
     MKLISTSRC_STARTER_DICT,
     MKLISTSRC_LOCAL_NAME,
-    VALID_FILENAME_CHARS_STR,
+    VALID_FILENAME_CHARACTERS_STR,
 )
 from mklists.cli import _read_overrides_from_file, _apply_overrides
 from mklists.readwrite import write_initial_configfile

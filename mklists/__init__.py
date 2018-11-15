@@ -7,10 +7,10 @@ TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S_%f")
 # 2018-11-05: Does it make a difference if this is a raw string?
 URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
-VALID_FILENAME_CHARS_STR = """\
+VALID_FILENAME_CHARACTERS_STR = """\
 :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
 
-INVALID_FILENAME_PATS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
+INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 
 BACKUP_DIR_NAME = ".backups"
 
@@ -26,8 +26,8 @@ MKLISTSRC_STARTER_DICT = {
     "html": False,
     "backups": 3,
     "verbose": False,
-    "valid_filename_characters": VALID_FILENAME_CHARS_STR,
-    "invalid_filename_patterns": INVALID_FILENAME_PATS,
+    "valid_filename_characters": VALID_FILENAME_CHARACTERS_STR,
+    "invalid_filename_patterns": INVALID_FILENAME_PATTERNS,
     "files2dirs": {},
 }
 

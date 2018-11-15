@@ -11,7 +11,7 @@ from mklists import (
     LOCAL_RULEFILEA_STARTER_YAMLSTR,
     GLOBAL_RULEFILE_NAME,
     LOCAL_RULEFILE_NAME,
-    VALID_FILENAME_CHARS_STR,
+    VALID_FILENAME_CHARACTERS_STR,
 )
 from mklists.readwrite import write_initial_configfile, write_initial_rulefiles
 from mklists.utils import write_yamlstr_to_yamlfile
