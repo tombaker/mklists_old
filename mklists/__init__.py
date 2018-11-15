@@ -44,19 +44,19 @@ MKLISTSRC_STARTER_DICT = {
 
 # ConfigError
 class ConfigError(SystemExit):
-    """Category of errors related to configuration"""
+    """Category of errors related to configuration."""
 
 
 class ConfigFileNotFoundError(ConfigError):
-    """Hardwired configuration file '.mklistsrc' was not found"""
+    """Hardwired configuration file '.mklistsrc' was not found."""
 
 
 class DatadirNotAccessibleError(ConfigError):
-    """Non-default data directory is not accessible"""
+    """Non-default data directory is not accessible."""
 
 
 class InitError(ConfigError):
-    """Data directory has already been initialized"""
+    """Data directory has already been initialized."""
 
 
 class RulefileNotFoundError(ConfigError):
