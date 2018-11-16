@@ -34,7 +34,7 @@ def keep_latest_x_list_values(some_list):
         y[item.split("_")[0]].append(item)
 
 
-def read_yamlfile_return_pyobject(yamlfile_name):
+def read_yamlfile_to_pyobject(yamlfile_name):
     """Returns Python object parsed from given YAML-format file."""
     try:
         return yaml.safe_load(open(yamlfile_name))

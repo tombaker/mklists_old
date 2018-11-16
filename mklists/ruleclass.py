@@ -17,11 +17,11 @@ class Rule:
     """Holds fields and self-validation methods for a single rule.
 
     Dataclass Fields:
-        source_matchfield: number of whitespace-delimited field matched
-        source_matchpattern: regex for matching to source_matchfield value
-        source: string valid as filename (uses valid characters)
-        target: string valid as filename (uses valid characters)
-        target_sortorder: field on which target value is to be sorted
+        source_matchfield: part of data line against which regex is matched
+        source_matchpattern: regex matched to part of data line
+        source: source of data lines to be matched against regex
+        target: target to which data lines matching regex are moved
+        target_sortorder: field on which target data lines are sorted
     """
 
     source_matchfield: int = None

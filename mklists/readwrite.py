@@ -23,11 +23,7 @@ from mklists import (
     NotUTF8Error,
 )
 from mklists.ruleclass import Rule
-from mklists.utils import (
-    read_yamlfile_return_pyobject,
-    is_file,
-    has_valid_name,
-)
+from mklists.utils import read_yamlfile_to_pyobject, is_file, has_valid_name
 
 """Repository
    mydir/mklists.yaml - configuration
@@ -50,7 +46,7 @@ def get_rules():
     aggregated_rules_list = []
     for rulefile_name in global_rulefile_name, local_rulefile_name:
         if rulefile_name:
-            rules_list = read_yamlfile_return_pyobject(rulefile_name)
+            rules_list = read_yamlfile_to_pyobject(rulefile_name)
             aggregated_rules_list = aggregated_rules_list + rules_list
     ruleobj_list = []
     for item in aggregated_rules_list:
@@ -66,7 +62,7 @@ def get_rules():
 def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
     rules_list = []
     try:
-        rules_to_add = read_yamlfile_return_pyobject(grules)
+        rules_to_add = read_yamlfile_to_pyobject(grules)
         rules_list.append(rules_to_add)
     except FileNotFoundError:
         print("File was not found")
@@ -76,19 +72,11 @@ def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
 
 
 def write_initial_configfile(settings_dict=None, verbose=False):
-    """Writes initial configuration file to disk (or just says it will).
-    * If configfile already exists, exits suggesting to first delete.
-    * If configfile not found, creates new file using current settings.
-    """
+    """Writes initial configuration file to disk.  """
     if os.path.exists(configfile_name):
-        raise InitError(
-            f"To re-initialize, first delete {repr(configfile_name)}."
-        )
+        raise InitError("Mklists folders already initialized.")
     else:
-        print(
-            f"Creating default {repr(configfile_name)}. "
-            f"Customize as needed."
-        )
+        print(f"Writing default {repr(configfile_name)}.")
         with open(configfile_name, "w") as fout:
             fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 
@@ -152,7 +140,7 @@ def get_lines_valid_list_file(path_name):
 def move_datafiles_to_backup(backup_depth=None):
     """
     If 'backup' is ON:
-    before writing mklists_dict contents to disk,
+    before writing data_dict contents to disk,
     creates timestamped backup directory in specified backup_dir,
     and moves all visible files in data directory to backup directory.
     Make time-stamped directory in BACKUP_DIR_NAME (create constant!)
@@ -167,18 +155,21 @@ def move_datafiles_to_backup(backup_depth=None):
             rm file_to_be_deleted
     for file in filelist:
         shutil.move(file, backup_dir)
-    """
+
+    Note: there should never be a situation where datafiles have
+    been deleted and the data in memory has not yet been written to disk.
+    Therefore, there should _always_ be at least one backup."""
 
 
-def write_mklists_dict_to_diskfiles(data_dict=None, verbose=False):
+def write_data_dict_to_diskfiles(data_dict=None, verbose=False):
     """If 'backup' is ON, move existing files from working to backup directory.
     If 'backup' is OFF, DELETE existing files in working directory.
-    Write mklists_dict to working directory:
-    -- mklists_dict keys are names of files.
-    -- mklists_dict values are contents of files."""
+    Write data_dict to working directory:
+    -- data_dict keys are names of files.
+    -- data_dict values are contents of files."""
 
 
-def write_mklists_dict_urlified_to_file(data_dict={}, verbose=False):
+def write_data_dict_urlified_to_diskfiles(data_dict={}, verbose=False):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()
     abstargetdir = absdirname(targetdirectory)

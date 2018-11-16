@@ -11,23 +11,23 @@ from mklists.readwrite import (
     move_files_to_given_destinations,
     write_initial_configfile,
     write_initial_rulefiles,
-    write_mklists_dict_to_diskfiles,
-    write_mklists_dict_urlified_to_file,
+    write_data_dict_to_diskfiles,
+    write_data_dict_urlified_to_diskfiles,
 )
-from mklists import MKLISTS_YML_STARTER_DICT
+from mklists import MKLISTS_YAML_STARTER_DICT
 
 
 @click.group()
 @click.option("--backups", type=int, metavar="INT", help="Keep [3] backups")
 @click.option("--html", type=bool, is_flag=True, help="Make urlified copies")
-@click.option("--verbose", type=bool, is_flag=True, help="Enable verbose mode")
-@click.version_option("0.1.5", help="Show version number")
-@click.help_option(help="Show this help and exit")
+@click.option("--verbose", type=bool, is_flag=True, help="Running commentary")
+@click.version_option("0.1.5", help="Show version and exit")
+@click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx, backups, html, verbose):
     """Organize your todo lists by tweaking rules"""
     overrides_from_cli = locals().copy()
-    ctx.obj = MKLISTS_YML_STARTER_DICT
+    ctx.obj = MKLISTS_YAML_STARTER_DICT
     if ctx.invoked_subcommand != "init":
         overrides_from_file = _read_overrides_from_file(MKLISTSRC_NAME)
         ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
@@ -38,7 +38,7 @@ def cli(ctx, backups, html, verbose):
 @cli.command()
 @click.pass_context
 def init(ctx):
-    """Write starter configuration and rule files"""
+    """Write starter configuration and rule files."""
     verbose = ctx.obj["verbose"]
     write_initial_configfile(ctx.obj, verbose)
     write_initial_rulefiles(verbose)
@@ -47,7 +47,7 @@ def init(ctx):
 @cli.command()
 @click.pass_context
 def run(ctx):
-    """Apply rules to re-write data files"""
+    """Apply rules to re-write data files."""
     good_chars = ctx.obj["valid_filename_chars"]
     bad_patterns = ctx.obj["invalid_filename_patterns"]
     verbose = ctx.obj["verbose"]
@@ -59,16 +59,16 @@ def run(ctx):
 
     ruleobj_list = get_rules()
     datalines_list = get_datalines()
-    mklists_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
+    data_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
 
     if backups:
         move_datafiles_to_backup(backup_depth)
     else:
         delete_datafiles()  # TODO
-    write_mklists_dict_to_diskfiles(mklists_dict, verbose)
+    write_data_dict_to_diskfiles(data_dict, verbose)
 
     if html:
-        write_mklists_dict_urlified_to_file(mklists_dict, verbose)
+        write_data_dict_urlified_to_diskfiles(data_dict, verbose)
     if files2dirs:
         move_files_to_given_destinations(files2dirs)
 
