@@ -17,11 +17,9 @@ from mklists.utils import write_yamlstr_to_yamlfile
 
 @pytest.mark.skip
 def test_write_initial_configfile(tmpdir):
-    """Tests that two functions correctly round-trip:
-    * write_initial_configfile()
-    * _apply_overrides_from_file()"""
+    """Write mklists.yml, then read it back."""
     os.chdir(tmpdir)
-    mklistsrc = tmpdir.join(MKLISTSRC_NAME)
+    mklistsrc = tmpdir.join(MKLISTS_YAML_NAME)
     write_initial_configfile(configfile_name=mklistsrc)
     updated_context = _apply_overrides_from_file()
     assert (

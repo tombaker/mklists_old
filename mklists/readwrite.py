@@ -25,23 +25,29 @@ from mklists import (
 from mklists.ruleclass import Rule
 from mklists.utils import read_yamlfile_to_pyobject, is_file, has_valid_name
 
-"""Repository
-   mydir/mklists.yaml - configuration
-   mydir/.globalrules - global rules
-   mydir/a/.rules     - list A rules
-   mydir/b/.rules     - list B rules
 
-   Rule- and config-finding algorithm:
-   a. Look for mklists.yaml
-      * in current directory, then
-      * in parent directory
-   b. When mklists.yaml found (i.e., in root directory)
-      * look in root directory for (optional) .globalrules
-      * look under all subdirectories for .rules files"""
+def find_rulefiles():
+    """GLOBAL_RULEFILE_NAME
+    LOCAL_RULEFILE_NAME
+    MKLISTS_YAML_NAME
+
+    Repository
+    mydir/mklists.yaml - configuration
+    mydir/.globalrules - global rules
+    mydir/a/.rules     - list A rules
+    mydir/b/.rules     - list B rules
+
+    Rule- and config-finding algorithm:
+    a. Look for mklists.yaml
+       * in current directory, then
+       * in parent directory
+    b. When mklists.yaml found (i.e., in root directory)
+       * look in root directory for (optional) .globalrules
+       * look under all subdirectories for .rules files"""
 
 
-def get_rules():
-    """Knows where to find rules"""
+def get_rules(valid_filename_chars, invalid_filename_patterns, verbose):
+    """Find and load YAML rulefiles, returning Python list of rule objects."""
 
     aggregated_rules_list = []
     for rulefile_name in global_rulefile_name, local_rulefile_name:

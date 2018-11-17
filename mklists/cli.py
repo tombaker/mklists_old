@@ -14,7 +14,7 @@ from mklists.readwrite import (
     write_data_dict_to_diskfiles,
     write_data_dict_urlified_to_diskfiles,
 )
-from mklists import MKLISTS_YAML_STARTER_DICT
+from mklists import MKLISTS_YAML_NAME, MKLISTS_YAML_STARTER_DICT
 
 
 @click.group()
@@ -29,9 +29,8 @@ def cli(ctx, backups, html, verbose):
     overrides_from_cli = locals().copy()
     ctx.obj = MKLISTS_YAML_STARTER_DICT
     if ctx.invoked_subcommand != "init":
-        overrides_from_file = _read_overrides_from_file(MKLISTSRC_NAME)
+        overrides_from_file = _read_overrides_from_file(MKLISTS_YAML_NAME)
         ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
-
     ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
 
 
@@ -49,22 +48,15 @@ def init(ctx):
 def run(ctx):
     """Apply rules to re-write data files."""
     good_chars = ctx.obj["valid_filename_chars"]
-    bad_patterns = ctx.obj["invalid_filename_patterns"]
+    bad_pats = ctx.obj["invalid_filename_patterns"]
     verbose = ctx.obj["verbose"]
     html = ctx.obj["html"]
-    if backups:
-        backup_depth = ctx.obj["backup_depth"]
-    if ctx.obj["files2dirs"]:
-        files2dirs = ctx.obj["files2dirs"]
-
+    backup_depth = ctx.obj["backup_depth"] if ctx.obj["backup_depth"] else 0
+    files2dirs = ctx.obj["files2dirs"] if ctx.obj["files2dirs"] else None
     ruleobj_list = get_rules()
     datalines_list = get_datalines()
     data_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
-
-    if backups:
-        move_datafiles_to_backup(backup_depth)
-    else:
-        delete_datafiles()  # TODO
+    move_datafiles_to_backup(backup_depth, verbose)
     write_data_dict_to_diskfiles(data_dict, verbose)
 
     if html:

@@ -47,20 +47,6 @@ def test_apply_overrides_from_file_something_changed(singledir_configured):
     )
 
 
-@pytest.mark.skip
-def test_apply_overrides_from_file(singledir_configured):
-    """_apply_overrides_from_file() should return builtin settings."""
-    os.chdir(singledir_configured)
-    context = {}
-    overrides_from_file = _read_overrides_from_file(MKLISTSRC_LOCAL_NAME)
-    print(_apply_overrides(context, overrides_from_file))
-    print(_apply_overrides(context, overrides_from_file))
-    assert (
-        _apply_overrides(context, overrides_from_file)
-        == MKLISTS_YAML_STARTER_DICT
-    )
-
-
 @pytest.mark.cli
 def test_apply_overrides():
     initial_context = {"ctx": "something", "backups": 1}
@@ -86,16 +72,6 @@ def test_read_overrides_from_file(tmpdir):
     with open(".config", "w") as fout:
         fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
     assert _read_overrides_from_file(".config") == settings_dict
-
-
-@pytest.mark.skip
-def test_apply_overrides_from_file_empty(singledir_configured):
-    """Config file '.mklistsrc3' is empty (length=0)."""
-    os.chdir(singledir_configured)
-    updated_config_dict = _apply_overrides_from_file(
-        configfile_name=".mklistsrc3"
-    )
-    assert updated_config_dict == MKLISTSRC_DEFAULTS
 
 
 @pytest.mark.skip

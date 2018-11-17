@@ -49,7 +49,7 @@ class ConfigError(SystemExit):
 
 
 class ConfigFileNotFoundError(ConfigError):
-    """Hardwired configuration file '.mklistsrc' was not found."""
+    """Hardwired configuration file 'mklists.yml' was not found."""
 
 
 class DatadirNotAccessibleError(ConfigError):
