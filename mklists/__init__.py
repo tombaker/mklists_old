@@ -1,6 +1,7 @@
 """Defines Mklists constants and exception classes."""
 
 import datetime
+import os
 
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
@@ -21,12 +22,13 @@ MKLISTS_YAML_STARTER_DICT = {
     "files2dirs": {},
 }
 
+GLOBAL_DIR = "."
 GLOBAL_RULEFILE_NAME = ".globalrules"
 GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
-- [0, '.',   all_lines, lines,    1]
-- [0, '^A ', all_lines, to_a.txt, 1]
-- [0, '^B ', all_lines, to_b.txt, 1]
+- [0, '^=',       all_lines, to_a.txt, 1]
+- [0, '^201[89]', all_lines, to_b.txt, 1]
 """
+LOCAL_DIRA = os.path.join(GLOBAL_DIR, "todo")
 LOCAL_RULEFILE_NAME = ".rules"
 LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
 - [0, '.',       lines,      todo.txt,   0]
@@ -34,6 +36,7 @@ LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
 - [2, 'NOW',     todo.txt,    now.txt,   1]
 - [2, 'LATER',   todo.txt,  later.txt,   0]
 """
+LOCAL_DIRB = os.path.join(GLOBAL_DIR, "log")
 LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
 - [0, '.',           lines,   other.txt, 1]
 - [0, '.',        to_b.txt,   other.txt, 1]
