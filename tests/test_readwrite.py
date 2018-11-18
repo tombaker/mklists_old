@@ -11,7 +11,7 @@ from mklists import (
     LOCAL_RULEFILE_NAME,
     VALID_FILENAME_CHARACTERS_STR,
 )
-from mklists.cli import write_initial_configfile
+from mklists.cli import _write_initial_configfile
 from mklists.readwrite import write_initial_rulefiles
 from mklists.utils import write_yamlstr_to_yamlfile
 
@@ -21,7 +21,7 @@ def test_write_initial_configfile(tmpdir):
     """Write mklists.yml, then read it back."""
     os.chdir(tmpdir)
     mklistsrc = tmpdir.join(MKLISTS_YAML_NAME)
-    write_initial_configfile(configfile_name=mklistsrc)
+    _write_initial_configfile(configfile_name=mklistsrc)
     updated_context = _apply_overrides_from_file()
     assert (
         updated_context["valid_filename_characters"]

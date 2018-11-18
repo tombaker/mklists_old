@@ -7,7 +7,7 @@ from mklists import MKLISTS_YAML_STARTER_DICT, VALID_FILENAME_CHARACTERS_STR
 from mklists.cli import (
     _read_overrides_from_file,
     _apply_overrides,
-    write_initial_configfile,
+    _write_initial_configfile,
 )
 
 """Things to test:

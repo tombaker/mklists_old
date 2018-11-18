@@ -19,7 +19,7 @@ from mklists import MKLISTS_YAML_NAME, MKLISTS_YAML_STARTER_DICT
 @click.group()
 @click.option("--backups", type=int, metavar="INT", help="Keep [3] backups")
 @click.option("--html", type=bool, is_flag=True, help="Make urlified copies")
-@click.option("--verbose", type=bool, is_flag=True, help="Running commentary")
+@click.option("--verbose", type=bool, is_flag=True, help="Print debug info")
 @click.version_option("0.1.5", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
@@ -31,15 +31,6 @@ def cli(ctx, backups, html, verbose):
         overrides_from_file = _read_overrides_from_file(MKLISTS_YAML_NAME)
         ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
     ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
-
-
-@cli.command()
-@click.pass_context
-def init(ctx):
-    """Write starter configuration and rule files."""
-    verbose = ctx.obj["verbose"]
-    write_initial_configfile(ctx.obj)
-    write_initial_rulefiles()
 
 
 @cli.command()
@@ -79,7 +70,17 @@ def _apply_overrides(settings_dict, overrides):
     return settings_dict
 
 
-def write_initial_configfile(settings_dict=None):
+@cli.command()
+@click.option("--multi", type=bool, is_flag=True, help="Set up multiple dirs")
+@click.pass_context
+def init(ctx):
+    """Write starter configuration and rule files."""
+    verbose = ctx.obj["verbose"]
+    _write_initial_configfile(ctx.obj)
+    write_initial_rulefiles()
+
+
+def _write_initial_configfile(settings_dict=None):
     """Writes initial configuration file to disk."""
     if os.path.exists(MKLISTS_YAML_NAME):
         raise InitError(f"{repr(MKLISTS_YAML_NAME)} already initialized.")
