@@ -2,6 +2,7 @@
 
 import glob
 import click
+import os
 import yaml
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
@@ -9,11 +10,19 @@ from mklists.readwrite import (
     get_rules,
     move_datafiles_to_backup,
     move_files_to_given_destinations,
-    write_initial_rulefiles,
     write_data_dict_to_diskfiles,
     write_data_dict_urlified_to_diskfiles,
 )
-from mklists import MKLISTS_YAML_NAME, MKLISTS_YAML_STARTER_DICT
+from mklists import (
+    GLOBAL_DIR,
+    GLOBAL_RULEFILE_NAME,
+    GLOBAL_RULEFILE_STARTER_YAMLSTR,
+    LOCAL_DIR,
+    LOCAL_RULEFILE_NAME,
+    LOCAL_RULEFILE_STARTER_YAMLSTR,
+    MKLISTS_YAML_NAME,
+    MKLISTS_YAML_STARTER_DICT,
+)
 
 
 @click.group()
@@ -71,20 +80,35 @@ def _apply_overrides(settings_dict, overrides):
 
 
 @cli.command()
-@click.option("--multi", type=bool, is_flag=True, help="Set up multiple dirs")
 @click.pass_context
 def init(ctx):
     """Write starter configuration and rule files."""
-    verbose = ctx.obj["verbose"]
     _write_initial_configfile(ctx.obj)
-    write_initial_rulefiles()
+    _write_initial_rulefiles()
 
 
 def _write_initial_configfile(settings_dict=None):
-    """Writes initial configuration file to disk."""
+    """Writes starter files to disk: 'mklists.yml'."""
     if os.path.exists(MKLISTS_YAML_NAME):
         raise InitError(f"{repr(MKLISTS_YAML_NAME)} already initialized.")
     else:
         print(f"Writing starter config file {repr(MKLISTS_YAML_NAME)}.")
         with open(configfile_name, "w") as fout:
             fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
+
+
+def _write_initial_rulefiles():
+    """Writes starter files to disk: '.globalrules' and '.rules'."""
+    for directory_name, file_name, content in [
+        (GLOBAL_DIR, GLOBAL_RULEFILE_NAME, GLOBAL_RULEFILE_STARTER_YAMLSTR),
+        (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR),
+    ]:
+        rulefile = os.path.join(directory_name, file_name)
+        if not os.path.exists(directory_name):
+            os.makedirs(directory_name)
+        if os.path.exists(rulefile):
+            print(f"Found {repr(rulefile)} - leaving untouched.")
+        else:
+            print(f"Creating starter rule file {repr(rulefile)}.")
+            with open(rulefile, "w") as fout:
+                fout.write(content)

@@ -10,13 +10,11 @@ import os
 import yaml
 from mklists import (
     GLOBAL_DIR,
-    LOCAL_DIRA,
-    LOCAL_DIRB,
+    LOCAL_DIR,
     GLOBAL_RULEFILE_NAME,
     GLOBAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_RULEFILE_NAME,
-    LOCAL_RULEFILEA_STARTER_YAMLSTR,
-    LOCAL_RULEFILEB_STARTER_YAMLSTR,
+    LOCAL_RULEFILE_STARTER_YAMLSTR,
     BadFilenameError,
     BadYamlError,
     BadYamlRuleError,
@@ -79,21 +77,6 @@ def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
     except TypeError:
         print("NoneType")
     return rules_list
-
-
-def write_initial_rulefiles():
-    """Generate default rule (and global rule) configuration files."""
-    for directory, file, content in [
-        (GLOBAL_DIR, GLOBAL_RULEFILE_NAME, GLOBAL_RULEFILE_STARTER_YAMLSTR),
-        (LOCAL_DIRA, LOCAL_RULEFILE_NAME, LOCAL_RULEFILEA_STARTER_YAMLSTR),
-        (LOCAL_DIRB, LOCAL_RULEFILE_NAME, LOCAL_RULEFILEB_STARTER_YAMLSTR),
-    ]:
-        if os.path.exists(file):
-            print(f"Found existing {repr(file)} - leaving untouched.")
-        else:
-            print(f"Creating starter rule file {repr(file)}.")
-            with open(file, "w") as fout:
-                fout.write(content)
 
 
 def get_datalines():

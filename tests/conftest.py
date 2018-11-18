@@ -8,12 +8,35 @@ from mklists.ruleclass import Rule
 from mklists import (
     MKLISTS_YAML_NAME,
     MKLISTS_YAML_STARTER_DICT,
+    GLOBAL_DIR,
     GLOBAL_RULEFILE_NAME,
     GLOBAL_RULEFILE_STARTER_YAMLSTR,
+    LOCAL_DIR,
     LOCAL_RULEFILE_NAME,
-    LOCAL_RULEFILEA_STARTER_YAMLSTR,
-    LOCAL_RULEFILEB_STARTER_YAMLSTR,
+    LOCAL_RULEFILE_STARTER_YAMLSTR,
 )
+
+TEST_GLOBAL_DIR = "."
+TEST_GLOBAL_RULEFILE_NAME = ".globalrules"
+TEST_GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
+- [0, '^=',       all_lines, to_a.txt, 1]
+- [0, '^201[89]', all_lines, to_b.txt, 1]
+"""
+
+TEST_LOCAL_DIRA = os.path.join(GLOBAL_DIR, "todo")
+TEST_LOCAL_RULEFILE_NAME = ".rules"
+TEST_LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
+- [0, '.',       lines,      todo.txt,   0]
+- [0, '.',       to_a.txt    todo.txt,   1]
+- [2, 'NOW',     todo.txt,    now.txt,   1]
+- [2, 'LATER',   todo.txt,  later.txt,   0]
+"""
+TEST_LOCAL_DIRB = os.path.join(GLOBAL_DIR, "log")
+TEST_LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
+- [0, '.',           lines,   other.txt, 1]
+- [0, '.',        to_b.txt,   other.txt, 1]
+- [2, 'SOMEDAY', other.txt, someday.txt, 0]
+"""
 
 
 @pytest.fixture(name="multidir_repo_configured")

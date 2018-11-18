@@ -24,23 +24,15 @@ MKLISTS_YAML_STARTER_DICT = {
 
 GLOBAL_DIR = "."
 GLOBAL_RULEFILE_NAME = ".globalrules"
-GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
-- [0, '^=',       all_lines, to_a.txt, 1]
-- [0, '^201[89]', all_lines, to_b.txt, 1]
-"""
-LOCAL_DIRA = os.path.join(GLOBAL_DIR, "todo")
+GLOBAL_RULEFILE_STARTER_YAMLSTR = """- [0, '.', all_lines, lines, 0]\n"""
+
+LOCAL_DIR = os.path.join(GLOBAL_DIR, "lists")
 LOCAL_RULEFILE_NAME = ".rules"
-LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
+LOCAL_RULEFILE_STARTER_YAMLSTR = """\
 - [0, '.',       lines,      todo.txt,   0]
 - [0, '.',       to_a.txt    todo.txt,   1]
-- [2, 'NOW',     todo.txt,    now.txt,   1]
-- [2, 'LATER',   todo.txt,  later.txt,   0]
-"""
-LOCAL_DIRB = os.path.join(GLOBAL_DIR, "log")
-LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
-- [0, '.',           lines,   other.txt, 1]
-- [0, '.',        to_b.txt,   other.txt, 1]
-- [2, 'SOMEDAY', other.txt, someday.txt, 0]
+- [1, 'NOW',     todo.txt,    now.txt,   1]
+- [1, 'LATER',   todo.txt,  later.txt,   0]
 """
 BACKUP_DIR_NAME = "backups"
 HTMLFILES_DIR_NAME = "html"
