@@ -1,2 +1,2 @@
-set colorcolumn=79
+set colorcolumn=88
 set number
