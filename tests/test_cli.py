@@ -4,8 +4,11 @@ import os
 import pytest
 import yaml
 from mklists import MKLISTS_YAML_STARTER_DICT, VALID_FILENAME_CHARACTERS_STR
-from mklists.cli import _read_overrides_from_file, _apply_overrides
-from mklists.readwrite import write_initial_configfile
+from mklists.cli import (
+    _read_overrides_from_file,
+    _apply_overrides,
+    write_initial_configfile,
+)
 
 """Things to test:
     Note: other directories in repo root created when functions called:

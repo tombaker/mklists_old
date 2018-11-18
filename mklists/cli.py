@@ -9,7 +9,6 @@ from mklists.readwrite import (
     get_rules,
     move_datafiles_to_backup,
     move_files_to_given_destinations,
-    write_initial_configfile,
     write_initial_rulefiles,
     write_data_dict_to_diskfiles,
     write_data_dict_urlified_to_diskfiles,
@@ -39,8 +38,8 @@ def cli(ctx, backups, html, verbose):
 def init(ctx):
     """Write starter configuration and rule files."""
     verbose = ctx.obj["verbose"]
-    write_initial_configfile(ctx.obj, verbose)
-    write_initial_rulefiles(verbose)
+    write_initial_configfile(ctx.obj)
+    write_initial_rulefiles()
 
 
 @cli.command()
@@ -78,3 +77,13 @@ def _apply_overrides(settings_dict, overrides):
     }
     settings_dict.update(overrides)
     return settings_dict
+
+
+def write_initial_configfile(settings_dict=None):
+    """Writes initial configuration file to disk."""
+    if os.path.exists(MKLISTS_YAML_NAME):
+        raise InitError(f"{repr(MKLISTS_YAML_NAME)} already initialized.")
+    else:
+        print(f"Writing starter config file {repr(MKLISTS_YAML_NAME)}.")
+        with open(configfile_name, "w") as fout:
+            fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))

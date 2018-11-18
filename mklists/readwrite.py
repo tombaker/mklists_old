@@ -77,16 +77,6 @@ def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
     return rules_list
 
 
-def write_initial_configfile(settings_dict=None, verbose=False):
-    """Writes initial configuration file to disk.  """
-    if os.path.exists(configfile_name):
-        raise InitError("Mklists folders already initialized.")
-    else:
-        print(f"Writing default {repr(configfile_name)}.")
-        with open(configfile_name, "w") as fout:
-            fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-
-
 def write_initial_rulefiles(verbose=False):
     """Generate default rule (and global rule) configuration files.
 
