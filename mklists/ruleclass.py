@@ -79,7 +79,9 @@ class Rule:
         for filename in [self.source, self.target]:
             if not has_valid_name(filename):
                 print(f"In rule: {self}")
-                raise BadFilenameError(f"{repr(filename)} is not a valid filename.")
+                raise BadFilenameError(
+                    f"{repr(filename)} is not a valid filename."
+                )
         return True
 
     def _source_is_not_equal_target(self):
@@ -96,7 +98,9 @@ class Rule:
         if self.source not in Rule.sources_list:
             print(f"In rule: {self}")
             print(f"Rule.sources_list = {Rule.sources_list}")
-            raise UninitializedSourceError(f"{repr(self.source)} not initialized.")
+            raise UninitializedSourceError(
+                f"{repr(self.source)} not initialized."
+            )
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
