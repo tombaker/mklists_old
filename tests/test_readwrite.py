@@ -26,7 +26,7 @@ def test_write_initial_configfile(tmpdir):
     )
 
 
-@pytest.mark.write
+@pytest.mark.skip
 def test_write_initial_globalrules_isolated():
     runner = CliRunner()
     with runner.isolated_filesystem():
@@ -37,7 +37,7 @@ def test_write_initial_globalrules_isolated():
         )
 
 
-@pytest.mark.write
+@pytest.mark.skip
 def test_write_initial_globalrules(tmpdir):
     os.chdir(tmpdir)
     _write_initial_rulefiles()

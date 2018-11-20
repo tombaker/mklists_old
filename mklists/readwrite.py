@@ -46,9 +46,16 @@ def find_rulefiles():
     b. When mklists.yaml found (i.e., in root directory)
        * look in root directory for (optional) .globalrules
        * look under all subdirectories for .rules files"""
+    # if os.path.exists(GLOBAL_RULEFILE_NAME):
+    # for directory_name, file_name in [
+    #    (GLOBAL_DIR,
+    #    (LOCAL_DIR, LOCAL_RULEFILE_NAME),
+    # ]:
+    #    rulefile = os.path.join(directory_name, file_name)
+    #        os.makedirs(directory_name)
 
 
-def get_rules(valid_filename_chars, invalid_filename_patterns, verbose):
+def get_rules(valid_filename_chars, invalid_filename_patterns):
     """Find and load YAML rulefiles, returning Python list of rule objects."""
 
     aggregated_rules_list = []

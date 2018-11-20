@@ -89,12 +89,12 @@ def init(ctx):
 
 def _write_initial_configfile(settings_dict=None):
     """Writes starter files to disk: 'mklists.yml'."""
-    if os.path.exists(MKLISTS_YAML_NAME):
-        raise InitError(f"{repr(MKLISTS_YAML_NAME)} already initialized.")
-    else:
-        print(f"Writing starter config file {repr(MKLISTS_YAML_NAME)}.")
-        with open(configfile_name, "w") as fout:
+    try:
+        with open(MKLISTS_YAML_NAME, "x") as fout:
             fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
+            print(f"Created starter config file: {repr(MKLISTS_YAML_NAME)}.")
+    except FileExistsError:
+        raise InitError(f"{repr(MKLISTS_YAML_NAME)} already initialized.")
 
 
 def _write_initial_rulefiles():
@@ -104,11 +104,10 @@ def _write_initial_rulefiles():
         (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR),
     ]:
         rulefile = os.path.join(directory_name, file_name)
-        if not os.path.exists(directory_name):
+        try:
             os.makedirs(directory_name)
-        if os.path.exists(rulefile):
-            print(f"Found {repr(rulefile)} - leaving untouched.")
-        else:
-            print(f"Creating starter rule file {repr(rulefile)}.")
-            with open(rulefile, "w") as fout:
+            with open(rulefile, "x") as fout:
                 fout.write(content)
+            print(f"Created starter rule file: {repr(rulefile)}.")
+        except FileExistsError:
+            print(f"Found {repr(rulefile)} - leaving untouched.")
