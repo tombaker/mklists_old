@@ -8,6 +8,7 @@ Next steps:
 * Update pip distribution
 * mklists equivalent of git-grep?
 * /.globalrules exists only if /mklistsrc exists
+* subcommand: mklists grepx - as in: mklists grepx NOW 2018 dc... (gather args into list)
 
 Maybe someday:
 * Event logging?

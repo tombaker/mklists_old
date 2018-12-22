@@ -13,7 +13,6 @@ from mklists import (
     VALID_FILENAME_CHARACTERS_STR,
     BadYamlError,
     DatadirNotAccessibleError,
-    NotUTF8Error,
 )
 
 
