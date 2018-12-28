@@ -22,6 +22,17 @@ MKLISTS_YML_STARTER_DICT = {
     "files2dirs": {},
 }
 
+MKLISTSYML_YAMLSTR = """\
+backups: 3
+files2dirs: {}
+html: false
+invalid_filename_patterns: [\\.swp$, \\.tmp$, ~$, ^\\.]
+valid_filename_characters: :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+verbose: false
+global_rules:
+- [0, '.', all_lines, lines, 0]
+"""
+
 GLOBAL_DIR = "."
 GLOBAL_RULEFILE_NAME = ".globalrules"
 GLOBAL_RULEFILE_STARTER_YAMLSTR = """- [0, '.', all_lines, lines, 0]\n"""
