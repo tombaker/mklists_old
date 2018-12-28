@@ -12,8 +12,8 @@ INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 # 2018-11-12: Cannot just save string - must do:
 # fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 # See /Users/tbaker/github/tombaker/mklists/mklists/cli_init.py
-MKLISTS_YAML_NAME = "mklists.yml"  # only in root directory
-MKLISTS_YAML_STARTER_DICT = {
+MKLISTS_YML_NAME = "mklists.yml"  # only in root directory
+MKLISTS_YML_STARTER_DICT = {
     "html": False,
     "backups": 3,
     "verbose": False,

@@ -6,8 +6,8 @@ from click.testing import CliRunner
 from textwrap import dedent
 from mklists.ruleclass import Rule
 from mklists import (
-    MKLISTS_YAML_NAME,
-    MKLISTS_YAML_STARTER_DICT,
+    MKLISTS_YML_NAME,
+    MKLISTS_YML_STARTER_DICT,
     GLOBAL_DIR,
     GLOBAL_RULEFILE_NAME,
     GLOBAL_RULEFILE_STARTER_YAMLSTR,
@@ -48,10 +48,10 @@ def fixture_multidir_repo_configured(tmpdir_factory):
         mydir/b/.rules"""
 
     root_dir = tmpdir_factory.mktemp("mydir")
-    mklistsrc = root_dir.join(MKLISTS_YAML_NAME)
+    mklistsrc = root_dir.join(MKLISTS_YML_NAME)
     with open(mklistsrc, "w") as fout:
         fout.write(
-            yaml.safe_dump(MKLISTS_YAML_STARTER_DICT, default_flow_style=False)
+            yaml.safe_dump(MKLISTS_YML_STARTER_DICT, default_flow_style=False)
         )
 
     rules_global = root_dir.join(GLOBAL_RULEFILE_NAME)

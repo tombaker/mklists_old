@@ -31,7 +31,7 @@ from mklists.utils import read_yamlfile_to_pyobject, is_file, has_valid_name
 def find_rulefiles():
     """GLOBAL_RULEFILE_NAME
     LOCAL_RULEFILE_NAME
-    MKLISTS_YAML_NAME
+    MKLISTS_YML_NAME
 
     Repository
     mydir/mklists.yaml - configuration

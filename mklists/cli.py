@@ -20,8 +20,8 @@ from mklists import (
     LOCAL_DIR,
     LOCAL_RULEFILE_NAME,
     LOCAL_RULEFILE_STARTER_YAMLSTR,
-    MKLISTS_YAML_NAME,
-    MKLISTS_YAML_STARTER_DICT,
+    MKLISTS_YML_NAME,
+    MKLISTS_YML_STARTER_DICT,
 )
 
 
@@ -35,9 +35,9 @@ from mklists import (
 def cli(ctx, backups, html, verbose):
     """Organize your todo lists by tweaking rules"""
     overrides_from_cli = locals().copy()
-    ctx.obj = MKLISTS_YAML_STARTER_DICT
+    ctx.obj = MKLISTS_YML_STARTER_DICT
     if ctx.invoked_subcommand != "init":
-        overrides_from_file = _read_overrides_from_file(MKLISTS_YAML_NAME)
+        overrides_from_file = _read_overrides_from_file(MKLISTS_YML_NAME)
         ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
     ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
 
@@ -90,11 +90,11 @@ def init(ctx):
 def _write_initial_configfile(settings_dict=None):
     """Writes starter files to disk: 'mklists.yml'."""
     try:
-        with open(MKLISTS_YAML_NAME, "x") as fout:
+        with open(MKLISTS_YML_NAME, "x") as fout:
             fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-            print(f"Created starter config file: {repr(MKLISTS_YAML_NAME)}.")
+            print(f"Created starter config file: {repr(MKLISTS_YML_NAME)}.")
     except FileExistsError:
-        raise InitError(f"{repr(MKLISTS_YAML_NAME)} already initialized.")
+        raise InitError(f"{repr(MKLISTS_YML_NAME)} already initialized.")
 
 
 def _write_initial_rulefiles():
