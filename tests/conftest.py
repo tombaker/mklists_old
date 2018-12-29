@@ -4,7 +4,7 @@ import click
 import os
 from click.testing import CliRunner
 from textwrap import dedent
-from mklists.ruleclass import Rule
+from mklists.rules import Rule
 from mklists import (
     MKLISTS_YML_NAME,
     MKLISTS_YML_STARTER_DICT,

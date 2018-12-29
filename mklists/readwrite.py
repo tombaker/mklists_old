@@ -24,7 +24,7 @@ from mklists import (
     NoDataError,
     NotUTF8Error,
 )
-from mklists.ruleclass import Rule
+from mklists.rules import Rule
 from mklists.utils import read_yamlfile_to_pyobject, is_file, has_valid_name
 
 
