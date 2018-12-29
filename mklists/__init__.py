@@ -30,12 +30,12 @@ invalid_filename_patterns: [\\.swp$, \\.tmp$, ~$, ^\\.]
 valid_filename_characters: :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 verbose: false
 global_rules:
-- [0, '.', all_lines, lines, 0]
+- [0, '.',        all_lines, lines,    0]
+- [0, '^=',       all_lines, to_a.txt, 1]
+- [0, '^201[89]', all_lines, to_b.txt, 1]
 """
 
 GLOBAL_DIR = "."
-GLOBAL_RULEFILE_NAME = ".globalrules"
-GLOBAL_RULEFILE_STARTER_YAMLSTR = """- [0, '.', all_lines, lines, 0]\n"""
 
 LOCAL_DIR = os.path.join(GLOBAL_DIR, "lists")
 LOCAL_RULEFILE_NAME = ".rules"

@@ -9,16 +9,13 @@ from mklists import (
     MKLISTS_YML_NAME,
     MKLISTS_YML_STARTER_DICT,
     GLOBAL_DIR,
-    GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_DIR,
     LOCAL_RULEFILE_NAME,
     LOCAL_RULEFILE_STARTER_YAMLSTR,
 )
 
 TEST_GLOBAL_DIR = "."
-TEST_GLOBAL_RULEFILE_NAME = ".globalrules"
-TEST_GLOBAL_RULEFILE_STARTER_YAMLSTR = """\
+TEST_GLOBAL_RULES_FROM_MKLISTSYML = """\
 - [0, '^=',       all_lines, to_a.txt, 1]
 - [0, '^201[89]', all_lines, to_b.txt, 1]
 """
@@ -54,8 +51,7 @@ def fixture_multidir_repo_configured(tmpdir_factory):
             yaml.safe_dump(MKLISTS_YML_STARTER_DICT, default_flow_style=False)
         )
 
-    rules_global = root_dir.join(GLOBAL_RULEFILE_NAME)
-    mklistsrc.write(GLOBAL_RULEFILE_STARTER_YAMLSTR)
+    # get global rules from mklists.yml
     subdir_a = root_dir.mkdir("a")
     rules_a = subdir_a.join(LOCAL_RULEFILE_NAME)
     rules_a.write(LOCAL_RULEFILEA_STARTER_YAMLSTR)

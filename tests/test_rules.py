@@ -4,7 +4,7 @@ import os
 import pytest
 from mklists.apply import apply_rules_to_datalines, _line_matches
 from mklists.rules import Rule
-from mklists import UninitializedSourceError, GLOBAL_RULEFILE_STARTER_YAMLSTR
+from mklists import UninitializedSourceError
 from mklists.utils import write_yamlstr_to_yamlfile, read_yamlfile_to_pyobject
 
 

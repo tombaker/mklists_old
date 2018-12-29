@@ -11,8 +11,6 @@ import yaml
 from mklists import (
     GLOBAL_DIR,
     LOCAL_DIR,
-    GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_RULEFILE_NAME,
     LOCAL_RULEFILE_STARTER_YAMLSTR,
     BadFilenameError,
@@ -29,8 +27,7 @@ from mklists.utils import read_yamlfile_to_pyobject, is_file, has_valid_name
 
 
 def find_rulefiles():
-    """GLOBAL_RULEFILE_NAME
-    LOCAL_RULEFILE_NAME
+    """LOCAL_RULEFILE_NAME
     MKLISTS_YML_NAME
 
     Repository
@@ -46,13 +43,6 @@ def find_rulefiles():
     b. When mklists.yaml found (i.e., in root directory)
        * look in root directory for (optional) .globalrules
        * look under all subdirectories for .rules files"""
-    # if os.path.exists(GLOBAL_RULEFILE_NAME):
-    # for directory_name, file_name in [
-    #    (GLOBAL_DIR,
-    #    (LOCAL_DIR, LOCAL_RULEFILE_NAME),
-    # ]:
-    #    rulefile = os.path.join(directory_name, file_name)
-    #        os.makedirs(directory_name)
 
 
 def get_rules(valid_filename_chars, invalid_filename_patterns):
@@ -74,7 +64,7 @@ def get_rules(valid_filename_chars, invalid_filename_patterns):
     return ruleobj_list
 
 
-def get_rules2(lrules=LOCAL_RULEFILE_NAME, grules=GLOBAL_RULEFILE_NAME):
+def get_rules2(lrules=LOCAL_RULEFILE_NAME):
     rules_list = []
     try:
         rules_to_add = read_yamlfile_to_pyobject(grules)

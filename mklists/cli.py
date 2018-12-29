@@ -15,8 +15,6 @@ from mklists.readwrite import (
 )
 from mklists import (
     GLOBAL_DIR,
-    GLOBAL_RULEFILE_NAME,
-    GLOBAL_RULEFILE_STARTER_YAMLSTR,
     LOCAL_DIR,
     LOCAL_RULEFILE_NAME,
     LOCAL_RULEFILE_STARTER_YAMLSTR,
@@ -100,8 +98,7 @@ def _write_initial_configfile(settings_dict=None):
 def _write_initial_rulefiles():
     """Writes starter files to disk: '.globalrules' and '.rules'."""
     for directory_name, file_name, content in [
-        (GLOBAL_DIR, GLOBAL_RULEFILE_NAME, GLOBAL_RULEFILE_STARTER_YAMLSTR),
-        (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR),
+        (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR)
     ]:
         rulefile = os.path.join(directory_name, file_name)
         try:
