@@ -38,13 +38,16 @@ global_rules:
 GLOBAL_DIR = "."
 
 LOCAL_DIR = os.path.join(GLOBAL_DIR, "lists")
-LOCAL_RULEFILE_NAME = ".rules"
-LOCAL_RULEFILE_STARTER_YAMLSTR = """\
+LOCAL_RULEFILE_NAME = ".localrules"
+RULEFILE_NAME = ".localrules"
+
+RULEFILE_STARTER_YAMLSTR = """\
 - [0, '.',       lines,      todo.txt,   0]
 - [0, '.',       to_a.txt    todo.txt,   1]
 - [1, 'NOW',     todo.txt,    now.txt,   1]
 - [1, 'LATER',   todo.txt,  later.txt,   0]
 """
+
 BACKUP_DIR_NAME = "backups"
 HTMLFILES_DIR_NAME = "html"
 

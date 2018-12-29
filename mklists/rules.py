@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from mklists.utils import has_valid_name
 from mklists import (
     LOCAL_RULEFILE_NAME,
-    LOCAL_RULEFILE_STARTER_YAMLSTR,
+    RULEFILE_NAME,
+    RULEFILE_STARTER_YAMLSTR,
     NotIntegerError,
     BadFilenameError,
     BadYamlRuleError,
@@ -95,7 +96,9 @@ class Rule:
 
 
 def find_rulefiles():
-    """LOCAL_RULEFILE_NAME
+    """
+    LOCAL_RULEFILE_NAME
+    RULEFILE_NAME
     MKLISTS_YML_NAME
 
     Repository
