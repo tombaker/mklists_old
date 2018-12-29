@@ -69,7 +69,7 @@ def fixture_multidir_repo_configured(tmpdir_factory):
 def reinitialize_ruleclass_variables():
     """Class variables must be re-initialized:
         for each test of Rule.isrule
-        for each test of x._source_was_properly_registered
+        for each test of x._source_not_initialized_as_source
         for each test of Rule.sources_list"""
     Rule.sources_list = []
     Rule.sources_list_is_initialized = False
