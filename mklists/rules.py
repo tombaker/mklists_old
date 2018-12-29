@@ -4,8 +4,11 @@ import re
 from dataclasses import dataclass
 from mklists.utils import has_valid_name
 from mklists import (
+    LOCAL_RULEFILE_NAME,
+    LOCAL_RULEFILE_STARTER_YAMLSTR,
     NotIntegerError,
     BadFilenameError,
+    BadYamlRuleError,
     SourceEqualsTargetError,
     SourceMatchpatternError,
     UninitializedSourceError,
@@ -89,3 +92,53 @@ class Rule:
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
+
+
+def find_rulefiles():
+    """LOCAL_RULEFILE_NAME
+    MKLISTS_YML_NAME
+
+    Repository
+    mydir/mklists.yaml - configuration
+    mydir/.globalrules - global rules
+    mydir/a/.rules     - list A rules
+    mydir/b/.rules     - list B rules
+
+    Rule- and config-finding algorithm:
+    a. Look for mklists.yaml
+       * in current directory, then
+       * in parent directory
+    b. When mklists.yaml found (i.e., in root directory)
+       * look in root directory for (optional) .globalrules
+       * look under all subdirectories for .rules files"""
+
+
+def get_rules(valid_filename_chars, invalid_filename_patterns):
+    """Find and load YAML rulefiles, returning Python list of rule objects."""
+
+    aggregated_rules_list = []
+    for rulefile_name in global_rulefile_name, local_rulefile_name:
+        if rulefile_name:
+            rules_list = read_yamlfile_to_pyobject(rulefile_name)
+            aggregated_rules_list = aggregated_rules_list + rules_list
+    ruleobj_list = []
+    for item in aggregated_rules_list:
+        try:
+            Rule(*item).is_valid
+        except TypeError:
+            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
+        ruleobj_list.append(Rule(*item))
+
+    return ruleobj_list
+
+
+def get_rules2(lrules=LOCAL_RULEFILE_NAME):
+    rules_list = []
+    try:
+        rules_to_add = read_yamlfile_to_pyobject(grules)
+        rules_list.append(rules_to_add)
+    except FileNotFoundError:
+        print("File was not found")
+    except TypeError:
+        print("NoneType")
+    return rules_list

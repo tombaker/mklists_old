@@ -7,7 +7,6 @@ import yaml
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
     get_datalines,
-    get_rules,
     move_datafiles_to_backup,
     move_files_to_given_destinations,
     write_data_dict_to_diskfiles,
@@ -21,6 +20,7 @@ from mklists import (
     MKLISTS_YML_NAME,
     MKLISTS_YML_STARTER_DICT,
 )
+from mklists.rules import get_rules
 
 
 @click.group()
