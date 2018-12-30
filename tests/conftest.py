@@ -37,15 +37,15 @@ TEST_LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
 """
 
 
-@pytest.fixture(name="multidir_repo_configured")
-def fixture_multidir_repo_configured(tmpdir_factory):
-    """Return temporary mklists repo "mydir":
-        mydir/.globalrules
-        mydir/mklists.yaml
-        mydir/a/.rules
-        mydir/b/.rules"""
+@pytest.fixture(name="myrepo_configured")
+def fixture_myrepo_configured(tmpdir_factory):
+    """Return temporary mklists repo "myrepo":
 
-    root_dir = tmpdir_factory.mktemp("mydir")
+        myrepo/mklists.yml
+        myrepo/a/.rules
+        myrepo/b/.rules"""
+
+    root_dir = tmpdir_factory.mktemp("myrepo")
     mklistsrc = root_dir.join(MKLISTS_YML_NAME)
     with open(mklistsrc, "w") as fout:
         fout.write(

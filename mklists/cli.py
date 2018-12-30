@@ -25,19 +25,18 @@ from mklists.rules import get_rules
 
 
 @click.group()
-@click.option("--backups", type=int, metavar="INT", help="Keep [3] backups")
 @click.option("--html", type=bool, is_flag=True, help="Make urlified copies")
 @click.option("--verbose", type=bool, is_flag=True, help="Print debug info")
 @click.version_option("0.1.5", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, backups, html, verbose):
+def cli(ctx, html, verbose):
     """Organize your todo lists by tweaking rules"""
     overrides_from_cli = locals().copy()
     ctx.obj = MKLISTS_YML_STARTER_DICT
-    if ctx.invoked_subcommand != "init":
-        overrides_from_file = _read_overrides_from_file(MKLISTS_YML_NAME)
-        ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
+    # if ctx.invoked_subcommand != "init":
+    #    overrides_from_file = _read_overrides_from_file(MKLISTS_YML_NAME)
+    #    ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
     ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
 
 
@@ -109,3 +108,12 @@ def _write_initial_rulefiles():
             print(f"Created starter rule file: {repr(rulefile)}.")
         except FileExistsError:
             print(f"Found {repr(rulefile)} - leaving untouched.")
+
+
+@cli.command()
+@click.pass_context
+def testme(ctx):
+    """Subcommand for various tests."""
+    from mklists.goto import goto_repo_rootdir
+
+    goto_repo_rootdir()

@@ -48,8 +48,8 @@ RULEFILE_STARTER_YAMLSTR = """\
 - [1, 'LATER',   todo.txt,  later.txt,   0]
 """
 
-BACKUP_DIR_NAME = "backups"
-HTMLFILES_DIR_NAME = "html"
+BACKUP_DIR_NAME = "_backups"
+HTMLFILES_DIR_NAME = "_html"
 
 
 # ConfigError
