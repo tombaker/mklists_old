@@ -114,6 +114,6 @@ def _write_initial_rulefiles():
 @click.pass_context
 def testme(ctx):
     """Subcommand for various tests."""
-    from mklists.goto import goto_repo_rootdir
+    from mklists.goto import find_rootdir
 
-    goto_repo_rootdir()
+    find_rootdir()

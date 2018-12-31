@@ -1,20 +1,26 @@
 import os
 
 RULEFILE_NAME = ".rules"
+LOCAL_RULEFILE_NAME = ".localrules"
 CONFIGFILE_NAME = "mklists.yml"
 
 
-def goto_repo_rootdir():
-    if CONFIGFILE_NAME in os.listdir(os.getcwd()):
-        set_repo_rootdir()
-    if RULEFILE_NAME in os.listdir(os.getcwd()):
-        print(f"Found: {os.path.join(os.getcwd(), '.rules')}")
-        print(f"In: {os.getcwd()}")
+def find_rootdir():
+
+    while True:
+        ls_cwd = os.listdir()
+        if LOCAL_RULEFILE_NAME in ls_cwd:
+            os.chdir(os.pardir)
+        elif RULEFILE_NAME in ls_cwd:
+            os.chdir(os.pardir)
+        else:
+            break
+
+    if CONFIGFILE_NAME in os.listdir():
+        repo_rootdir = os.getcwd()
         os.chdir(os.pardir)
-        if CONFIGFILE_NAME in os.listdir(os.getcwd()):
-            set_repo_rootdir()
+    else:
+        repo_rootdir = None
+        print(f"{CONFIGFILE_NAME} not found. This is not a repo.")
 
-
-def set_repo_rootdir():
-    REPO_ROOTDIR = os.getcwd()
-    print(f"Root directory: {REPO_ROOTDIR}")
+    print("repo_rootdir:", repo_rootdir)
