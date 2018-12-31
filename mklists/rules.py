@@ -99,7 +99,7 @@ def find_rulefiles():
     """
     LOCAL_RULEFILE_NAME
     RULEFILE_NAME
-    MKLISTS_YML_NAME
+    CONFIGFILE_NAME
 
     Repository
     mydir/mklists.yaml - configuration

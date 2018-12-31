@@ -6,10 +6,8 @@ from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rules import Rule
 from mklists import (
-    MKLISTS_YML_NAME,
+    CONFIGFILE_NAME,
     MKLISTS_YML_STARTER_DICT,
-    GLOBAL_DIR,
-    LOCAL_DIR,
     LOCAL_RULEFILE_NAME,
     RULEFILE_NAME,
     RULEFILE_STARTER_YAMLSTR,
@@ -21,7 +19,7 @@ TEST_GLOBAL_RULES_FROM_MKLISTSYML = """\
 - [0, '^201[89]', all_lines, to_b.txt, 1]
 """
 
-TEST_LOCAL_DIRA = os.path.join(GLOBAL_DIR, "todo")
+TEST_LOCAL_DIRA = os.path.join(TEST_GLOBAL_DIR, "todo")
 TEST_LOCAL_RULEFILE_NAME = ".rules"
 TEST_LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
 - [0, '.',       lines,      todo.txt,   0]
@@ -29,7 +27,7 @@ TEST_LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
 - [2, 'NOW',     todo.txt,    now.txt,   1]
 - [2, 'LATER',   todo.txt,  later.txt,   0]
 """
-TEST_LOCAL_DIRB = os.path.join(GLOBAL_DIR, "log")
+TEST_LOCAL_DIRB = os.path.join(TEST_GLOBAL_DIR, "log")
 TEST_LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
 - [0, '.',           lines,   other.txt, 1]
 - [0, '.',        to_b.txt,   other.txt, 1]
@@ -46,7 +44,7 @@ def fixture_myrepo_configured(tmpdir_factory):
         myrepo/b/.rules"""
 
     root_dir = tmpdir_factory.mktemp("myrepo")
-    mklistsrc = root_dir.join(MKLISTS_YML_NAME)
+    mklistsrc = root_dir.join(CONFIGFILE_NAME)
     with open(mklistsrc, "w") as fout:
         fout.write(
             yaml.safe_dump(MKLISTS_YML_STARTER_DICT, default_flow_style=False)

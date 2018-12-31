@@ -13,12 +13,10 @@ from mklists.readwrite import (
     write_data_dict_urlified_to_diskfiles,
 )
 from mklists import (
-    GLOBAL_DIR,
-    LOCAL_DIR,
     LOCAL_RULEFILE_NAME,
     RULEFILE_NAME,
     RULEFILE_STARTER_YAMLSTR,
-    MKLISTS_YML_NAME,
+    CONFIGFILE_NAME,
     MKLISTS_YML_STARTER_DICT,
 )
 from mklists.rules import get_rules
@@ -35,7 +33,7 @@ def cli(ctx, html, verbose):
     overrides_from_cli = locals().copy()
     ctx.obj = MKLISTS_YML_STARTER_DICT
     # if ctx.invoked_subcommand != "init":
-    #    overrides_from_file = _read_overrides_from_file(MKLISTS_YML_NAME)
+    #    overrides_from_file = _read_overrides_from_file(CONFIGFILE_NAME)
     #    ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
     ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
 
@@ -82,38 +80,40 @@ def _apply_overrides(settings_dict, overrides):
 def init(ctx):
     """Write starter configuration and rule files."""
     _write_initial_configfile(ctx.obj)
-    _write_initial_rulefiles()
+
+
+#    _write_initial_rulefiles()
 
 
 def _write_initial_configfile(settings_dict=None):
     """Writes starter files to disk: 'mklists.yml'."""
     try:
-        with open(MKLISTS_YML_NAME, "x") as fout:
+        with open(CONFIGFILE_NAME, "x") as fout:
             fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-            print(f"Created starter config file: {repr(MKLISTS_YML_NAME)}.")
+            print(f"Created starter config file: {repr(CONFIGFILE_NAME)}.")
     except FileExistsError:
-        raise InitError(f"{repr(MKLISTS_YML_NAME)} already initialized.")
+        raise InitError(f"{repr(CONFIGFILE_NAME)} already initialized.")
 
 
-def _write_initial_rulefiles():
-    """Writes starter files to disk: '.globalrules' and '.rules'."""
-    for directory_name, file_name, content in [
-        (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR)
-    ]:
-        rulefile = os.path.join(directory_name, file_name)
-        try:
-            os.makedirs(directory_name)
-            with open(rulefile, "x") as fout:
-                fout.write(content)
-            print(f"Created starter rule file: {repr(rulefile)}.")
-        except FileExistsError:
-            print(f"Found {repr(rulefile)} - leaving untouched.")
+# def _write_initial_rulefiles():
+#     """Writes starter files to disk: '.globalrules' and '.rules'."""
+#     for directory_name, file_name, content in [
+#         (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR)
+#     ]:
+#         rulefile = os.path.join(directory_name, file_name)
+#         try:
+#             os.makedirs(directory_name)
+#             with open(rulefile, "x") as fout:
+#                 fout.write(content)
+#             print(f"Created starter rule file: {repr(rulefile)}.")
+#         except FileExistsError:
+#             print(f"Found {repr(rulefile)} - leaving untouched.")
 
 
 @cli.command()
 @click.pass_context
 def testme(ctx):
     """Subcommand for various tests."""
-    from mklists.goto import find_rootdir
+    from mklists.goto import set_rootdir
 
-    find_rootdir()
+    set_rootdir()

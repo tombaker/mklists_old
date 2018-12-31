@@ -5,7 +5,7 @@ LOCAL_RULEFILE_NAME = ".localrules"
 CONFIGFILE_NAME = "mklists.yml"
 
 
-def find_rootdir():
+def set_rootdir():
 
     while True:
         ls_cwd = os.listdir()
