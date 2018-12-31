@@ -5,34 +5,28 @@ import os
 
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-VALID_FILENAME_CHARACTERS_STR = """\
-:@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"""
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
+VALID_FILENAME_CHARACTERS_REGEX = "[\-_=.@A-Za-z0-9]+$"
 
 # 2018-11-12: Cannot just save string - must do:
 # fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
 # See /Users/tbaker/github/tombaker/mklists/mklists/cli_init.py
 CONFIGFILE_NAME = "mklists.yml"  # only in root directory
-MKLISTS_YML_STARTER_DICT = {
-    "html": False,
-    "backups": 3,
-    "verbose": False,
-    "valid_filename_characters": VALID_FILENAME_CHARACTERS_STR,
-    "invalid_filename_patterns": INVALID_FILENAME_PATTERNS,
-    "files2dirs": {},
-}
+CONFIG_STARTER_DICT = {}
 
-MKLISTSYML_YAMLSTR = """\
+CONFIGFILE_YAMLSTR = """\
 backups: 3
-files2dirs: {}
 html: false
-invalid_filename_patterns: [\\.swp$, \\.tmp$, ~$, ^\\.]
-valid_filename_characters: :@-_=.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+invalid_filename_patterns: [\.swp$, \.tmp$, ~$]
+additional_valid_filename_characters: ":äöüßÄŐŰ"
 verbose: false
 global_rules:
-- [0, '.',        all_lines, lines,    0]
-- [0, '^=',       all_lines, to_a.txt, 1]
-- [0, '^201[89]', all_lines, to_b.txt, 1]
+- [0, '.',          all_lines, lines,    0]
+- [0, '^=',         all_lines, move_to_a.txt, 1]
+- [0, '^2019|2020', all_lines, move_to_logs.txt, 1]
+files2dirs:
+- move_to_logs.txt: logs
+- move_to_a.txt: a
 """
 
 LOCAL_RULEFILE_NAME = ".localrules"

@@ -10,7 +10,7 @@ from mklists import (
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
     INVALID_FILENAME_PATTERNS,
-    VALID_FILENAME_CHARACTERS_STR,
+    VALID_FILENAME_CHARACTERS_REGEX,
     BadYamlError,
     DatadirNotAccessibleError,
 )
@@ -56,12 +56,12 @@ def is_file(object_path):
 
 def has_valid_name(file_name):
     """Return True if filename has no invalid characters or string patterns."""
-    for bad_pat in INVALID_FILENAME_PATTERNS:
-        if re.search(bad_pat, file_name):
-            print(f"{repr(file_name)} matches bad pattern {repr(bad_pat)}.")
-            return False
+    # for bad_pat in INVALID_FILENAME_PATTERNS:
+    #    if re.search(bad_pat, file_name):
+    #        print(f"{repr(file_name)} matches bad pattern {repr(bad_pat)}.")
+    #        return False
     for char in file_name:
-        if char not in VALID_FILENAME_CHARACTERS_STR:
+        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
             print(f"{repr(file_name)} has invalid character {repr(char)}.")
             return False
     return True

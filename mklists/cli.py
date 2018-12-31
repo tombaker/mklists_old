@@ -17,7 +17,7 @@ from mklists import (
     RULEFILE_NAME,
     RULEFILE_STARTER_YAMLSTR,
     CONFIGFILE_NAME,
-    MKLISTS_YML_STARTER_DICT,
+    CONFIG_STARTER_DICT,
 )
 from mklists.rules import get_rules
 
@@ -31,7 +31,7 @@ from mklists.rules import get_rules
 def cli(ctx, html, verbose):
     """Organize your todo lists by tweaking rules"""
     overrides_from_cli = locals().copy()
-    ctx.obj = MKLISTS_YML_STARTER_DICT
+    ctx.obj = CONFIG_STARTER_DICT
     # if ctx.invoked_subcommand != "init":
     #    overrides_from_file = _read_overrides_from_file(CONFIGFILE_NAME)
     #    ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)

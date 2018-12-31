@@ -7,7 +7,7 @@ from textwrap import dedent
 from mklists.rules import Rule
 from mklists import (
     CONFIGFILE_NAME,
-    MKLISTS_YML_STARTER_DICT,
+    CONFIG_STARTER_DICT,
     LOCAL_RULEFILE_NAME,
     RULEFILE_NAME,
     RULEFILE_STARTER_YAMLSTR,
@@ -47,7 +47,7 @@ def fixture_myrepo_configured(tmpdir_factory):
     mklistsrc = root_dir.join(CONFIGFILE_NAME)
     with open(mklistsrc, "w") as fout:
         fout.write(
-            yaml.safe_dump(MKLISTS_YML_STARTER_DICT, default_flow_style=False)
+            yaml.safe_dump(CONFIG_STARTER_DICT, default_flow_style=False)
         )
 
     # get global rules from mklists.yml

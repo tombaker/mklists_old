@@ -8,7 +8,7 @@ from mklists.goto import set_rootdir
 from mklists import CONFIGFILE_NAME
 
 
-@pytest.mark.finddirs
+@pytest.mark.skip
 def test_set_rootdir(tmpdir):
     """Find and set root directory."""
     os.chdir(tmpdir)
@@ -16,3 +16,14 @@ def test_set_rootdir(tmpdir):
     # _write_initial_configfile(configfile_name=mklistsrc)
     # updated_context = _apply_overrides_from_file()
     assert False
+
+
+# /tmp/root/mklists.yml
+# /tmp/root/a/.rules
+# /tmp/root/a/b/.rules
+# /tmp/rootx/a/.rules
+# /tmp/rootx/a/b/stackover.txt
+# /tmp/rootx/a/b/.localrules
+# /tmp/rooty/mklists.yml
+# /tmp/rooty/a/.rules
+# /tmp/rooty/a/b/.localrules

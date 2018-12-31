@@ -4,7 +4,7 @@ import pytest
 import click
 from click.testing import CliRunner
 import os
-from mklists import VALID_FILENAME_CHARACTERS_STR
+from mklists import VALID_FILENAME_CHARACTERS_REGEX
 from mklists.cli import _write_initial_configfile
 from mklists.utils import write_yamlstr_to_yamlfile
 
@@ -18,5 +18,5 @@ def test_write_initial_configfile(tmpdir):
     updated_context = _apply_overrides_from_file()
     assert (
         updated_context["valid_filename_characters"]
-        == VALID_FILENAME_CHARACTERS_STR
+        == VALID_FILENAME_CHARACTERS_REGEX
     )
