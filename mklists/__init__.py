@@ -30,7 +30,7 @@ files2dirs:
 """
 
 LOCAL_RULEFILE_NAME = ".localrules"
-RULEFILE_NAME = ".localrules"
+RULEFILE_NAME = ".rules"
 
 RULEFILE_STARTER_YAMLSTR = """\
 - [0, '.',       lines,      todo.txt,   0]

@@ -7,9 +7,12 @@ import glob
 import yaml
 import datetime
 from mklists import (
+    CONFIGFILE_NAME,
+    INVALID_FILENAME_PATTERNS,
+    LOCAL_RULEFILE_NAME,
+    RULEFILE_NAME,
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
-    INVALID_FILENAME_PATTERNS,
     VALID_FILENAME_CHARACTERS_REGEX,
     BadYamlError,
     DatadirNotAccessibleError,
@@ -78,3 +81,25 @@ def ls_visible(cwd=os.getcwd()):
     """Return list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
     return [name for name in glob.glob("*")]
+
+
+def get_rootdir():
+    """Return repo root path when executed at root or in a data directory."""
+
+    while True:
+        ls_cwd = os.listdir()
+        if RULEFILE_NAME in ls_cwd:
+            os.chdir(os.pardir)
+            continue
+        elif LOCAL_RULEFILE_NAME in ls_cwd:
+            os.chdir(os.pardir)
+        else:
+            break
+
+    if CONFIGFILE_NAME in os.listdir():
+        print(f"{CONFIGFILE_NAME} found in {os.getcwd()}.")
+        return os.getcwd()
+    else:
+        raise ConfigFileNotFoundError(
+            f"{CONFIGFILE_NAME} not found. This is not a repo."
+        )

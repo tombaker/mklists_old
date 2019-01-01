@@ -114,6 +114,6 @@ def _write_initial_configfile(settings_dict=None):
 @click.pass_context
 def testme(ctx):
     """Subcommand for various tests."""
-    from mklists.goto import set_rootdir
+    from mklists.utils import get_rootdir
 
-    set_rootdir()
+    get_rootdir()
