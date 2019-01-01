@@ -76,21 +76,15 @@ def _apply_overrides(settings_dict, overrides):
 
 
 @cli.command()
+@click.option("--empty", type=bool, is_flag=True, help="With bare minimum")
+@click.option("--newbie", type=bool, is_flag=True, help="With examples")
 @click.pass_context
 def init(ctx):
     """Write starter configuration and rule files."""
-    _write_initial_configfile(ctx.obj)
-
-
-#    _write_initial_rulefiles()
-
-
-def _write_initial_configfile(settings_dict=None):
-    """Writes starter files to disk: 'mklists.yml'."""
     try:
         with open(CONFIGFILE_NAME, "x") as fout:
-            fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-            print(f"Created starter config file: {repr(CONFIGFILE_NAME)}.")
+            fout.write(CONFIGFILE_YAMLSTR)
+            print(f"Created config file: {repr(CONFIGFILE_NAME)}.")
     except FileExistsError:
         raise InitError(f"{repr(CONFIGFILE_NAME)} already initialized.")
 

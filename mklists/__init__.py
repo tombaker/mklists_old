@@ -7,17 +7,17 @@ TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 VALID_FILENAME_CHARACTERS_REGEX = "[\-_=.@A-Za-z0-9]+$"
-
-# 2018-11-12: Cannot just save string - must do:
-# fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-# See /Users/tbaker/github/tombaker/mklists/mklists/cli_init.py
 CONFIGFILE_NAME = "mklists.yml"  # only in root directory
 CONFIG_STARTER_DICT = {}
+LOCAL_RULEFILE_NAME = ".localrules"
+RULEFILE_NAME = ".rules"
+BACKUP_DIR_NAME = "_backups"
+HTMLFILES_DIR_NAME = "_html"
 
 CONFIGFILE_YAMLSTR = """\
 backups: 3
 html: false
-invalid_filename_patterns: [\.swp$, \.tmp$, ~$]
+invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
 additional_valid_filename_characters: ":äöüßÄŐŰ"
 verbose: false
 global_rules:
@@ -29,19 +29,12 @@ files2dirs:
 - move_to_a.txt: a
 """
 
-LOCAL_RULEFILE_NAME = ".localrules"
-RULEFILE_NAME = ".rules"
-
 RULEFILE_STARTER_YAMLSTR = """\
 - [0, '.',       lines,      todo.txt,   0]
 - [0, '.',       to_a.txt    todo.txt,   1]
 - [1, 'NOW',     todo.txt,    now.txt,   1]
 - [1, 'LATER',   todo.txt,  later.txt,   0]
 """
-
-BACKUP_DIR_NAME = "_backups"
-HTMLFILES_DIR_NAME = "_html"
-
 
 # ConfigError
 class ConfigError(SystemExit):
