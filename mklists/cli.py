@@ -68,9 +68,7 @@ def _read_overrides_from_file(configfile_name):
 def _apply_overrides(settings_dict, overrides):
     """docstring"""
     overrides.pop("ctx", None)
-    overrides = {
-        key: overrides[key] for key in overrides if overrides[key] is not None
-    }
+    overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
     settings_dict.update(overrides)
     return settings_dict
 
@@ -79,14 +77,20 @@ def _apply_overrides(settings_dict, overrides):
 @click.option("--empty", type=bool, is_flag=True, help="With bare minimum")
 @click.option("--newbie", type=bool, is_flag=True, help="With examples")
 @click.pass_context
-def init(ctx):
+def init(ctx, empty, newbie):
     """Write starter configuration and rule files."""
-    try:
-        with open(CONFIGFILE_NAME, "x") as fout:
-            fout.write(CONFIGFILE_YAMLSTR)
-            print(f"Created config file: {repr(CONFIGFILE_NAME)}.")
-    except FileExistsError:
-        raise InitError(f"{repr(CONFIGFILE_NAME)} already initialized.")
+    if empty is not None:
+        print("empty")
+    elif newbie is not None:
+        print("newbie")
+
+
+#    try:
+#        with open(CONFIGFILE_NAME, "x") as fout:
+#            fout.write(CONFIGFILE_YAMLSTR)
+#            print(f"Created config file: {repr(CONFIGFILE_NAME)}.")
+#    except FileExistsError:
+#        raise InitError(f"{repr(CONFIGFILE_NAME)} already initialized.")
 
 
 # def _write_initial_rulefiles():
