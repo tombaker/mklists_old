@@ -16,6 +16,7 @@ from mklists import (
     VALID_FILENAME_CHARACTERS_REGEX,
     BadYamlError,
     DatadirNotAccessibleError,
+    ConfigFileNotFoundError,
 )
 
 

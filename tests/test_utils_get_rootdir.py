@@ -1,29 +1,73 @@
 """@@@Docstring"""
 
 import pytest
-import click
-from click.testing import CliRunner
 import os
 from mklists.utils import get_rootdir
-from mklists import CONFIGFILE_NAME
+from mklists import CONFIGFILE_NAME, LOCAL_RULEFILE_NAME, RULEFILE_NAME
+
+
+def test_get_rootdir_while_in_rootdir(tmpdir):
+    """Find root directory while in root directory."""
+    tmpdir.join(CONFIGFILE_NAME).write("config stuff")
+    os.chdir(tmpdir)
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir())
+
+
+def test_get_rootdir_while_in_subdir_one_deep(tmpdir):
+    """Find root directory while in subdir one deep."""
+    tmpdir.join(CONFIGFILE_NAME).write("config stuff")
+    tmpdira = tmpdir.mkdir("a")
+    tmpdira.join(RULEFILE_NAME).write("some rules")
+    os.chdir(tmpdira)
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir())
+
+
+def test_get_rootdir_while_in_subdir_two_deep(tmpdir):
+    """Find root directory while in subdir two deep."""
+    tmpdir.join(CONFIGFILE_NAME).write("config stuff")
+    tmpdira = tmpdir.mkdir("a")
+    tmpdira.join(RULEFILE_NAME).write("some rules")
+    tmpdirb = tmpdira.mkdir("b")
+    tmpdirb.join(RULEFILE_NAME).write("some more rules")
+    os.chdir(tmpdirb)
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir())
+
+
+def test_get_rootdir_while_in_subdir_three_deep(tmpdir):
+    """Find root directory while in subdir three deep."""
+    tmpdir.join(CONFIGFILE_NAME).write("config stuff")
+    tmpdira = tmpdir.mkdir("a")
+    tmpdira.join(RULEFILE_NAME).write("some rules")
+    tmpdirb = tmpdira.mkdir("b")
+    tmpdirb.join(RULEFILE_NAME).write("some more rules")
+    tmpdirc = tmpdirb.mkdir("c")
+    tmpdirc.join(LOCAL_RULEFILE_NAME).write("still more rules")
+    os.chdir(tmpdirc)
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir())
+
+
+def test_not_get_rootdir_given_missing_link(tmpdir):
+    """Do not find root directory when rulefile chain has missing link."""
+    tmpdir.join(CONFIGFILE_NAME).write("config stuff")
+    tmpdira = tmpdir.mkdir("a")
+    tmpdira.join(RULEFILE_NAME).write("some rules")
+    tmpdirb = tmpdira.mkdir("b")
+    tmpdirb.join("foobar").write("some more rules")
+    tmpdirc = tmpdirb.mkdir("c")
+    tmpdirc.join(LOCAL_RULEFILE_NAME).write("still more rules")
+    os.chdir(tmpdirc)
+    with pytest.raises(SystemExit):
+        get_rootdir()
 
 
 @pytest.mark.skip
-def test_get_rootdir(tmpdir):
-    """Find and set root directory."""
+def test_write_initial_configfile(tmpdir):
+    """Write mklists.yml, then read it back."""
     os.chdir(tmpdir)
     mklistsrc = tmpdir.join(CONFIGFILE_NAME)
-    # _write_initial_configfile(configfile_name=mklistsrc)
-    # updated_context = _apply_overrides_from_file()
-    assert False
-
-
-# /tmp/root/mklists.yml
-# /tmp/root/a/.rules
-# /tmp/root/a/b/.rules
-# /tmp/rootx/a/.rules
-# /tmp/rootx/a/b/stackover.txt
-# /tmp/rootx/a/b/.localrules
-# /tmp/rooty/mklists.yml
-# /tmp/rooty/a/.rules
-# /tmp/rooty/a/b/.localrules
+    _write_initial_configfile(configfile_name=mklistsrc)
+    updated_context = _apply_overrides_from_file()
+    assert (
+        updated_context["valid_filename_characters"]
+        == VALID_FILENAME_CHARACTERS_REGEX
+    )
