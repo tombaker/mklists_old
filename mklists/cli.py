@@ -85,6 +85,7 @@ def init(ctx, empty, newbie):
         print("newbie")
 
 
+# This should work!
 #    try:
 #        with open(CONFIGFILE_NAME, "x") as fout:
 #            fout.write(CONFIGFILE_YAMLSTR)
