@@ -1,12 +1,11 @@
 """Defines Mklists constants and exception classes."""
 
 import datetime
-import os
 
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
-URL_PATTERN_REGEX = """((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-VALID_FILENAME_CHARACTERS_REGEX = "[\-_=.@A-Za-z0-9]+$"
+VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.@A-Za-z0-9]+$"
 CONFIGFILE_NAME = "mklists.yml"  # only in root directory
 CONFIG_STARTER_DICT = {}
 LOCAL_RULEFILE_NAME = ".localrules"
@@ -14,7 +13,7 @@ RULEFILE_NAME = ".rules"
 BACKUP_DIR_NAME = "_backups"
 HTMLFILES_DIR_NAME = "_html"
 
-CONFIGFILE_YAMLSTR = """\
+CONFIGFILE_YAMLSTR = r"""\
 backups: 3
 html: false
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
@@ -35,6 +34,7 @@ RULEFILE_STARTER_YAMLSTR = """\
 - [1, 'NOW',     todo.txt,    now.txt,   1]
 - [1, 'LATER',   todo.txt,  later.txt,   0]
 """
+
 
 # ConfigError
 class ConfigError(SystemExit):
@@ -76,10 +76,6 @@ class NoDataError(DataError):
 
 class NotUTF8Error(DataError):
     """File is not UTF8-encoded."""
-
-
-class NotUTF8Error(DataError):
-    """File is not in UTF-8 format."""
 
 
 # RuleError

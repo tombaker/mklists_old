@@ -8,3 +8,4 @@ repos:
     rev: v1.2.3
     hooks:
     -   id: trailing-whitespace
+    -   id: flake8

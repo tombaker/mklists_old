@@ -1,17 +1,9 @@
 import pytest
 import yaml
-import click
 import os
-from click.testing import CliRunner
 from textwrap import dedent
 from mklists.rules import Rule
-from mklists import (
-    CONFIGFILE_NAME,
-    CONFIG_STARTER_DICT,
-    LOCAL_RULEFILE_NAME,
-    RULEFILE_NAME,
-    RULEFILE_STARTER_YAMLSTR,
-)
+from mklists import CONFIGFILE_NAME, CONFIG_STARTER_DICT, LOCAL_RULEFILE_NAME
 
 TEST_GLOBAL_DIR = "."
 TEST_GLOBAL_RULES_FROM_MKLISTSYML = """\
@@ -20,7 +12,6 @@ TEST_GLOBAL_RULES_FROM_MKLISTSYML = """\
 """
 
 TEST_LOCAL_DIRA = os.path.join(TEST_GLOBAL_DIR, "todo")
-TEST_LOCAL_RULEFILE_NAME = ".rules"
 TEST_LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
 - [0, '.',       lines,      todo.txt,   0]
 - [0, '.',       to_a.txt    todo.txt,   1]
@@ -46,17 +37,15 @@ def fixture_myrepo_configured(tmpdir_factory):
     root_dir = tmpdir_factory.mktemp("myrepo")
     mklistsrc = root_dir.join(CONFIGFILE_NAME)
     with open(mklistsrc, "w") as fout:
-        fout.write(
-            yaml.safe_dump(CONFIG_STARTER_DICT, default_flow_style=False)
-        )
+        fout.write(yaml.safe_dump(CONFIG_STARTER_DICT, default_flow_style=False))
 
     # get global rules from mklists.yml
     subdir_a = root_dir.mkdir("a")
     rules_a = subdir_a.join(LOCAL_RULEFILE_NAME)
-    rules_a.write(LOCAL_RULEFILEA_STARTER_YAMLSTR)
+    rules_a.write(TEST_LOCAL_RULEFILEA_STARTER_YAMLSTR)
     subdir_b = root_dir.mkdir("b")
-    rules_b = subdir_b.join(LOCAL_RULEFILEB_NAME)
-    rules_b.write(LOCAL_RULEFILEB_STARTER_YAMLSTR)
+    rules_b = subdir_b.join(LOCAL_RULEFILE_NAME)
+    rules_b.write(TEST_LOCAL_RULEFILEB_STARTER_YAMLSTR)
     return root_dir
 
 

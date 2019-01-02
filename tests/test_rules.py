@@ -4,7 +4,6 @@ import os
 import pytest
 from mklists.apply import apply_rules_to_datalines, _line_matches
 from mklists.rules import Rule
-from mklists import UninitializedSourceError
 from mklists.utils import write_yamlstr_to_yamlfile, read_yamlfile_to_pyobject
 
 
@@ -223,11 +222,7 @@ def test_apply_rules3():
         Rule(1, "LATER", "a.txt", "later.txt", 0),
     ]
     lines = ["NOW Summer\n", "LATER Winter\n"]
-    mdict = {
-        "now.txt": ["NOW Summer\n"],
-        "later.txt": ["LATER Winter\n"],
-        "a.txt": [],
-    }
+    mdict = {"now.txt": ["NOW Summer\n"], "later.txt": ["LATER Winter\n"], "a.txt": []}
     apply_rules_to_datalines(rules, lines) == mdict
 
 
@@ -261,29 +256,29 @@ def test_apply_rules_sorted():
 @pytest.mark.line_matches
 def test_line_matches():
     given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "NOW Buy milk") == True
+    _line_matches(given_rule, "NOW Buy milk") is True
 
 
 @pytest.mark.line_matches
 def test_line_matches_with_space():
     given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, " NOW Buy milk") == True
+    _line_matches(given_rule, " NOW Buy milk") is True
 
 
 @pytest.mark.line_matches
 def test_line_matches_no_match():
     given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "LATER Buy milk") == False
+    _line_matches(given_rule, "LATER Buy milk") is False
 
 
 @pytest.mark.line_matches
 def test_line_matches_gotcha():
     """True because ' NOW Buy milk'.split() => ['NOW', 'Buy', 'milk']"""
     given_rule = Rule(1, "^NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, " NOW Buy milk") == True
+    _line_matches(given_rule, " NOW Buy milk") is True
 
 
 @pytest.mark.line_matches
 def test_line_matches_entire_line():
     given_rule = Rule(0, "^NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "NOW Buy milk") == True
+    _line_matches(given_rule, "NOW Buy milk") is True

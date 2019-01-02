@@ -60,14 +60,13 @@ def test_not_get_rootdir_given_missing_link(tmpdir):
         get_rootdir()
 
 
-@pytest.mark.skip
-def test_write_initial_configfile(tmpdir):
-    """Write mklists.yml, then read it back."""
-    os.chdir(tmpdir)
-    mklistsrc = tmpdir.join(CONFIGFILE_NAME)
-    _write_initial_configfile(configfile_name=mklistsrc)
-    updated_context = _apply_overrides_from_file()
-    assert (
-        updated_context["valid_filename_characters"]
-        == VALID_FILENAME_CHARACTERS_REGEX
-    )
+# @pytest.mark.skip
+# def test_write_initial_configfile(tmpdir):
+#     """Write mklists.yml, then read it back."""
+#     os.chdir(tmpdir)
+#     mklistsrc = tmpdir.join(CONFIGFILE_NAME)
+#     _write_initial_configfile(configfile_name=mklistsrc)
+#     updated_context = _apply_overrides_from_file()
+#     assert (
+#        updated_context["valid_filename_characters"] == VALID_FILENAME_CHARACTERS_REGEX
+#     )
