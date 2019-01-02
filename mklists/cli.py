@@ -7,9 +7,9 @@ import yaml
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
     get_datalines,
-    move_datafiles_to_backup,
-    move_files_to_given_destinations,
-    write_data_dict_to_diskfiles,
+    move_old_datafiles_to_backup,
+    move_certain_datafiles_to_other_directories,
+    write_data_dict_object_to_diskfiles,
     write_data_dict_urlified_to_diskfiles,
 )
 from mklists import (
@@ -51,13 +51,13 @@ def run(ctx):
     ruleobj_list = get_rules()
     datalines_list = get_datalines()
     data_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
-    move_datafiles_to_backup(backup_depth, verbose)
-    write_data_dict_to_diskfiles(data_dict, verbose)
+    move_old_datafiles_to_backup(backup_depth, verbose)
+    write_data_dict_object_to_diskfiles(data_dict, verbose)
 
     if html:
         write_data_dict_urlified_to_diskfiles(data_dict, verbose)
     if files2dirs:
-        move_files_to_given_destinations(files2dirs)
+        move_certain_datafiles_to_other_directories(files2dirs)
 
 
 def _read_overrides_from_file(configfile_name):
