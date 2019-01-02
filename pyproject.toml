@@ -1,4 +1,0 @@
-# Configuration for Black.
-# Must use single-quoted strings in TOML for regex; equivalent of r-strings in Python.
-
-[tool.black]
