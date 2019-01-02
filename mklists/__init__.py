@@ -5,9 +5,9 @@ import datetime
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.@A-Za-z0-9]+$"
 CONFIGFILE_NAME = "mklists.yml"  # only in root directory
 CONFIG_STARTER_DICT = {}
+VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.@:A-Za-z0-9]+$"
 LOCAL_RULEFILE_NAME = ".localrules"
 RULEFILE_NAME = ".rules"
 BACKUP_DIR_NAME = "_backups"
@@ -17,7 +17,6 @@ CONFIGFILE_YAMLSTR = r"""\
 backups: 3
 html: false
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
-additional_valid_filename_characters: ":äöüßÄŐŰ"
 verbose: false
 global_rules:
 - [0, '.',          all_lines, lines,    0]

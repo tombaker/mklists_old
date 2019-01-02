@@ -6,6 +6,7 @@ Functions with side effects such as:
 * modifying data structures in memory"""
 
 
+import yaml
 from mklists import (
     BadFilenameError,
     BlankLinesError,
@@ -49,7 +50,7 @@ def get_lines_valid_list_file(path_name):
     return True
 
 
-def move_old_datafiles_to_backup(backup_depth=None):
+def move_old_datafiles_to_backupdirs(backup_depth=None):
     """
     If 'backup' is True:
     before writing data_dict contents to disk,
@@ -73,7 +74,7 @@ def move_old_datafiles_to_backup(backup_depth=None):
     Therefore, there should _always_ be at least one backup."""
 
 
-def write_data_dict_object_to_diskfiles(data_dict=None, verbose=False):
+def write_dataobj_to_textfiles(data_dict=None, verbose=False):
     """If 'backup' is ON, move existing files from working to backup directory.
     If 'backup' is OFF, DELETE existing files in working directory.
     Write data_dict to working directory:
@@ -81,7 +82,7 @@ def write_data_dict_object_to_diskfiles(data_dict=None, verbose=False):
     -- data_dict values are contents of files."""
 
 
-def write_data_dict_urlified_to_diskfiles(data_dict={}, verbose=False):
+def write_dataobj_to_htmlfiles(data_dict={}, verbose=False):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()
     abstargetdir = absdirname(targetdirectory)
@@ -101,3 +102,16 @@ def move_certain_datafiles_to_other_directories(files2dirs_dict=None):
     Args:
         files2dirs_dict: filename (key) and destination directory (value)
     """
+
+
+def read_settings_from_configfile(configfile_name):
+    """Invoke find_project_root here??"""
+    return yaml.load(open(configfile_name).read())
+
+
+def update_settings(settings_dict, overrides):
+    """docstring"""
+    overrides.pop("ctx", None)
+    overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
+    settings_dict.update(overrides)
+    return settings_dict

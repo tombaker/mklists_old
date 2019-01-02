@@ -1,16 +1,17 @@
 """CLI - command-line interface module"""
 
 import click
-import yaml
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
+    read_settings_from_configfile,
+    update_settings,
     get_datalines,
-    move_old_datafiles_to_backup,
+    move_old_datafiles_to_backupdirs,
+    write_dataobj_to_textfiles,
+    write_dataobj_to_htmlfiles,
     move_certain_datafiles_to_other_directories,
-    write_data_dict_object_to_diskfiles,
-    write_data_dict_urlified_to_diskfiles,
 )
-from mklists import CONFIG_STARTER_DICT
+from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from mklists.rules import get_rules
 
 
@@ -21,43 +22,34 @@ from mklists.rules import get_rules
 @click.pass_context
 def cli(ctx, verbose):
     """Organize your todo lists by tweaking rules"""
-    overrides_from_cli = locals().copy()
+    snapshot_of_cli_options = locals().copy()
     ctx.obj = CONFIG_STARTER_DICT
     if verbose:
-        print("Reading minimal configuration.")
-    # if ctx.invoked_subcommand != "init":
-    #    overrides_from_file = _read_overrides_from_file(CONFIGFILE_NAME)
-    #    ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
-    ctx.obj = _apply_overrides(ctx.obj, overrides_from_cli)
+        print(f"Reading minimal configuration: {CONFIG_STARTER_DICT}")
+
+    if ctx.invoked_subcommand != "init":
+        config_settings_from_file = read_settings_from_configfile(CONFIGFILE_NAME)
+        ctx.obj = update_settings(ctx.obj, config_settings_from_file)
+
+    ctx.obj = update_settings(ctx.obj, snapshot_of_cli_options)
 
 
 @cli.command()
 @click.pass_context
 def run(ctx):
-    """Apply rules to re-write data files."""
+    """Apply rules to re-write data files.
+    @@@for dir in .rules...
+    """
     ruleobj_list = get_rules()
-    datalines_list = get_datalines()
-    data_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
-    move_old_datafiles_to_backup(ctx)
-    write_data_dict_object_to_diskfiles(data_dict)
+    dataobj_list = get_datalines()
+    dataobj_dict = apply_rules_to_datalines(ruleobj_list, dataobj_list)
+    move_old_datafiles_to_backupdirs(ctx)
+    write_dataobj_to_textfiles(dataobj_dict)
 
     if ctx.obj["html"]:
-        write_data_dict_urlified_to_diskfiles(data_dict)
+        write_dataobj_to_htmlfiles(dataobj_dict)
     if ctx.obj["files2dirs"]:
         move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
-
-
-def _read_overrides_from_file(configfile_name):
-    """docstring"""
-    return yaml.load(open(configfile_name).read())
-
-
-def _apply_overrides(settings_dict, overrides):
-    """docstring"""
-    overrides.pop("ctx", None)
-    overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
-    settings_dict.update(overrides)
-    return settings_dict
 
 
 @cli.command()

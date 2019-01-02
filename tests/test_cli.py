@@ -4,7 +4,7 @@ import os
 import pytest
 import yaml
 from mklists import CONFIG_STARTER_DICT
-from mklists.cli import _read_overrides_from_file, _apply_overrides
+from mklists.cli import read_settings_from_configfile, update_settings
 
 """Things to test:
     Note: other directories in repo root created when functions called:
@@ -30,7 +30,7 @@ from mklists.cli import _read_overrides_from_file, _apply_overrides
 
 
 @pytest.mark.skip
-def test_apply_overrides_from_file_something_changed(singledir_configured):
+def test_update_settings_from_file_something_changed(singledir_configured):
     """Config file consists of just one key/value pair.
     Illustrates that .mklistsrc need not cover all mklists settings.
     Note: singledir_configured directory fixture has file '.mklistsrc2'.
@@ -39,44 +39,44 @@ def test_apply_overrides_from_file_something_changed(singledir_configured):
     to '.mklistsrc2' - a step needs to be added.
     """
     os.chdir(singledir_configured)
-    updated_config_dict = _read_overrides_from_file(".mklistsrc2")
+    updated_config_dict = read_settings_from_configfile(".mklistsrc2")
     print(f"verbose: {updated_config_dict['verbose']}")
     assert updated_config_dict["verbose"] != CONFIG_STARTER_DICT["verbose"]
 
 
 @pytest.mark.cli
-def test_apply_overrides():
+def test_update_settings():
     initial_context = {"ctx": "something", "backups": 1}
     overrides_from_file = {"backups": 500}
-    updated_context = _apply_overrides(initial_context, overrides_from_file)
+    updated_context = update_settings(initial_context, overrides_from_file)
     expected_context = {"ctx": "something", "backups": 500}
     assert updated_context == expected_context
 
 
 @pytest.mark.cli
-def test_apply_overrides2():
+def test_update_settings2():
     updated_context = {"ctx": "something", "backups": 500}
     overrides_from_cli = {"backups": 1000}
-    updated_context2 = _apply_overrides(updated_context, overrides_from_cli)
+    updated_context2 = update_settings(updated_context, overrides_from_cli)
     expected_context = {"ctx": "something", "backups": 1000}
     assert updated_context2 == expected_context
 
 
 @pytest.mark.cli
-def test_read_overrides_from_file(tmpdir):
+def test_read_settings_from_configfile(tmpdir):
     os.chdir(tmpdir)
     settings_dict = {"backups": 6}
     with open(".config", "w") as fout:
         fout.write(yaml.safe_dump(settings_dict, default_flow_style=False))
-    assert _read_overrides_from_file(".config") == settings_dict
+    assert read_settings_from_configfile(".config") == settings_dict
 
 
 @pytest.mark.skip
-def test_apply_overrides_from_file_not_found(tmpdir):
+def test_update_settings_from_file_not_found(tmpdir):
     """Mklists exits if configfile is not found."""
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
-        _apply_overrides_from_file()
+        update_settings()
 
 
 @pytest.mark.skip
@@ -85,4 +85,4 @@ def test_update_config():
     context_given = {"a": "foo", "b": "bar"}
     context_from_file = {"b": "baz"}
     context_expected = {"a": "foo", "b": "baz"}
-    assert _update_config(context_given, context_from_file) == context_expected
+    assert update_settings(context_given, context_from_file) == context_expected
