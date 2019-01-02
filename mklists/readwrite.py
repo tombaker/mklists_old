@@ -115,3 +115,18 @@ def update_settings(settings_dict, overrides):
     overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
     settings_dict.update(overrides)
     return settings_dict
+
+
+# def _write_initial_rulefiles():
+#     """Writes starter files to disk: '.globalrules' and '.rules'."""
+#     for directory_name, file_name, content in [
+#         (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR)
+#     ]:
+#         rulefile = os.path.join(directory_name, file_name)
+#         try:
+#             os.makedirs(directory_name)
+#             with open(rulefile, "x") as fout:
+#                 fout.write(content)
+#             print(f"Created starter rule file: {repr(rulefile)}.")
+#         except FileExistsError:
+#             print(f"Found {repr(rulefile)} - leaving untouched.")

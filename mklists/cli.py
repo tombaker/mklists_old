@@ -26,11 +26,9 @@ def cli(ctx, verbose):
     ctx.obj = CONFIG_STARTER_DICT
     if verbose:
         print(f"Reading minimal configuration: {CONFIG_STARTER_DICT}")
-
     if ctx.invoked_subcommand != "init":
         config_settings_from_file = read_settings_from_configfile(CONFIGFILE_NAME)
         ctx.obj = update_settings(ctx.obj, config_settings_from_file)
-
     ctx.obj = update_settings(ctx.obj, snapshot_of_cli_options)
 
 
@@ -38,14 +36,12 @@ def cli(ctx, verbose):
 @click.pass_context
 def run(ctx):
     """Apply rules to re-write data files.
-    @@@for dir in .rules...
-    """
+    @@@for dir in .rules..."""
     ruleobj_list = get_rules()
     dataobj_list = get_datalines()
     dataobj_dict = apply_rules_to_datalines(ruleobj_list, dataobj_list)
     move_old_datafiles_to_backupdirs(ctx)
     write_dataobj_to_textfiles(dataobj_dict)
-
     if ctx.obj["html"]:
         write_dataobj_to_htmlfiles(dataobj_dict)
     if ctx.obj["files2dirs"]:
@@ -64,30 +60,8 @@ def init(ctx, empty, newbie):
         print("empty")
     elif newbie is not None:
         print("newbie")
-
-
-# This should work!
-#    try:
-#        with open(CONFIGFILE_NAME, "x") as fout:
-#            fout.write(CONFIGFILE_YAMLSTR)
-#            print(f"Created config file: {repr(CONFIGFILE_NAME)}.")
-#    except FileExistsError:
-#        raise InitError(f"{repr(CONFIGFILE_NAME)} already initialized.")
-
-
-# def _write_initial_rulefiles():
-#     """Writes starter files to disk: '.globalrules' and '.rules'."""
-#     for directory_name, file_name, content in [
-#         (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR)
-#     ]:
-#         rulefile = os.path.join(directory_name, file_name)
-#         try:
-#             os.makedirs(directory_name)
-#             with open(rulefile, "x") as fout:
-#                 fout.write(content)
-#             print(f"Created starter rule file: {repr(rulefile)}.")
-#         except FileExistsError:
-#             print(f"Found {repr(rulefile)} - leaving untouched.")
+        print("call write_initial_configfile() - in readwrite.py")
+        print("call write_initial_rulefiles() - in readwrite.py")
 
 
 @cli.command()
