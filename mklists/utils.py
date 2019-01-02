@@ -5,36 +5,29 @@ import os
 import re
 import glob
 import yaml
-import datetime
 from mklists import (
     CONFIGFILE_NAME,
-    INVALID_FILENAME_PATTERNS,
     LOCAL_RULEFILE_NAME,
     RULEFILE_NAME,
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
     VALID_FILENAME_CHARACTERS_REGEX,
     BadYamlError,
-    DatadirNotAccessibleError,
     ConfigFileNotFoundError,
 )
 
 
 def get_timestamped_dirname_for_cwd():
+    """@@@Docstring"""
     timestamp = TIMESTAMP_STR
     cwd_name = os.path.split(os.getcwd())[1]
     return "_".join([cwd_name, timestamp])
 
 
-def keep_latest_x_list_values(some_list):
-    """Maybe split into two functions:
-    * Read dict, get key/values for 'mklists_2018...'
-    * Keep just the last x number
-
-    @@@Unfinished"""
-    y = defaultdict(list)
-    for item in some_list:
-        y[item.split("_")[0]].append(item)
+# Structure will be:
+# _backups/a/2018-12-31
+# _backups/a/2019-01-01
+# _backups/b/...
 
 
 def read_yamlfile_to_pyobject(yamlfile_name):
@@ -84,7 +77,7 @@ def ls_visible(cwd=os.getcwd()):
     return [name for name in glob.glob("*")]
 
 
-def get_rootdir():
+def find_project_root():
     """Return repo root path when executed at root or in a data directory."""
 
     while True:
@@ -98,7 +91,6 @@ def get_rootdir():
             break
 
     if CONFIGFILE_NAME in os.listdir():
-        print(f"{CONFIGFILE_NAME} found in {os.getcwd()}.")
         return os.getcwd()
     else:
         raise ConfigFileNotFoundError(

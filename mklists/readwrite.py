@@ -6,18 +6,14 @@ Functions with side effects such as:
 * modifying data structures in memory"""
 
 
-import os
-import yaml
 from mklists import (
     BadFilenameError,
-    BadYamlError,
     BlankLinesError,
     DatadirHasNonFilesError,
-    InitError,
     NoDataError,
     NotUTF8Error,
 )
-from mklists.utils import read_yamlfile_to_pyobject, is_file, has_valid_name
+from mklists.utils import is_file, has_valid_name, ls_visible
 
 
 def get_datalines():
@@ -55,7 +51,7 @@ def get_lines_valid_list_file(path_name):
 
 def move_old_datafiles_to_backup(backup_depth=None):
     """
-    If 'backup' is ON:
+    If 'backup' is True:
     before writing data_dict contents to disk,
     creates timestamped backup directory in specified backup_dir,
     and moves all visible files in data directory to backup directory.

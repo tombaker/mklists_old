@@ -4,6 +4,7 @@ import re
 from dataclasses import dataclass
 from mklists.utils import has_valid_name, read_yamlfile_to_pyobject
 from mklists import (
+    CONFIGFILE_NAME,
     NotIntegerError,
     BadFilenameError,
     SourceEqualsTargetError,
@@ -106,7 +107,7 @@ def find_rulefiles():
        * look under all subdirectories for .rules files"""
 
 
-def get_rules(valid_filename_chars, invalid_filename_patterns):
+def get_rules():
     """Find and load YAML rulefiles, returning Python list of rule objects."""
 
     # aggregated_rules_list = []
@@ -127,9 +128,10 @@ def get_rules(valid_filename_chars, invalid_filename_patterns):
 
 
 def get_rules2():
+    """@@@Docstring"""
     rules_list = []
     try:
-        rules_to_add = read_yamlfile_to_pyobject()
+        rules_to_add = read_yamlfile_to_pyobject(CONFIGFILE_NAME)
         rules_list.append(rules_to_add)
     except FileNotFoundError:
         print("File was not found")

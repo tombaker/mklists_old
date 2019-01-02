@@ -1,8 +1,6 @@
 """CLI - command-line interface module"""
 
-import glob
 import click
-import os
 import yaml
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
@@ -12,26 +10,21 @@ from mklists.readwrite import (
     write_data_dict_object_to_diskfiles,
     write_data_dict_urlified_to_diskfiles,
 )
-from mklists import (
-    LOCAL_RULEFILE_NAME,
-    RULEFILE_NAME,
-    RULEFILE_STARTER_YAMLSTR,
-    CONFIGFILE_NAME,
-    CONFIG_STARTER_DICT,
-)
+from mklists import CONFIG_STARTER_DICT
 from mklists.rules import get_rules
 
 
 @click.group()
-@click.option("--html", type=bool, is_flag=True, help="Make urlified copies")
 @click.option("--verbose", type=bool, is_flag=True, help="Print debug info")
 @click.version_option("0.1.5", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def cli(ctx, html, verbose):
+def cli(ctx, verbose):
     """Organize your todo lists by tweaking rules"""
     overrides_from_cli = locals().copy()
     ctx.obj = CONFIG_STARTER_DICT
+    if verbose:
+        print("Reading minimal configuration.")
     # if ctx.invoked_subcommand != "init":
     #    overrides_from_file = _read_overrides_from_file(CONFIGFILE_NAME)
     #    ctx.obj = _apply_overrides(ctx.obj, overrides_from_file)
@@ -42,22 +35,16 @@ def cli(ctx, html, verbose):
 @click.pass_context
 def run(ctx):
     """Apply rules to re-write data files."""
-    good_chars = ctx.obj["valid_filename_chars"]
-    bad_pats = ctx.obj["invalid_filename_patterns"]
-    verbose = ctx.obj["verbose"]
-    html = ctx.obj["html"]
-    backup_depth = ctx.obj["backup_depth"] if ctx.obj["backup_depth"] else 0
-    files2dirs = ctx.obj["files2dirs"] if ctx.obj["files2dirs"] else None
     ruleobj_list = get_rules()
     datalines_list = get_datalines()
     data_dict = apply_rules_to_datalines(ruleobj_list, datalines_list)
-    move_old_datafiles_to_backup(backup_depth, verbose)
-    write_data_dict_object_to_diskfiles(data_dict, verbose)
+    move_old_datafiles_to_backup(ctx)
+    write_data_dict_object_to_diskfiles(data_dict)
 
-    if html:
-        write_data_dict_urlified_to_diskfiles(data_dict, verbose)
-    if files2dirs:
-        move_certain_datafiles_to_other_directories(files2dirs)
+    if ctx.obj["html"]:
+        write_data_dict_urlified_to_diskfiles(data_dict)
+    if ctx.obj["files2dirs"]:
+        move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
 
 
 def _read_overrides_from_file(configfile_name):
@@ -79,6 +66,8 @@ def _apply_overrides(settings_dict, overrides):
 @click.pass_context
 def init(ctx, empty, newbie):
     """Write starter configuration and rule files."""
+    if ctx:
+        print(repr(ctx))
     if empty is not None:
         print("empty")
     elif newbie is not None:
@@ -113,6 +102,7 @@ def init(ctx, empty, newbie):
 @click.pass_context
 def testme(ctx):
     """Subcommand for various tests."""
-    from mklists.utils import get_rootdir
+    from mklists.utils import find_project_root
 
-    get_rootdir()
+    print(ctx.params)
+    find_project_root()
