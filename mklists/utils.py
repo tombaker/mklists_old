@@ -17,18 +17,44 @@ from mklists import (
 )
 
 
+def find_project_root(path="."):
+    """Return project root path when executed in root or data directory."""
+    os.chdir(path)
+    while True:
+        ls_cwd = os.listdir()
+        if RULEFILE_NAME in ls_cwd:
+            os.chdir(os.pardir)
+            continue
+        elif LOCAL_RULEFILE_NAME in ls_cwd:
+            os.chdir(os.pardir)
+        else:
+            break
+
+    if CONFIGFILE_NAME in os.listdir():
+        return os.getcwd()
+    else:
+        raise ConfigFileNotFoundError(
+            f"{CONFIGFILE_NAME} not found. Was project initialized?"
+        )
+
+
+def generate_timestamped_backupdir_name(now=TIMESTAMP_STR, here=os.getcwd()):
+    """@@@Docstring"""
+    return os.path.join(here, now)
+
+
+def linkify(string):
+    """Return string with URLs wrapped in A_HREF tags."""
+    if "<a href=" in string:
+        return string
+    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
+
+
 def update_settings_dict(settings_dict=None, overrides=None):
     """Inject dictionary B into A, ignoring keys in B with value None."""
     overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
     settings_dict.update(overrides)
     return settings_dict
-
-
-def generate_timestamped_backupdir_name_from_current_directory_name():
-    """@@@Docstring"""
-    currentdir_name = os.path.basename(os.getcwd())
-    timestamp = TIMESTAMP_STR
-    return os.path.join(currentdir_name, timestamp)
 
 
 # Structure will be:
@@ -71,36 +97,7 @@ def has_valid_name(file_name):
     return True
 
 
-def linkify(string):
-    """Return string with URLs wrapped in A_HREF tags."""
-    if "<a href=" in string:
-        return string
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
-
-
 def ls_visible_files(cwd=os.getcwd()):
     """Return list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
     return [name for name in glob.glob("*") if os.path.isfile(name)]
-
-
-def find_project_root(path="."):
-    """Return project root path when executed in root or data directory."""
-
-    os.chdir(path)
-    while True:
-        ls_cwd = os.listdir()
-        if RULEFILE_NAME in ls_cwd:
-            os.chdir(os.pardir)
-            continue
-        elif LOCAL_RULEFILE_NAME in ls_cwd:
-            os.chdir(os.pardir)
-        else:
-            break
-
-    if CONFIGFILE_NAME in os.listdir():
-        return os.getcwd()
-    else:
-        raise ConfigFileNotFoundError(
-            f"{CONFIGFILE_NAME} not found. This is not a repo."
-        )
