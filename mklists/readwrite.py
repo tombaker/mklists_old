@@ -19,7 +19,7 @@ from mklists.utils import (
     is_file,
     has_valid_name,
     ls_visible_files,
-    read_yamlfile_to_pyobject,
+    read_yaml_configfile_to_pyobject,
 )
 
 
@@ -130,7 +130,7 @@ def get_rules():
     # aggregated_rules_list = []
     # for rulefile_name in RULEFILE_NAME, LOCAL_RULEFILE_NAME:
     #     if rulefile_name:
-    #         rules_list = read_yamlfile_to_pyobject(rulefile_name)
+    #         rules_list = read_yaml_configfile_to_pyobject(rulefile_name)
     #         aggregated_rules_list = aggregated_rules_list + rules_list
 
     ruleobj_list = []
@@ -148,7 +148,7 @@ def get_rules2():
     """@@@Docstring"""
     rules_list = []
     try:
-        rules_to_add = read_yamlfile_to_pyobject(CONFIGFILE_NAME)
+        rules_to_add = read_yaml_configfile_to_pyobject(CONFIGFILE_NAME)
         rules_list.append(rules_to_add)
     except FileNotFoundError:
         print("File was not found")

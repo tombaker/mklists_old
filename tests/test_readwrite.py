@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from mklists.utils import write_yamlstr_to_yamlfile, read_yamlfile_to_pyobject
+from mklists.utils import write_yamlstr_to_yamlfile, read_yaml_configfile_to_pyobject
 
 
 """Try:
@@ -32,7 +32,7 @@ def test_read_good_yamlfile(tmpdir):
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
     write_yamlstr_to_yamlfile("_lrules", lrules_yamlstr)
-    pyobject = read_yamlfile_to_pyobject("_lrules")
+    pyobject = read_yaml_configfile_to_pyobject("_lrules")
     good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
     assert pyobject == good_pyobject
 
@@ -46,4 +46,4 @@ def test_read_bad_yamlfile(tmpdir):
     + [1, 'LATER', a, c, 0]"""
     write_yamlstr_to_yamlfile("_lrules_bad", bad_yamlstr)
     with pytest.raises(SystemExit):
-        read_yamlfile_to_pyobject("_lrules_bad")
+        read_yaml_configfile_to_pyobject("_lrules_bad")

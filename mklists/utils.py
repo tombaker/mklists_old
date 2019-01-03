@@ -50,6 +50,16 @@ def linkify(string):
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
+def read_yaml_configfile_to_pyobject(yamlfile_name):
+    """Returns Python object parsed from given YAML-format file."""
+    try:
+        return yaml.safe_load(open(yamlfile_name))
+    except yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
+
+
 def update_settings_dict(settings_dict=None, overrides=None):
     """Inject dictionary B into A, ignoring keys in B with value None."""
     overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
@@ -61,14 +71,6 @@ def update_settings_dict(settings_dict=None, overrides=None):
 # _backups/a/2018-12-31
 # _backups/a/2019-01-01
 # _backups/b/...
-
-
-def read_yamlfile_to_pyobject(yamlfile_name):
-    """Returns Python object parsed from given YAML-format file."""
-    try:
-        return yaml.safe_load(open(yamlfile_name))
-    except yaml.YAMLError:
-        raise BadYamlError(f"Bad YAML in {repr(yamlfile_name)}.")
 
 
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
