@@ -19,7 +19,6 @@ from mklists.utils import (
     is_file,
     has_valid_name,
     ls_visible_files,
-    find_project_root,
     read_yamlfile_to_pyobject,
 )
 
@@ -116,7 +115,7 @@ def read_settings_from_configfile(configfile_name):
     return yaml.load(open(configfile_name).read())
 
 
-def find_rulefiles(rootdir=find_project_root()):
+def find_rulefiles(rootdir=None):
     """Find all .rules and .localrules files under project root directory."""
     listfile_directories = []
     for (dirpath, dirs, files) in os.walk(rootdir):
