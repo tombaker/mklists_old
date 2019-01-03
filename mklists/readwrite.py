@@ -11,12 +11,10 @@ from mklists import (
     CONFIGFILE_NAME,
     BadFilenameError,
     BlankLinesError,
-    DatadirHasNonFilesError,
     NoDataError,
     NotUTF8Error,
 )
 from mklists.utils import (
-    is_file,
     has_valid_name,
     ls_visible_files,
     read_yaml_configfile_to_pyobject,
@@ -30,9 +28,6 @@ def get_datalines():
     for path_name in ls_visible_files():
         if not has_valid_name(path_name):
             raise BadFilenameError
-        if not is_file(path_name):
-            print("Mklists data directories must contain files only.")
-            raise DatadirHasNonFilesError(f"{repr(path_name)} is not a file.")
         try:
             file_lines = open(path_name).readlines()
         except UnicodeDecodeError:

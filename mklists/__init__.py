@@ -65,10 +65,6 @@ class BlankLinesError(DataError):
     """File contains blank lines."""
 
 
-class DatadirHasNonFilesError(DataError):
-    """Data directory has visible non-file objects (eg, links, directories."""
-
-
 class NoDataError(DataError):
     """There is no data to process."""
 
