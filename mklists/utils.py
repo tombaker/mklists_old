@@ -8,10 +8,12 @@ import yaml
 from mklists import (
     CONFIGFILE_NAME,
     LOCAL_RULEFILE_NAME,
+    INVALID_FILENAME_PATTERNS,
     RULEFILE_NAME,
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
     VALID_FILENAME_CHARACTERS_REGEX,
+    BadFilenameError,
     BadYamlError,
     ConfigFileNotFoundError,
 )
@@ -41,6 +43,21 @@ def find_project_root(path="."):
 def generate_timestamped_backupdir_name(now=TIMESTAMP_STR, here=os.getcwd()):
     """@@@Docstring"""
     return os.path.join(here, now)
+
+
+def has_valid_name(file_name, badpats=INVALID_FILENAME_PATTERNS):
+    """Return True if file_name has no invalid characters or string patterns."""
+    for badpat in INVALID_FILENAME_PATTERNS:
+        if re.search(badpat, file_name):
+            raise BadFilenameError(f"{repr(file_name)} has bad pattern {repr(badpat)}.")
+            return False
+    for char in file_name:
+        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
+            raise BadFilenameError(
+                f"{repr(file_name)} has invalid character {repr(char)}."
+            )
+            return False
+    return True
 
 
 def linkify(string):
@@ -83,19 +100,6 @@ def is_file(object_path):
     """Return True if object is a file."""
     if not os.path.isfile(object_path):
         return False
-    return True
-
-
-def has_valid_name(file_name):
-    """Return True if filename has no invalid characters or string patterns."""
-    # for bad_pat in INVALID_FILENAME_PATTERNS:
-    #    if re.search(bad_pat, file_name):
-    #        print(f"{repr(file_name)} matches bad pattern {repr(bad_pat)}.")
-    #        return False
-    for char in file_name:
-        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
-            print(f"{repr(file_name)} has invalid character {repr(char)}.")
-            return False
     return True
 
 
