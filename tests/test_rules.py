@@ -2,7 +2,6 @@
 
 import os
 import pytest
-from mklists.apply import apply_rules_to_datalines, _line_matches
 from mklists.rules import Rule
 from mklists.utils import write_yamlstr_to_yamlfile, read_yamlfile_to_pyobject
 
@@ -49,20 +48,6 @@ def test_read_bad_yamlfile(tmpdir):
     write_yamlstr_to_yamlfile("_lrules_bad", bad_yamlstr)
     with pytest.raises(SystemExit):
         read_yamlfile_to_pyobject("_lrules_bad")
-
-
-@pytest.mark.rule
-def test_no_rules_specified():
-    """Not passing rules to apply_rules_to_datalines raises SystemExit."""
-    with pytest.raises(SystemExit):
-        apply_rules_to_datalines(datalines_list=[["a line\n"]])
-
-
-@pytest.mark.rule
-def test_no_data_specified():
-    """Not passing data to apply_rules_to_datalines raises SystemExit."""
-    with pytest.raises(SystemExit):
-        apply_rules_to_datalines(ruleobjs_list=[[Rule(1, "a", "b", "c", 2)]])
 
 
 @pytest.mark.rule
@@ -196,89 +181,3 @@ def test_source_equals_target_oops():
     x = Rule("1", "NOW", "a.txt", "a.txt", "0")
     with pytest.raises(SystemExit):
         x._source_is_not_equal_target()
-
-
-@pytest.mark.apply_rules
-def test_apply_rules():
-    """apply_rules_to_datalines works as it should."""
-    rules = [Rule(0, "i", "a.txt", "b.txt", 0)]
-    lines = ["two ticks\n", "an ant\n", "the mite\n"]
-    mdict = {"a.txt": ["an ant\n"], "b.txt": ["two ticks\n", "the mite\n"]}
-    apply_rules_to_datalines(rules, lines) == mdict
-
-
-@pytest.mark.apply_rules
-def test_apply_rules2():
-    rules = [Rule(2, "i", "a.txt", "b.txt", 1)]
-    lines = ["two ticks\n", "an ant\n", "the mite\n"]
-    mdict = {"a.txt": ["an ant\n"], "b.txt": ["the mite\n", "two ticks\n"]}
-    apply_rules_to_datalines(rules, lines) == mdict
-
-
-@pytest.mark.apply_rules
-def test_apply_rules3():
-    rules = [
-        Rule(1, "NOW", "a.txt", "now.txt", 0),
-        Rule(1, "LATER", "a.txt", "later.txt", 0),
-    ]
-    lines = ["NOW Summer\n", "LATER Winter\n"]
-    mdict = {"now.txt": ["NOW Summer\n"], "later.txt": ["LATER Winter\n"], "a.txt": []}
-    apply_rules_to_datalines(rules, lines) == mdict
-
-
-@pytest.mark.apply_rules
-def test_apply_rules_no_data():
-    rules = [
-        Rule(1, "NOW", "a.txt", "now.txt", 0),
-        Rule(1, "LATER", "a.txt", "later.txt", 0),
-    ]
-    lines = []
-    with pytest.raises(SystemExit):
-        apply_rules_to_datalines(rules, lines)
-
-
-@pytest.mark.apply_rules
-def test_apply_rules_no_rules():
-    rules = []
-    lines = ["NOW Summer\n", "LATER Winter\n"]
-    with pytest.raises(SystemExit):
-        apply_rules_to_datalines(rules, lines)
-
-
-@pytest.mark.apply_rules
-def test_apply_rules_sorted():
-    rules = [Rule(1, ".", "a.txt", "now.txt", 1)]
-    lines = ["LATER Winter\n", "NOW Summer\n"]
-    mdict = {"now.txt": ["NOW Summer\n", "LATER Winter\n"], "a.txt": []}
-    apply_rules_to_datalines(rules, lines) == mdict
-
-
-@pytest.mark.line_matches
-def test_line_matches():
-    given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "NOW Buy milk") is True
-
-
-@pytest.mark.line_matches
-def test_line_matches_with_space():
-    given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, " NOW Buy milk") is True
-
-
-@pytest.mark.line_matches
-def test_line_matches_no_match():
-    given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "LATER Buy milk") is False
-
-
-@pytest.mark.line_matches
-def test_line_matches_gotcha():
-    """True because ' NOW Buy milk'.split() => ['NOW', 'Buy', 'milk']"""
-    given_rule = Rule(1, "^NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, " NOW Buy milk") is True
-
-
-@pytest.mark.line_matches
-def test_line_matches_entire_line():
-    given_rule = Rule(0, "^NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "NOW Buy milk") is True
