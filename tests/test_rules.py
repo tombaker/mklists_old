@@ -1,84 +1,97 @@
 """Some rule module tests use temporary directory fixture."""
 
-import os
 import pytest
 from mklists.rules import Rule
-from mklists.utils import write_yamlstr_to_yamlfile, read_yamlfile_to_pyobject
 
 
-"""Try:
-    yaml_string =
-    - [0   , 'NOW'    , lines        , __RENAME__   , 0]
-    - [0   , 'LATER'  , __RENAME__   , calendar     , 1, 5]
-"""
-
-
-@pytest.mark.yaml
-def test_write_yamlstr(tmpdir):
-    """Writes string to YAML rulefile, reads it back to string."""
-    os.chdir(tmpdir)
-    lrules_yamlstr = """
-    - [1, 'NOW', a, b, 0]
-    - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile("_lrules", lrules_yamlstr)
-    some_yamlstr = open("_lrules").read()
-    assert lrules_yamlstr == some_yamlstr
-
-
-@pytest.mark.yaml
-def test_read_good_yamlfile(tmpdir):
-    """Writes string to YAML rulefile, reads back to list of lists."""
-    os.chdir(tmpdir)
-    lrules_yamlstr = """
-    - [1, 'NOW', a, b, 0]
-    - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile("_lrules", lrules_yamlstr)
-    pyobject = read_yamlfile_to_pyobject("_lrules")
-    good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
-    assert pyobject == good_pyobject
-
-
-@pytest.mark.yaml
-def test_read_bad_yamlfile(tmpdir):
-    """Trying to write bad string to YAML rulefile raises SystemExit."""
-    os.chdir(tmpdir)
-    bad_yamlstr = """
-    - [1, 'NOW', a, b, 0]
-    + [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile("_lrules_bad", bad_yamlstr)
-    with pytest.raises(SystemExit):
-        read_yamlfile_to_pyobject("_lrules_bad")
-
-
-@pytest.mark.rule
 def test_rule_is_valid(reinitialize_ruleclass_variables):
     """A well-formed rule object is valid."""
     x = Rule(1, "NOW", "a.txt", "b.txt", 2)
     assert x.is_valid()
 
 
-@pytest.mark.rule
-def test_rule_is_valid_with_integer_strings(reinitialize_ruleclass_variables):
-    """Rule object is valid even if initialized with string integers."""
-    x = Rule("1", "NOW", "a.txt", "b.txt", "2")
-    assert x.is_valid()
-
-
-@pytest.mark.rule
-def test_rule_is_valid_with_integer_string2(reinitialize_ruleclass_variables):
-    x = Rule("1", "N(OW", "a", "b", 2)
-    assert x._number_fields_are_integers() == 1
-
-
-@pytest.mark.rule
-def test_number_fields_are_integers(reinitialize_ruleclass_variables):
+def test_rule_is_valid_number_fields_are_integers(reinitialize_ruleclass_variables):
     """First and last fields of rule object are integers."""
     x = Rule("1", "NOW", "a.txt", "b.txt", "0")
     assert x.is_valid()
 
 
-@pytest.mark.rule
-def test_source_not_initialized_as_source(reinitialize_ruleclass_variables):
+def test_rule_is_valid_number_fields_are_integers_too(reinitialize_ruleclass_variables):
+    """Rule object is valid even if initialized with string integers."""
+    x = Rule("1", "NOW", "a.txt", "b.txt", "2")
+    assert x.is_valid()
+
+
+def test_rule_number_fields_are_integers(reinitialize_ruleclass_variables):
+    x = Rule("1", "N(OW", "a", "b", 2)
+    assert x._number_fields_are_integers() == 1
+
+
+def test_rule_source_matchpattern_is_valid():
+    """Regex in rule object is valid."""
+    x = Rule("1", "NOW", "a.txt", "a.txt", "0")
+    assert x._source_matchpattern_is_valid
+
+
+def test_rule_source_matchpattern_is_not_valid():
+    """Regex in rule object is bad, raises SystemExit."""
+    x = Rule("1", "N(OW", "a.txt", "a.txt", "0")
+    with pytest.raises(SystemExit):
+        x._source_matchpattern_is_valid()
+
+
+def test_rule_source_matchpattern_is_not_valid_too(reinitialize_ruleclass_variables):
+    """Rule object fails self-validation because regex is bad."""
+    x = Rule(1, "N(OW", "a", "b", 2)
+    with pytest.raises(SystemExit):
+        x.is_valid()
+
+
+def test_rule_field_source_matchpattern_regex_has_space():
+    """Second field of Rule object, a regex, has an allowable space."""
+    x = Rule(1, "^X 19", "a", "b", 2)
+    assert x.source_matchpattern == "^X 19"
+
+
+def test_rule_filenames_are_valid_source_filename_valid():
+    """Third field of Rule object ('source') is valid as a filename."""
+    x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
+    assert x._filenames_are_valid()
+
+
+def test_rule_filenames_are_valid_target_filename_valid():
+    """Fourth field of Rule object ('target') is valid as a filename."""
+    x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
+    assert x._filenames_are_valid()
+
+
+def test_rule_filenames_are_valid_target_filename_not_valid():
+    """Fourth field of Rule object ('target') not valid, raises SystemExit."""
+    x = Rule(1, "^X 19", "a.txt", "b^.txt", 2)
+    with pytest.raises(SystemExit):
+        x._filenames_are_valid()
+
+
+def test_rule_field_source():
+    """Third field of Rule object is 'source'."""
+    x = Rule(1, ".", "a", "b", 2)
+    assert x.source == "a"
+
+
+def test_rule_source_is_not_equal_target():
+    """Source and target fields of rule object are not equivalent."""
+    x = Rule("1", "NOW", "a.txt", "b.txt", "0")
+    assert x._source_is_not_equal_target
+
+
+def test_rule_source_is_not_equal_target_oops():
+    """Source and target fields of rule object are same, raises SystemExit."""
+    x = Rule("1", "NOW", "a.txt", "a.txt", "0")
+    with pytest.raises(SystemExit):
+        x._source_is_not_equal_target()
+
+
+def test_rule_source_not_initialized(reinitialize_ruleclass_variables):
     """Rule object was initialized with 'source' of first rule."""
     x = Rule(1, "NOW", "a.txt", "b.txt", 0)
     x.is_valid()
@@ -86,8 +99,7 @@ def test_source_not_initialized_as_source(reinitialize_ruleclass_variables):
     assert y.is_valid()
 
 
-@pytest.mark.rule
-def test_sources_list(reinitialize_ruleclass_variables):
+def test_rule_source_not_initialized_too(reinitialize_ruleclass_variables):
     """Rule object correctly initialized sources from multiple rules."""
     x = Rule(1, "NOW", "a.txt", "b.txt", 0)
     x.is_valid()
@@ -97,8 +109,7 @@ def test_sources_list(reinitialize_ruleclass_variables):
     assert Rule.sources_list == sources
 
 
-@pytest.mark.rule
-def test_source_is_not_precedented(reinitialize_ruleclass_variables):
+def test_rule_source_not_initialized_unprecedented(reinitialize_ruleclass_variables):
     """Rule class keeps track of instances registered, so
     second rule instance 'y' should raise exception because
     'c.txt' will not have been registered as a source."""
@@ -107,77 +118,3 @@ def test_source_is_not_precedented(reinitialize_ruleclass_variables):
     y = Rule("1", "LATER", "c.txt", "d.txt", "0")
     with pytest.raises(SystemExit):
         y.is_valid()
-
-
-@pytest.mark.rule
-def test_rule():
-    """Third field of Rule object is 'source'."""
-    x = Rule(1, ".", "a", "b", 2)
-    assert x.source == "a"
-
-
-@pytest.mark.rule
-def test_rulestring_regex_has_space():
-    """Second field of Rule object, a regex, has an allowable space."""
-    x = Rule(1, "^X 19", "a", "b", 2)
-    assert x.source_matchpattern == "^X 19"
-
-
-@pytest.mark.rule
-def test_rule_is_not_valid(reinitialize_ruleclass_variables):
-    """Rule object fails self-validation because regex is bad."""
-    x = Rule(1, "N(OW", "a", "b", 2)
-    with pytest.raises(SystemExit):
-        x.is_valid()
-
-
-@pytest.mark.rule
-def test_source_matchpattern_is_not_valid():
-    """Regex in rule object is bad, raises SystemExit."""
-    x = Rule("1", "N(OW", "a.txt", "a.txt", "0")
-    with pytest.raises(SystemExit):
-        x._source_matchpattern_is_valid()
-
-
-@pytest.mark.rule
-def test_source_matchpattern_is_valid():
-    """Regex in rule object is valid."""
-    x = Rule("1", "NOW", "a.txt", "a.txt", "0")
-    assert x._source_matchpattern_is_valid
-
-
-@pytest.mark.rule
-def test_source_filename_valid():
-    """Third field of Rule object ('source') is valid as a filename."""
-    x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
-    assert x._filenames_are_valid()
-
-
-@pytest.mark.rule
-def test_target_filename_valid():
-    """Fourth field of Rule object ('target') is valid as a filename."""
-    x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
-    assert x._filenames_are_valid()
-
-
-@pytest.mark.rule
-def test_target_filename_not_valid():
-    """Fourth field of Rule object ('target') not valid, raises SystemExit."""
-    x = Rule(1, "^X 19", "a.txt", "b^.txt", 2)
-    with pytest.raises(SystemExit):
-        x._filenames_are_valid()
-
-
-@pytest.mark.rule
-def test_source_ne_target():
-    """Source and target fields of rule object are not equivalent."""
-    x = Rule("1", "NOW", "a.txt", "b.txt", "0")
-    assert x._source_is_not_equal_target
-
-
-@pytest.mark.rule
-def test_source_equals_target_oops():
-    """Source and target fields of rule object are same, raises SystemExit."""
-    x = Rule("1", "NOW", "a.txt", "a.txt", "0")
-    with pytest.raises(SystemExit):
-        x._source_is_not_equal_target()
