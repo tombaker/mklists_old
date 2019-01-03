@@ -1,7 +1,7 @@
-import pytest
-import yaml
 import os
 from textwrap import dedent
+import pytest
+import yaml
 from mklists.rules import Rule
 from mklists import CONFIGFILE_NAME, CONFIG_STARTER_DICT, LOCAL_RULEFILE_NAME
 

@@ -1,7 +1,7 @@
 """@@@Docstring"""
 
-import pytest
 import os
+import pytest
 from mklists.utils import find_project_root
 from mklists import CONFIGFILE_NAME, LOCAL_RULEFILE_NAME, RULEFILE_NAME
 

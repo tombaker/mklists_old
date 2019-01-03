@@ -5,23 +5,30 @@ Functions with side effects such as:
 * writing to files on disk
 * modifying data structures in memory"""
 
-
+import os
 import yaml
 from mklists import (
+    CONFIGFILE_NAME,
     BadFilenameError,
     BlankLinesError,
     DatadirHasNonFilesError,
     NoDataError,
     NotUTF8Error,
 )
-from mklists.utils import is_file, has_valid_name, ls_visible
+from mklists.utils import (
+    is_file,
+    has_valid_name,
+    ls_visible_files,
+    find_project_root,
+    read_yamlfile_to_pyobject,
+)
 
 
 def get_datalines():
     """Returns lines from files with valid names, UTF8, with no blank lines."""
 
     all_lines = []
-    for path_name in ls_visible():
+    for path_name in ls_visible_files():
         if not has_valid_name(path_name):
             raise BadFilenameError
         if not is_file(path_name):
@@ -64,7 +71,7 @@ def move_old_datafiles_to_backupdirs(backup_depth=None):
         lsd_visible = [item for item in glob.glob('*')
                        if os.path.isdir(item)]
         while len(lsd_visible) > backups:
-            file_to_be_deleted = ls_visible.pop()
+            file_to_be_deleted = ls_visible_files.pop()
             rm file_to_be_deleted
     for file in filelist:
         shutil.move(file, backup_dir)
@@ -109,24 +116,43 @@ def read_settings_from_configfile(configfile_name):
     return yaml.load(open(configfile_name).read())
 
 
-def update_settings(settings_dict, overrides):
-    """docstring"""
-    overrides.pop("ctx", None)
-    overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
-    settings_dict.update(overrides)
-    return settings_dict
+def find_rulefiles(rootdir=find_project_root()):
+    """Find all .rules and .localrules files under project root directory."""
+    listfile_directories = []
+    for (dirpath, dirs, files) in os.walk(rootdir):
+        if (".rules" in files) or (".localrules" in files):
+            listfile_directories.append(os.path.join(dirpath))
+    return listfile_directories
 
 
-# def _write_initial_rulefiles():
-#     """Writes starter files to disk: '.globalrules' and '.rules'."""
-#     for directory_name, file_name, content in [
-#         (LOCAL_DIR, LOCAL_RULEFILE_NAME, LOCAL_RULEFILE_STARTER_YAMLSTR)
-#     ]:
-#         rulefile = os.path.join(directory_name, file_name)
-#         try:
-#             os.makedirs(directory_name)
-#             with open(rulefile, "x") as fout:
-#                 fout.write(content)
-#             print(f"Created starter rule file: {repr(rulefile)}.")
-#         except FileExistsError:
-#             print(f"Found {repr(rulefile)} - leaving untouched.")
+def get_rules():
+    """Find and load YAML rulefiles, returning Python list of rule objects."""
+
+    # aggregated_rules_list = []
+    # for rulefile_name in RULEFILE_NAME, LOCAL_RULEFILE_NAME:
+    #     if rulefile_name:
+    #         rules_list = read_yamlfile_to_pyobject(rulefile_name)
+    #         aggregated_rules_list = aggregated_rules_list + rules_list
+
+    ruleobj_list = []
+    # for item in aggregated_rules_list:
+    #    try:
+    #        Rule(*item).is_valid
+    #    except TypeError:
+    #        raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
+    #    ruleobj_list.append(Rule(*item))
+
+    return ruleobj_list
+
+
+def get_rules2():
+    """@@@Docstring"""
+    rules_list = []
+    try:
+        rules_to_add = read_yamlfile_to_pyobject(CONFIGFILE_NAME)
+        rules_list.append(rules_to_add)
+    except FileNotFoundError:
+        print("File was not found")
+    except TypeError:
+        print("NoneType")
+    return rules_list

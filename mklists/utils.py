@@ -17,11 +17,18 @@ from mklists import (
 )
 
 
-def get_timestamped_dirname_for_cwd():
+def update_settings_dict(settings_dict=None, overrides=None):
+    """Inject dictionary B into A, ignoring keys in B with value None."""
+    overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
+    settings_dict.update(overrides)
+    return settings_dict
+
+
+def generate_timestamped_backupdir_name_from_current_directory_name():
     """@@@Docstring"""
+    currentdir_name = os.path.basename(os.getcwd())
     timestamp = TIMESTAMP_STR
-    cwd_name = os.path.split(os.getcwd())[1]
-    return "_".join([cwd_name, timestamp])
+    return os.path.join(currentdir_name, timestamp)
 
 
 # Structure will be:
@@ -71,15 +78,16 @@ def linkify(string):
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
-def ls_visible(cwd=os.getcwd()):
+def ls_visible_files(cwd=os.getcwd()):
     """Return list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
-    return [name for name in glob.glob("*")]
+    return [name for name in glob.glob("*") if os.path.isfile(name)]
 
 
-def find_project_root():
-    """Return repo root path when executed at root or in a data directory."""
+def find_project_root(path="."):
+    """Return project root path when executed in root or data directory."""
 
+    os.chdir(path)
     while True:
         ls_cwd = os.listdir()
         if RULEFILE_NAME in ls_cwd:

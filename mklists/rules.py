@@ -2,9 +2,8 @@
 
 import re
 from dataclasses import dataclass
-from mklists.utils import has_valid_name, read_yamlfile_to_pyobject
+from mklists.utils import has_valid_name
 from mklists import (
-    CONFIGFILE_NAME,
     NotIntegerError,
     BadFilenameError,
     SourceEqualsTargetError,
@@ -88,53 +87,3 @@ class Rule:
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
-
-
-def find_rulefiles():
-    """
-    Repository
-    mydir/mklists.yaml - configuration
-    mydir/.globalrules - global rules
-    mydir/a/.rules     - list A rules
-    mydir/b/.rules     - list B rules
-
-    Rule- and config-finding algorithm:
-    a. Look for mklists.yaml
-       * in current directory, then
-       * in parent directory
-    b. When mklists.yaml found (i.e., in root directory)
-       * look in root directory for (optional) .globalrules
-       * look under all subdirectories for .rules files"""
-
-
-def get_rules():
-    """Find and load YAML rulefiles, returning Python list of rule objects."""
-
-    # aggregated_rules_list = []
-    # for rulefile_name in RULEFILE_NAME, LOCAL_RULEFILE_NAME:
-    #     if rulefile_name:
-    #         rules_list = read_yamlfile_to_pyobject(rulefile_name)
-    #         aggregated_rules_list = aggregated_rules_list + rules_list
-
-    ruleobj_list = []
-    # for item in aggregated_rules_list:
-    #    try:
-    #        Rule(*item).is_valid
-    #    except TypeError:
-    #        raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-    #    ruleobj_list.append(Rule(*item))
-
-    return ruleobj_list
-
-
-def get_rules2():
-    """@@@Docstring"""
-    rules_list = []
-    try:
-        rules_to_add = read_yamlfile_to_pyobject(CONFIGFILE_NAME)
-        rules_list.append(rules_to_add)
-    except FileNotFoundError:
-        print("File was not found")
-    except TypeError:
-        print("NoneType")
-    return rules_list
