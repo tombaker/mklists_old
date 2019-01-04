@@ -13,6 +13,7 @@ from mklists import (
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
     VALID_FILENAME_CHARACTERS_REGEX,
+    BadFilenameError,
     BadYamlError,
     ConfigFileNotFoundError,
 )
@@ -53,6 +54,16 @@ def generate_timestamped_backupdir_name(now=TIMESTAMP_STR, here=os.getcwd()):
     return os.path.join(here, now)
 
 
+def get_datafile_names(list_of_files: list):
+    """Return names of visible files with names that are valid for datafiles."""
+    all_datafile_names = []
+    for filename in list_of_files:
+        if not has_valid_name(filename):
+            raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
+        all_datafile_names.append(filename)
+    return all_datafile_names
+
+
 def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
     """Return True if filename has no invalid characters or string patterns.
     @@@Figure out how to pass in invalid filename patterns from context."""
@@ -70,6 +81,12 @@ def linkify(string):
     if "<a href=" in string:
         return string
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
+
+
+def ls_visible_files(cwd=os.getcwd()):
+    """Return list of visible files in given directory (default: '.')."""
+    os.chdir(cwd)
+    return [name for name in glob.glob("*") if os.path.isfile(name)]
 
 
 def read_yaml_configfile_to_pyobject(yamlfile_name):
@@ -93,12 +110,6 @@ def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:
         fout.write(yamlstr)
-
-
-def ls_visible_files(cwd=os.getcwd()):
-    """Return list of visible files in given directory (default: '.')."""
-    os.chdir(cwd)
-    return [name for name in glob.glob("*") if os.path.isfile(name)]
 
 
 # Structure will be:

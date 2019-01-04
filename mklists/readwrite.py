@@ -5,42 +5,32 @@ Functions with side effects such as:
 * writing to files on disk
 * modifying data structures in memory"""
 
-from mklists import (
-    CONFIGFILE_NAME,
-    BadFilenameError,
-    BlankLinesError,
-    NoDataError,
-    NotUTF8Error,
-)
-from mklists.utils import (
-    has_valid_name,
-    ls_visible_files,
-    read_yaml_configfile_to_pyobject,
-)
+from mklists import CONFIGFILE_NAME, BlankLinesError, NoDataError, NotUTF8Error
+from mklists.utils import read_yaml_configfile_to_pyobject
 
 
-def get_datalines():
+def get_datalines(datafile_names: list):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
 
-    all_lines = []
-    for filename in ls_visible_files():
-        if not has_valid_name(filename):
-            raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
+    all_datalines = []
+    for datafile in datafile_names:
         try:
-            file_lines = open(filename).readlines()
+            datafile_lines = open(datafile).readlines()
         except UnicodeDecodeError:
             print("All visible files in data directory must be UTF8-encoded.")
-            raise NotUTF8Error(f"{repr(filename)} is not in UTF8-encoded.")
+            raise NotUTF8Error(f"{repr(datafile)} is not in UTF8-encoded.")
 
-        for line in file_lines:
+        for line in datafile_lines:
             if not line.rstrip():
                 print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(filename)} has blank lines.")
+                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
 
-    if not all_lines:
+        all_datalines.extend(datafile_lines)
+
+    if not all_datalines:
         raise NoDataError("No data to process!")
 
-    return all_lines
+    return all_datalines
 
 
 def get_lines_valid_list_file(path_name):
@@ -97,10 +87,7 @@ def write_dataobj_to_htmlfiles(data_dict={}, verbose=False):
 
 
 def move_certain_datafiles_to_other_directories(files2dirs_dict=None):
-    """
-    Args:
-        files2dirs_dict: filename (key) and destination directory (value)
-    """
+    """Args: files2dirs_dict: filename (key) and destination directory (value)"""
 
 
 def get_rules():
