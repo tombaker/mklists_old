@@ -11,3 +11,13 @@ def test_write_yamlstr_to_yamlfile(tmpdir):
     write_yamlstr_to_yamlfile(yamlfile, yaml_str)
     result = {"backups": 3, "verbose": False}
     assert read_yaml_configfile_to_pyobject(yamlfile) == result
+
+
+def test_write_yamlstr_to_yamlfile_too(tmpdir):
+    """Writes string to YAML rulefile, reads it back to string."""
+    os.chdir(tmpdir)
+    lr_yamlstr = """
+    - [1, 'NOW', a, b, 0]
+    - [1, 'LATER', a, c, 0]"""
+    write_yamlstr_to_yamlfile("_lrules", lr_yamlstr)
+    assert lr_yamlstr == open("_lrules").read()
