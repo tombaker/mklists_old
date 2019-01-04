@@ -1,10 +1,10 @@
 """CLI - command-line interface module"""
 
 import click
+import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
-    read_settings_from_configfile,
     get_datalines,
     get_rules,
     move_old_datafiles_to_backupdirs,
@@ -28,7 +28,7 @@ def cli(ctx, verbose):
     if verbose:
         print(f"Reading minimal configuration: {CONFIG_STARTER_DICT}")
     if ctx.invoked_subcommand != "init":
-        settings_from_configfile = read_settings_from_configfile(CONFIGFILE_NAME)
+        settings_from_configfile = yaml.load(open(CONFIGFILE_NAME).read())
         ctx.obj = update_settings_dict(ctx.obj, settings_from_configfile)
     ctx.obj = update_settings_dict(ctx.obj, snapshot_of_commandline_options)
 

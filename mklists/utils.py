@@ -18,8 +18,19 @@ from mklists import (
 )
 
 
-def find_project_root(path="."):
-    """Return project root path when executed in root or data directory."""
+def find_datadirs_under_project_rootdir(rootdir="."):
+    """Return list of all data directories under a given root directory.
+    By definition, a data directory is a directory with either a
+    '.rules' or '.localrules' file."""
+    datadirs = []
+    for (dirpath, dirs, files) in os.walk(rootdir):
+        if (RULEFILE_NAME in files) or (LOCAL_RULEFILE_NAME in files):
+            datadirs.append(os.path.join(dirpath))
+    return datadirs
+
+
+def find_project_rootdir(path="."):
+    """Return project rootdir when executed in the rootdir or in a datadir."""
     os.chdir(path)
     while True:
         ls_cwd = os.listdir()

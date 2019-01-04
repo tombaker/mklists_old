@@ -5,8 +5,6 @@ Functions with side effects such as:
 * writing to files on disk
 * modifying data structures in memory"""
 
-import os
-import yaml
 from mklists import (
     CONFIGFILE_NAME,
     BadFilenameError,
@@ -103,20 +101,6 @@ def move_certain_datafiles_to_other_directories(files2dirs_dict=None):
     Args:
         files2dirs_dict: filename (key) and destination directory (value)
     """
-
-
-def read_settings_from_configfile(configfile_name):
-    """Invoke find_project_root here??"""
-    return yaml.load(open(configfile_name).read())
-
-
-def find_rulefiles(rootdir=None):
-    """Find all .rules and .localrules files under project root directory."""
-    listfile_directories = []
-    for (dirpath, dirs, files) in os.walk(rootdir):
-        if (".rules" in files) or (".localrules" in files):
-            listfile_directories.append(os.path.join(dirpath))
-    return listfile_directories
 
 
 def get_rules():
