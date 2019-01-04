@@ -66,6 +66,8 @@ def run(ctx, dryrun):
         write_dataobj_to_htmlfiles(dataobj_dict)
     if ctx.obj["files2dirs"]:
         move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
+    if dryrun:
+        print("chose dryrun")
 
 
 @cli.command()

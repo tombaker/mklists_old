@@ -5,13 +5,6 @@ import pytest
 from mklists.utils import write_yamlstr_to_yamlfile, read_yaml_configfile_to_pyobject
 
 
-"""Try:
-    yaml_string =
-    - [0   , 'NOW'    , lines        , __RENAME__   , 0]
-    - [0   , 'LATER'  , __RENAME__   , calendar     , 1, 5]
-"""
-
-
 @pytest.mark.yaml
 def test_write_yamlstr(tmpdir):
     """Writes string to YAML rulefile, reads it back to string."""

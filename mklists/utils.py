@@ -13,7 +13,6 @@ from mklists import (
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
     VALID_FILENAME_CHARACTERS_REGEX,
-    BadFilenameError,
     BadYamlError,
     ConfigFileNotFoundError,
 )
@@ -35,9 +34,7 @@ def find_project_root(path="."):
     if CONFIGFILE_NAME in os.listdir():
         return os.getcwd()
     else:
-        raise ConfigFileNotFoundError(
-            f"{CONFIGFILE_NAME} not found. Was project initialized?"
-        )
+        raise ConfigFileNotFoundError(f"No {CONFIGFILE_NAME} found. Try mklists init.")
 
 
 def generate_timestamped_backupdir_name(now=TIMESTAMP_STR, here=os.getcwd()):
@@ -45,17 +42,14 @@ def generate_timestamped_backupdir_name(now=TIMESTAMP_STR, here=os.getcwd()):
     return os.path.join(here, now)
 
 
-def has_valid_name(file_name, badpats=INVALID_FILENAME_PATTERNS):
-    """Return True if file_name has no invalid characters or string patterns."""
-    for badpat in INVALID_FILENAME_PATTERNS:
-        if re.search(badpat, file_name):
-            raise BadFilenameError(f"{repr(file_name)} has bad pattern {repr(badpat)}.")
+def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
+    """Return True if filename has no invalid characters or string patterns.
+    @@@Figure out how to pass in invalid filename patterns from context."""
+    for badpat in badpats:
+        if re.search(badpat, filename):
             return False
-    for char in file_name:
+    for char in filename:
         if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
-            raise BadFilenameError(
-                f"{repr(file_name)} has invalid character {repr(char)}."
-            )
             return False
     return True
 
@@ -84,12 +78,6 @@ def update_settings_dict(settings_dict=None, overrides=None):
     return settings_dict
 
 
-# Structure will be:
-# _backups/a/2018-12-31
-# _backups/a/2019-01-01
-# _backups/b/...
-
-
 def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:
@@ -100,3 +88,9 @@ def ls_visible_files(cwd=os.getcwd()):
     """Return list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
     return [name for name in glob.glob("*") if os.path.isfile(name)]
+
+
+# Structure will be:
+# _backups/a/2018-12-31
+# _backups/a/2019-01-01
+# _backups/b/...

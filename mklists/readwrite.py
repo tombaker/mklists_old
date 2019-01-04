@@ -25,19 +25,19 @@ def get_datalines():
     """Returns lines from files with valid names, UTF8, with no blank lines."""
 
     all_lines = []
-    for path_name in ls_visible_files():
-        if not has_valid_name(path_name):
-            raise BadFilenameError
+    for filename in ls_visible_files():
+        if not has_valid_name(filename):
+            raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
         try:
-            file_lines = open(path_name).readlines()
+            file_lines = open(filename).readlines()
         except UnicodeDecodeError:
             print("All visible files in data directory must be UTF8-encoded.")
-            raise NotUTF8Error(f"{repr(path_name)} is not in UTF8-encoded.")
+            raise NotUTF8Error(f"{repr(filename)} is not in UTF8-encoded.")
 
         for line in file_lines:
             if not line.rstrip():
                 print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(path_name)} has blank lines.")
+                raise BlankLinesError(f"{repr(filename)} has blank lines.")
 
     if not all_lines:
         raise NoDataError("No data to process!")
