@@ -96,13 +96,6 @@ def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
         fout.write(yamlstr)
 
 
-def is_file(object_path):
-    """Return True if object is a file."""
-    if not os.path.isfile(object_path):
-        return False
-    return True
-
-
 def ls_visible_files(cwd=os.getcwd()):
     """Return list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
