@@ -5,38 +5,8 @@ Functions with side effects such as:
 * writing to files on disk
 * modifying data structures in memory"""
 
-from mklists import CONFIGFILE_NAME, BlankLinesError, NoDataError, NotUTF8Error
+from mklists import CONFIGFILE_NAME
 from mklists.utils import read_yaml_configfile_to_pyobject
-
-
-def get_datalines(datafile_names: list):
-    """Returns lines from files with valid names, UTF8, with no blank lines."""
-
-    all_datalines = []
-    for datafile in datafile_names:
-        try:
-            datafile_lines = open(datafile).readlines()
-        except UnicodeDecodeError:
-            print("All visible files in data directory must be UTF8-encoded.")
-            raise NotUTF8Error(f"{repr(datafile)} is not in UTF8-encoded.")
-
-        for line in datafile_lines:
-            if not line.rstrip():
-                print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
-
-        all_datalines.extend(datafile_lines)
-
-    if not all_datalines:
-        raise NoDataError("No data to process!")
-
-    return all_datalines
-
-
-def get_lines_valid_list_file(path_name):
-    """Returns if pathname has valid name, is UTF8, has no blank lines."""
-
-    return True
 
 
 def move_old_datafiles_to_backupdirs(backup_depth=None):
@@ -121,3 +91,15 @@ def get_rules2():
     except TypeError:
         print("NoneType")
     return rules_list
+
+
+def get_rules_from_localrulefile():
+    pass
+
+
+def get_rules_from_rulefile():
+    pass
+
+
+def get_rules_from_globalconfigfile():
+    pass

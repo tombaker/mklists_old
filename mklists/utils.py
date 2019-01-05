@@ -15,8 +15,30 @@ from mklists import (
     VALID_FILENAME_CHARACTERS_REGEX,
     BadFilenameError,
     BadYamlError,
+    BlankLinesError,
     ConfigFileNotFoundError,
+    NotUTF8Error,
+    NoDataError,
 )
+
+
+def get_list_of_lines_from_all_datafiles(datafile_names: list):
+    """Returns lines from files with valid names, UTF8, with no blank lines."""
+    all_datalines = []
+    for datafile in datafile_names:
+        try:
+            datafile_lines = open(datafile).readlines()
+        except UnicodeDecodeError:
+            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
+        for line in datafile_lines:
+            if not line.rstrip():
+                print("Files in data directory must contain no blank lines.")
+                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
+        all_datalines.extend(datafile_lines)
+
+    if not all_datalines:
+        raise NoDataError("No data to process!")
+    return all_datalines
 
 
 def find_datadirs_under_project_rootdir(rootdir="."):

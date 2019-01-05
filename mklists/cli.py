@@ -5,14 +5,15 @@ import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
-    get_datalines,
-    get_rules,
     move_old_datafiles_to_backupdirs,
     write_dataobj_to_textfiles,
     write_dataobj_to_htmlfiles,
     move_certain_datafiles_to_other_directories,
+    get_rules_from_localrulefile,
+    get_rules_from_rulefile,
+    get_rules_from_globalconfigfile,
 )
-from mklists.utils import update_settings_dict
+from mklists.utils import update_settings_dict, get_list_of_lines_from_all_datafiles
 
 
 @click.group()
@@ -57,13 +58,15 @@ def init(ctx, empty, newbie):
 def run(ctx, dryrun):
     """Apply rules to re-write data files.
     @@@for dir in .rules..."""
-    ruleobj_list = get_rules()
-    dataobj_list = get_datalines()
-    dataobj_dict = apply_rules_to_datalines(ruleobj_list, dataobj_list)
+    localrules = get_rules_from_localrulefile()
+    rules = get_rules_from_rulefile()
+    globalrules = get_rules_from_globalconfigfile()
+    data = get_list_of_lines_from_all_datafiles()
+    all_datalines_dict = apply_rules_to_datalines(globalrules, localrules, rules, data)
     move_old_datafiles_to_backupdirs(ctx)
-    write_dataobj_to_textfiles(dataobj_dict)
+    write_dataobj_to_textfiles(all_datalines_dict)
     if ctx.obj["html"]:
-        write_dataobj_to_htmlfiles(dataobj_dict)
+        write_dataobj_to_htmlfiles(all_datalines_dict)
     if ctx.obj["files2dirs"]:
         move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
     if dryrun:
