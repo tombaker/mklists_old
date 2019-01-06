@@ -1,15 +1,15 @@
 """@@@Docstring"""
 
 import os
-from mklists.utils import ls_visible_files
+from mklists.utils import return_visiblefile_names
 
 
-def test_ls_visible_files(tmpdir):
+def test_return_visiblefile_names(tmpdir):
     """Find root directory while in root directory."""
     os.chdir(tmpdir)
     tmpdir.join("foo").write("foo stuff")
     tmpdir.join("bar").write("bar stuff")
     os.mkdir(tmpdir.join("baz"))
-    assert "foo" in ls_visible_files(tmpdir)
-    assert "bar" in ls_visible_files(tmpdir)
-    assert "baz" not in ls_visible_files(tmpdir)
+    assert "foo" in return_visiblefile_names(tmpdir)
+    assert "bar" in return_visiblefile_names(tmpdir)
+    assert "baz" not in return_visiblefile_names(tmpdir)

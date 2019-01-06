@@ -24,7 +24,7 @@ def move_old_listfiles_to_backupdir(backups=2):
         lsd_visible = [item for item in glob.glob('*')
                        if os.path.isdir(item)]
         while len(lsd_visible) > backups:
-            file_to_be_deleted = ls_visible_files.pop()
+            file_to_be_deleted = return_visiblefile_names.pop()
             rm file_to_be_deleted
     for file in filelist:
         shutil.move(file, backup_dir)

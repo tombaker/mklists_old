@@ -109,7 +109,7 @@ def linkify(string):
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
-def ls_visible_files(cwd=os.getcwd()):
+def return_visiblefile_names(cwd=os.getcwd()):
     """Return list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
     return [name for name in glob.glob("*") if os.path.isfile(name)]

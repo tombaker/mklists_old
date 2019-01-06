@@ -1,9 +1,9 @@
 def generate_backupdir_name(now=TIMESTAMP_STR, here=None):
-def get_lines_from_all_listfiles(listfile_names: list):
 def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
 def linkify(string):
 def ls_visible_files(cwd=os.getcwd()):
 def return_datadirs_under_project_rootdir(rootdir="."):
+def return_lines_from_listfiles(listfile_names: list):
 def return_listdir_shortname():
 def return_listfile_names(list_of_files: list):
 def return_project_rootdir_name(path="."):
