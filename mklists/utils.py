@@ -26,7 +26,7 @@ def return_listdir_shortname():
     pass
 
 
-def get_list_of_lines_from_all_listfiles(listfile_names: list):
+def get_lines_from_all_listfiles(listfile_names: list):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:

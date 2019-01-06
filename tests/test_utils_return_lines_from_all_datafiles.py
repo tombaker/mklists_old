@@ -2,10 +2,10 @@
 
 import os
 import pytest
-from mklists.utils import get_list_of_lines_from_all_listfiles
+from mklists.utils import get_lines_from_all_listfiles
 
 
-def test_get_list_of_lines(tmpdir):
+def test_get_lines(tmpdir):
     """Return list of lines aggregated from all data files."""
     os.chdir(tmpdir)
     tmpdir.join("foo").write("foo stuff\nmore foo stuff\n")
@@ -16,19 +16,19 @@ def test_get_list_of_lines(tmpdir):
         "bar stuff\n",
         "more bar stuff\n",
     ]
-    assert get_list_of_lines_from_all_listfiles(["foo", "bar"]) == expected_result
+    assert get_lines_from_all_listfiles(["foo", "bar"]) == expected_result
 
 
-def test_get_list_of_lines_blank_lines_found(tmpdir):
+def test_get_lines_blank_lines_found(tmpdir):
     """Exit with error message after blank line found."""
     os.chdir(tmpdir)
     tmpdir.join("foo").write("foo stuff\nmore foo stuff\n\n")
     tmpdir.join("bar").write("bar stuff\nmore bar stuff\n")
     with pytest.raises(SystemExit):
-        get_list_of_lines_from_all_listfiles(["foo", "bar"])
+        get_lines_from_all_listfiles(["foo", "bar"])
 
 
-def test_get_list_of_lines_non_utf8_found(tmpdir):
+def test_get_lines_non_utf8_found(tmpdir):
     """Exit with error message after non-UTF8 material found.
     Todo: find out how to write non-UTF8 to a file."""
     import pickle
@@ -40,13 +40,13 @@ def test_get_list_of_lines_non_utf8_found(tmpdir):
     with open(barfile, "wb") as fout:
         pickle.dump(some_data, fout)
     with pytest.raises(SystemExit):
-        get_list_of_lines_from_all_listfiles(["foo", "bar.pickle"])
+        get_lines_from_all_listfiles(["foo", "bar.pickle"])
 
 
-def test_get_list_of_lines_no_data_error(tmpdir):
+def test_get_lines_no_data_error(tmpdir):
     """Exit with error message after blank line found."""
     os.chdir(tmpdir)
     tmpdir.join("foo").write("")
     tmpdir.join("bar").write("")
     with pytest.raises(SystemExit):
-        get_list_of_lines_from_all_listfiles(["foo", "bar"])
+        get_lines_from_all_listfiles(["foo", "bar"])
