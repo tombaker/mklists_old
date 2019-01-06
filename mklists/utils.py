@@ -115,7 +115,7 @@ def ls_visible_files(cwd=os.getcwd()):
     return [name for name in glob.glob("*") if os.path.isfile(name)]
 
 
-def read_yaml_configfile_to_pyobject(yamlfile_name):
+def return_pydict_from_yaml_configfile(yamlfile_name):
     """Returns Python object parsed from given YAML-format file."""
     try:
         return yaml.safe_load(open(yamlfile_name))

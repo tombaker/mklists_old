@@ -6,7 +6,7 @@ Functions with side effects such as:
 * modifying data structures in memory"""
 
 from mklists import CONFIGFILE_NAME
-from mklists.utils import read_yaml_configfile_to_pyobject
+from mklists.utils import return_pydict_from_yaml_configfile
 
 
 def move_old_listfiles_to_backupdir(backups=2):
@@ -67,7 +67,7 @@ def get_rules():
     # aggregated_rules_list = []
     # for rulefile_name in RULEFILE_NAME, LOCAL_RULEFILE_NAME:
     #     if rulefile_name:
-    #         rules_list = read_yaml_configfile_to_pyobject(rulefile_name)
+    #         rules_list = return_pydict_from_yaml_configfile(rulefile_name)
     #         aggregated_rules_list = aggregated_rules_list + rules_list
 
     ruleobj_list = []
@@ -85,7 +85,7 @@ def get_rules2():
     """@@@Docstring"""
     rules_list = []
     try:
-        rules_to_add = read_yaml_configfile_to_pyobject(CONFIGFILE_NAME)
+        rules_to_add = return_pydict_from_yaml_configfile(CONFIGFILE_NAME)
         rules_list.append(rules_to_add)
     except FileNotFoundError:
         print("File was not found")
