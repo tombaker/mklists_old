@@ -77,8 +77,7 @@ def return_lines_from_listfiles(listfile_names: list):
 
 
 def return_listdir_shortname(listdir=os.getcwd(), rootdir=None):
-    length_of_rootdir_part = len(rootdir)
-    return listdir[length_of_rootdir_part:].strip("/").replace("/", "_")
+    return listdir[len(rootdir) :].strip("/").replace("/", "_")
 
 
 def return_listfile_names(list_of_files: list):
