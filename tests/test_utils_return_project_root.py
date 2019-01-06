@@ -2,27 +2,27 @@
 
 import os
 import pytest
-from mklists.utils import find_project_rootdir
+from mklists.utils import return_project_rootdir
 from mklists import CONFIGFILE_NAME, LOCAL_RULEFILE_NAME, RULEFILE_NAME
 
 
-def test_find_project_rootdir_while_in_rootdir(tmpdir):
+def test_return_project_rootdir_while_in_rootdir(tmpdir):
     """Find root directory while in root directory."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     os.chdir(tmpdir)
-    assert CONFIGFILE_NAME in os.listdir(find_project_rootdir())
+    assert CONFIGFILE_NAME in os.listdir(return_project_rootdir())
 
 
-def test_find_project_rootdir_while_in_subdir_one_deep(tmpdir):
+def test_return_project_rootdir_while_in_subdir_one_deep(tmpdir):
     """Find root directory while in subdir one deep."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULEFILE_NAME).write("some rules")
     os.chdir(tmpdira)
-    assert CONFIGFILE_NAME in os.listdir(find_project_rootdir())
+    assert CONFIGFILE_NAME in os.listdir(return_project_rootdir())
 
 
-def test_find_project_rootdir_while_in_subdir_two_deep(tmpdir):
+def test_return_project_rootdir_while_in_subdir_two_deep(tmpdir):
     """Find root directory while in subdir two deep."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -30,10 +30,10 @@ def test_find_project_rootdir_while_in_subdir_two_deep(tmpdir):
     tmpdirb = tmpdira.mkdir("b")
     tmpdirb.join(RULEFILE_NAME).write("some more rules")
     os.chdir(tmpdirb)
-    assert CONFIGFILE_NAME in os.listdir(find_project_rootdir())
+    assert CONFIGFILE_NAME in os.listdir(return_project_rootdir())
 
 
-def test_find_project_rootdir_while_in_subdir_three_deep(tmpdir):
+def test_return_project_rootdir_while_in_subdir_three_deep(tmpdir):
     """Find root directory while in subdir three deep."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -43,10 +43,10 @@ def test_find_project_rootdir_while_in_subdir_three_deep(tmpdir):
     tmpdirc = tmpdirb.mkdir("c")
     tmpdirc.join(LOCAL_RULEFILE_NAME).write("still more rules")
     os.chdir(tmpdirc)
-    assert CONFIGFILE_NAME in os.listdir(find_project_rootdir())
+    assert CONFIGFILE_NAME in os.listdir(return_project_rootdir())
 
 
-def test_not_find_project_rootdir_given_missing_link(tmpdir):
+def test_not_return_project_rootdir_given_missing_link(tmpdir):
     """Do not find root directory when rulefile chain has missing link."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -57,7 +57,7 @@ def test_not_find_project_rootdir_given_missing_link(tmpdir):
     tmpdirc.join(LOCAL_RULEFILE_NAME).write("still more rules")
     os.chdir(tmpdirc)
     with pytest.raises(SystemExit):
-        find_project_rootdir()
+        return_project_rootdir()
 
 
 # @pytest.mark.skip

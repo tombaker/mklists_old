@@ -41,7 +41,7 @@ def get_list_of_lines_from_all_datafiles(datafile_names: list):
     return all_datalines
 
 
-def find_datadirs_under_project_rootdir(rootdir="."):
+def return_datadirs_under_project_rootdir(rootdir="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with either a
     '.rules' or '.localrules' file."""
@@ -52,7 +52,7 @@ def find_datadirs_under_project_rootdir(rootdir="."):
     return datadirs
 
 
-def find_project_rootdir(path="."):
+def return_project_rootdir(path="."):
     """Return project rootdir when executed in the rootdir or in a datadir."""
     os.chdir(path)
     while True:
@@ -71,7 +71,7 @@ def find_project_rootdir(path="."):
         raise ConfigFileNotFoundError(f"No {CONFIGFILE_NAME} found. Try mklists init.")
 
 
-def generate_timestamped_backupdir_name(now=TIMESTAMP_STR, here=os.getcwd()):
+def generate_backupdir_name(now=TIMESTAMP_STR, here=None):
     """@@@Docstring"""
     return os.path.join(here, now)
 
