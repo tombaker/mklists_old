@@ -22,19 +22,23 @@ from mklists import (
 )
 
 
-def get_list_of_lines_from_all_datafiles(datafile_names: list):
+def return_listdir_shortname():
+    pass
+
+
+def get_list_of_lines_from_all_listfiles(listfile_names: list):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
-    for datafile in datafile_names:
+    for listfile in listfile_names:
         try:
-            datafile_lines = open(datafile).readlines()
+            listfile_lines = open(listfile).readlines()
         except UnicodeDecodeError:
-            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
-        for line in datafile_lines:
+            raise NotUTF8Error(f"{repr(listfile)} is not UTF8-encoded.")
+        for line in listfile_lines:
             if not line.rstrip():
                 print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
-        all_datalines.extend(datafile_lines)
+                raise BlankLinesError(f"{repr(listfile)} has blank lines.")
+        all_datalines.extend(listfile_lines)
 
     if not all_datalines:
         raise NoDataError("No data to process!")
@@ -76,14 +80,14 @@ def generate_backupdir_name(now=TIMESTAMP_STR, here=None):
     return os.path.join(here, now)
 
 
-def get_datafile_names(list_of_files: list):
-    """Return names of visible files with names that are valid for datafiles."""
-    all_datafile_names = []
+def get_listfile_names(list_of_files: list):
+    """Return names of visible files with names that are valid for listfiles."""
+    all_listfile_names = []
     for filename in list_of_files:
         if not has_valid_name(filename):
             raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
-        all_datafile_names.append(filename)
-    return all_datafile_names
+        all_listfile_names.append(filename)
+    return all_listfile_names
 
 
 def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):

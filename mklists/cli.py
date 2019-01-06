@@ -5,15 +5,15 @@ import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
-    move_old_datafiles_to_backupdir,
+    move_old_listfiles_to_backupdir,
     write_dataobj_to_textfiles,
     write_dataobj_to_htmlfiles,
-    move_certain_datafiles_to_other_directories,
+    move_certain_listfiles_to_other_directories,
     get_rules_from_localrulefile,
     get_rules_from_rulefile,
     get_rules_from_globalconfigfile,
 )
-from mklists.utils import update_settings_dict, get_list_of_lines_from_all_datafiles
+from mklists.utils import update_settings_dict, get_list_of_lines_from_all_listfiles
 
 
 @click.group()
@@ -57,14 +57,14 @@ def run(ctx, dryrun):
     localrules = get_rules_from_localrulefile()
     rules = get_rules_from_rulefile()
     globalrules = get_rules_from_globalconfigfile()
-    data = get_list_of_lines_from_all_datafiles()
+    data = get_list_of_lines_from_all_listfiles()
     all_datalines_dict = apply_rules_to_datalines(globalrules, localrules, rules, data)
-    move_old_datafiles_to_backupdir(ctx)
+    move_old_listfiles_to_backupdir(ctx)
     write_dataobj_to_textfiles(all_datalines_dict)
     if ctx.obj["html"]:
         write_dataobj_to_htmlfiles(all_datalines_dict)
     if ctx.obj["files2dirs"]:
-        move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
+        move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
     if dryrun:
         print("chose dryrun")
 

@@ -9,7 +9,7 @@ from mklists import CONFIGFILE_NAME
 from mklists.utils import read_yaml_configfile_to_pyobject
 
 
-def move_old_datafiles_to_backupdir(backups=2):
+def move_old_listfiles_to_backupdir(backups=2):
     """
     if backups is less than two, then backups = 2 - "mandatory"
     If 'backup' is True:
@@ -29,7 +29,7 @@ def move_old_datafiles_to_backupdir(backups=2):
     for file in filelist:
         shutil.move(file, backup_dir)
 
-    Note: there should never be a situation where datafiles have
+    Note: there should never be a situation where listfiles have
     been deleted and the data in memory has not yet been written to disk.
     Therefore, there should _always_ be at least one backup."""
 
@@ -57,7 +57,7 @@ def write_dataobj_to_htmlfiles(data_dict={}, verbose=False):
     print(f"* Move files outside datadir as per ['files2dirs'].")
 
 
-def move_certain_datafiles_to_other_directories(files2dirs_dict=None):
+def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
     """Args: files2dirs_dict: filename (key) and destination directory (value)"""
 
 
