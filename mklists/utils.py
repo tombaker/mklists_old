@@ -52,7 +52,7 @@ def return_datadirs_under_project_rootdir(rootdir="."):
     return datadirs
 
 
-def return_project_rootdir(path="."):
+def return_project_rootdir_name(path="."):
     """Return project rootdir when executed in the rootdir or in a datadir."""
     os.chdir(path)
     while True:

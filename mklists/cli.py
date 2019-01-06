@@ -73,7 +73,7 @@ def run(ctx, dryrun):
 @click.pass_context
 def testme(ctx):
     """Subcommand for various tests."""
-    from mklists.utils import return_project_root
+    from mklists.utils import return_project_rootdir_name
 
     print(ctx.params)
-    return_project_root()
+    return_project_rootdir_name()
