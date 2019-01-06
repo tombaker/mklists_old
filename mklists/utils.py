@@ -80,7 +80,7 @@ def generate_backupdir_name(now=TIMESTAMP_STR, here=None):
     return os.path.join(here, now)
 
 
-def get_listfile_names(list_of_files: list):
+def return_listfile_names(list_of_files: list):
     """Return names of visible files with names that are valid for listfiles."""
     all_listfile_names = []
     for filename in list_of_files:
