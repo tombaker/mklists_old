@@ -1,10 +1,17 @@
 """@@@Docstring"""
 
-from mklists.utils import generate_backupdir_name
+from mklists.utils import return_listdir_shortname
 
 
-def test_utils_generate_backupdir_name():
-    timestamp = "2019-01-03_1646_06488910"
-    cwd_shortname = "agenda"
-    expected = "agenda/2019-01-03_1646_06488910"
-    assert generate_backupdir_name(here=cwd_shortname, now=timestamp) == expected
+def test_utils_return_listdir_shortname():
+    root_dir = "/Users/tbaker/foobar"
+    list_dir = "/Users/tbaker/foobar/agenda"
+    expected = "agenda"
+    assert return_listdir_shortname(rootdir=root_dir, listdir=list_dir) == expected
+
+
+def test_utils_return_listdir_shortname_two_deep():
+    root_dir = "/Users/tbaker/foobar"
+    list_dir = "/Users/tbaker/foobar/a/b"
+    expected = "a_b"
+    assert return_listdir_shortname(rootdir=root_dir, listdir=list_dir) == expected

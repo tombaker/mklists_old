@@ -76,8 +76,9 @@ def return_lines_from_listfiles(listfile_names: list):
     return all_datalines
 
 
-def return_listdir_shortname():
-    pass
+def return_listdir_shortname(listdir=os.getcwd(), rootdir=None):
+    length_of_rootdir_part = len(rootdir)
+    return listdir[length_of_rootdir_part:].strip("/").replace("/", "_")
 
 
 def return_listfile_names(list_of_files: list):
@@ -90,7 +91,7 @@ def return_listfile_names(list_of_files: list):
     return all_listfile_names
 
 
-def return_project_rootdir_name(path="."):
+def return_rootdir_name(path="."):
     """Return project rootdir when executed in the rootdir or in a datadir."""
     os.chdir(path)
     while True:
