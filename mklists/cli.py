@@ -13,7 +13,7 @@ from mklists.readwrite import (
     get_rules_from_rulefile,
     get_rules_from_globalconfigfile,
 )
-from mklists.utils import update_settings_dict, get_lines_from_all_listfiles
+from mklists.utils import update_settings_dict, return_lines_from_listfiles
 
 
 @click.group()
@@ -57,7 +57,7 @@ def run(ctx, dryrun):
     localrules = get_rules_from_localrulefile()
     rules = get_rules_from_rulefile()
     globalrules = get_rules_from_globalconfigfile()
-    data = get_lines_from_all_listfiles()
+    data = return_lines_from_listfiles()
     all_datalines_dict = apply_rules_to_datalines(globalrules, localrules, rules, data)
     move_old_listfiles_to_backupdir(ctx)
     write_dataobj_to_textfiles(all_datalines_dict)
