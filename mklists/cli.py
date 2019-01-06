@@ -5,7 +5,7 @@ import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
-    move_old_datafiles_to_backupdirs,
+    move_old_datafiles_to_backupdir,
     write_dataobj_to_textfiles,
     write_dataobj_to_htmlfiles,
     move_certain_datafiles_to_other_directories,
@@ -40,10 +40,6 @@ def cli(ctx, verbose):
 @click.pass_context
 def init(ctx, empty, newbie):
     """Write starter configuration and rule files."""
-    another_snapshot_of_commandline_options = locals().copy()
-    print(another_snapshot_of_commandline_options)
-    if ctx:
-        print(repr(ctx))
     if empty is not None:
         print("empty")
     elif newbie is not None:
@@ -63,7 +59,7 @@ def run(ctx, dryrun):
     globalrules = get_rules_from_globalconfigfile()
     data = get_list_of_lines_from_all_datafiles()
     all_datalines_dict = apply_rules_to_datalines(globalrules, localrules, rules, data)
-    move_old_datafiles_to_backupdirs(ctx)
+    move_old_datafiles_to_backupdir(ctx)
     write_dataobj_to_textfiles(all_datalines_dict)
     if ctx.obj["html"]:
         write_dataobj_to_htmlfiles(all_datalines_dict)

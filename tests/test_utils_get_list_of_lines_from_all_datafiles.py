@@ -35,12 +35,12 @@ def test_get_list_of_lines_non_utf8_found(tmpdir):
 
     os.chdir(tmpdir)
     tmpdir.join("foo").write("foo stuff\nmore foo stuff\n")
-    barfile = tmpdir.join("bar")
+    barfile = tmpdir.join("bar.pickle")
     some_data = [{"a": "A", "b": 2, "c": 3.0}]
     with open(barfile, "wb") as fout:
         pickle.dump(some_data, fout)
     with pytest.raises(SystemExit):
-        get_list_of_lines_from_all_datafiles(["foo", "bar"])
+        get_list_of_lines_from_all_datafiles(["foo", "bar.pickle"])
 
 
 def test_get_list_of_lines_no_data_error(tmpdir):

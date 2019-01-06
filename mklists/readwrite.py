@@ -9,14 +9,15 @@ from mklists import CONFIGFILE_NAME
 from mklists.utils import read_yaml_configfile_to_pyobject
 
 
-def move_old_datafiles_to_backupdirs(backup_depth=None):
+def move_old_datafiles_to_backupdir(backups=2):
     """
+    if backups is less than two, then backups = 2 - "mandatory"
     If 'backup' is True:
     before writing data_dict contents to disk,
     creates timestamped backup directory in specified backup_dir,
     and moves all visible files in data directory to backup directory.
     Make time-stamped directory in BACKUP_DIR_NAME (create constant!)
-    Create: backup_dir_timestamped = '/'.join([backup_dir, TIMESTAMP_STR])
+    Create: backup_dir_timestamped = os.path.join(backup_dir, TIMESTAMP_STR)
     Move existing files to backup_dir
     Delete oldest backups:
     delete_oldest_backup(backup_dir, backups):
