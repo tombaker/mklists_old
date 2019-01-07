@@ -5,9 +5,6 @@ Functions with side effects such as:
 * writing to files on disk
 * modifying data structures in memory"""
 
-from mklists import CONFIGFILE_NAME
-from mklists.utils import return_pydict_from_yaml_configfile
-
 
 def move_old_listfiles_to_backupdir(backups=2):
     """
@@ -59,48 +56,3 @@ def write_dataobj_to_htmlfiles(data_dict={}, verbose=False):
 
 def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
     """Args: files2dirs_dict: filename (key) and destination directory (value)"""
-
-
-def get_rules():
-    """Find and load YAML rulefiles, returning Python list of rule objects."""
-
-    # aggregated_rules_list = []
-    # for rulefile_name in RULEFILE_NAME, LOCAL_RULEFILE_NAME:
-    #     if rulefile_name:
-    #         rules_list = return_pydict_from_yaml_configfile(rulefile_name)
-    #         aggregated_rules_list = aggregated_rules_list + rules_list
-
-    ruleobj_list = []
-    # for item in aggregated_rules_list:
-    #    try:
-    #        Rule(*item).is_valid
-    #    except TypeError:
-    #        raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-    #    ruleobj_list.append(Rule(*item))
-
-    return ruleobj_list
-
-
-def get_rules2():
-    """@@@Docstring"""
-    rules_list = []
-    try:
-        rules_to_add = return_pydict_from_yaml_configfile(CONFIGFILE_NAME)
-        rules_list.append(rules_to_add)
-    except FileNotFoundError:
-        print("File was not found")
-    except TypeError:
-        print("NoneType")
-    return rules_list
-
-
-def get_rules_from_localrulefile():
-    pass
-
-
-def get_rules_from_rulefile():
-    pass
-
-
-def get_rules_from_globalconfigfile():
-    pass

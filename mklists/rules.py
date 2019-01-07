@@ -4,6 +4,9 @@ import re
 from dataclasses import dataclass
 from mklists.utils import has_valid_name
 from mklists import (
+    CONFIGFILE_NAME,
+    RULEFILE_NAME,
+    LOCAL_RULEFILE_NAME,
     NotIntegerError,
     BadFilenameError,
     SourceEqualsTargetError,
@@ -87,3 +90,49 @@ class Rule:
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
+
+
+def return_ruleobjs_from_yamlfiles():
+    """Find and load YAML rulefiles, returning list of rule objects."""
+
+    ruleobjs_list = []
+    globalrules = _return_ruleobjs_from_configfile()
+    rules = _return_ruleobjs_from_rulefile()
+    localrules = _return_ruleobjs_from_localrulefile()
+    if rules:
+        pass
+    if localrules:
+        pass
+    if globalrules:
+        pass
+
+    # for item in aggregated_lines:
+    #    try:
+    #        Rule(*item).is_valid
+    #    except TypeError:
+    #        raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
+    #    ruleobj_list.append(Rule(*item))
+
+    return ruleobjs_list
+
+
+def _return_ruleobjs_from_configfile(rootdir=None, configfile=CONFIGFILE_NAME):
+    """Returns list of rules from configuration file in root directory of project.
+    If no rules, return None or empty list?"""
+
+    # try:
+    #     rules_to_add = return_pydict_from_yaml_configfile(CONFIGFILE_NAME)
+    #     rules_list.append(rules_to_add)
+    # except FileNotFoundError:
+    #     print("File was not found")
+    # except TypeError:
+    #     print("NoneType")
+    # return rules_list
+
+
+def _return_ruleobjs_from_rulefile(rulefile=RULEFILE_NAME):
+    """Returns list of rules from rule file."""
+
+
+def _return_ruleobjs_from_localrulefile(localrulefile=LOCAL_RULEFILE_NAME):
+    """Returns list of rules from rule file."""
