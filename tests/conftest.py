@@ -1,19 +1,26 @@
 import pytest
 from mklists.rules import Rule
-from mklists import CONFIGFILE_NAME, CONFIGFILE_YAMLSTR, LOCAL_RULEFILE_NAME
 
+TEST_CONFIGFILE_NAME = "mklists.yml"
+TEST_CONFIGFILE_YAMLSTR = r"""\
+invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
+global_rules:
+- [0, '.', all, lines, 0]
+"""
+
+TEST_RULEFILEA_NAME = ".rules"
 TEST_RULEFILEA_YAMLSTR = """\
-- [0, '.',       lines,     todo.txt,    0]
-- [0, '.',       to_a.txt   todo.txt,    1]
-- [2, 'NOW',     todo.txt,  now.txt,     1]
-- [2, 'LATER',   todo.txt,  later.txt,   0]
+- [2, 'NOW',     lines,  now,     1]
+- [2, 'LATER',   lines,  later,   0]
 """
 
+TEST_RULEFILEB_NAME = ".localrules"
 TEST_RULEFILEB_YAMLSTR = """\
-- [0, '.',       lines,     other.txt,   1]
-- [0, '.',       to_b.txt,  other.txt,   1]
-- [2, 'SOMEDAY', other.txt, someday.txt, 0]
+- [2, 'NOW',     lines,  now,     1]
+- [2, 'LATER',   lines,  later,   0]
 """
+
+TEST_LISTFILE_STRING = """= NOW Cook\n=LATER Read"""
 
 
 @pytest.fixture(name="myrepo_configured")
@@ -22,9 +29,9 @@ def fixture_myrepo_configured(tmpdir_factory):
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
     subdir_b = root_dir.mkdir("b")
-    root_dir.join(CONFIGFILE_NAME).write(CONFIGFILE_YAMLSTR)
-    subdir_a.join(LOCAL_RULEFILE_NAME).write(TEST_RULEFILEA_YAMLSTR)
-    subdir_b.join(LOCAL_RULEFILE_NAME).write(TEST_RULEFILEB_YAMLSTR)
+    root_dir.join(TEST_CONFIGFILE_NAME).write(TEST_CONFIGFILE_YAMLSTR)
+    subdir_a.join(TEST_RULEFILEA_NAME).write(TEST_RULEFILEA_YAMLSTR)
+    subdir_b.join(TEST_RULEFILEB_NAME).write(TEST_RULEFILEB_YAMLSTR)
     return root_dir
 
 

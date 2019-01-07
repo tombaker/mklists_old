@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from mklists.utils import has_valid_name
+from mklists.utils import has_valid_name, return_pydict_from_yaml_configfile
 from mklists import (
     CONFIGFILE_NAME,
     RULEFILE_NAME,
@@ -12,6 +12,8 @@ from mklists import (
     SourceEqualsTargetError,
     SourceMatchpatternError,
     UninitializedSourceError,
+    ConfigFileNotFoundError,
+    BadYamlRuleError,
 )
 
 
@@ -93,10 +95,10 @@ class Rule:
 
 
 def return_rules_pydict():
-    """Find and load YAML rulefiles, returning list of rule objects."""
-
+    """Find and load YAML rulefiles, returning list of rule objects.
     ruleobjs_list = []
-    globalrules = _return_ruleobjs_from_configfile()
+    """
+    globalrules = _return_globalruleobjs_from_configfile()
     rules = _return_ruleobjs_from_rulefile()
     localrules = _return_ruleobjs_from_localrulefile()
     if rules:
@@ -106,28 +108,27 @@ def return_rules_pydict():
     if globalrules:
         pass
 
-    # for item in aggregated_lines:
-    #    try:
-    #        Rule(*item).is_valid
-    #    except TypeError:
-    #        raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-    #    ruleobj_list.append(Rule(*item))
 
-    return ruleobjs_list
-
-
-def _return_ruleobjs_from_configfile(rootdir=None, configfile=CONFIGFILE_NAME):
+def _return_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
     """Returns list of rules from configuration file in root directory of project.
     If no rules, return None or empty list?"""
+    rules_list = []
+    ruleobjs_list = []
+    try:
+        config_pydict = return_pydict_from_yaml_configfile(configfile)
+        rules_list.append(config_pydict["global_rules"])
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(f"Configuration file {configfile} not found.")
+    except TypeError:
+        print("NoneType")
+    for item in rules_list:
+        try:
+            Rule(*item).is_valid
+        except TypeError:
+            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
+        ruleobjs_list.append(Rule(*item))
 
-    # try:
-    #     rules_to_add = return_pydict_from_yaml_configfile(CONFIGFILE_NAME)
-    #     rules_list.append(rules_to_add)
-    # except FileNotFoundError:
-    #     print("File was not found")
-    # except TypeError:
-    #     print("NoneType")
-    # return rules_list
+    return ruleobjs_list
 
 
 def _return_ruleobjs_from_rulefile(rulefile=RULEFILE_NAME):
