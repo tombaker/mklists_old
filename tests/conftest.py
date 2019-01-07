@@ -1,51 +1,30 @@
-import os
-from textwrap import dedent
 import pytest
-import yaml
 from mklists.rules import Rule
-from mklists import CONFIGFILE_NAME, CONFIG_STARTER_DICT, LOCAL_RULEFILE_NAME
+from mklists import CONFIGFILE_NAME, CONFIGFILE_YAMLSTR, LOCAL_RULEFILE_NAME
 
-TEST_GLOBAL_DIR = "."
-TEST_GLOBAL_RULES_FROM_MKLISTSYML = """\
-- [0, '^=',       all_lines, to_a.txt, 1]
-- [0, '^201[89]', all_lines, to_b.txt, 1]
-"""
-
-TEST_LOCAL_DIRA = os.path.join(TEST_GLOBAL_DIR, "todo")
-TEST_LOCAL_RULEFILEA_STARTER_YAMLSTR = """\
-- [0, '.',       lines,      todo.txt,   0]
-- [0, '.',       to_a.txt    todo.txt,   1]
-- [2, 'NOW',     todo.txt,    now.txt,   1]
+TEST_RULEFILEA_YAMLSTR = """\
+- [0, '.',       lines,     todo.txt,    0]
+- [0, '.',       to_a.txt   todo.txt,    1]
+- [2, 'NOW',     todo.txt,  now.txt,     1]
 - [2, 'LATER',   todo.txt,  later.txt,   0]
 """
-TEST_LOCAL_DIRB = os.path.join(TEST_GLOBAL_DIR, "log")
-TEST_LOCAL_RULEFILEB_STARTER_YAMLSTR = """\
-- [0, '.',           lines,   other.txt, 1]
-- [0, '.',        to_b.txt,   other.txt, 1]
+
+TEST_RULEFILEB_YAMLSTR = """\
+- [0, '.',       lines,     other.txt,   1]
+- [0, '.',       to_b.txt,  other.txt,   1]
 - [2, 'SOMEDAY', other.txt, someday.txt, 0]
 """
 
 
 @pytest.fixture(name="myrepo_configured")
 def fixture_myrepo_configured(tmpdir_factory):
-    """Return temporary mklists repo "myrepo":
-
-        myrepo/mklists.yml
-        myrepo/a/.rules
-        myrepo/b/.rules"""
-
+    """Return temporary mklists repo 'myrepo'."""
     root_dir = tmpdir_factory.mktemp("myrepo")
-    mklistsrc = root_dir.join(CONFIGFILE_NAME)
-    with open(mklistsrc, "w") as fout:
-        fout.write(yaml.safe_dump(CONFIG_STARTER_DICT, default_flow_style=False))
-
-    # get global rules from mklists.yml
     subdir_a = root_dir.mkdir("a")
-    rules_a = subdir_a.join(LOCAL_RULEFILE_NAME)
-    rules_a.write(TEST_LOCAL_RULEFILEA_STARTER_YAMLSTR)
     subdir_b = root_dir.mkdir("b")
-    rules_b = subdir_b.join(LOCAL_RULEFILE_NAME)
-    rules_b.write(TEST_LOCAL_RULEFILEB_STARTER_YAMLSTR)
+    root_dir.join(CONFIGFILE_NAME).write(CONFIGFILE_YAMLSTR)
+    subdir_a.join(LOCAL_RULEFILE_NAME).write(TEST_RULEFILEA_YAMLSTR)
+    subdir_b.join(LOCAL_RULEFILE_NAME).write(TEST_RULEFILEB_YAMLSTR)
     return root_dir
 
 
@@ -60,19 +39,7 @@ def reinitialize_ruleclass_variables():
 
 
 @pytest.fixture(scope="module")
-def rules_bad_yamlfile2(tmpdir_factory):
-    """Return YAML rulefile object with syntactically bad YAML.
-
-    @@@Could this be moved into the tests themselves?"""
-    yaml_rule_data = """- [1, 2, 3, 4]\n+ [5, 6, 7, 8]"""
-    some_yamlfile = tmpdir_factory.mktemp("datadir").join("some_yamlfile")
-    print(f"Created 'some_yamlfile': {repr(some_yamlfile)}")
-    some_yamlfile.write(dedent(yaml_rule_data))
-    return some_yamlfile
-
-
-@pytest.fixture(scope="module")
-def rules_python():
+def ruleobjs_list():
     """Returns list of Rule objects."""
     return [
         Rule(0, ".", "lines", "__RENAME__", 0),

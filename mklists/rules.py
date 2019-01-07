@@ -92,7 +92,7 @@ class Rule:
         return True
 
 
-def return_ruleobjs_from_yamlfiles():
+def return_rules_pydict():
     """Find and load YAML rulefiles, returning list of rule objects."""
 
     ruleobjs_list = []

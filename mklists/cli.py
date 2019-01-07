@@ -9,11 +9,13 @@ from mklists.readwrite import (
     write_pydict_to_textfiles,
     write_pydict_to_htmlfiles,
     move_certain_listfiles_to_other_directories,
-    get_rules_from_localrulefile,
-    get_rules_from_rulefile,
-    get_rules_from_globalconfigfile,
 )
-from mklists.utils import update_settings_dict, return_lines_from_listfiles
+from mklists.utils import (
+    update_settings_dict,
+    return_lines_from_listfiles,
+    return_rootdir_name,
+)
+from mklists.rules import return_rules_pydict
 
 
 @click.group()
@@ -54,11 +56,9 @@ def init(ctx, empty, newbie):
 def run(ctx, dryrun):
     """Apply rules to re-write data files.
     @@@for dir in .rules..."""
-    localrules = get_rules_from_localrulefile()
-    rules = get_rules_from_rulefile()
-    globalrules = get_rules_from_globalconfigfile()
     data = return_lines_from_listfiles()
-    all_datalines_dict = apply_rules_to_datalines(globalrules, localrules, rules, data)
+    rules = return_rules_pydict()
+    all_datalines_dict = apply_rules_to_datalines(rules, data)
     move_old_listfiles_to_backupdir(ctx)
     write_pydict_to_textfiles(all_datalines_dict)
     if ctx.obj["html"]:
@@ -73,7 +73,6 @@ def run(ctx, dryrun):
 @click.pass_context
 def testme(ctx):
     """Subcommand for various tests."""
-    from mklists.utils import return_rootdir_name
-
     print(ctx.params)
-    return_rootdir_name()
+    name = return_rootdir_name()
+    print(name)
