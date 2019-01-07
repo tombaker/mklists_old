@@ -22,7 +22,7 @@ from mklists import (
 )
 
 
-def generate_backupdir_name(now=TIMESTAMP_STR, here=None):
+def construct_backupdir_name(now=TIMESTAMP_STR, here=None):
     """@@@Docstring"""
     return os.path.join(here, now)
 
@@ -39,14 +39,14 @@ def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
     return True
 
 
-def linkify(string):
+def construct_html_string_from_text_string(string):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
-def return_datadirs_under_project_rootdir(rootdir="."):
+def return_datadirs_under_rootdir(rootdir="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with either a
     '.rules' or '.localrules' file."""
@@ -80,10 +80,10 @@ def return_listdir_shortname(listdir=os.getcwd(), rootdir=None):
     return listdir[len(rootdir) :].strip("/").replace("/", "_")
 
 
-def return_listfile_names(list_of_files: list):
+def return_listfile_names(ls_listing: list):
     """Return names of visible files with names that are valid for listfiles."""
     all_listfile_names = []
-    for filename in list_of_files:
+    for filename in ls_listing:
         if not has_valid_name(filename):
             raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
         all_listfile_names.append(filename)
@@ -132,7 +132,7 @@ def update_settings_dict(settings_dict=None, overrides=None):
     return settings_dict
 
 
-def write_yamlstr_to_yamlfile(yamlfile_name, yamlstr):
+def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:
         fout.write(yamlstr)

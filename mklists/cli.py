@@ -6,8 +6,8 @@ from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from mklists.apply import apply_rules_to_datalines
 from mklists.readwrite import (
     move_old_listfiles_to_backupdir,
-    write_dataobj_to_textfiles,
-    write_dataobj_to_htmlfiles,
+    write_pydict_to_textfiles,
+    write_pydict_to_htmlfiles,
     move_certain_listfiles_to_other_directories,
     get_rules_from_localrulefile,
     get_rules_from_rulefile,
@@ -60,9 +60,9 @@ def run(ctx, dryrun):
     data = return_lines_from_listfiles()
     all_datalines_dict = apply_rules_to_datalines(globalrules, localrules, rules, data)
     move_old_listfiles_to_backupdir(ctx)
-    write_dataobj_to_textfiles(all_datalines_dict)
+    write_pydict_to_textfiles(all_datalines_dict)
     if ctx.obj["html"]:
-        write_dataobj_to_htmlfiles(all_datalines_dict)
+        write_pydict_to_htmlfiles(all_datalines_dict)
     if ctx.obj["files2dirs"]:
         move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
     if dryrun:

@@ -8,7 +8,7 @@ def test_write_yamlstr_to_yamlfile(tmpdir):
     os.chdir(tmpdir)
     yaml_str = "backups: 3\nverbose: false"
     yamlfile = "mklists.yml"
-    write_yamlstr_to_yamlfile(yamlfile, yaml_str)
+    write_yamlstr_to_yamlfile(yaml_str, yamlfile)
     result = {"backups": 3, "verbose": False}
     assert return_pydict_from_yaml_configfile(yamlfile) == result
 
@@ -19,5 +19,5 @@ def test_write_yamlstr_to_yamlfile_too(tmpdir):
     lr_yamlstr = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile("_lrules", lr_yamlstr)
+    write_yamlstr_to_yamlfile(lr_yamlstr, "_lrules")
     assert lr_yamlstr == open("_lrules").read()

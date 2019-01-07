@@ -40,7 +40,7 @@ def test_read_yaml_configfile_given_good_yamlfile(tmpdir):
     lrules_yamlstr = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile("_lrules", lrules_yamlstr)
+    write_yamlstr_to_yamlfile(lrules_yamlstr, "_lrules")
     good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
     assert return_pydict_from_yaml_configfile("_lrules") == good_pyobject
 
@@ -51,6 +51,6 @@ def test_read_yaml_configfile_given_bad_yaml(tmpdir):
     bad_yamlstr = """
     - [1, 'NOW', a, b, 0]
     + [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile("_lrules_bad", bad_yamlstr)
+    write_yamlstr_to_yamlfile(bad_yamlstr, "_lrules_bad")
     with pytest.raises(SystemExit):
         return_pydict_from_yaml_configfile("_lrules_bad")

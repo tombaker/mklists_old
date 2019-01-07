@@ -31,7 +31,7 @@ def move_old_listfiles_to_backupdir(backups=2):
     Therefore, there should _always_ be at least one backup."""
 
 
-def write_dataobj_to_textfiles(data_dict=None, verbose=False):
+def write_pydict_to_textfiles(data_dict=None, verbose=False):
     """If 'backup' is ON, move existing files from working to backup directory.
     If 'backup' is OFF, DELETE existing files in working directory.
     Write data_dict to working directory:
@@ -39,7 +39,7 @@ def write_dataobj_to_textfiles(data_dict=None, verbose=False):
     -- data_dict values are contents of files."""
 
 
-def write_dataobj_to_htmlfiles(data_dict={}, verbose=False):
+def write_pydict_to_htmlfiles(data_dict={}, verbose=False):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()
     abstargetdir = absdirname(targetdirectory)
