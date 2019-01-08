@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from mklists.utils import has_valid_name, return_pyobj_from_yamlfile
+from mklists.utils import has_valid_name, get_pyobj_from_yamlfile
 from mklists import (
     CONFIGFILE_NAME,
     RULEFILE_NAME,
@@ -93,25 +93,25 @@ class Rule:
         return True
 
 
-def return_rules_pydict():
+def get_rules_pydict():
     """Find and load YAML rulefiles, returning list of rule objects.
     ruleobjs_list = []
     """
-    globalrules = _return_globalruleobjs_from_configfile()
-    rules = _return_ruleobjs_from_rulefile()
+    globalrules = _get_globalruleobjs_from_configfile()
+    rules = _get_ruleobjs_from_rulefile()
     if rules:
         pass
     if globalrules:
         pass
 
 
-def _return_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
+def _get_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
     """Returns list of rules from configuration file in root directory of project.
     If no rules, return None or empty list?"""
     rules_list = []
     ruleobjs_list = []
     try:
-        config_pydict = return_pyobj_from_yamlfile(configfile)
+        config_pydict = get_pyobj_from_yamlfile(configfile)
         rules_list.append(config_pydict["global_rules"])
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"Configuration file {configfile} not found.")
@@ -127,5 +127,5 @@ def _return_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
     return ruleobjs_list
 
 
-def _return_ruleobjs_from_rulefile(rulefile=RULEFILE_NAME):
+def _get_ruleobjs_from_rulefile(rulefile=RULEFILE_NAME):
     """Returns list of rules from rule file."""

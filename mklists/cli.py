@@ -13,9 +13,9 @@ from mklists.readwrite import (
 from mklists.utils import (
     update_settings_dict,
     get_lines_from_listfiles,
-    return_rootdir_name,
+    get_rootdir_name,
 )
-from mklists.rules import return_rules_pydict
+from mklists.rules import get_rules_pydict
 
 
 @click.group()
@@ -57,7 +57,7 @@ def run(ctx, dryrun):
     """Apply rules to re-write data files.
     @@@for dir in .rules..."""
     data = get_lines_from_listfiles()
-    rules = return_rules_pydict()
+    rules = get_rules_pydict()
     all_datalines_dict = apply_rules_to_datalines(rules, data)
     move_old_listfiles_to_backupdir(ctx)
     write_pydict_to_textfiles(all_datalines_dict)
@@ -74,5 +74,5 @@ def run(ctx, dryrun):
 def testme(ctx):
     """Subcommand for various tests."""
     print(ctx.params)
-    name = return_rootdir_name()
+    name = get_rootdir_name()
     print(name)

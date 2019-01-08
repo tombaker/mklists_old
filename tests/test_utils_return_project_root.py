@@ -2,33 +2,33 @@
 
 import os
 import pytest
-from mklists.utils import return_rootdir_name
+from mklists.utils import get_rootdir_name
 from mklists import CONFIGFILE_NAME, RULEFILE_NAME
 
 
-def test_return_rootdir_name_from_fixture_subdir(myrepo):
+def test_get_rootdir_name_from_fixture_subdir(myrepo):
     """Find root directory from root directory of fixture."""
     os.chdir(os.path.join(myrepo, "a"))
-    assert CONFIGFILE_NAME in os.listdir(return_rootdir_name())
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir_name())
 
 
-def test_return_rootdir_name_while_in_rootdir(tmpdir):
+def test_get_rootdir_name_while_in_rootdir(tmpdir):
     """Find root directory while in root directory."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     os.chdir(tmpdir)
-    assert CONFIGFILE_NAME in os.listdir(return_rootdir_name())
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir_name())
 
 
-def test_return_rootdir_name_while_in_subdir_one_deep(tmpdir):
+def test_get_rootdir_name_while_in_subdir_one_deep(tmpdir):
     """Find root directory while in subdir one deep."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULEFILE_NAME).write("some rules")
     os.chdir(tmpdira)
-    assert CONFIGFILE_NAME in os.listdir(return_rootdir_name())
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir_name())
 
 
-def test_return_rootdir_name_while_in_subdir_two_deep(tmpdir):
+def test_get_rootdir_name_while_in_subdir_two_deep(tmpdir):
     """Find root directory while in subdir two deep."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -36,10 +36,10 @@ def test_return_rootdir_name_while_in_subdir_two_deep(tmpdir):
     tmpdirb = tmpdira.mkdir("b")
     tmpdirb.join(RULEFILE_NAME).write("some more rules")
     os.chdir(tmpdirb)
-    assert CONFIGFILE_NAME in os.listdir(return_rootdir_name())
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir_name())
 
 
-def test_return_rootdir_name_while_in_subdir_three_deep(tmpdir):
+def test_get_rootdir_name_while_in_subdir_three_deep(tmpdir):
     """Find root directory while in subdir three deep."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -49,10 +49,10 @@ def test_return_rootdir_name_while_in_subdir_three_deep(tmpdir):
     tmpdirc = tmpdirb.mkdir("c")
     tmpdirc.join(RULEFILE_NAME).write("still more rules")
     os.chdir(tmpdirc)
-    assert CONFIGFILE_NAME in os.listdir(return_rootdir_name())
+    assert CONFIGFILE_NAME in os.listdir(get_rootdir_name())
 
 
-def test_not_return_rootdir_name_given_missing_link(tmpdir):
+def test_not_get_rootdir_name_given_missing_link(tmpdir):
     """Do not find root directory when rulefile chain has missing link."""
     tmpdir.join(CONFIGFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -63,7 +63,7 @@ def test_not_return_rootdir_name_given_missing_link(tmpdir):
     tmpdirc.join(RULEFILE_NAME).write("still more rules")
     os.chdir(tmpdirc)
     with pytest.raises(SystemExit):
-        return_rootdir_name()
+        get_rootdir_name()
 
 
 # @pytest.mark.skip

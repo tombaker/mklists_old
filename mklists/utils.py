@@ -45,7 +45,7 @@ def get_htmlstr_from_textstr(string):
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
-def return_datadirs_under_rootdir(rootdir="."):
+def get_listdir_names_under_rootdir(rootdir="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with a '.rules' file."""
     datadirs = []
@@ -74,11 +74,11 @@ def get_lines_from_listfiles(listfile_names: list):
     return all_datalines
 
 
-def return_listdir_shortname(listdir=os.getcwd(), rootdir=None):
+def get_listdir_shortname(listdir=os.getcwd(), rootdir=None):
     return listdir[len(rootdir) :].strip("/").replace("/", "_")
 
 
-def return_listfile_names(ls_listing: list):
+def get_listfile_names(ls_listing: list):
     """Return names of visible files with names that are valid for listfiles."""
     all_listfile_names = []
     for filename in ls_listing:
@@ -88,7 +88,7 @@ def return_listfile_names(ls_listing: list):
     return all_listfile_names
 
 
-def return_rootdir_name(path="."):
+def get_rootdir_name(path="."):
     """Return project rootdir when executed in the rootdir or in a datadir."""
     os.chdir(path)
     while True:
@@ -105,7 +105,7 @@ def return_rootdir_name(path="."):
         raise ConfigFileNotFoundError(f"No {CONFIGFILE_NAME} found. Try mklists init.")
 
 
-def return_pyobj_from_yamlfile(yamlfile_name):
+def get_pyobj_from_yamlfile(yamlfile_name):
     """Returns Python object parsed from given YAML-format file."""
     try:
         yamlstr = open(yamlfile_name).read()
