@@ -4,7 +4,6 @@
 import os
 import re
 import glob
-import yaml
 from mklists import (
     CONFIGFILE_NAME,
     INVALID_FILENAME_PATTERNS,
@@ -13,7 +12,6 @@ from mklists import (
     URL_PATTERN_REGEX,
     VALID_FILENAME_CHARACTERS_REGEX,
     BadFilenameError,
-    BadYamlError,
     ConfigFileNotFoundError,
 )
 
@@ -53,19 +51,6 @@ def get_listfile_names(listdir_name=os.getcwd()):
             raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
         all_listfile_names.append(filename)
     return all_listfile_names
-
-
-def get_pyobj_from_yamlfile(yamlfile_name):
-    """Returns Python object parsed from given YAML-format file."""
-    try:
-        yamlstr = open(yamlfile_name).read()
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
-
-    try:
-        return yaml.load(yamlstr)
-    except yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
 def get_rootdir_name(path="."):
