@@ -1,7 +1,7 @@
 """@@@Docstring"""
 
 import os
-from mklists.writes import write_yamlstr_to_yamlfile
+from mklists.utils import write_yamlstr_to_yamlfile
 from mklists.mkldict import _get_pyobj_from_yamlfile
 
 
