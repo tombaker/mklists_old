@@ -14,10 +14,7 @@ from mklists import (
     VALID_FILENAME_CHARACTERS_REGEX,
     BadFilenameError,
     BadYamlError,
-    BlankLinesError,
     ConfigFileNotFoundError,
-    NotUTF8Error,
-    NoDataError,
 )
 
 
@@ -31,25 +28,6 @@ def get_htmlstr_from_textstr(string):
     if "<a href=" in string:
         return string
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
-
-
-def get_lines_from_listfiles(listfile_names: list):
-    """Returns lines from files with valid names, UTF8, with no blank lines."""
-    all_datalines = []
-    for listfile in listfile_names:
-        try:
-            listfile_lines = open(listfile).readlines()
-        except UnicodeDecodeError:
-            raise NotUTF8Error(f"{repr(listfile)} is not UTF8-encoded.")
-        for line in listfile_lines:
-            if not line.rstrip():
-                print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(listfile)} has blank lines.")
-        all_datalines.extend(listfile_lines)
-
-    if not all_datalines:
-        raise NoDataError("No data to process!")
-    return all_datalines
 
 
 def get_listdir_names_under_rootdir(rootdir="."):

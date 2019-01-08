@@ -2,15 +2,10 @@
 
 import re
 from dataclasses import dataclass
-from mklists.utils import has_valid_name, get_pyobj_from_yamlfile
+from mklists.utils import has_valid_name
 from mklists import (
-    CONFIGFILE_NAME,
-    RULEFILE_NAME,
     BadFilenameError,
-    BadYamlRuleError,
-    NoRulesError,
     NotIntegerError,
-    RulefileNotFoundError,
     SourceEqualsTargetError,
     SourceMatchpatternError,
     UninitializedSourceError,
@@ -92,40 +87,3 @@ class Rule:
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
-
-
-def get_ruleobjs_list_from_files(
-    configfile=CONFIGFILE_NAME, rulefile=RULEFILE_NAME, verbose=True
-):
-    """Return list of rule objects from configuration and rule files."""
-    # If no rules, return None or empty list?
-
-    all_rules_list = []
-    config_pydict = get_pyobj_from_yamlfile(configfile)
-    try:
-        all_rules_list.append(config_pydict["global_rules"])
-    except KeyError:
-        if verbose:
-            print("No global rules found - skipping.")
-    except TypeError:
-        if verbose:
-            print("No global rules found - skipping.")
-
-    rules_pylist = get_pyobj_from_yamlfile(rulefile)
-    try:
-        all_rules_list.append(rules_pylist)
-    except FileNotFoundError:
-        raise RulefileNotFoundError(f"Rule file {repr(rulefile)} was not found.")
-
-    if not all_rules_list:
-        raise NoRulesError("No rules were found.")
-
-    ruleobjs_list = []
-    for item in all_rules_list:
-        try:
-            Rule(*item).is_valid
-        except TypeError:
-            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-        ruleobjs_list.append(Rule(*item))
-
-    return ruleobjs_list
