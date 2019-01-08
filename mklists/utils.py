@@ -38,7 +38,7 @@ def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
     return True
 
 
-def get_html_string_from_text_string(string):
+def get_htmlstr_from_textstr(string):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string
@@ -55,7 +55,7 @@ def return_datadirs_under_rootdir(rootdir="."):
     return datadirs
 
 
-def return_lines_from_listfiles(listfile_names: list):
+def get_lines_from_listfiles(listfile_names: list):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:
@@ -118,7 +118,7 @@ def return_pyobj_from_yamlfile(yamlfile_name):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
-def return_visiblefile_names(cwd=os.getcwd()):
+def get_lsvisible_names(cwd=os.getcwd()):
     """Return list of visible files in given directory (default: '.')."""
     os.chdir(cwd)
     return [name for name in glob.glob("*") if os.path.isfile(name)]
