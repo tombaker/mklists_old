@@ -3,18 +3,13 @@
 import re
 import yaml
 from collections import defaultdict
-from mklists.rules import Rule
 from mklists import (
-    RULEFILE_NAME,
-    CONFIGFILE_NAME,
     ConfigFileNotFoundError,
     BadYamlError,
-    BadYamlRuleError,
     BlankLinesError,
     NoDataError,
     NoRulesError,
     NotUTF8Error,
-    RulefileNotFoundError,
 )
 
 
@@ -35,43 +30,6 @@ def get_datalines_from_listfiles(listfile_names: list):
     if not all_datalines:
         raise NoDataError("No data to process!")
     return all_datalines
-
-
-def get_ruleobjs_list_from_files(
-    configfile=CONFIGFILE_NAME, rulefile=RULEFILE_NAME, verbose=True
-):
-    """Return list of rule objects from configuration and rule files."""
-    # If no rules, return None or empty list?
-
-    all_rules_list = []
-    config_pydict = _get_pyobj_from_yamlfile(configfile)
-    try:
-        all_rules_list.append(config_pydict["global_rules"])
-    except KeyError:
-        if verbose:
-            print("No global rules found - skipping.")
-    except TypeError:
-        if verbose:
-            print("No global rules found - skipping.")
-
-    rules_pylist = _get_pyobj_from_yamlfile(rulefile)
-    try:
-        all_rules_list.append(rules_pylist)
-    except FileNotFoundError:
-        raise RulefileNotFoundError(f"Rule file {repr(rulefile)} was not found.")
-
-    if not all_rules_list:
-        raise NoRulesError("No rules were found.")
-
-    ruleobjs_list = []
-    for item in all_rules_list:
-        try:
-            Rule(*item).is_valid
-        except TypeError:
-            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-        ruleobjs_list.append(Rule(*item))
-
-    return ruleobjs_list
 
 
 def _get_pyobj_from_yamlfile(yamlfile_name):
