@@ -21,9 +21,9 @@ from mklists import (
 )
 
 
-def construct_backupdir_name(now=TIMESTAMP_STR, here=None):
+def get_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
     """@@@Docstring"""
-    return os.path.join(here, now)
+    return os.path.join(listdir_name, now)
 
 
 def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
@@ -38,7 +38,7 @@ def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
     return True
 
 
-def construct_html_string_from_text_string(string):
+def get_html_string_from_text_string(string):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string
