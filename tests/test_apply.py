@@ -1,7 +1,7 @@
 """Tests for apply.py"""
 
 import pytest
-from mklists.apply import apply_rules_to_datalines, _line_matches
+from mklists.apply import apply_rules_to_datalines, _line_matches_rule
 from mklists.rules import Rule
 
 
@@ -66,27 +66,27 @@ def test_apply_rules_to_datalines_correct_result_too():
     apply_rules_to_datalines(rules, lines) == mdict
 
 
-def test_apply_line_matches():
+def test_apply_line_matches_rule():
     given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "NOW Buy milk") is True
+    _line_matches_rule(given_rule, "NOW Buy milk") is True
 
 
-def test_apply_line_matches_with_space():
+def test_apply_line_matches_rule_with_space():
     given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, " NOW Buy milk") is True
+    _line_matches_rule(given_rule, " NOW Buy milk") is True
 
 
-def test_apply_line_matches_no_match():
+def test_apply_line_matches_rule_no_match():
     given_rule = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "LATER Buy milk") is False
+    _line_matches_rule(given_rule, "LATER Buy milk") is False
 
 
-def test_apply_line_matches_gotcha():
+def test_apply_line_matches_rule_gotcha():
     """True because ' NOW Buy milk'.split() => ['NOW', 'Buy', 'milk']"""
     given_rule = Rule(1, "^NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, " NOW Buy milk") is True
+    _line_matches_rule(given_rule, " NOW Buy milk") is True
 
 
-def test_apply_line_matches_entire_line():
+def test_apply_line_matches_rule_entire_line():
     given_rule = Rule(0, "^NOW", "a.txt", "b.txt", 0)
-    _line_matches(given_rule, "NOW Buy milk") is True
+    _line_matches_rule(given_rule, "NOW Buy milk") is True

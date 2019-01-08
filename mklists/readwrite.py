@@ -6,7 +6,7 @@ Functions with side effects such as:
 * modifying data structures in memory"""
 
 
-def move_old_listfiles_to_backupdir(backups=2):
+def move_old_listfiles_to_backupdir(backupdir, backups=2):
     """
     if backups is less than two, then backups = 2 - "mandatory"
     If 'backup' is True:

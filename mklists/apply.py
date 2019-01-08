@@ -40,7 +40,7 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
         #    append matching lines to value of 'ruleobj.target'
         #    remove matching lines from value of 'ruleobj.source'
         for line in data_dict[ruleobj.source]:
-            if _line_matches(ruleobj, line):
+            if _line_matches_rule(ruleobj, line):
                 data_dict[ruleobj.target].extend([line])
                 data_dict[ruleobj.source].remove(line)
 
@@ -57,7 +57,7 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
     return dict(data_dict)
 
 
-def _line_matches(given_rule=None, given_line=None):
+def _line_matches_rule(given_rule=None, given_line=None):
     """Returns True if data line matches pattern specified in given rule."""
 
     # Line does not match if given field greater than number of fields in line.
