@@ -6,13 +6,14 @@ from mklists.utils import has_valid_name, get_pyobj_from_yamlfile
 from mklists import (
     CONFIGFILE_NAME,
     RULEFILE_NAME,
-    NotIntegerError,
     BadFilenameError,
+    BadYamlRuleError,
+    NoRulesError,
+    NotIntegerError,
+    RulefileNotFoundError,
     SourceEqualsTargetError,
     SourceMatchpatternError,
     UninitializedSourceError,
-    ConfigFileNotFoundError,
-    BadYamlRuleError,
 )
 
 
@@ -93,31 +94,34 @@ class Rule:
         return True
 
 
-def get_rules_pydict():
-    """Find and load YAML rulefiles, returning list of rule objects.
-    ruleobjs_list = []
-    """
-    globalrules = _get_globalruleobjs_from_configfile()
-    rules = _get_ruleobjs_from_rulefile()
-    if rules:
-        pass
-    if globalrules:
-        pass
+def get_ruleobjs_list_from_files(
+    configfile=CONFIGFILE_NAME, rulefile=RULEFILE_NAME, verbose=True
+):
+    """Return list of rule objects from configuration and rule files."""
+    # If no rules, return None or empty list?
 
-
-def _get_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
-    """Returns list of rules from configuration file in root directory of project.
-    If no rules, return None or empty list?"""
-    rules_list = []
-    ruleobjs_list = []
+    all_rules_list = []
+    config_pydict = get_pyobj_from_yamlfile(configfile)
     try:
-        config_pydict = get_pyobj_from_yamlfile(configfile)
-        rules_list.append(config_pydict["global_rules"])
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"Configuration file {configfile} not found.")
+        all_rules_list.append(config_pydict["global_rules"])
+    except KeyError:
+        if verbose:
+            print("No global rules found - skipping.")
     except TypeError:
-        print("NoneType")
-    for item in rules_list:
+        if verbose:
+            print("No global rules found - skipping.")
+
+    rules_pylist = get_pyobj_from_yamlfile(rulefile)
+    try:
+        all_rules_list.append(rules_pylist)
+    except FileNotFoundError:
+        raise RulefileNotFoundError(f"Rule file {repr(rulefile)} was not found.")
+
+    if not all_rules_list:
+        raise NoRulesError("No rules were found.")
+
+    ruleobjs_list = []
+    for item in all_rules_list:
         try:
             Rule(*item).is_valid
         except TypeError:
@@ -125,7 +129,3 @@ def _get_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
         ruleobjs_list.append(Rule(*item))
 
     return ruleobjs_list
-
-
-def _get_ruleobjs_from_rulefile(rulefile=RULEFILE_NAME):
-    """Returns list of rules from rule file."""

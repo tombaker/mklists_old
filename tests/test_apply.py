@@ -1,7 +1,7 @@
-"""Tests for apply.py"""
+"""Tests for mkldict.py"""
 
 import pytest
-from mklists.apply import apply_rules_to_datalines, _line_matches_rule
+from mklists.mkldict import apply_rules_to_datalines, _line_matches_rule
 from mklists.rules import Rule
 
 

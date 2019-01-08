@@ -3,7 +3,7 @@
 import click
 import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
-from mklists.apply import apply_rules_to_datalines
+from mklists.mkldict import apply_rules_to_datalines
 from mklists.writes import (
     move_old_listfiles_to_backupdir,
     write_pydict_to_textfiles,
@@ -15,7 +15,7 @@ from mklists.utils import (
     get_lines_from_listfiles,
     get_rootdir_name,
 )
-from mklists.rules import get_rules_pydict
+from mklists.rules import get_ruleobjs_list_from_files
 
 
 @click.group()
@@ -57,7 +57,7 @@ def run(ctx, dryrun):
     """Apply rules to re-write data files.
     @@@for dir in .rules..."""
     data = get_lines_from_listfiles()
-    rules = get_rules_pydict()
+    rules = get_ruleobjs_list_from_files()
     all_datalines_dict = apply_rules_to_datalines(rules, data)
     move_old_listfiles_to_backupdir(ctx)
     write_pydict_to_textfiles(all_datalines_dict)
