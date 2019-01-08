@@ -3,7 +3,7 @@
 import os
 import pytest
 from mklists.utils import return_rootdir_name
-from mklists import CONFIGFILE_NAME, LOCAL_RULEFILE_NAME, RULEFILE_NAME
+from mklists import CONFIGFILE_NAME, RULEFILE_NAME
 
 
 def test_return_rootdir_name_from_fixture_subdir(myrepo):
@@ -47,7 +47,7 @@ def test_return_rootdir_name_while_in_subdir_three_deep(tmpdir):
     tmpdirb = tmpdira.mkdir("b")
     tmpdirb.join(RULEFILE_NAME).write("some more rules")
     tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(LOCAL_RULEFILE_NAME).write("still more rules")
+    tmpdirc.join(RULEFILE_NAME).write("still more rules")
     os.chdir(tmpdirc)
     assert CONFIGFILE_NAME in os.listdir(return_rootdir_name())
 
@@ -60,7 +60,7 @@ def test_not_return_rootdir_name_given_missing_link(tmpdir):
     tmpdirb = tmpdira.mkdir("b")
     tmpdirb.join("foobar").write("some more rules")
     tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(LOCAL_RULEFILE_NAME).write("still more rules")
+    tmpdirc.join(RULEFILE_NAME).write("still more rules")
     os.chdir(tmpdirc)
     with pytest.raises(SystemExit):
         return_rootdir_name()

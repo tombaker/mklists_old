@@ -7,7 +7,6 @@ import glob
 import yaml
 from mklists import (
     CONFIGFILE_NAME,
-    LOCAL_RULEFILE_NAME,
     INVALID_FILENAME_PATTERNS,
     RULEFILE_NAME,
     TIMESTAMP_STR,
@@ -48,11 +47,10 @@ def construct_html_string_from_text_string(string):
 
 def return_datadirs_under_rootdir(rootdir="."):
     """Return list of all data directories under a given root directory.
-    By definition, a data directory is a directory with either a
-    '.rules' or '.localrules' file."""
+    By definition, a data directory is a directory with a '.rules' file."""
     datadirs = []
     for (dirpath, dirs, files) in os.walk(rootdir):
-        if (RULEFILE_NAME in files) or (LOCAL_RULEFILE_NAME in files):
+        if RULEFILE_NAME in files:
             datadirs.append(os.path.join(dirpath))
     return datadirs
 
@@ -98,8 +96,6 @@ def return_rootdir_name(path="."):
         if RULEFILE_NAME in ls_cwd:
             os.chdir(os.pardir)
             continue
-        elif LOCAL_RULEFILE_NAME in ls_cwd:
-            os.chdir(os.pardir)
         else:
             break
 

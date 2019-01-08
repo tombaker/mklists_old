@@ -8,7 +8,6 @@ INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 CONFIGFILE_NAME = "mklists.yml"  # only in root directory
 CONFIG_STARTER_DICT = {}
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.@:A-Za-z0-9]+$"
-LOCAL_RULEFILE_NAME = ".localrules"
 RULEFILE_NAME = ".rules"
 BACKUP_DIR_NAME = "_backups"
 HTMLFILES_DIR_NAME = "_html"

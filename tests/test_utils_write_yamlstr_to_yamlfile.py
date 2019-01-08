@@ -19,5 +19,5 @@ def test_write_yamlstr_to_yamlfile_too(tmpdir):
     lr_yamlstr = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile(lr_yamlstr, "_lrules")
-    assert lr_yamlstr == open("_lrules").read()
+    write_yamlstr_to_yamlfile(lr_yamlstr, "_rules")
+    assert lr_yamlstr == open("_rules").read()

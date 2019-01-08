@@ -6,7 +6,6 @@ from mklists.utils import has_valid_name, return_pyobj_from_yamlfile
 from mklists import (
     CONFIGFILE_NAME,
     RULEFILE_NAME,
-    LOCAL_RULEFILE_NAME,
     NotIntegerError,
     BadFilenameError,
     SourceEqualsTargetError,
@@ -100,10 +99,7 @@ def return_rules_pydict():
     """
     globalrules = _return_globalruleobjs_from_configfile()
     rules = _return_ruleobjs_from_rulefile()
-    localrules = _return_ruleobjs_from_localrulefile()
     if rules:
-        pass
-    if localrules:
         pass
     if globalrules:
         pass
@@ -132,8 +128,4 @@ def _return_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
 
 
 def _return_ruleobjs_from_rulefile(rulefile=RULEFILE_NAME):
-    """Returns list of rules from rule file."""
-
-
-def _return_ruleobjs_from_localrulefile(localrulefile=LOCAL_RULEFILE_NAME):
     """Returns list of rules from rule file."""
