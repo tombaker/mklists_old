@@ -26,33 +26,11 @@ def get_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
     return os.path.join(listdir_name, now)
 
 
-def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
-    """Return True if filename has no invalid characters or string patterns.
-    @@@Figure out how to pass in invalid filename patterns from context."""
-    for badpat in badpats:
-        if re.search(badpat, filename):
-            return False
-    for char in filename:
-        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
-            return False
-    return True
-
-
 def get_htmlstr_from_textstr(string):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
-
-
-def get_listdir_names_under_rootdir(rootdir="."):
-    """Return list of all data directories under a given root directory.
-    By definition, a data directory is a directory with a '.rules' file."""
-    datadirs = []
-    for (dirpath, dirs, files) in os.walk(rootdir):
-        if RULEFILE_NAME in files:
-            datadirs.append(os.path.join(dirpath))
-    return datadirs
 
 
 def get_lines_from_listfiles(listfile_names: list):
@@ -74,35 +52,29 @@ def get_lines_from_listfiles(listfile_names: list):
     return all_datalines
 
 
+def get_listdir_names_under_rootdir(rootdir="."):
+    """Return list of all data directories under a given root directory.
+    By definition, a data directory is a directory with a '.rules' file."""
+    listdirs = []
+    for (dirpath, dirs, files) in os.walk(rootdir):
+        if RULEFILE_NAME in files:
+            listdirs.append(os.path.join(dirpath))
+    return listdirs
+
+
 def get_listdir_shortname(listdir=os.getcwd(), rootdir=None):
     return listdir[len(rootdir) :].strip("/").replace("/", "_")
 
 
-def get_listfile_names(ls_listing: list):
-    """Return names of visible files with names that are valid for listfiles."""
+def get_listfile_names(listdir_name=os.getcwd()):
+    """Return names of visible files with names that are valid as listfiles."""
+    os.chdir(listdir_name)
     all_listfile_names = []
-    for filename in ls_listing:
+    for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         if not has_valid_name(filename):
             raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
         all_listfile_names.append(filename)
     return all_listfile_names
-
-
-def get_rootdir_name(path="."):
-    """Return project rootdir when executed in the rootdir or in a datadir."""
-    os.chdir(path)
-    while True:
-        ls_cwd = os.listdir()
-        if RULEFILE_NAME in ls_cwd:
-            os.chdir(os.pardir)
-            continue
-        else:
-            break
-
-    if CONFIGFILE_NAME in os.listdir():
-        return os.getcwd()
-    else:
-        raise ConfigFileNotFoundError(f"No {CONFIGFILE_NAME} found. Try mklists init.")
 
 
 def get_pyobj_from_yamlfile(yamlfile_name):
@@ -118,10 +90,33 @@ def get_pyobj_from_yamlfile(yamlfile_name):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
-def get_lsvisible_names(cwd=os.getcwd()):
-    """Return list of visible files in given directory (default: '.')."""
-    os.chdir(cwd)
-    return [name for name in glob.glob("*") if os.path.isfile(name)]
+def get_rootdir_name(path="."):
+    """Return project rootdir when executed in the rootdir or in a listdir."""
+    os.chdir(path)
+    while True:
+        ls_cwd = os.listdir()
+        if RULEFILE_NAME in ls_cwd:
+            os.chdir(os.pardir)
+            continue
+        else:
+            break
+
+    if CONFIGFILE_NAME in os.listdir():
+        return os.getcwd()
+    else:
+        raise ConfigFileNotFoundError(f"No {CONFIGFILE_NAME} found. Try mklists init.")
+
+
+def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
+    """Return True if filename has no invalid characters or string patterns.
+    @@@Figure out how to pass in invalid filename patterns from context."""
+    for badpat in badpats:
+        if re.search(badpat, filename):
+            return False
+    for char in filename:
+        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
+            return False
+    return True
 
 
 def update_settings_dict(settings_dict=None, overrides=None):

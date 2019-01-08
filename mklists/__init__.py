@@ -43,8 +43,8 @@ class ConfigFileNotFoundError(ConfigError):
     """Hardwired configuration file 'mklists.yml' was not found."""
 
 
-class DatadirNotAccessibleError(ConfigError):
-    """Non-default data directory is not accessible."""
+class ListdirNotAccessibleError(ConfigError):
+    """Non-default data directory is not accessible.  @@@Is this even used?"""
 
 
 class InitError(ConfigError):

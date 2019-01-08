@@ -32,12 +32,6 @@ def move_old_listfiles_to_backupdir(backupdir, backups=2):
     Therefore, there should _always_ be at least one backup."""
 
 
-def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
-    """Write YAML string to YAML file."""
-    with open(yamlfile_name, "w") as fout:
-        fout.write(yamlstr)
-
-
 def write_pydict_to_htmlfiles(data_dict={}, verbose=False):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()
@@ -50,7 +44,7 @@ def write_pydict_to_htmlfiles(data_dict={}, verbose=False):
                 os.remove(file)
         os.chdir(pwd)
     """
-    print(f"* Move files outside datadir as per ['files2dirs'].")
+    print(f"* Move files outside listdir as per ['files2dirs'].")
 
 
 def write_pydict_to_textfiles(data_dict=None, verbose=False):
@@ -59,3 +53,9 @@ def write_pydict_to_textfiles(data_dict=None, verbose=False):
     Write data_dict to working directory:
     -- data_dict keys are names of files.
     -- data_dict values are contents of files."""
+
+
+def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
+    """Write YAML string to YAML file."""
+    with open(yamlfile_name, "w") as fout:
+        fout.write(yamlstr)

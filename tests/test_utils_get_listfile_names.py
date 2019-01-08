@@ -1,7 +1,7 @@
 """@@@Docstring"""
 
 import os
-from mklists.utils import get_listfile_names, get_lsvisible_names
+from mklists.utils import get_listfile_names
 
 
 def test_get_listfile_names(tmpdir):
@@ -11,5 +11,4 @@ def test_get_listfile_names(tmpdir):
     tmpdir.join("foo").write("foo stuff\nmore foo stuff")
     tmpdir.join("bar").write("bar stuff\nmore bar stuff")
     tmpdir.mkdir("baz")
-    files = get_lsvisible_names(tmpdir)
-    assert get_listfile_names(files) == ["foo", "bar"]
+    assert get_listfile_names(tmpdir) == ["foo", "bar"]
