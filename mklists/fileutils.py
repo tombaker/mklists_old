@@ -1,9 +1,10 @@
-"""Read-write module
+"""Module for functions that have following side effects::
+* move files between directories
+* write to files on disk"""
 
-Functions with side effects such as:
-* reading files from disk (including config and rule files)
-* writing to files on disk
-* modifying data structures in memory"""
+
+def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
+    """Args: files2dirs_dict: filename (key) and destination directory (value)"""
 
 
 def move_old_listfiles_to_backupdir(backupdir, backups=2):
@@ -31,12 +32,10 @@ def move_old_listfiles_to_backupdir(backupdir, backups=2):
     Therefore, there should _always_ be at least one backup."""
 
 
-def write_pydict_to_textfiles(data_dict=None, verbose=False):
-    """If 'backup' is ON, move existing files from working to backup directory.
-    If 'backup' is OFF, DELETE existing files in working directory.
-    Write data_dict to working directory:
-    -- data_dict keys are names of files.
-    -- data_dict values are contents of files."""
+def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
+    """Write YAML string to YAML file."""
+    with open(yamlfile_name, "w") as fout:
+        fout.write(yamlstr)
 
 
 def write_pydict_to_htmlfiles(data_dict={}, verbose=False):
@@ -54,5 +53,9 @@ def write_pydict_to_htmlfiles(data_dict={}, verbose=False):
     print(f"* Move files outside datadir as per ['files2dirs'].")
 
 
-def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
-    """Args: files2dirs_dict: filename (key) and destination directory (value)"""
+def write_pydict_to_textfiles(data_dict=None, verbose=False):
+    """If 'backup' is ON, move existing files from working to backup directory.
+    If 'backup' is OFF, DELETE existing files in working directory.
+    Write data_dict to working directory:
+    -- data_dict keys are names of files.
+    -- data_dict values are contents of files."""

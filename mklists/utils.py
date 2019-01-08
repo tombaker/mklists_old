@@ -131,12 +131,6 @@ def update_settings_dict(settings_dict=None, overrides=None):
     return settings_dict
 
 
-def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
-    """Write YAML string to YAML file."""
-    with open(yamlfile_name, "w") as fout:
-        fout.write(yamlstr)
-
-
 # Structure will be:
 # _backups/a/2018-12-31
 # _backups/a/2019-01-01

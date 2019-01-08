@@ -4,7 +4,7 @@ import click
 import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from mklists.apply import apply_rules_to_datalines
-from mklists.readwrite import (
+from mklists.fileutils import (
     move_old_listfiles_to_backupdir,
     write_pydict_to_textfiles,
     write_pydict_to_htmlfiles,
@@ -46,8 +46,8 @@ def init(ctx, empty, newbie):
         print("empty")
     elif newbie is not None:
         print("newbie")
-        print("call write_initial_configfile() - in readwrite.py")
-        print("call write_initial_rulefiles() - in readwrite.py")
+        print("call write_initial_configfile() - in fileutils.py")
+        print("call write_initial_rulefiles() - in fileutils.py")
 
 
 @cli.command()
