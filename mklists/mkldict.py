@@ -158,3 +158,26 @@ def _line_matches_rule(given_rule=None, given_line=None):
             return True
 
     return False
+
+
+def write_mkldict_to_htmlfiles(data_dict={}, verbose=False):
+    """Something like: def removefiles(targetdirectory):
+    pwd = os.getcwd()
+    abstargetdir = absdirname(targetdirectory)
+    if os.path.isdir(abstargetdir):
+        os.chdir(abstargetdir)
+        files = datals()
+        if files:
+            for file in files:
+                os.remove(file)
+        os.chdir(pwd)
+    """
+    print(f"* Move files outside listdir as per ['files2dirs'].")
+
+
+def write_mkldict_to_listfiles(data_dict=None, verbose=False):
+    """If 'backup' is ON, move existing files from working to backup directory.
+    If 'backup' is OFF, DELETE existing files in working directory.
+    Write data_dict to working directory:
+    -- data_dict keys are names of files.
+    -- data_dict values are contents of files."""

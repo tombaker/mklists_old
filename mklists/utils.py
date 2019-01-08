@@ -28,12 +28,12 @@ def get_htmlstr_from_textstr(string):
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
-def get_listdir_names_under_rootdir(rootdir="."):
+def get_listdir_names_under_rootdir(rootdir_name="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with a '.rules' file."""
     listdirs = []
-    for (dirpath, dirs, files) in os.walk(rootdir):
-        if RULEFILE_NAME in files:
+    for (dirpath, __, filenames) in os.walk(rootdir_name):
+        if RULEFILE_NAME in filenames:
             listdirs.append(os.path.join(dirpath))
     return listdirs
 
