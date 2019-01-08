@@ -1,4 +1,5 @@
-"""@@@Docstring"""
+"""_get_pyobj_from_yamlfile():
+* is called by get_ruleobjs_list_from_files()"""
 
 import os
 import pytest

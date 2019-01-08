@@ -1,4 +1,6 @@
-"""@@@Docstring"""
+"""get_datalines_from_listfiles()
+* takes a list of files
+* returns a list of datalines"""
 
 import os
 import pytest
