@@ -6,9 +6,9 @@ from mklists.utils import return_rootdir_name
 from mklists import CONFIGFILE_NAME, LOCAL_RULEFILE_NAME, RULEFILE_NAME
 
 
-def test_return_rootdir_name_from_fixture_subdir(myrepo_configured):
+def test_return_rootdir_name_from_fixture_subdir(myrepo):
     """Find root directory from root directory of fixture."""
-    os.chdir(os.path.join(myrepo_configured, "a"))
+    os.chdir(os.path.join(myrepo, "a"))
     assert CONFIGFILE_NAME in os.listdir(return_rootdir_name())
 
 

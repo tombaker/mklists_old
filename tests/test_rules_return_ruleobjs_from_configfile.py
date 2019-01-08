@@ -5,6 +5,6 @@ from mklists.rules import _return_globalruleobjs_from_configfile
 
 
 @pytest.mark.skip
-def test_return_globalruleobjs_from_configfile(myrepo_configured):
+def test_return_globalruleobjs_from_configfile(myrepo):
     """Given """
     return _return_globalruleobjs_from_configfile() == 2

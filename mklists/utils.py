@@ -109,14 +109,17 @@ def return_rootdir_name(path="."):
         raise ConfigFileNotFoundError(f"No {CONFIGFILE_NAME} found. Try mklists init.")
 
 
-def return_pydict_from_yaml_configfile(yamlfile_name):
+def return_pyobj_from_yamlfile(yamlfile_name):
     """Returns Python object parsed from given YAML-format file."""
     try:
-        return yaml.safe_load(open(yamlfile_name))
-    except yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
+        yamlstr = open(yamlfile_name).read()
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
+
+    try:
+        return yaml.load(yamlstr)
+    except yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
 def return_visiblefile_names(cwd=os.getcwd()):

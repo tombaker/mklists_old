@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from mklists.utils import has_valid_name, return_pydict_from_yaml_configfile
+from mklists.utils import has_valid_name, return_pyobj_from_yamlfile
 from mklists import (
     CONFIGFILE_NAME,
     RULEFILE_NAME,
@@ -115,7 +115,7 @@ def _return_globalruleobjs_from_configfile(configfile=CONFIGFILE_NAME):
     rules_list = []
     ruleobjs_list = []
     try:
-        config_pydict = return_pydict_from_yaml_configfile(configfile)
+        config_pydict = return_pyobj_from_yamlfile(configfile)
         rules_list.append(config_pydict["global_rules"])
     except FileNotFoundError:
         raise ConfigFileNotFoundError(f"Configuration file {configfile} not found.")

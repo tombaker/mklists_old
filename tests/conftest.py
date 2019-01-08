@@ -14,24 +14,16 @@ TEST_RULEFILEA_YAMLSTR = """\
 - [2, 'LATER',   lines,  later,   0]
 """
 
-TEST_RULEFILEB_NAME = ".localrules"
-TEST_RULEFILEB_YAMLSTR = """\
-- [2, 'NOW',     lines,  now,     1]
-- [2, 'LATER',   lines,  later,   0]
-"""
-
 TEST_LISTFILE_STRING = """= NOW Cook\n=LATER Read"""
 
 
-@pytest.fixture(name="myrepo_configured")
-def fixture_myrepo_configured(tmpdir_factory):
+@pytest.fixture(name="myrepo")
+def fixture_myrepo(tmpdir_factory):
     """Return temporary mklists repo 'myrepo'."""
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
-    subdir_b = root_dir.mkdir("b")
     root_dir.join(TEST_CONFIGFILE_NAME).write(TEST_CONFIGFILE_YAMLSTR)
     subdir_a.join(TEST_RULEFILEA_NAME).write(TEST_RULEFILEA_YAMLSTR)
-    subdir_b.join(TEST_RULEFILEB_NAME).write(TEST_RULEFILEB_YAMLSTR)
     return root_dir
 
 
