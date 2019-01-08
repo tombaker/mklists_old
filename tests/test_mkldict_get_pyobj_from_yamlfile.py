@@ -3,7 +3,7 @@
 import os
 import pytest
 from mklists.writes import write_yamlstr_to_yamlfile
-from mklists.mkldict import get_pyobj_from_yamlfile
+from mklists.mkldict import _get_pyobj_from_yamlfile
 
 
 def test_get_pyobj_from_yamlfile(tmpdir):
@@ -13,7 +13,7 @@ def test_get_pyobj_from_yamlfile(tmpdir):
     with open(yamlfile, "w") as fout:
         fout.write(yaml_str)
     result = {"backups": 3, "verbose": False}
-    assert get_pyobj_from_yamlfile(yamlfile) == result
+    assert _get_pyobj_from_yamlfile(yamlfile) == result
 
 
 def test_get_pyobj_from_yamlfile_bad_yaml(tmpdir):
@@ -24,7 +24,7 @@ def test_get_pyobj_from_yamlfile_bad_yaml(tmpdir):
     with open(yamlfile, "w") as fout:
         fout.write(yaml_str)
     with pytest.raises(SystemExit):
-        get_pyobj_from_yamlfile(yamlfile)
+        _get_pyobj_from_yamlfile(yamlfile)
 
 
 def test_get_pyobj_from_yamlfile_file_not_found(tmpdir):
@@ -32,7 +32,7 @@ def test_get_pyobj_from_yamlfile_file_not_found(tmpdir):
     os.chdir(tmpdir)
     yamlfile = "mklists.yml"
     with pytest.raises(SystemExit):
-        get_pyobj_from_yamlfile(yamlfile)
+        _get_pyobj_from_yamlfile(yamlfile)
 
 
 def test_read_yaml_configfile_given_good_yamlfile(tmpdir):
@@ -43,7 +43,7 @@ def test_read_yaml_configfile_given_good_yamlfile(tmpdir):
     - [1, 'LATER', a, c, 0]"""
     write_yamlstr_to_yamlfile(lrules_yamlstr, "_lrules")
     good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
-    assert get_pyobj_from_yamlfile("_lrules") == good_pyobject
+    assert _get_pyobj_from_yamlfile("_lrules") == good_pyobject
 
 
 def test_read_yaml_configfile_given_bad_yaml(tmpdir):
@@ -54,4 +54,4 @@ def test_read_yaml_configfile_given_bad_yaml(tmpdir):
     + [1, 'LATER', a, c, 0]"""
     write_yamlstr_to_yamlfile(bad_yamlstr, "_lrules_bad")
     with pytest.raises(SystemExit):
-        get_pyobj_from_yamlfile("_lrules_bad")
+        _get_pyobj_from_yamlfile("_lrules_bad")

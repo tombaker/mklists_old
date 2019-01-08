@@ -37,19 +37,6 @@ def get_datalines_from_listfiles(listfile_names: list):
     return all_datalines
 
 
-def get_pyobj_from_yamlfile(yamlfile_name):
-    """Returns Python object parsed from given YAML-format file."""
-    try:
-        yamlstr = open(yamlfile_name).read()
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
-
-    try:
-        return yaml.load(yamlstr)
-    except yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
-
-
 def get_ruleobjs_list_from_files(
     configfile=CONFIGFILE_NAME, rulefile=RULEFILE_NAME, verbose=True
 ):
@@ -57,7 +44,7 @@ def get_ruleobjs_list_from_files(
     # If no rules, return None or empty list?
 
     all_rules_list = []
-    config_pydict = get_pyobj_from_yamlfile(configfile)
+    config_pydict = _get_pyobj_from_yamlfile(configfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
@@ -67,7 +54,7 @@ def get_ruleobjs_list_from_files(
         if verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = get_pyobj_from_yamlfile(rulefile)
+    rules_pylist = _get_pyobj_from_yamlfile(rulefile)
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:
@@ -85,6 +72,19 @@ def get_ruleobjs_list_from_files(
         ruleobjs_list.append(Rule(*item))
 
     return ruleobjs_list
+
+
+def _get_pyobj_from_yamlfile(yamlfile_name):
+    """Returns Python object parsed from given YAML-format file."""
+    try:
+        yamlstr = open(yamlfile_name).read()
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
+
+    try:
+        return yaml.load(yamlstr)
+    except yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
 def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):

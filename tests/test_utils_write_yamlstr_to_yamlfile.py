@@ -2,7 +2,7 @@
 
 import os
 from mklists.writes import write_yamlstr_to_yamlfile
-from mklists.mkldict import get_pyobj_from_yamlfile
+from mklists.mkldict import _get_pyobj_from_yamlfile
 
 
 def test_write_yamlstr_to_yamlfile(tmpdir):
@@ -11,7 +11,7 @@ def test_write_yamlstr_to_yamlfile(tmpdir):
     yamlfile = "mklists.yml"
     write_yamlstr_to_yamlfile(yaml_str, yamlfile)
     result = {"backups": 3, "verbose": False}
-    assert get_pyobj_from_yamlfile(yamlfile) == result
+    assert _get_pyobj_from_yamlfile(yamlfile) == result
 
 
 def test_write_yamlstr_to_yamlfile_too(tmpdir):
