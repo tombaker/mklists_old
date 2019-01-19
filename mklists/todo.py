@@ -75,3 +75,22 @@ def get_ruleobjs_list_from_files(
         ruleobjs_list.append(Rule(*item))
 
     return ruleobjs_list
+
+
+def write_datadict_to_htmlfiles(datadict={}, verbose=False):
+    """Belongs in makelists.py:
+    -- Create htmldir (if it does not already exist).
+    -- Delete files in htmldir (if files already exist there).
+    -- Write out contents of datadict to working directory:
+       -- datadict keys are filenames.
+          -- for each filename, add file extension '.html'
+       -- datadict values are contents of files.
+          -- filter each line through make_htmlstr_from_textstr."""
+
+
+def write_datadict_to_listfiles(datadict=None, verbose=False):
+    """Belongs in makelists.py:
+    -- Move existing files from working directory to backupdir.
+    -- Write out contents of datadict to working directory:
+       -- datadict keys are names of files.
+       -- datadict values are contents of files."""
