@@ -15,12 +15,12 @@ from mklists import (
 )
 
 
-def get_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
+def make_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
     """@@@Docstring"""
     return os.path.join(listdir_name, now)
 
 
-def get_htmlstr_from_textstr(string):
+def make_htmlstr_from_textstr(string):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string

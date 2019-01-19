@@ -18,9 +18,9 @@ from mklists.utils import get_rootdir_name, update_settings_dict
 
 
 @click.group()
-@click.option("--verbose", is_flag=True, help="Print debug info")
-@click.version_option("0.1.5", help="Show version and exit")
-@click.help_option(help="Show help and exit")
+@click.option("--verbose", is_flag=True, help="Print debug information.")
+@click.version_option("0.1.5", help="Show version and exit.")
+@click.help_option(help="Show help and exit.")
 @click.pass_context
 def cli(ctx, verbose):
     """Organize your todo lists by tweaking rules"""
@@ -36,8 +36,8 @@ def cli(ctx, verbose):
 
 
 @cli.command()
-@click.option("--empty", is_flag=True, help="With bare minimum")
-@click.option("--newbie", is_flag=True, help="With examples")
+@click.option("--empty", is_flag=True, help="Initialize bare minimum (for experts).")
+@click.option("--newbie", is_flag=True, help="Initialize with examples (default).")
 @click.pass_context
 def init(ctx, empty, newbie):
     """Write starter configuration and rule files."""

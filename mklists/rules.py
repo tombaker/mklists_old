@@ -17,10 +17,10 @@ class Rule:
     """Holds state and self-validation methods for a single rule.
 
     Fields:
-        source_matchfield: part of data line matched to source_matchpattern.
-        source_matchpattern: regex matched to part of source_matchfield.
-        source: source of data lines to be matched against source_matchpattern.
-        target: destination of data lines matching source_matchpattern.
+        source_matchfield: data line field to be matched to source_matchpattern.
+        source_matchpattern: regex matched to source_matchfield.
+        source: filename of source of data lines to be matched to source_matchpattern.
+        target: filename of destination of data lines that match source_matchpattern.
         target_sortorder: field on which target data lines are sorted.
     """
 
