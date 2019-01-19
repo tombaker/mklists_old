@@ -8,7 +8,7 @@ from mklists import (
     BadYamlRuleError,
 )
 from mklists.rules import Rule
-from mklists.mkldict import _get_pyobj_from_yamlfile
+from mklists.makelists import _get_pyobj_from_yamlfile
 
 
 def move_certain_listfiles_to_other_directories(files2dirs_dict=None):

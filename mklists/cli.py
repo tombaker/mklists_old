@@ -8,11 +8,11 @@ from mklists.todo import (
     move_old_listfiles_to_backupdir,
     move_certain_listfiles_to_other_directories,
 )
-from mklists.mkldict import (
+from mklists.makelists import (
     get_datalines_from_listfiles,
     apply_rules_to_datalines,
-    write_mkldict_to_listfiles,
-    write_mkldict_to_htmlfiles,
+    write_pydict_to_listfiles,
+    write_pydict_to_htmlfiles,
 )
 from mklists.utils import get_rootdir_name, update_settings_dict
 
@@ -59,9 +59,9 @@ def run(ctx, dryrun):
     rules = get_ruleobjs_list_from_files()
     all_datalines_dict = apply_rules_to_datalines(rules, data)
     move_old_listfiles_to_backupdir(ctx)
-    write_mkldict_to_listfiles(all_datalines_dict)
+    write_pydict_to_listfiles(all_datalines_dict)
     if ctx.obj["html"]:
-        write_mkldict_to_htmlfiles(all_datalines_dict)
+        write_pydict_to_htmlfiles(all_datalines_dict)
     if ctx.obj["files2dirs"]:
         move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
     if dryrun:

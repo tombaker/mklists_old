@@ -2,7 +2,7 @@
 
 import os
 from mklists.utils import write_yamlstr_to_yamlfile
-from mklists.mkldict import _get_pyobj_from_yamlfile
+from mklists.makelists import _get_pyobj_from_yamlfile
 
 
 def test_write_yamlstr_to_yamlfile(tmpdir):

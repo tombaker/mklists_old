@@ -4,7 +4,7 @@
 
 import os
 import pytest
-from mklists.mkldict import get_datalines_from_listfiles
+from mklists.makelists import get_datalines_from_listfiles
 
 
 def test_get_lines(tmpdir):
