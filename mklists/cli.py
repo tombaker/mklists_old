@@ -3,7 +3,7 @@
 import click
 import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
-from mklists.todo import (
+from .todo import (
     get_ruleobjs_list_from_yaml_rulefiles,
     move_existing_listfiles_to_backupdir,
     move_certain_listfiles_to_other_directories,
@@ -14,11 +14,8 @@ from mklists.todo import (
 #    write_datadict_to_listfiles,
 #    write_datadict_to_htmlfiles,
 #    move_certain_listfiles_to_other_directories,
-from mklists.makelists import (
-    get_datalines_list_from_listfiles,
-    apply_rules_to_datalines,
-)
-from mklists.utils import get_rootdir_name, update_settings_dict
+from .makelists import get_datalines_list_from_listfiles, apply_rules_to_datalines
+from .utils import get_rootdir_name, update_settings_dict
 
 
 @click.group()

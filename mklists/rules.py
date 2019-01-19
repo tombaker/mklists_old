@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from mklists.utils import has_valid_name
+from .utils import has_valid_name
 from mklists import (
     BadFilenameError,
     NotIntegerError,
