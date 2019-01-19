@@ -1,3 +1,6 @@
+"""Exception classes for mklists."""
+
+
 # ConfigError
 class ConfigError(SystemExit):
     """Category of errors related to configuration."""
