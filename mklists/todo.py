@@ -19,7 +19,7 @@ def move_old_listfiles_to_backupdir(backupdir, backups=2):
     """
     if backups is less than two, then backups = 2 - "mandatory"
     If 'backup' is True:
-    before writing data_dict contents to disk,
+    before writing datadict contents to disk,
     creates timestamped backup directory in specified backup_dir,
     and moves all visible files in data directory to backup directory.
     Make time-stamped directory in BACKUP_DIR_NAME (create constant!)

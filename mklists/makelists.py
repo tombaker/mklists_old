@@ -53,11 +53,11 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
         datalines_list: list of strings (all data lines)
 
     Returns:
-        data_dict - dictionary where:
+        datadict - dictionary where:
         * key: always a string that is valid as a filename
         * value: always a list of (part of the) data lines
     """
-    data_dict = defaultdict(list)
+    datadict = defaultdict(list)
     first_key_is_initialized = False
 
     if not ruleobjs_list:
@@ -66,35 +66,35 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
     if not datalines_list:
         raise NoDataError("No data specified.")
 
-    # Evaluate rules, one-by-one, to process entries in data_dict.
+    # Evaluate rules, one-by-one, to process entries in datadict.
     for ruleobj in ruleobjs_list:
 
-        # Initialize data_dict with first rule.
+        # Initialize datadict with first rule.
         #    key: valid filename (from 'source' field of first ruleobj)
         #    value: list of all data lines
         if not first_key_is_initialized:
-            data_dict[ruleobj.source] = datalines_list
+            datadict[ruleobj.source] = datalines_list
             first_key_is_initialized = True
 
         # Match lines in 'ruleobj.source' against 'rulesobj.regex'.
         #    append matching lines to value of 'ruleobj.target'
         #    remove matching lines from value of 'ruleobj.source'
-        for line in data_dict[ruleobj.source]:
+        for line in datadict[ruleobj.source]:
             if _line_matches_rule(ruleobj, line):
-                data_dict[ruleobj.target].extend([line])
-                data_dict[ruleobj.source].remove(line)
+                datadict[ruleobj.target].extend([line])
+                datadict[ruleobj.source].remove(line)
 
         # Sort 'ruleobj.target' lines by field if sortorder was specified.
         if ruleobj.target_sortorder:
             eth_sortorder = ruleobj.target_sortorder - 1
             decorated = [
                 (line.split()[eth_sortorder], __, line)
-                for (__, line) in enumerate(data_dict[ruleobj.target])
+                for (__, line) in enumerate(datadict[ruleobj.target])
             ]
             decorated.sort()
-            data_dict[ruleobj.target] = [line for (___, __, line) in decorated]
+            datadict[ruleobj.target] = [line for (___, __, line) in decorated]
 
-    return dict(data_dict)
+    return dict(datadict)
 
 
 def _line_matches_rule(given_rule=None, given_line=None):
@@ -118,7 +118,7 @@ def _line_matches_rule(given_rule=None, given_line=None):
     return False
 
 
-def write_pydict_to_htmlfiles(data_dict={}, verbose=False):
+def write_datadict_to_htmlfiles(datadict={}, verbose=False):
     """Something like: def removefiles(targetdirectory):
     pwd = os.getcwd()
     abstargetdir = absdirname(targetdirectory)
@@ -133,9 +133,9 @@ def write_pydict_to_htmlfiles(data_dict={}, verbose=False):
     print(f"* Move files outside listdir as per ['files2dirs'].")
 
 
-def write_pydict_to_listfiles(data_dict=None, verbose=False):
+def write_datadict_to_listfiles(datadict=None, verbose=False):
     """If 'backup' is ON, move existing files from working to backup directory.
     If 'backup' is OFF, DELETE existing files in working directory.
-    Write data_dict to working directory:
-    -- data_dict keys are names of files.
-    -- data_dict values are contents of files."""
+    Write datadict to working directory:
+    -- datadict keys are names of files.
+    -- datadict values are contents of files."""
