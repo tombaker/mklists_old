@@ -2,7 +2,7 @@
 
 import re
 from collections import defaultdict
-from mklists import BlankLinesError, NoDataError, NoRulesError, NotUTF8Error
+from .exceptions import BlankLinesError, NoDataError, NoRulesError, NotUTF8Error
 
 
 def get_datalines_list_from_listfiles(listfile_names: list):
