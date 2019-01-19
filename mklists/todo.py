@@ -15,7 +15,7 @@ def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
     """Args: files2dirs_dict: filename (key) and destination directory (value)"""
 
 
-def move_old_listfiles_to_backupdir(backupdir, backups=2):
+def move_existing_listfiles_to_backupdir(backupdir, backups=2):
     """
     if backups is less than two, then backups = 2 - "mandatory"
     If 'backup' is True:
@@ -40,7 +40,7 @@ def move_old_listfiles_to_backupdir(backupdir, backups=2):
     Therefore, there should _always_ be at least one backup."""
 
 
-def get_ruleobjs_list_from_files(
+def get_ruleobjs_list_from_yaml_rulefiles(
     configfile=CONFIGFILE_NAME, rulefile=RULEFILE_NAME, verbose=True
 ):
     """Return list of rule objects from configuration and rule files."""

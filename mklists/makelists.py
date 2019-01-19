@@ -13,7 +13,7 @@ from mklists import (
 )
 
 
-def get_datalines_from_listfiles(listfile_names: list):
+def get_datalines_list_from_listfiles(listfile_names: list):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:
