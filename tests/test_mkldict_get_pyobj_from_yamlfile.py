@@ -1,10 +1,9 @@
-"""_get_pyobj_from_yamlfile():
+"""get_pyobj_from_yamlfile():
 * is called by get_ruleobjs_list_from_yaml_rulefiles()"""
 
 import os
 import pytest
-from mklists.utils import write_yamlstr_to_yamlfile
-from mklists.makelists import _get_pyobj_from_yamlfile
+from mklists.utils import get_pyobj_from_yamlfile, write_yamlstr_to_yamlfile
 
 
 def test_get_pyobj_from_yamlfile(tmpdir):
@@ -14,7 +13,7 @@ def test_get_pyobj_from_yamlfile(tmpdir):
     with open(yamlfile, "w") as fout:
         fout.write(yaml_str)
     result = {"backups": 3, "verbose": False}
-    assert _get_pyobj_from_yamlfile(yamlfile) == result
+    assert get_pyobj_from_yamlfile(yamlfile) == result
 
 
 def test_get_pyobj_from_yamlfile_bad_yaml(tmpdir):
@@ -25,7 +24,7 @@ def test_get_pyobj_from_yamlfile_bad_yaml(tmpdir):
     with open(yamlfile, "w") as fout:
         fout.write(yaml_str)
     with pytest.raises(SystemExit):
-        _get_pyobj_from_yamlfile(yamlfile)
+        get_pyobj_from_yamlfile(yamlfile)
 
 
 def test_get_pyobj_from_yamlfile_file_not_found(tmpdir):
@@ -33,7 +32,7 @@ def test_get_pyobj_from_yamlfile_file_not_found(tmpdir):
     os.chdir(tmpdir)
     yamlfile = "mklists.yml"
     with pytest.raises(SystemExit):
-        _get_pyobj_from_yamlfile(yamlfile)
+        get_pyobj_from_yamlfile(yamlfile)
 
 
 def test_read_yaml_configfile_given_good_yamlfile(tmpdir):
@@ -44,7 +43,7 @@ def test_read_yaml_configfile_given_good_yamlfile(tmpdir):
     - [1, 'LATER', a, c, 0]"""
     write_yamlstr_to_yamlfile(lrules_yamlstr, "_lrules")
     good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
-    assert _get_pyobj_from_yamlfile("_lrules") == good_pyobject
+    assert get_pyobj_from_yamlfile("_lrules") == good_pyobject
 
 
 def test_read_yaml_configfile_given_bad_yaml(tmpdir):
@@ -55,4 +54,4 @@ def test_read_yaml_configfile_given_bad_yaml(tmpdir):
     + [1, 'LATER', a, c, 0]"""
     write_yamlstr_to_yamlfile(bad_yamlstr, "_lrules_bad")
     with pytest.raises(SystemExit):
-        _get_pyobj_from_yamlfile("_lrules_bad")
+        get_pyobj_from_yamlfile("_lrules_bad")

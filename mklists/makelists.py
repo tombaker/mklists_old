@@ -1,16 +1,8 @@
 """Apply rules to process datalines."""
 
 import re
-import yaml
 from collections import defaultdict
-from mklists import (
-    ConfigFileNotFoundError,
-    BadYamlError,
-    BlankLinesError,
-    NoDataError,
-    NoRulesError,
-    NotUTF8Error,
-)
+from mklists import BlankLinesError, NoDataError, NoRulesError, NotUTF8Error
 
 
 def get_datalines_list_from_listfiles(listfile_names: list):
@@ -30,19 +22,6 @@ def get_datalines_list_from_listfiles(listfile_names: list):
     if not all_datalines:
         raise NoDataError("No data to process!")
     return all_datalines
-
-
-def _get_pyobj_from_yamlfile(yamlfile_name):
-    """Returns Python object parsed from given YAML-format file."""
-    try:
-        yamlstr = open(yamlfile_name).read()
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
-
-    try:
-        return yaml.load(yamlstr)
-    except yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
 def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):

@@ -8,7 +8,7 @@ from mklists import (
     BadYamlRuleError,
 )
 from .rules import Rule
-from .makelists import _get_pyobj_from_yamlfile
+from .utils import get_pyobj_from_yamlfile
 
 
 def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
@@ -47,7 +47,7 @@ def get_ruleobjs_list_from_yaml_rulefiles(
     # If no rules, return None or empty list?
 
     all_rules_list = []
-    config_pydict = _get_pyobj_from_yamlfile(configfile)
+    config_pydict = get_pyobj_from_yamlfile(configfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
@@ -57,7 +57,7 @@ def get_ruleobjs_list_from_yaml_rulefiles(
         if verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = _get_pyobj_from_yamlfile(rulefile)
+    rules_pylist = get_pyobj_from_yamlfile(rulefile)
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:

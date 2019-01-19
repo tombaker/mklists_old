@@ -1,8 +1,7 @@
 """@@@Docstring"""
 
 import os
-from mklists.utils import write_yamlstr_to_yamlfile
-from mklists.makelists import _get_pyobj_from_yamlfile
+from mklists.utils import get_pyobj_from_yamlfile, write_yamlstr_to_yamlfile
 
 
 def test_write_yamlstr_to_yamlfile(tmpdir):
@@ -11,7 +10,7 @@ def test_write_yamlstr_to_yamlfile(tmpdir):
     yamlfile = "mklists.yml"
     write_yamlstr_to_yamlfile(yaml_str, yamlfile)
     result = {"backups": 3, "verbose": False}
-    assert _get_pyobj_from_yamlfile(yamlfile) == result
+    assert get_pyobj_from_yamlfile(yamlfile) == result
 
 
 def test_write_yamlstr_to_yamlfile_too(tmpdir):

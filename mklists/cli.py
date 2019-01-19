@@ -37,17 +37,17 @@ def cli(ctx, verbose):
 
 
 @cli.command()
-@click.option("--empty", is_flag=True, help="Initialize bare minimum (for experts).")
-@click.option("--newbie", is_flag=True, help="Initialize with examples (default).")
+@click.option(
+    "--empty", is_flag=True, help="Write bare minimum configuration (for experts)."
+)
 @click.pass_context
-def init(ctx, empty, newbie):
+def init(ctx, empty):
     """Write starter configuration and rule files."""
-    if empty is not None:
+    if empty:
         print("empty")
-    elif newbie is not None:
-        print("newbie")
-        print("call write_initial_configfile() - in writes.py")
-        print("call write_initial_rulefiles() - in writes.py")
+
+    # write_initial_configfile() - in writes.py
+    # write_initial_rulefiles() - in writes.py
 
 
 @cli.command()
