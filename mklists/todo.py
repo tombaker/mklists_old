@@ -12,36 +12,49 @@ def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
 
 def move_existing_listfiles_to_backupdir(backupdir, backups=2):
     """
-    if backups is less than two, then backups = 2 - "mandatory"
-    If 'backup' is True:
-    before writing datadict contents to disk,
-    creates timestamped backup directory in specified backup_dir,
-    and moves all visible files in data directory to backup directory.
-    Make time-stamped directory in BACKUP_DIR_NAME (create constant!)
-    Create: backup_dir_timestamped = os.path.join(backup_dir, TIMESTAMP_STR)
-    Move existing files to backup_dir
-    Delete oldest backups:
-    delete_oldest_backup(backup_dir, backups):
-        lsd_visible = [item for item in glob.glob('*')
-                       if os.path.isdir(item)]
+    Get number of backups as configuring (config['backups']
+        If backups less than two, then backups = 2 ("mandatory")
+    Create a backup directory.
+        Generate a name for backupdir (make_backupdir_name).
+        Make dir: hard-coded parent dirname (_html) plus generated timestamped name.
+    Get list of existing visible files in data directory.
+    Move all visible files in data directory to backupdir.
+        for file in filelist:
+            shutil.move(file, backupdir)
+    """
+
+
+def delete_oldest_backups():
+    """
+    Count number of backups under this directory:
+        Get short name of current data directory (get_listdir_shortname).
+        Create list of directories under parent directory of backupdir.
+            lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
+            Example: if backup dir is
+                mkrepo/_backups/a/2018-12-31.23414123
+            Then parent is
+                mkrepo/_backups/a
+            Resulting list might be:
+                [ '2018-12-31.23414123', '2019-01-01.12155264', '2019-02-02.02265324' ]
+    Either:
         while len(lsd_visible) > backups:
-            file_to_be_deleted = get_lsvisible_names.pop()
+            file_to_be_deleted = lsd_visible.pop(0)
             rm file_to_be_deleted
-    for file in filelist:
-        shutil.move(file, backup_dir)
+    Or:
+        while len(directory_list) > backups:
+            dir_to_delete = directory_list.pop(0)
+            print(f"rm {dir_to_delete}")
+    """
 
-    Note: there should never be a situation where listfiles have
-    been deleted and the data in memory has not yet been written to disk.
-    Therefore, there should _always_ be at least one backup."""
 
-
-def get_ruleobjs_list_from_yaml_rulefiles(
-    configfile=CONFIGFILE_NAME, rulefile=RULEFILE_NAME, verbose=True
-):
+def get_ruleobjs_list_from_yaml_rulefiles(verbose=True):
     """Return list of rule objects from configuration and rule files."""
     # If no rules, return None or empty list?
 
     all_rules_list = []
+    configfile = CONFIGFILE_NAME
+    rulefile = RULEFILE_NAME
+
     config_pydict = get_pyobj_from_yamlfile(configfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
