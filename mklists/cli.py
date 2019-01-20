@@ -36,8 +36,10 @@ def init(ctx, empty):
 @click.pass_context
 def run(ctx, debug, dryrun):
     """Apply rules to re-write data files."""
-    # config = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
-    # update_config_dict_from_config_yamlfile(ctx.obj, config)
+    # In other utils or run:
+    #    get_ctxobj_from_config_yamlfile()
+    #    -- something like ctx.obj = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
+    #    -- may no longer need: update_config_dict_from_pyobj(ctx.obj, config)
     #    data =               get_dataline_list_from_listfiles(listfiles)
     #    -- uses:             get_listfile_names()
     #    rules =              get_ruleobj_list_from_rule_yamlfiles()
