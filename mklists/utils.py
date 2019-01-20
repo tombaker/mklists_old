@@ -96,7 +96,7 @@ def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
     return True
 
 
-def update_settings_dict(settings_dict=None, overrides=None):
+def update_settings_dict_from_config_yamlfile(settings_dict=None, overrides=None):
     """Inject dictionary B into A, ignoring keys in B with value None."""
     overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
     settings_dict.update(overrides)

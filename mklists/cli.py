@@ -1,39 +1,28 @@
 """CLI - command-line interface module"""
 
 import click
-import yaml
-from mklists import CONFIG_STARTER_DICT, CONFIG_YAMLFILE_NAME
 from .makelists_todo import (
     get_ruleobj_list_from_rule_yamlfiles,
     move_existing_listfiles_to_backupdir,
     move_certain_listfiles_to_other_directories,
 )
 
-# Will be in makelists.py:
+# from makelists_todo.py:
 #    move_existing_listfiles_to_backupdir,
 #    write_datadict_to_listfiles,
 #    write_datadict_to_htmlfiles,
 #    move_certain_listfiles_to_other_directories,
 from .makelists import get_dataline_list_from_listfiles, apply_rules_to_datalines
-from .utils import get_rootdir_name, update_settings_dict
+from .utils import get_rootdir_name
+from .group import LoadInitForCommands
 
 
-@click.group()
-@click.option("--verbose", is_flag=True, help="Print debug information.")
+@click.group(cls=LoadInitForCommands)
 @click.version_option("0.1.5", help="Show version and exit.")
 @click.help_option(help="Show help and exit.")
 @click.pass_context
-def cli(ctx, verbose):
+def cli(ctx):
     """Organize your todo lists by tweaking rules"""
-    snapshot_of_commandline_options = locals().copy()
-    snapshot_of_commandline_options.pop("ctx", None)
-    ctx.obj = CONFIG_STARTER_DICT
-    if verbose:
-        print(f"Reading minimal configuration: {CONFIG_STARTER_DICT}")
-    if ctx.invoked_subcommand != "init":
-        settings_from_config_yamlfile = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
-        ctx.obj = update_settings_dict(ctx.obj, settings_from_config_yamlfile)
-    ctx.obj = update_settings_dict(ctx.obj, snapshot_of_commandline_options)
 
 
 @cli.command()
