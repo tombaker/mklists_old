@@ -6,47 +6,6 @@ from .rules import Rule
 from .utils import get_pyobj_from_yamlfile
 
 
-def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
-    """Args: files2dirs_dict: filename (key) and destination directory (value)"""
-
-
-def move_existing_listfiles_to_backupdir(backupdir, backups=2):
-    """
-    Get number of backups as configuring (config['backups']
-        If backups less than two, then backups = 2 ("mandatory")
-    Create a backup directory.
-        Generate a name for backupdir (make_backupdir_name).
-        Make dir: hard-coded parent dirname (_html) plus generated timestamped name.
-    Get list of existing visible files in data directory.
-    Move all visible files in data directory to backupdir.
-        for file in filelist:
-            shutil.move(file, backupdir)
-    """
-
-
-def delete_oldest_backups():
-    """
-    Count number of backups under this directory:
-        Get short name of current data directory (get_listdir_shortname).
-        Create list of directories under parent directory of backupdir.
-            lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
-            Example: if backup dir is
-                mkrepo/_backups/a/2018-12-31.23414123
-            Then parent is
-                mkrepo/_backups/a
-            Resulting list might be:
-                [ '2018-12-31.23414123', '2019-01-01.12155264', '2019-02-02.02265324' ]
-    Either:
-        while len(lsd_visible) > backups:
-            file_to_be_deleted = lsd_visible.pop(0)
-            rm file_to_be_deleted
-    Or:
-        while len(directory_list) > backups:
-            dir_to_delete = directory_list.pop(0)
-            print(f"rm {dir_to_delete}")
-    """
-
-
 def get_ruleobj_list_from_rule_yamlfiles(verbose=True):
     """Return list of rule objects from configuration and rule files."""
     # If no rules, return None or empty list?
@@ -102,3 +61,44 @@ def write_datadict_to_listfiles(datadict=None, verbose=False):
     -- Write out contents of datadict to working directory:
        -- datadict keys are names of files.
        -- datadict values are contents of files."""
+
+
+def delete_oldest_backups():
+    """
+    Count number of backups under this directory:
+        Get short name of current data directory (get_listdir_shortname).
+        Create list of directories under parent directory of backupdir.
+            lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
+            Example: if backup dir is
+                mkrepo/_backups/a/2018-12-31.23414123
+            Then parent is
+                mkrepo/_backups/a
+            Resulting list might be:
+                [ '2018-12-31.23414123', '2019-01-01.12155264', '2019-02-02.02265324' ]
+    Either:
+        while len(lsd_visible) > backups:
+            file_to_be_deleted = lsd_visible.pop(0)
+            rm file_to_be_deleted
+    Or:
+        while len(directory_list) > backups:
+            dir_to_delete = directory_list.pop(0)
+            print(f"rm {dir_to_delete}")
+    """
+
+
+def move_existing_listfiles_to_backupdir(backupdir, backups=2):
+    """
+    Get number of backups as configuring (config['backups']
+        If backups less than two, then backups = 2 ("mandatory")
+    Create a backup directory.
+        Generate a name for backupdir (make_backupdir_name).
+        Make dir: hard-coded parent dirname (_html) plus generated timestamped name.
+    Get list of existing visible files in data directory.
+    Move all visible files in data directory to backupdir.
+        for file in filelist:
+            shutil.move(file, backupdir)
+    """
+
+
+def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
+    """Args: files2dirs_dict: filename (key) and destination directory (value)"""

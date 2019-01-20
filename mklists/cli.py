@@ -3,7 +3,7 @@
 import click
 import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIG_YAMLFILE_NAME
-from .todo import (
+from .makelists_todo import (
     get_ruleobj_list_from_rule_yamlfiles,
     move_existing_listfiles_to_backupdir,
     move_certain_listfiles_to_other_directories,
