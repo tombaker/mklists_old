@@ -13,11 +13,9 @@ from .makelists_todo import (
 #    write_datadict_to_htmlfiles,
 #    move_certain_listfiles_to_other_directories,
 from .makelists import get_dataline_list_from_listfiles, apply_rules_to_datalines
-from .utils import get_rootdir_name
-from .group import LoadInitForCommands
 
 
-@click.group(cls=LoadInitForCommands)
+@click.group()
 @click.version_option("0.1.5", help="Show version and exit.")
 @click.help_option(help="Show help and exit.")
 @click.pass_context
@@ -54,12 +52,3 @@ def run(ctx, dryrun):
         move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
     if dryrun:
         print("chose dryrun")
-
-
-@cli.command()
-@click.pass_context
-def testme(ctx):
-    """Subcommand for various tests."""
-    print(ctx.params)
-    name = get_rootdir_name()
-    print(name)

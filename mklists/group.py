@@ -2,7 +2,7 @@
 
 import click
 import yaml
-from mklists import CONFIG_STARTER_DICT, CONFIG_YAMLFILE_NAME
+from .constants import CONFIG_STARTER_DICT, CONFIG_YAMLFILE_NAME
 from .utils import update_settings_dict_from_config_yamlfile
 
 

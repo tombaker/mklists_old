@@ -4,7 +4,7 @@ import os
 import re
 import glob
 import yaml
-from mklists import (
+from .constants import (
     CONFIG_YAMLFILE_NAME,
     INVALID_FILENAME_PATTERNS,
     RULE_YAMLFILE_NAME,

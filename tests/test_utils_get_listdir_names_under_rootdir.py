@@ -1,7 +1,7 @@
 """@@@Docstring"""
 
 import os
-from mklists import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+from mklists.constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from mklists.utils import get_listdir_names_under_rootdir
 
 

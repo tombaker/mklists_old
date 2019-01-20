@@ -2,8 +2,8 @@
 
 import os
 import pytest
+from mklists.constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from mklists.utils import get_rootdir_name
-from mklists import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 
 
 def test_get_rootdir_name_from_fixture_subdir(myrepo):
