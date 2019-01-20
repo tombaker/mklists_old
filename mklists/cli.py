@@ -26,15 +26,12 @@ def cli(ctx):
 
 
 @cli.command()
-@click.option(
-    "--empty", is_flag=True, help="Write bare minimum configuration (for experts)."
-)
+@click.option("--empty", is_flag=True, help="Minimal configuration (for experts).")
 @click.pass_context
 def init(ctx, empty):
     """Write starter configuration and rule files."""
     if empty:
         print("empty")
-
     # write_initial_config_yamlfile() - in writes.py
     # write_initial_rule_yamlfiles() - in writes.py
 
@@ -43,8 +40,7 @@ def init(ctx, empty):
 @click.option("--dryrun", is_flag=True, help="Read-only, verbosely")
 @click.pass_context
 def run(ctx, dryrun):
-    """Apply rules to re-write data files.
-    @@@for dir in .rules..."""
+    """Apply rules to re-write data files."""
     data = get_dataline_list_from_listfiles()
     rules = get_ruleobj_list_from_rule_yamlfiles()
     all_datalines_dict = apply_rules_to_datalines(rules, data)
