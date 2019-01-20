@@ -5,9 +5,9 @@ import re
 import glob
 import yaml
 from mklists import (
-    CONFIGFILE_NAME,
+    CONFIG_YAMLFILE_NAME,
     INVALID_FILENAME_PATTERNS,
-    RULEFILE_NAME,
+    RULE_YAMLFILE_NAME,
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
     VALID_FILENAME_CHARACTERS_REGEX,
@@ -32,7 +32,7 @@ def get_listdir_names_under_rootdir(rootdir_name="."):
     By definition, a data directory is a directory with a '.rules' file."""
     listdirs = []
     for (dirpath, __, filenames) in os.walk(rootdir_name):
-        if RULEFILE_NAME in filenames:
+        if RULE_YAMLFILE_NAME in filenames:
             listdirs.append(os.path.join(dirpath))
     return listdirs
 
@@ -70,16 +70,18 @@ def get_rootdir_name(path="."):
     os.chdir(path)
     while True:
         ls_cwd = os.listdir()
-        if RULEFILE_NAME in ls_cwd:
+        if RULE_YAMLFILE_NAME in ls_cwd:
             os.chdir(os.pardir)
             continue
         else:
             break
 
-    if CONFIGFILE_NAME in os.listdir():
+    if CONFIG_YAMLFILE_NAME in os.listdir():
         return os.getcwd()
     else:
-        raise ConfigFileNotFoundError(f"No {CONFIGFILE_NAME} found. Try mklists init.")
+        raise ConfigFileNotFoundError(
+            f"No {CONFIG_YAMLFILE_NAME} found. Try mklists init."
+        )
 
 
 def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):

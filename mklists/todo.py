@@ -1,6 +1,6 @@
 """Todo"""
 
-from mklists import CONFIGFILE_NAME, RULEFILE_NAME
+from mklists import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import RulefileNotFoundError, NoRulesError, BadYamlRuleError
 from .rules import Rule
 from .utils import get_pyobj_from_yamlfile
@@ -47,15 +47,15 @@ def delete_oldest_backups():
     """
 
 
-def get_ruleobj_list_from_rulefiles(verbose=True):
+def get_ruleobj_list_from_rule_yamlfiles(verbose=True):
     """Return list of rule objects from configuration and rule files."""
     # If no rules, return None or empty list?
 
     all_rules_list = []
-    configfile = CONFIGFILE_NAME
-    rulefile = RULEFILE_NAME
+    config_yamlfile = CONFIG_YAMLFILE_NAME
+    rulefile = RULE_YAMLFILE_NAME
 
-    config_pydict = get_pyobj_from_yamlfile(configfile)
+    config_pydict = get_pyobj_from_yamlfile(config_yamlfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:

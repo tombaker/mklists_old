@@ -1,15 +1,15 @@
 import pytest
 from mklists.rules import Rule
 
-TEST_CONFIGFILE_NAME = "mklists.yml"
-TEST_CONFIGFILE_YAMLSTR = r"""\
+TEST_CONFIG_YAMLFILE_NAME = "mklists.yml"
+TEST_CONFIG_YAMLFILE_YAMLSTR = r"""\
 invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
 global_rules:
 - [0, '.', all, lines, 0]
 """
 
-TEST_RULEFILEA_NAME = ".rules"
-TEST_RULEFILEA_YAMLSTR = """\
+TEST_RULE_YAMLFILEA_NAME = ".rules"
+TEST_RULE_YAMLFILEA_YAMLSTR = """\
 - [2, 'NOW',     lines,  now,     1]
 - [2, 'LATER',   lines,  later,   0]
 """
@@ -22,8 +22,8 @@ def fixture_myrepo(tmpdir_factory):
     """Return temporary mklists repo 'myrepo'."""
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
-    root_dir.join(TEST_CONFIGFILE_NAME).write(TEST_CONFIGFILE_YAMLSTR)
-    subdir_a.join(TEST_RULEFILEA_NAME).write(TEST_RULEFILEA_YAMLSTR)
+    root_dir.join(TEST_CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_YAMLSTR)
+    subdir_a.join(TEST_RULE_YAMLFILEA_NAME).write(TEST_RULE_YAMLFILEA_YAMLSTR)
     return root_dir
 
 

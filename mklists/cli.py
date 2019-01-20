@@ -2,9 +2,9 @@
 
 import click
 import yaml
-from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
+from mklists import CONFIG_STARTER_DICT, CONFIG_YAMLFILE_NAME
 from .todo import (
-    get_ruleobj_list_from_rulefiles,
+    get_ruleobj_list_from_rule_yamlfiles,
     move_existing_listfiles_to_backupdir,
     move_certain_listfiles_to_other_directories,
 )
@@ -31,8 +31,8 @@ def cli(ctx, verbose):
     if verbose:
         print(f"Reading minimal configuration: {CONFIG_STARTER_DICT}")
     if ctx.invoked_subcommand != "init":
-        settings_from_configfile = yaml.load(open(CONFIGFILE_NAME).read())
-        ctx.obj = update_settings_dict(ctx.obj, settings_from_configfile)
+        settings_from_config_yamlfile = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
+        ctx.obj = update_settings_dict(ctx.obj, settings_from_config_yamlfile)
     ctx.obj = update_settings_dict(ctx.obj, snapshot_of_commandline_options)
 
 
@@ -46,8 +46,8 @@ def init(ctx, empty):
     if empty:
         print("empty")
 
-    # write_initial_configfile() - in writes.py
-    # write_initial_rulefiles() - in writes.py
+    # write_initial_config_yamlfile() - in writes.py
+    # write_initial_rule_yamlfiles() - in writes.py
 
 
 @cli.command()
@@ -57,7 +57,7 @@ def run(ctx, dryrun):
     """Apply rules to re-write data files.
     @@@for dir in .rules..."""
     data = get_dataline_list_from_listfiles()
-    rules = get_ruleobj_list_from_rulefiles()
+    rules = get_ruleobj_list_from_rule_yamlfiles()
     all_datalines_dict = apply_rules_to_datalines(rules, data)
     print(all_datalines_dict.keys())
     move_existing_listfiles_to_backupdir(ctx)

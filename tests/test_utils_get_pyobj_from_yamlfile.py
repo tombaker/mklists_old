@@ -1,5 +1,5 @@
 """get_pyobj_from_yamlfile():
-* is called by get_ruleobj_list_from_rulefiles()"""
+* is called by get_ruleobj_list_from_rule_yamlfiles()"""
 
 import os
 import pytest
@@ -35,7 +35,7 @@ def test_get_pyobj_from_yamlfile_file_not_found(tmpdir):
         get_pyobj_from_yamlfile(yamlfile)
 
 
-def test_read_yaml_configfile_given_good_yamlfile(tmpdir):
+def test_read_yaml_config_yamlfile_given_good_yamlfile(tmpdir):
     """Writes string to YAML rulefile, reads back to list of lists."""
     os.chdir(tmpdir)
     lrules_yamlstr = """
@@ -46,7 +46,7 @@ def test_read_yaml_configfile_given_good_yamlfile(tmpdir):
     assert get_pyobj_from_yamlfile("_lrules") == good_pyobject
 
 
-def test_read_yaml_configfile_given_bad_yaml(tmpdir):
+def test_read_yaml_config_yamlfile_given_bad_yaml(tmpdir):
     """Trying to write bad string to YAML rulefile raises SystemExit."""
     os.chdir(tmpdir)
     bad_yamlstr = """
