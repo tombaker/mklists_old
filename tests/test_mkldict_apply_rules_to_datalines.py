@@ -8,7 +8,7 @@ from mklists.rules import Rule
 def test_apply_rules_to_datalines_no_rules_specified():
     """Not passing rules to apply_rules_to_datalines raises SystemExit."""
     with pytest.raises(SystemExit):
-        apply_rules_to_datalines(datalines_list=[["a line\n"]])
+        apply_rules_to_datalines(dataline_list=[["a line\n"]])
 
 
 def test_apply_rules_to_datalines_no_rules_specified_either():
@@ -21,7 +21,7 @@ def test_apply_rules_to_datalines_no_rules_specified_either():
 def test_apply_rules_to_datalines_no_data_specified():
     """Not passing data to apply_rules_to_datalines raises SystemExit."""
     with pytest.raises(SystemExit):
-        apply_rules_to_datalines(ruleobjs_list=[[Rule(1, "a", "b", "c", 2)]])
+        apply_rules_to_datalines(ruleobj_list=[[Rule(1, "a", "b", "c", 2)]])
 
 
 def test_apply_rules_to_datalines_no_data_specified_either():

@@ -5,7 +5,7 @@ from collections import defaultdict
 from .exceptions import BlankLinesError, NoDataError, NoRulesError, NotUTF8Error
 
 
-def get_datalines_list_from_listfiles(listfile_names: list):
+def get_dataline_list_from_listfiles(listfile_names: list):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:
@@ -24,12 +24,12 @@ def get_datalines_list_from_listfiles(listfile_names: list):
     return all_datalines
 
 
-def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
+def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
     """Applies rules, one by one, to process an aggregated list of datalines.
 
     Args:
-        ruleobjs_list: list of rule objects
-        datalines_list: list of strings (all data lines)
+        ruleobj_list: list of rule objects
+        dataline_list: list of strings (all data lines)
 
     Returns:
         datadict - dictionary where:
@@ -39,20 +39,20 @@ def apply_rules_to_datalines(ruleobjs_list=None, datalines_list=None):
     datadict = defaultdict(list)
     first_key_is_initialized = False
 
-    if not ruleobjs_list:
+    if not ruleobj_list:
         raise NoRulesError("No rules specified.")
 
-    if not datalines_list:
+    if not dataline_list:
         raise NoDataError("No data specified.")
 
     # Evaluate rules, one-by-one, to process entries in datadict.
-    for ruleobj in ruleobjs_list:
+    for ruleobj in ruleobj_list:
 
         # Initialize datadict with first rule.
         #    key: valid filename (from 'source' field of first ruleobj)
         #    value: list of all data lines
         if not first_key_is_initialized:
-            datadict[ruleobj.source] = datalines_list
+            datadict[ruleobj.source] = dataline_list
             first_key_is_initialized = True
 
         # Match lines in 'ruleobj.source' against 'rulesobj.regex'.

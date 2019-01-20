@@ -1,4 +1,4 @@
-"""def get_ruleobjs_list_from_yaml_rulefiles(
+"""def get_ruleobj_list_from_rulefiles(
        configfile=CONFIGFILE_NAME,
        rulefile=RULEFILE_NAME,
        verbose=True

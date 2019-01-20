@@ -47,7 +47,7 @@ def delete_oldest_backups():
     """
 
 
-def get_ruleobjs_list_from_yaml_rulefiles(verbose=True):
+def get_ruleobj_list_from_rulefiles(verbose=True):
     """Return list of rule objects from configuration and rule files."""
     # If no rules, return None or empty list?
 
@@ -74,15 +74,15 @@ def get_ruleobjs_list_from_yaml_rulefiles(verbose=True):
     if not all_rules_list:
         raise NoRulesError("No rules were found.")
 
-    ruleobjs_list = []
+    ruleobj_list = []
     for item in all_rules_list:
         try:
             Rule(*item).is_valid
         except TypeError:
             raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-        ruleobjs_list.append(Rule(*item))
+        ruleobj_list.append(Rule(*item))
 
-    return ruleobjs_list
+    return ruleobj_list
 
 
 def write_datadict_to_htmlfiles(datadict={}, verbose=False):

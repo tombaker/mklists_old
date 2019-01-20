@@ -38,7 +38,7 @@ def reinitialize_ruleclass_variables():
 
 
 @pytest.fixture(scope="module")
-def ruleobjs_list():
+def ruleobj_list():
     """Returns list of Rule objects."""
     return [
         Rule(0, ".", "lines", "__RENAME__", 0),

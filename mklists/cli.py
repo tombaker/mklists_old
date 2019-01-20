@@ -4,7 +4,7 @@ import click
 import yaml
 from mklists import CONFIG_STARTER_DICT, CONFIGFILE_NAME
 from .todo import (
-    get_ruleobjs_list_from_yaml_rulefiles,
+    get_ruleobj_list_from_rulefiles,
     move_existing_listfiles_to_backupdir,
     move_certain_listfiles_to_other_directories,
 )
@@ -14,7 +14,7 @@ from .todo import (
 #    write_datadict_to_listfiles,
 #    write_datadict_to_htmlfiles,
 #    move_certain_listfiles_to_other_directories,
-from .makelists import get_datalines_list_from_listfiles, apply_rules_to_datalines
+from .makelists import get_dataline_list_from_listfiles, apply_rules_to_datalines
 from .utils import get_rootdir_name, update_settings_dict
 
 
@@ -56,8 +56,8 @@ def init(ctx, empty):
 def run(ctx, dryrun):
     """Apply rules to re-write data files.
     @@@for dir in .rules..."""
-    data = get_datalines_list_from_listfiles()
-    rules = get_ruleobjs_list_from_yaml_rulefiles()
+    data = get_dataline_list_from_listfiles()
+    rules = get_ruleobj_list_from_rulefiles()
     all_datalines_dict = apply_rules_to_datalines(rules, data)
     print(all_datalines_dict.keys())
     move_existing_listfiles_to_backupdir(ctx)
