@@ -1,0 +1,45 @@
+__init__.py =============================================
+
+cli.py =============================================
+def cli(ctx):
+def init(ctx, empty):
+def run(ctx, dryrun):
+
+group.py =============================================
+class LoadInitForCommands(click.Group):
+    def command(self, *args, **kwargs):
+        def decorator(f):
+            def invoke(ctx):
+
+rules.py =============================================
+class Rule:
+    def is_valid(self):
+    def _number_fields_are_integers(self):
+    def _source_matchpattern_is_valid(self):
+    def _filenames_are_valid(self):
+    def _source_is_not_equal_target(self):
+    def _source_not_initialized_as_source(self):
+
+run.py =============================================
+def get_dataline_list_from_listfiles(listfile_names: list):
+def get_ruleobj_list_from_rule_yamlfiles(verbose=True):
+def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
+def move_existing_listfiles_to_backupdir(backupdir, backups=2):
+def delete_older_backups():
+def write_datadict_to_listfiles_in_currentdir(datadict=None, verbose=False):
+def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
+def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
+
+utils.py =============================================
+def make_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
+def make_htmlstr_from_textstr(string):
+def get_listdir_names_under_rootdir(rootdir_name="."):
+def get_listdir_shortname(listdir=os.getcwd(), rootdir=None):
+def get_listfile_names(listdir_name=os.getcwd()):
+def get_pyobj_from_yamlfile(yamlfile_name):
+def get_rootdir_name(path="."):
+def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
+def is_line_match_to_rule(given_rule=None, given_line=None):
+def update_settings_dict_from_config_yamlfile(settings_dict=None, overrides=None):
+def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
+

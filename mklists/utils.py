@@ -96,11 +96,32 @@ def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
     return True
 
 
-def update_settings_dict_from_config_yamlfile(settings_dict=None, overrides=None):
+def is_line_match_to_rule(given_rule=None, given_line=None):
+    """Returns True if data line matches pattern specified in given rule."""
+
+    # Line does not match if given field greater than number of fields in line.
+    if given_rule.source_matchfield > len(given_line.split()):
+        return False
+
+    # Line matches if given field is zero and pattern found anywhere in line.
+    if given_rule.source_matchfield == 0:
+        if re.search(given_rule.source_matchpattern, given_line):
+            return True
+
+    # Line matches if pattern is found in given field.
+    if given_rule.source_matchfield > 0:
+        eth = given_rule.source_matchfield - 1
+        if re.search(given_rule.source_matchpattern, given_line.split()[eth]):
+            return True
+
+    return False
+
+
+def update_config_dict_from_config_yamlfile(config_dict=None, overrides=None):
     """Inject dictionary B into A, ignoring keys in B with value None."""
     overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
-    settings_dict.update(overrides)
-    return settings_dict
+    config_dict.update(overrides)
+    return config_dict
 
 
 def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
