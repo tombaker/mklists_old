@@ -124,6 +124,14 @@ def update_config_dict_from_config_yamlfile(config_dict=None, overrides=None):
     return config_dict
 
 
+def write_initial_config_yamlfile():
+    """"""
+
+
+def write_initial_rule_yamlfiles():
+    """"""
+
+
 def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:

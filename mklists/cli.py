@@ -26,8 +26,8 @@ def cli(ctx):
 @click.pass_context
 def init(ctx, empty):
     """Write starter configuration and rule files."""
-    # write_initial_config_yamlfile() - in writes.py
-    # write_initial_rule_yamlfiles() - in writes.py
+    # write_initial_config_yamlfile()
+    # write_initial_rule_yamlfiles()
 
 
 @cli.command()
@@ -36,17 +36,16 @@ def init(ctx, empty):
 @click.pass_context
 def run(ctx, debug, dryrun):
     """Apply rules to re-write data files."""
-    # In other utils or run:
-    #    get_ctxobj_from_config_yamlfile()
-    #    -- something like ctx.obj = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
-    #    -- may no longer need: update_config_dict_from_pyobj(ctx.obj, config)
-    #    get_dataline_list_from_listfiles(listfiles)
-    #    get_listfile_names()
-    #    get_ruleobj_list_from_rule_yamlfiles()
-    #    apply_rules_to_datalines(rules, data)
-    #    make_backupdir_name, then os.mkdir(backupdir)
-    #    move_existing_listfiles_to_backupdir(ctx?)
-    #    delete_older_backups()
-    #    write_datadict_to_listfiles_in_currentdir(lines)
-    #    write_datadict_to_htmlfiles_in_htmldir(lines)
-    #    move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
+    # RUN   get_ctxobj_from_config_yamlfile()
+    # RUN   -- something like ctx.obj = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
+    # RUN   -- may no longer need: update_config_dict_from_pyobj(ctx.obj, config)
+    # RUN   get_dataline_list_from_listfiles(listfiles)
+    # RUN   get_listfile_names()
+    # RUN   get_ruleobj_list_from_rule_yamlfiles()
+    # RUN   apply_rules_to_datalines(rules, data)
+    # RUN   make_backupdir_name, then os.mkdir(backupdir)
+    # RUN   move_existing_listfiles_to_backupdir(ctx?)
+    # RUN   delete_older_backups()
+    # RUN   write_datadict_to_listfiles_in_currentdir(lines)
+    # RUN   write_datadict_to_htmlfiles_in_htmldir(lines)
+    # RUN   move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
