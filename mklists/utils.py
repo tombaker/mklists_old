@@ -15,18 +15,6 @@ from .constants import (
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
 
 
-def make_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
-    """@@@Docstring"""
-    return os.path.join(listdir_name, now)
-
-
-def make_htmlstr_from_textstr(string):
-    """Return string with URLs wrapped in A_HREF tags."""
-    if "<a href=" in string:
-        return string
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
-
-
 def get_listdir_names_under_rootdir(rootdir_name="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with a '.rules' file."""
@@ -115,6 +103,18 @@ def is_line_match_to_rule(given_rule=None, given_line=None):
             return True
 
     return False
+
+
+def make_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
+    """@@@Docstring"""
+    return os.path.join(listdir_name, now)
+
+
+def make_htmlstr_from_textstr(string):
+    """Return string with URLs wrapped in A_HREF tags."""
+    if "<a href=" in string:
+        return string
+    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
 def update_config_dict_from_config_yamlfile(config_dict=None, overrides=None):

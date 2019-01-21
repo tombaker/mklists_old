@@ -3,13 +3,7 @@ __init__.py =============================================
 cli.py =============================================
 def cli(ctx):
 def init(ctx, empty):
-def run(ctx, dryrun):
-
-group.py =============================================
-class LoadInitForCommands(click.Group):
-    def command(self, *args, **kwargs):
-        def decorator(f):
-            def invoke(ctx):
+def run(ctx, debug, dryrun):
 
 rules.py =============================================
 class Rule:
@@ -21,7 +15,7 @@ class Rule:
     def _source_not_initialized_as_source(self):
 
 run.py =============================================
-def get_dataline_list_from_listfiles(listfile_names: list):
+def get_dataline_list_from_listfiles(listfile_names=None):
 def get_ruleobj_list_from_rule_yamlfiles(verbose=True):
 def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
 def move_existing_listfiles_to_backupdir(backupdir, backups=2):
@@ -40,6 +34,6 @@ def get_pyobj_from_yamlfile(yamlfile_name):
 def get_rootdir_name(path="."):
 def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
 def is_line_match_to_rule(given_rule=None, given_line=None):
-def update_settings_dict_from_config_yamlfile(settings_dict=None, overrides=None):
+def update_config_dict_from_config_yamlfile(config_dict=None, overrides=None):
 def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
 

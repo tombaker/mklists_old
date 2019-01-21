@@ -14,7 +14,82 @@ from .rules import Rule
 from .utils import get_pyobj_from_yamlfile, is_line_match_to_rule
 
 
-def get_dataline_list_from_listfiles(listfile_names: list):
+def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
+    """Applies rules, one by one, to process an aggregated list of datalines.
+
+    Args:
+        ruleobj_list: list of rule objects
+        dataline_list: list of strings (all data lines)
+
+    Returns:
+        datadict - dictionary where:
+        * key: always a string that is valid as a filename
+        * value: always a list of (part of the) data lines
+    """
+    datadict = defaultdict(list)
+    first_key_is_initialized = False
+
+    if not ruleobj_list:
+        raise NoRulesError("No rules specified.")
+
+    if not dataline_list:
+        raise NoDataError("No data specified.")
+
+    # Evaluate rules, one-by-one, to process entries in datadict.
+    for ruleobj in ruleobj_list:
+
+        # Initialize datadict with first rule.
+        #    key: valid filename (from 'source' field of first ruleobj)
+        #    value: list of all data lines
+        if not first_key_is_initialized:
+            datadict[ruleobj.source] = dataline_list
+            first_key_is_initialized = True
+
+        # Match lines in 'ruleobj.source' against 'rulesobj.regex'.
+        #    append matching lines to value of 'ruleobj.target'
+        #    remove matching lines from value of 'ruleobj.source'
+        for line in datadict[ruleobj.source]:
+            if is_line_match_to_rule(ruleobj, line):
+                datadict[ruleobj.target].extend([line])
+                datadict[ruleobj.source].remove(line)
+
+        # Sort 'ruleobj.target' lines by field if sortorder was specified.
+        if ruleobj.target_sortorder:
+            eth_sortorder = ruleobj.target_sortorder - 1
+            decorated = [
+                (line.split()[eth_sortorder], __, line)
+                for (__, line) in enumerate(datadict[ruleobj.target])
+            ]
+            decorated.sort()
+            datadict[ruleobj.target] = [line for (___, __, line) in decorated]
+
+    return dict(datadict)
+
+
+def delete_older_backups():
+    """
+    Count number of backups under this directory:
+        Get short name of current data directory (get_listdir_shortname).
+        Create list of directories under parent directory of backupdir.
+            lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
+            Example: if backup dir is
+                mkrepo/_backups/a/2018-12-31.23414123
+            Then parent is
+                mkrepo/_backups/a
+            Resulting list might be:
+                [ '2018-12-31.23414123', '2019-01-01.12155264', '2019-02-02.02265324' ]
+    Either:
+        while len(lsd_visible) > backups:
+            file_to_be_deleted = lsd_visible.pop(0)
+            rm file_to_be_deleted
+    Or:
+        while len(directory_list) > backups:
+            dir_to_delete = directory_list.pop(0)
+            print(f"rm {dir_to_delete}")
+    """
+
+
+def get_dataline_list_from_listfiles(listfile_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:
@@ -71,56 +146,8 @@ def get_ruleobj_list_from_rule_yamlfiles(verbose=True):
     return ruleobj_list
 
 
-def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
-    """Applies rules, one by one, to process an aggregated list of datalines.
-
-    Args:
-        ruleobj_list: list of rule objects
-        dataline_list: list of strings (all data lines)
-
-    Returns:
-        datadict - dictionary where:
-        * key: always a string that is valid as a filename
-        * value: always a list of (part of the) data lines
-    """
-    datadict = defaultdict(list)
-    first_key_is_initialized = False
-
-    if not ruleobj_list:
-        raise NoRulesError("No rules specified.")
-
-    if not dataline_list:
-        raise NoDataError("No data specified.")
-
-    # Evaluate rules, one-by-one, to process entries in datadict.
-    for ruleobj in ruleobj_list:
-
-        # Initialize datadict with first rule.
-        #    key: valid filename (from 'source' field of first ruleobj)
-        #    value: list of all data lines
-        if not first_key_is_initialized:
-            datadict[ruleobj.source] = dataline_list
-            first_key_is_initialized = True
-
-        # Match lines in 'ruleobj.source' against 'rulesobj.regex'.
-        #    append matching lines to value of 'ruleobj.target'
-        #    remove matching lines from value of 'ruleobj.source'
-        for line in datadict[ruleobj.source]:
-            if is_line_match_to_rule(ruleobj, line):
-                datadict[ruleobj.target].extend([line])
-                datadict[ruleobj.source].remove(line)
-
-        # Sort 'ruleobj.target' lines by field if sortorder was specified.
-        if ruleobj.target_sortorder:
-            eth_sortorder = ruleobj.target_sortorder - 1
-            decorated = [
-                (line.split()[eth_sortorder], __, line)
-                for (__, line) in enumerate(datadict[ruleobj.target])
-            ]
-            decorated.sort()
-            datadict[ruleobj.target] = [line for (___, __, line) in decorated]
-
-    return dict(datadict)
+def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
+    """Args: files2dirs_dict: filename (key) and destination directory (value)"""
 
 
 def move_existing_listfiles_to_backupdir(backupdir, backups=2):
@@ -137,38 +164,6 @@ def move_existing_listfiles_to_backupdir(backupdir, backups=2):
     """
 
 
-def delete_older_backups():
-    """
-    Count number of backups under this directory:
-        Get short name of current data directory (get_listdir_shortname).
-        Create list of directories under parent directory of backupdir.
-            lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
-            Example: if backup dir is
-                mkrepo/_backups/a/2018-12-31.23414123
-            Then parent is
-                mkrepo/_backups/a
-            Resulting list might be:
-                [ '2018-12-31.23414123', '2019-01-01.12155264', '2019-02-02.02265324' ]
-    Either:
-        while len(lsd_visible) > backups:
-            file_to_be_deleted = lsd_visible.pop(0)
-            rm file_to_be_deleted
-    Or:
-        while len(directory_list) > backups:
-            dir_to_delete = directory_list.pop(0)
-            print(f"rm {dir_to_delete}")
-    """
-
-
-def write_datadict_to_listfiles_in_currentdir(datadict=None, verbose=False):
-    """
-    -- Move existing files from working directory to backupdir.
-    -- Write out contents of datadict to working directory:
-       -- datadict keys are names of files.
-       -- datadict values are contents of files.
-    """
-
-
 def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
     """
     -- Create htmldir (if it does not already exist).
@@ -181,5 +176,10 @@ def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
     """
 
 
-def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
-    """Args: files2dirs_dict: filename (key) and destination directory (value)"""
+def write_datadict_to_listfiles_in_currentdir(datadict=None, verbose=False):
+    """
+    -- Move existing files from working directory to backupdir.
+    -- Write out contents of datadict to working directory:
+       -- datadict keys are names of files.
+       -- datadict values are contents of files.
+    """
