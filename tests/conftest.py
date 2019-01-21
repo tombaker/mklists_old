@@ -1,14 +1,16 @@
 import pytest
 from mklists.rules import Rule
 
-TEST_CONFIG_YAMLFILE_NAME = "mklists.yml"
+from mklists.constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+
 TEST_CONFIG_YAMLFILE_YAMLSTR = r"""\
 invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
-global_rules:
+"""
+
+TEST_RULE_GLOBAL_YAMLFILE_YAMLSTR = """\
 - [0, '.', all, lines, 0]
 """
 
-TEST_RULE_YAMLFILEA_NAME = ".rules"
 TEST_RULE_YAMLFILEA_YAMLSTR = """\
 - [2, 'NOW',     lines,  now,     1]
 - [2, 'LATER',   lines,  later,   0]
@@ -17,13 +19,22 @@ TEST_RULE_YAMLFILEA_YAMLSTR = """\
 TEST_LISTFILE_STRING = """= NOW Cook\n=LATER Read"""
 
 
+@pytest.fixture(name="myrepo_empty")
+def fixture_myrepo_empty(tmpdir_factory):
+    """Return temporary mklists repo 'myrepo' (empty)."""
+    root_dir = tmpdir_factory.mktemp("myrepo")
+    root_dir.mkdir("a")
+    return root_dir
+
+
 @pytest.fixture(name="myrepo")
 def fixture_myrepo(tmpdir_factory):
     """Return temporary mklists repo 'myrepo'."""
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
-    root_dir.join(TEST_CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_YAMLSTR)
-    subdir_a.join(TEST_RULE_YAMLFILEA_NAME).write(TEST_RULE_YAMLFILEA_YAMLSTR)
+    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_YAMLSTR)
+    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_RULE_GLOBAL_YAMLFILE_YAMLSTR)
+    subdir_a.join(RULE_YAMLFILE_NAME).write(TEST_RULE_YAMLFILEA_YAMLSTR)
     return root_dir
 
 
