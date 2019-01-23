@@ -1,7 +1,7 @@
 """Apply rules to process datalines."""
 
 from collections import defaultdict
-from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .exceptions import (
     BadYamlRuleError,
     BlankLinesError,

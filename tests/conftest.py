@@ -19,14 +19,6 @@ TEST_RULE_YAMLFILEA_YAMLSTR = """\
 TEST_LISTFILE_STRING = """= NOW Cook\n=LATER Read"""
 
 
-@pytest.fixture(name="myrepo_empty")
-def fixture_myrepo_empty(tmpdir_factory):
-    """Return temporary mklists repo 'myrepo' (empty)."""
-    root_dir = tmpdir_factory.mktemp("myrepo")
-    root_dir.mkdir("a")
-    return root_dir
-
-
 @pytest.fixture(name="myrepo")
 def fixture_myrepo(tmpdir_factory):
     """Return temporary mklists repo 'myrepo'."""

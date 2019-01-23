@@ -6,11 +6,11 @@ import glob
 import yaml
 from .constants import (
     CONFIG_YAMLFILE_NAME,
-    INVALID_FILENAME_PATTERNS,
     RULE_YAMLFILE_NAME,
-    TIMESTAMP_STR,
-    URL_PATTERN_REGEX,
     VALID_FILENAME_CHARACTERS_REGEX,
+    TIMESTAMP_STR,
+    INVALID_FILENAME_PATTERNS,
+    URL_PATTERN_REGEX,
 )
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
 
@@ -122,14 +122,6 @@ def update_config_dict_from_config_yamlfile(config_dict=None, overrides=None):
     overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
     config_dict.update(overrides)
     return config_dict
-
-
-def write_initial_config_yamlfile():
-    """"""
-
-
-def write_initial_rule_yamlfiles():
-    """"""
 
 
 def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):

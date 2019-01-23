@@ -26,7 +26,7 @@ def cli(ctx):
 @click.pass_context
 def init(ctx, empty):
     """Write starter configuration and rule files."""
-    # write_initial_config_yamlfile()
+    # initialize_config_yamlfiles()
     # write_initial_rule_yamlfiles()
 
 

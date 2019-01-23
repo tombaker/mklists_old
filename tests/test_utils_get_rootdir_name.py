@@ -64,15 +64,3 @@ def test_not_get_rootdir_name_given_missing_link(tmpdir):
     os.chdir(tmpdirc)
     with pytest.raises(SystemExit):
         get_rootdir_name()
-
-
-# @pytest.mark.skip
-# def test_write_initial_config_yamlfile(tmpdir):
-#     """Write mklists.yml, then read it back."""
-#     os.chdir(tmpdir)
-#     mklistsrc = tmpdir.join(CONFIG_YAMLFILE_NAME)
-#     _write_initial_config_yamlfile(config_yamlfile_name=mklistsrc)
-#     updated_context = _apply_overrides_from_file()
-#     assert (
-#        updated_context["valid_filename_characters"] == VALID_FILENAME_CHARACTERS_REGEX
-#     )

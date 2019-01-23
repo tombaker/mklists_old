@@ -1,11 +1,9 @@
 """@@@Docstring"""
 
-import os
 from mklists.utils import get_pyobj_from_yamlfile, write_yamlstr_to_yamlfile
 
 
 def test_write_yamlstr_to_yamlfile(tmpdir):
-    os.chdir(tmpdir)
     yaml_str = "backups: 3\nverbose: false"
     yamlfile = "mklists.yml"
     write_yamlstr_to_yamlfile(yaml_str, yamlfile)
@@ -15,7 +13,6 @@ def test_write_yamlstr_to_yamlfile(tmpdir):
 
 def test_write_yamlstr_to_yamlfile_too(tmpdir):
     """Writes string to YAML rulefile, reads it back to string."""
-    os.chdir(tmpdir)
     lr_yamlstr = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
