@@ -1,5 +1,6 @@
 """Apply rules to process datalines."""
 
+import io
 from collections import defaultdict
 from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .exceptions import (
@@ -176,10 +177,17 @@ def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
     """
 
 
-def write_datadict_to_listfiles_in_currentdir(datadict=None, verbose=False):
+def move_listfiles_from_currentdir_to_backupdir(files=None):
     """
     -- Move existing files from working directory to backupdir.
+    """
+
+
+def write_datadict_to_listfiles_in_currentdir(datadict=None):
+    """
     -- Write out contents of datadict to working directory:
        -- datadict keys are names of files.
        -- datadict values are contents of files.
     """
+    for (key, value) in datadict.items():
+        io.open(key, "w", encoding="utf-8").writelines(value)
