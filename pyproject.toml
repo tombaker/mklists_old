@@ -1,6 +1,0 @@
-# Example configuration for Black.
-
-# NOTE: must use single-quoted strings in TOML for regex; equivalent of r-strings in Python. 
-
-[tool.black]
-line-length = 79

@@ -1,6 +1,6 @@
 mklists
 
-Re-arrange folders of plain-text lists using rules
+Organize your todo lists by tweaking rules
 
 Next steps:
 * http://click.pocoo.org/6/utils/ - Click testing and file system isolation
@@ -8,6 +8,7 @@ Next steps:
 * Update pip distribution
 * mklists equivalent of git-grep?
 * /.globalrules exists only if /mklistsrc exists
+* subcommand: mklists grepx - as in: mklists grepx NOW 2018 dc... (gather args into list)
 
 Maybe someday:
 * Event logging?
