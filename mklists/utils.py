@@ -54,9 +54,9 @@ def get_pyobj_from_yamlfile(yamlfile_name):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
-def get_rootdir_pathname(path="."):
+def get_rootdir_pathname(here="."):
     """Return project rootdir when executed in the rootdir or in a listdir."""
-    os.chdir(path)
+    os.chdir(here)
     while True:
         ls_cwd = os.listdir()
         if RULE_YAMLFILE_NAME in ls_cwd:
