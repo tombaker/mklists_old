@@ -69,7 +69,7 @@ def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
 def delete_older_backups():
     """
     Count number of backups under this directory:
-        Get short name of current data directory (get_listdir_shortname).
+        Get short name of current data directory (get_cwd_basename).
         Create list of directories under parent directory of backupdir.
             lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
             Example: if backup dir is

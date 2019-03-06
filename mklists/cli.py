@@ -40,7 +40,7 @@ def run(ctx, debug, dryrun):
     # RUN   -- something like ctx.obj = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
     # RUN   -- may no longer need: update_config_dict_from_pyobj(ctx.obj, config)
     # RUN   get_dataline_list_from_listfiles(listfiles)
-    # RUN   get_listfile_names()
+    # RUN   get_visiblefile_names_in_listdir()
     # RUN   get_ruleobj_list_from_rule_yamlfiles()
     # RUN   apply_rules_to_datalines(rules, data)
     # RUN   make_backupdir_name, then os.mkdir(backupdir)

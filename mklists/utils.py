@@ -15,7 +15,7 @@ from .constants import (
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
 
 
-def get_listdir_names_under_rootdir(rootdir_name="."):
+def get_listdir_pathnames_under_cwd(rootdir_name="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with a '.rules' file."""
     listdirs = []
@@ -25,11 +25,12 @@ def get_listdir_names_under_rootdir(rootdir_name="."):
     return listdirs
 
 
-def get_listdir_shortname(listdir=os.getcwd(), rootdir=None):
+def get_cwd_basename(listdir=os.getcwd(), rootdir=None):
+    """@@@Redo this using os.path.basename"""
     return listdir[len(rootdir) :].strip("/").replace("/", "_")
 
 
-def get_listfile_names(listdir_name=os.getcwd()):
+def get_visiblefile_names_in_listdir(listdir_name=os.getcwd()):
     """Return names of visible files with names that are valid as listfiles."""
     os.chdir(listdir_name)
     all_listfile_names = []
@@ -53,7 +54,7 @@ def get_pyobj_from_yamlfile(yamlfile_name):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
-def get_rootdir_name(path="."):
+def get_rootdir_pathname(path="."):
     """Return project rootdir when executed in the rootdir or in a listdir."""
     os.chdir(path)
     while True:

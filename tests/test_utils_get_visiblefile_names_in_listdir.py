@@ -1,14 +1,14 @@
 """@@@Docstring"""
 
 import os
-from mklists.utils import get_listfile_names
+from mklists.utils import get_visiblefile_names_in_listdir
 
 
-def test_get_listfile_names(tmpdir):
+def test_get_visiblefile_names_in_listdir(tmpdir):
     """Test depends on get_lsvisible_names().
     Directory 'a' should be ignored."""
     os.chdir(tmpdir)
     tmpdir.join("foo").write("foo stuff\nmore foo stuff")
     tmpdir.join("bar").write("bar stuff\nmore bar stuff")
     tmpdir.mkdir("baz")
-    assert get_listfile_names(tmpdir) == ["foo", "bar"]
+    assert get_visiblefile_names_in_listdir(tmpdir) == ["foo", "bar"]
