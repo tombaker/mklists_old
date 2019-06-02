@@ -1,7 +1,7 @@
 mklists
 
-Current tagline 
-* Sync todo lists to your evolving rules
+Current tagline - change in: README.md (here), /setup.py, /mklists/cli.py
+* Sync list files to your evolving rules
 
 Alternative taglines
 * Organize your todo lists by tweaking rules

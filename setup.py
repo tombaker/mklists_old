@@ -7,7 +7,7 @@ setup(
     name="mklists",
     version="0.1.4",
     license="MIT",
-    description="Sync todo lists to your evolving rules",
+    description="Sync list files to your evolving rules",
     long_description=long_description,
     author="Tom Baker",
     author_email="tom@tombaker.org",

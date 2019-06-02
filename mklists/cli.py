@@ -14,28 +14,38 @@ import click
 
 
 @click.group()
-@click.version_option("0.1.5", help="Show version and exit.")
-@click.help_option(help="Show help and exit.")
+@click.version_option("0.1.5", help="Show version and exit")
+@click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx):
-    """Organize your todo lists by tweaking rules"""
+    """Sync list files to your evolving rules"""
 
 
 @cli.command()
-@click.option("--empty", is_flag=True, help="Minimal configuration (for experts).")
+@click.help_option(help="Show help and exit")
 @click.pass_context
-def init(ctx, empty):
-    """Write starter configuration and rule files."""
+def init(ctx):
+    """Initialize list repo"""
     # initialize_config_yamlfiles()
     # write_initial_rule_yamlfiles()
 
 
 @cli.command()
-@click.option("--debug", is_flag=True, help="Run verbosely.")
-@click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode.")
+@click.help_option(help="Show help and exit")
+@click.pass_context
+def newbie(ctx):
+    """Initialize list repo with example files"""
+    # initialize_config_yamlfiles()
+    # write_initial_rule_yamlfiles()
+
+
+@cli.command()
+@click.option("--debug", is_flag=True, help="Run verbosely")
+@click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode")
+@click.help_option(help="Show help and exit")
 @click.pass_context
 def run(ctx, debug, dryrun):
-    """Apply rules to re-write data files."""
+    """Sync list files to rules"""
     # RUN   get_ctxobj_from_config_yamlfile()
     # RUN   -- something like ctx.obj = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
     # RUN   -- may no longer need: update_config_dict_from_pyobj(ctx.obj, config)
