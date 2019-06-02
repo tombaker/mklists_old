@@ -1,10 +1,13 @@
 mklists
 
-Organize your todo lists by tweaking rules
+Current tagline 
+* Sync todo lists to your evolving rules
+
+Alternative taglines
+* Organize your todo lists by tweaking rules
 
 Next steps:
 * http://click.pocoo.org/6/utils/ - Click testing and file system isolation
-* http://mklists.org/wishlist/ - compare to (delete someday)
 * Update pip distribution
 * mklists equivalent of git-grep?
 * /.globalrules exists only if /mklistsrc exists
