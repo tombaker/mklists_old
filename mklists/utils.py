@@ -38,7 +38,7 @@ def get_visiblefile_names_in_listdir(listdir_name=os.getcwd()):
         if not has_valid_name(filename):
             raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
         all_listfile_names.append(filename)
-    return all_listfile_names
+    return sorted(all_listfile_names)
 
 
 def get_pyobj_from_yamlfile(yamlfile_name):
