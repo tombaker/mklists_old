@@ -3,13 +3,21 @@
 import click
 
 # from .run import (
-#    get_ruleobj_list_from_rule_yamlfiles,
-#    get_dataline_list_from_listfiles,
 #    apply_rules_to_datalines,
-#    write_datadict_to_listfiles_in_currentdir,
-#    write_datadict_to_htmlfiles_in_htmldir,
-#    move_existing_listfiles_to_backupdir,
+#    get_dataline_list_from_listfiles,
+#    get_ruleobj_list_from_rule_yamlfiles,
 #    move_certain_listfiles_to_other_directories,
+#    move_existing_listfiles_to_backupdir,
+#    write_datadict_to_htmlfiles_in_htmldir,
+#    write_datadict_to_listfiles_in_currentdir,
+# )
+# from .todo import (
+#    delete_older_backups,
+#    get_ctxobj_from_config_yamlfile,
+#    move_certain_listfiles_to_other_directories,
+#    move_existing_listfiles_to_backupdir,
+#    write_datadict_to_htmlfiles_in_htmldir,
+#    write_initial_rule_yamlfiles,
 # )
 
 
@@ -26,8 +34,8 @@ def cli(ctx):
 @click.pass_context
 def init(ctx):
     """Initialize list repo"""
-    # initialize_config_yamlfiles()
-    # write_initial_rule_yamlfiles()
+    # initialize.py: initialize_config_yamlfiles()
+    # todo.py:       write_initial_rule_yamlfiles()
 
 
 @cli.command()
@@ -35,8 +43,8 @@ def init(ctx):
 @click.pass_context
 def newbie(ctx):
     """Initialize list repo with example files"""
-    # initialize_config_yamlfiles()
-    # write_initial_rule_yamlfiles()
+    # initialize.py: initialize_config_yamlfiles()
+    # todo.py:       write_initial_rule_yamlfiles()
 
 
 @cli.command()
@@ -46,16 +54,16 @@ def newbie(ctx):
 @click.pass_context
 def run(ctx, debug, dryrun):
     """Sync list files to rules"""
-    # RUN   get_ctxobj_from_config_yamlfile()
-    # RUN   -- something like ctx.obj = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
-    # RUN   -- may no longer need: update_config_dict_from_pyobj(ctx.obj, config)
-    # RUN   get_dataline_list_from_listfiles(listfiles)
-    # RUN   get_visiblefile_names_in_listdir()
-    # RUN   get_ruleobj_list_from_rule_yamlfiles()
-    # RUN   apply_rules_to_datalines(rules, data)
-    # RUN   make_backupdir_name, then os.mkdir(backupdir)
-    # RUN   move_existing_listfiles_to_backupdir(ctx?)
-    # RUN   delete_older_backups()
-    # RUN   write_datadict_to_listfiles_in_currentdir(lines)
-    # RUN   write_datadict_to_htmlfiles_in_htmldir(lines)
-    # RUN   move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
+    # todo.py:       get_ctxobj_from_config_yamlfile()
+    # -- something like ctx.obj = yaml.load(open(CONFIG_YAMLFILE_NAME).read())
+    # -- may no longer need: utils.py: update_config_dict_from_pyobj(ctx.obj, config)
+    # run.py:        get_dataline_list_from_listfiles(listfiles)
+    # utils.py:      get_visiblefile_names_in_listdir()
+    # run.py:        get_ruleobj_list_from_rule_yamlfiles()
+    # run.py:        apply_rules_to_datalines(rules, data)
+    # utils.py:      make_backupdir_name, then os.mkdir(backupdir)
+    # todo.py:       move_existing_listfiles_to_backupdir(ctx?)
+    # todo.py:       delete_older_backups()
+    # run.py:        write_datadict_to_listfiles_in_currentdir(lines)
+    # todo.py:       write_datadict_to_htmlfiles_in_htmldir(lines)
+    # todo.py:       move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
