@@ -15,6 +15,11 @@ from .constants import (
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
 
 
+def get_cwd_basename(listdir=os.getcwd(), rootdir=None):
+    """@@@Redo this using os.path.basename"""
+    return listdir[len(rootdir) :].strip("/").replace("/", "_")
+
+
 def get_listdir_pathnames_under_cwd(rootdir_name="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with a '.rules' file."""
@@ -23,22 +28,6 @@ def get_listdir_pathnames_under_cwd(rootdir_name="."):
         if RULE_YAMLFILE_NAME in filenames:
             listdirs.append(os.path.join(dirpath))
     return listdirs
-
-
-def get_cwd_basename(listdir=os.getcwd(), rootdir=None):
-    """@@@Redo this using os.path.basename"""
-    return listdir[len(rootdir) :].strip("/").replace("/", "_")
-
-
-def get_visiblefile_names_in_listdir(listdir_name=os.getcwd()):
-    """Return names of visible files with names that are valid as listfiles."""
-    os.chdir(listdir_name)
-    all_listfile_names = []
-    for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
-        if not has_valid_name(filename):
-            raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
-        all_listfile_names.append(filename)
-    return sorted(all_listfile_names)
 
 
 def get_pyobj_from_yamlfile(yamlfile_name):
@@ -71,6 +60,17 @@ def get_rootdir_pathname(here="."):
         raise ConfigFileNotFoundError(
             f"No {CONFIG_YAMLFILE_NAME} found. Try mklists init."
         )
+
+
+def get_visiblefile_names_in_listdir(listdir_name=os.getcwd()):
+    """Return names of visible files with names that are valid as listfiles."""
+    os.chdir(listdir_name)
+    all_listfile_names = []
+    for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
+        if not has_valid_name(filename):
+            raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
+        all_listfile_names.append(filename)
+    return sorted(all_listfile_names)
 
 
 def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):

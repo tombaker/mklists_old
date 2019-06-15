@@ -27,6 +27,10 @@ def delete_older_backups():
     """
 
 
+def get_ctxobj_from_config_yamlfile():
+    """"""
+
+
 def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
     """Args: files2dirs_dict: filename (key) and destination directory (value)"""
 
