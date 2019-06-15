@@ -13,7 +13,7 @@ from .constants import (
 
 
 def initialize_config_yamlfiles():
-    """"""
+    """Initialize configuration YAML file"""
     config_path = os.path.join(os.getcwd())
     config_file = os.path.join(config_path, CONFIG_YAMLFILE_NAME)
     grule_file = os.path.join(config_path, RULE_YAMLFILE_NAME)
