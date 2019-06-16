@@ -5,11 +5,16 @@ import os
 
 # @@TODO: distinguish between YAML string constants and
 # initial configuration values, which can directly be expressed
-# as a Python object
+# as a Python object?
+# 2019-06-16: No, write initial config file with sensible defaults
+# and trust people to edit that file carefully.  If it is then
+# edited with bad values (wrong type, out of range, missing)
+# the functions that rely on those values should trigger an exit
+# with error message.
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 RULE_YAMLFILE_NAME = ".rules"
-INITIAL_CONFIG_YAMLFILE_STR = r"""\
+INITIAL_CONFIG_YAMLFILE_STR = """\
 backups: 3
 html: false
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]

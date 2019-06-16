@@ -119,13 +119,6 @@ def make_htmlstr_from_textstr(string):
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
-def update_config_dict_from_config_yamlfile(config_dict=None, overrides=None):
-    """Inject dictionary B into A, ignoring keys in B with value None."""
-    overrides = {key: overrides[key] for key in overrides if overrides[key] is not None}
-    config_dict.update(overrides)
-    return config_dict
-
-
 def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:
