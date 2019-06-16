@@ -19,7 +19,7 @@ files2dirs: {
     move_to_a.txt: a,
 }
 """
-GRULE_YAMLFILE_STARTER_YAMLSTR = """\
+INITIAL_GLOBALRULE_YAMLFILE_STR = """\
 - [0, '.',          all_lines, lines,            0]
 - [0, '^=',         all_lines, move_to_a.txt,    1]
 - [0, '^2019|2020', all_lines, move_to_logs.txt, 1]
@@ -54,6 +54,6 @@ def write_initial_rule_yamlfiles():
     os.makedirs(os.path.join(config_path, "b"))
     rulea_file = os.path.join(config_path, "a", RULE_YAMLFILE_NAME)
     ruleb_file = os.path.join(config_path, "b", RULE_YAMLFILE_NAME)
-    io.open(grule_file, "w", encoding="utf-8").write(GRULE_YAMLFILE_STARTER_YAMLSTR)
+    io.open(grule_file, "w", encoding="utf-8").write(INITIAL_GLOBALRULE_YAMLFILE_STR)
     io.open(rulea_file, "w", encoding="utf-8").write(RULEA_YAMLFILE_STARTER_YAMLSTR)
     io.open(ruleb_file, "w", encoding="utf-8").write(RULEB_YAMLFILE_STARTER_YAMLSTR)
