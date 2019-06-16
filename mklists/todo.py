@@ -31,21 +31,6 @@ def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
     """
 
 
-def move_existing_listfiles_to_backupdir(backupdir, backups=2):
-    """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_existing_listfiles_to_backupdir
-    Get number of backups as configuring (config['backups']
-        If backups less than two, then backups = 2 ("mandatory")
-    Create a backup directory.
-        Generate a name for backupdir (make_backupdir_name).
-        Make dir: hard-coded parent dirname (_html) plus generated timestamped name.
-    Get list of existing visible files in data directory.
-    Move all visible files in data directory to backupdir.
-        for file in filelist:
-            shutil.move(file, backupdir)
-    """
-
-
 def move_certain_listfiles_from_currentdir_to_backupdir(files=None):
     """
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_certain_listfiles_to_other_directories

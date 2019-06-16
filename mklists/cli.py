@@ -7,7 +7,7 @@ import click
 #    load_datalines_from_listfiles,
 #    load_rules_from_rule_yamlfiles,
 #    move_certain_listfiles_to_other_directories,
-#    move_existing_listfiles_to_backupdir,
+#    move_current_listfiles_to_backupdir,
 #    write_datadict_to_htmlfiles_in_htmldir,
 #    write_datadict_to_listfiles_in_currentdir,
 # )
@@ -15,7 +15,7 @@ import click
 #    delete_older_backups,
 #    get_ctxobj_from_config_yamlfile,
 #    move_certain_listfiles_to_other_directories,
-#    move_existing_listfiles_to_backupdir,
+#    move_current_listfiles_to_backupdir,
 #    write_datadict_to_htmlfiles_in_htmldir,
 #    write_initial_rule_yamlfiles,
 # )
@@ -61,7 +61,7 @@ def run(ctx, debug, dryrun, quiet):
     # rules_objs = load_rules_from_rule_yamlfiles()
     #
     # apply_rules_to_datalines(rule_objs, lines_list)
-    # move_existing_listfiles_to_backupdir(ctx?)            - todo.py
+    # move_current_listfiles_to_backupdir(ctx?)            - todo.py
     # write_datadict_to_listfiles_in_currentdir(lines)      - todo.py
     #
     # STAGE1     make_backupdir_name, then os.mkdir(backupdir)     - utils.py
