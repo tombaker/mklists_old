@@ -31,13 +31,6 @@ def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
     """
 
 
-def move_certain_listfiles_from_currentdir_to_backupdir(files=None):
-    """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_certain_listfiles_to_other_directories
-    -- Move existing files from working directory to backupdir.
-    """
-
-
 def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
     """
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_datadict_to_htmlfiles_in_htmldir
