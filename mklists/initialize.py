@@ -19,7 +19,7 @@ files2dirs: {
     move_to_a.txt: a,
 }
 """
-INITIAL_GLOBALRULE_YAMLFILE_STR = """\
+INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR = """\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
@@ -63,6 +63,8 @@ def write_initial_rule_yamlfiles():
     os.makedirs(os.path.join(config_path, "b"))
     rulea_file = os.path.join(config_path, "a", RULE_YAMLFILE_NAME)
     ruleb_file = os.path.join(config_path, "b", RULE_YAMLFILE_NAME)
-    io.open(grule_file, "w", encoding="utf-8").write(INITIAL_GLOBALRULE_YAMLFILE_STR)
+    io.open(grule_file, "w", encoding="utf-8").write(
+        INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR
+    )
     io.open(rulea_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEA_YAMLFILE_STR)
     io.open(ruleb_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEB_YAMLFILE_STR)
