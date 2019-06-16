@@ -6,6 +6,7 @@
 
 def delete_older_backups():
     """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_delete_older_backups.py
     Count number of backups under this directory:
         Get short name of current data directory (get_cwd_basename).
         Create list of directories under parent directory of backupdir.
@@ -28,15 +29,20 @@ def delete_older_backups():
 
 
 def get_ctxobj_from_config_yamlfile():
-    """"""
+    """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_get_ctxobj_from_config_yamlfile
+    """
 
 
 def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
-    """Args: files2dirs_dict: filename (key) and destination directory (value)"""
+    """Args: files2dirs_dict: filename (key) and destination directory (value)
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_certain_listfiles_to_other_directories
+    """
 
 
 def move_existing_listfiles_to_backupdir(backupdir, backups=2):
     """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_existing_listfiles_to_backupdir
     Get number of backups as configuring (config['backups']
         If backups less than two, then backups = 2 ("mandatory")
     Create a backup directory.
@@ -49,14 +55,16 @@ def move_existing_listfiles_to_backupdir(backupdir, backups=2):
     """
 
 
-def move_listfiles_from_currentdir_to_backupdir(files=None):
+def move_certain_listfiles_from_currentdir_to_backupdir(files=None):
     """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_certain_listfiles_to_other_directories
     -- Move existing files from working directory to backupdir.
     """
 
 
 def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
     """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_datadict_to_htmlfiles_in_htmldir
     -- Create htmldir (if it does not already exist).
     -- Delete files in htmldir (if files already exist there).
     -- Write out contents of datadict to working directory:
@@ -68,4 +76,7 @@ def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
 
 
 def write_initial_rule_yamlfiles():
+    """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_initial_rule_yamlfiles
+    """
     pass
