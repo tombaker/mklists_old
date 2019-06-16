@@ -63,7 +63,7 @@ def get_rootdir_pathname(here="."):
         )
 
 
-def get_visiblefile_names_in_listdir(listdir_name=os.getcwd()):
+def ls_visible(listdir_name=os.getcwd()):
     """Return names of visible files with names that are valid as listfiles."""
     os.chdir(listdir_name)
     all_listfile_names = []

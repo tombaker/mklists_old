@@ -57,7 +57,7 @@ def run(ctx, debug, dryrun, quiet):
     """Sync list files to rules"""
     # ctx.obj    = load_config_yamlfile()
     # lines_list = load_datalines_from_listfiles(listfiles)
-    #              use utils.py: get_visiblefile_names_in_listdir() - ?
+    #              use utils.py: ls_visible() - ?
     # rules_objs = load_rules_from_rule_yamlfiles()
     #
     # apply_rules_to_datalines(rule_objs, lines_list)
