@@ -1,17 +1,8 @@
 """Apply rules to process datalines."""
 
 from collections import defaultdict
-from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
-from .exceptions import (
-    BadYamlRuleError,
-    BlankLinesError,
-    NoDataError,
-    NoRulesError,
-    NotUTF8Error,
-    RulefileNotFoundError,
-)
-from .rules import Rule
-from .utils import get_pyobj_from_yamlfile, is_line_match_to_rule
+from .exceptions import BlankLinesError, NoDataError, NoRulesError, NotUTF8Error
+from .utils import is_line_match_to_rule
 
 
 def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
@@ -83,44 +74,6 @@ def get_dataline_list_from_listfiles(listfile_names=None):
     if not all_datalines:
         raise NoDataError("No data to process!")
     return all_datalines
-
-
-def get_ruleobj_list_from_rule_yamlfiles(verbose=True):
-    """Return list of rule objects from configuration and rule files."""
-    # If no rules, return None or empty list?
-
-    all_rules_list = []
-    config_yamlfile = CONFIG_YAMLFILE_NAME
-    rulefile = RULE_YAMLFILE_NAME
-
-    config_pydict = get_pyobj_from_yamlfile(config_yamlfile)
-    try:
-        all_rules_list.append(config_pydict["global_rules"])
-    except KeyError:
-        if verbose:
-            print("No global rules found - skipping.")
-    except TypeError:
-        if verbose:
-            print("No global rules found - skipping.")
-
-    rules_pylist = get_pyobj_from_yamlfile(rulefile)
-    try:
-        all_rules_list.append(rules_pylist)
-    except FileNotFoundError:
-        raise RulefileNotFoundError(f"Rule file {repr(rulefile)} was not found.")
-
-    if not all_rules_list:
-        raise NoRulesError("No rules were found.")
-
-    ruleobj_list = []
-    for item in all_rules_list:
-        try:
-            Rule(*item).is_valid
-        except TypeError:
-            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-        ruleobj_list.append(Rule(*item))
-
-    return ruleobj_list
 
 
 def write_datadict_to_listfiles_in_currentdir(datadict=None):

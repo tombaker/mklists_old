@@ -5,7 +5,7 @@ import click
 # from .run import (
 #    apply_rules_to_datalines,
 #    get_dataline_list_from_listfiles,
-#    get_ruleobj_list_from_rule_yamlfiles,
+#    load_rules_from_yamlfiles,
 #    move_certain_listfiles_to_other_directories,
 #    move_existing_listfiles_to_backupdir,
 #    write_datadict_to_htmlfiles_in_htmldir,
@@ -59,7 +59,7 @@ def run(ctx, debug, dryrun):
     # -- may no longer need: utils.py: update_config_dict_from_pyobj(ctx.obj, config)
     # run.py:        get_dataline_list_from_listfiles(listfiles)
     # utils.py:      get_visiblefile_names_in_listdir()
-    # run.py:        get_ruleobj_list_from_rule_yamlfiles()
+    # run.py:        load_rules_from_yamlfiles()
     # run.py:        apply_rules_to_datalines(rules, data)
     # utils.py:      make_backupdir_name, then os.mkdir(backupdir)
     # todo.py:       move_existing_listfiles_to_backupdir(ctx?)

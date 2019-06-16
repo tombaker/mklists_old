@@ -1,5 +1,5 @@
 """get_pyobj_from_yamlfile():
-* is called by get_ruleobj_list_from_rule_yamlfiles()"""
+* is called by run:load_rules_from_yamlfiles()"""
 
 import os
 import pytest
