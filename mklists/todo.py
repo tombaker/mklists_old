@@ -1,10 +1,5 @@
 """Todo"""
 
-from .initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
-from .exceptions import BadYamlRuleError, NoRulesError, RulefileNotFoundError
-from .rules import Rule
-from .utils import get_pyobj_from_yamlfile
-
 
 def delete_older_backups():
     """
@@ -28,44 +23,6 @@ def delete_older_backups():
             dir_to_delete = directory_list.pop(0)
             print(f"rm {dir_to_delete}")
     """
-
-
-def load_rules_from_rule_yamlfiles(verbose=True):
-    """Return list of rule objects from rule files."""
-
-    all_rules_list = []
-    config_yamlfile = CONFIG_YAMLFILE_NAME
-    rulefile = RULE_YAMLFILE_NAME
-
-    config_pydict = get_pyobj_from_yamlfile(config_yamlfile)
-    try:
-        all_rules_list.append(config_pydict["global_rules"])
-    except KeyError:
-        if verbose:
-            print("No global rules found - skipping.")
-    except TypeError:
-        if verbose:
-            print("No global rules found - skipping.")
-
-    rules_pylist = get_pyobj_from_yamlfile(rulefile)
-    try:
-        all_rules_list.append(rules_pylist)
-    except FileNotFoundError:
-        raise RulefileNotFoundError(f"Rule file {repr(rulefile)} was not found.")
-
-    if not all_rules_list:
-        raise NoRulesError("No rules were found.")
-
-    ruleobj_list = []
-    for item in all_rules_list:
-        try:
-            Rule(*item).is_valid
-        except TypeError:
-            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-        ruleobj_list.append(Rule(*item))
-
-    # If no rules, return None or empty list?
-    return ruleobj_list
 
 
 def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
