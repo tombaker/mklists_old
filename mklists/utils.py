@@ -1,18 +1,19 @@
 """Utilities used by other modules"""
 
+import datetime
 import os
 import re
 import glob
 import yaml
-from .constants import (
-    CONFIG_YAMLFILE_NAME,
-    RULE_YAMLFILE_NAME,
-    VALID_FILENAME_CHARACTERS_REGEX,
-    TIMESTAMP_STR,
-    INVALID_FILENAME_PATTERNS,
-    URL_PATTERN_REGEX,
-)
+from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
+
+BACKUPDIR_NAME = "_backups"
+HTMLDIR_NAME = "_html"
+INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
+TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
 
 def get_cwd_basename(listdir=os.getcwd(), rootdir=None):

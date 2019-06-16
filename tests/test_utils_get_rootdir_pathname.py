@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from mklists.constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+from mklists.initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from mklists.utils import get_rootdir_pathname
 
 

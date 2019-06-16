@@ -1,6 +1,6 @@
 """Todo"""
 
-from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
+from .initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .exceptions import BadYamlRuleError, NoRulesError, RulefileNotFoundError
 from .rules import Rule
 from .utils import get_pyobj_from_yamlfile

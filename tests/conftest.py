@@ -1,21 +1,17 @@
 import pytest
 from mklists.rules import Rule
-
-from mklists.constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+from mklists.initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 
 TEST_CONFIG_YAMLFILE_YAMLSTR = r"""\
 invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
 """
-
 TEST_RULE_GLOBAL_YAMLFILE_YAMLSTR = """\
 - [0, '.', all, lines, 0]
 """
-
 TEST_RULE_YAMLFILEA_YAMLSTR = """\
 - [2, 'NOW',     lines,  now,     1]
 - [2, 'LATER',   lines,  later,   0]
 """
-
 TEST_LISTFILE_STRING = """= NOW Cook\n=LATER Read"""
 
 

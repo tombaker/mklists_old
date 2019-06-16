@@ -1,27 +1,55 @@
-"""@@@"""
+"""Write initial configuration and rule files."""
 
 import io
 import os
-from .constants import (
-    CONFIG_YAMLFILE_NAME,
-    CONFIG_YAMLFILE_YAMLSTR,
-    RULE_YAMLFILE_NAME,
-    GRULE_YAMLFILE_STARTER_YAMLSTR,
-    RULEA_YAMLFILE_STARTER_YAMLSTR,
-    RULEB_YAMLFILE_STARTER_YAMLSTR,
-)
+
+CONFIG_YAMLFILE_NAME = "mklists.yml"
+RULE_YAMLFILE_NAME = ".rules"
+CONFIG_YAMLFILE_YAMLSTR = r"""\
+backups: 3
+html: false
+invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
+verbose: false
+files2dirs: {
+    move_to_logs.txt: logs,
+    move_to_a.txt: a,
+}
+"""
+GRULE_YAMLFILE_STARTER_YAMLSTR = """\
+- [0, '.',          all_lines, lines,            0]
+- [0, '^=',         all_lines, move_to_a.txt,    1]
+- [0, '^2019|2020', all_lines, move_to_logs.txt, 1]
+"""
+RULEA_YAMLFILE_STARTER_YAMLSTR = """\
+- [0, '.',       lines,      todo.txt,   0]
+- [0, '.',       to_a.txt    todo.txt,   1]
+- [1, 'NOW',     todo.txt,    now.txt,   1]
+- [1, 'LATER',   todo.txt,  later.txt,   0]
+"""
+RULEB_YAMLFILE_STARTER_YAMLSTR = """\
+- [0, '.',       lines,         b.txt,   0]
+- [1, '^2019',   b.txt,      2019.txt,   1]
+- [1, '^2020',   b.txt,      2020.txt,   0]
+"""
 
 
-def initialize_config_yamlfiles():
-    """Initialize configuration YAML file"""
+def write_initial_config_yamlfile():
+    """Write initial YAML config file (/mklists.yml)."""
     config_path = os.path.join(os.getcwd())
     config_file = os.path.join(config_path, CONFIG_YAMLFILE_NAME)
+    io.open(config_file, "w", encoding="utf-8").write(CONFIG_YAMLFILE_YAMLSTR)
+
+
+def write_initial_rule_yamlfiles():
+    """Write initial YAML rule files:
+    * global rule file (/.rules)
+    * folder rule file (/a/.rules)"""
+    config_path = os.path.join(os.getcwd())
     grule_file = os.path.join(config_path, RULE_YAMLFILE_NAME)
     os.makedirs(os.path.join(config_path, "a"))
     os.makedirs(os.path.join(config_path, "b"))
     rulea_file = os.path.join(config_path, "a", RULE_YAMLFILE_NAME)
     ruleb_file = os.path.join(config_path, "b", RULE_YAMLFILE_NAME)
-    io.open(config_file, "w", encoding="utf-8").write(CONFIG_YAMLFILE_YAMLSTR)
     io.open(grule_file, "w", encoding="utf-8").write(GRULE_YAMLFILE_STARTER_YAMLSTR)
     io.open(rulea_file, "w", encoding="utf-8").write(RULEA_YAMLFILE_STARTER_YAMLSTR)
     io.open(ruleb_file, "w", encoding="utf-8").write(RULEB_YAMLFILE_STARTER_YAMLSTR)
