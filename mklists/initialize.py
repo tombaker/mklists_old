@@ -3,9 +3,13 @@
 import io
 import os
 
+# @@TODO: distinguish between YAML string constants and
+# initial configuration values, which can directly be expressed
+# as a Python object
+
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 RULE_YAMLFILE_NAME = ".rules"
-CONFIG_YAMLFILE_YAMLSTR = r"""\
+INITIAL_CONFIG_YAMLFILE_STR = r"""\
 backups: 3
 html: false
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
@@ -37,7 +41,7 @@ def write_initial_config_yamlfile():
     """Write initial YAML config file (/mklists.yml)."""
     config_path = os.path.join(os.getcwd())
     config_file = os.path.join(config_path, CONFIG_YAMLFILE_NAME)
-    io.open(config_file, "w", encoding="utf-8").write(CONFIG_YAMLFILE_YAMLSTR)
+    io.open(config_file, "w", encoding="utf-8").write(INITIAL_CONFIG_YAMLFILE_STR)
 
 
 def write_initial_rule_yamlfiles():
