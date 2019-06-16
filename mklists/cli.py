@@ -54,14 +54,19 @@ def newbie(ctx):
 @click.pass_context
 def run(ctx, debug, dryrun):
     """Sync list files to rules"""
-    # ctx.obj = load_config_yamlfile()
-    # run.py:        load_datalines_from_listfiles(listfiles)
-    # utils.py:      get_visiblefile_names_in_listdir()
-    # rules = load_rules_from_rule_yamlfiles()
-    # run.py:        apply_rules_to_datalines(rules, data)
-    # utils.py:      make_backupdir_name, then os.mkdir(backupdir)
-    # todo.py:       move_existing_listfiles_to_backupdir(ctx?)
-    # todo.py:       delete_older_backups()
-    # run.py:        write_datadict_to_listfiles_in_currentdir(lines)
-    # todo.py:       write_datadict_to_htmlfiles_in_htmldir(lines)
-    # todo.py:       move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
+    # ctx.obj    = load_config_yamlfile()
+    # lines_list = load_datalines_from_listfiles(listfiles)
+    #              use utils.py: get_visiblefile_names_in_listdir() - ?
+    # rules_objs = load_rules_from_rule_yamlfiles()
+    #
+    # apply_rules_to_datalines(rule_objs, lines_list)
+    # move_existing_listfiles_to_backupdir(ctx?)            - todo.py
+    #     make_backupdir_name, then os.mkdir(backupdir)     - utils.py
+    #     delete_older_backups()                            - todo.py
+    #
+    # write_datadict_to_listfiles_in_currentdir(lines)      - todo.py
+    #
+    # LATER if html:
+    # LATER     write_datadict_to_htmlfiles_in_htmldir(lines)     - todo.py
+    # LATER if files2dirs:
+    # LATER     move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
