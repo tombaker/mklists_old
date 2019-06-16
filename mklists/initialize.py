@@ -59,6 +59,23 @@ def load_config_yamlfile(mklists_yamlfile=CONFIG_YAMLFILE_NAME):
     """
 
 
+def write_example_rule_yamlfiles():
+    """Write initial YAML rule files:
+    * global rule file (/.rules)
+    * folder rule file (/a/.rules)"""
+    config_path = os.path.join(os.getcwd())
+    grule_file = os.path.join(config_path, RULE_YAMLFILE_NAME)
+    os.makedirs(os.path.join(config_path, "a"))
+    os.makedirs(os.path.join(config_path, "b"))
+    rulea_file = os.path.join(config_path, "a", RULE_YAMLFILE_NAME)
+    ruleb_file = os.path.join(config_path, "b", RULE_YAMLFILE_NAME)
+    io.open(grule_file, "w", encoding="utf-8").write(
+        INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR
+    )
+    io.open(rulea_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEA_YAMLFILE_STR)
+    io.open(ruleb_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEB_YAMLFILE_STR)
+
+
 def write_initial_config_yamlfile():
     """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_initial_config_yamlfile
     Write initial YAML config file ('/mklists.yml')."""
@@ -75,20 +92,3 @@ def write_initial_rule_yamlfiles():
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_initial_rule_yamlfiles
     """
     pass
-
-
-def write_example_rule_yamlfiles():
-    """Write initial YAML rule files:
-    * global rule file (/.rules)
-    * folder rule file (/a/.rules)"""
-    config_path = os.path.join(os.getcwd())
-    grule_file = os.path.join(config_path, RULE_YAMLFILE_NAME)
-    os.makedirs(os.path.join(config_path, "a"))
-    os.makedirs(os.path.join(config_path, "b"))
-    rulea_file = os.path.join(config_path, "a", RULE_YAMLFILE_NAME)
-    ruleb_file = os.path.join(config_path, "b", RULE_YAMLFILE_NAME)
-    io.open(grule_file, "w", encoding="utf-8").write(
-        INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR
-    )
-    io.open(rulea_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEA_YAMLFILE_STR)
-    io.open(ruleb_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEB_YAMLFILE_STR)
