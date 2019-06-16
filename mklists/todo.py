@@ -36,7 +36,7 @@ def get_ctxobj_from_config_yamlfile():
     """
 
 
-def load_rules_from_yamlfiles(verbose=True):
+def load_rules_from_rule_yamlfiles(verbose=True):
     """Return list of rule objects from rule files."""
 
     all_rules_list = []
