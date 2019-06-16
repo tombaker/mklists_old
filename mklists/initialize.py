@@ -71,6 +71,13 @@ def write_initial_config_yamlfile():
 
 
 def write_initial_rule_yamlfiles():
+    """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_initial_rule_yamlfiles
+    """
+    pass
+
+
+def write_example_rule_yamlfiles():
     """Write initial YAML rule files:
     * global rule file (/.rules)
     * folder rule file (/a/.rules)"""

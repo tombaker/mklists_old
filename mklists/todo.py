@@ -30,12 +30,6 @@ def delete_older_backups():
     """
 
 
-def get_ctxobj_from_config_yamlfile():
-    """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_get_ctxobj_from_config_yamlfile
-    """
-
-
 def load_rules_from_rule_yamlfiles(verbose=True):
     """Return list of rule objects from rule files."""
 
@@ -113,10 +107,3 @@ def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
        -- datadict values are contents of files.
           -- filter each line through make_htmlstr_from_textstr.
     """
-
-
-def write_initial_rule_yamlfiles():
-    """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_initial_rule_yamlfiles
-    """
-    pass
