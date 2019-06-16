@@ -24,13 +24,13 @@ INITIAL_GLOBALRULE_YAMLFILE_STR = """\
 - [0, '^=',         all_lines, move_to_a.txt,    1]
 - [0, '^2019|2020', all_lines, move_to_logs.txt, 1]
 """
-RULEA_YAMLFILE_STARTER_YAMLSTR = """\
+INITIAL_EXAMPLE_RULEA_YAMLFILE_STR = """\
 - [0, '.',       lines,      todo.txt,   0]
 - [0, '.',       to_a.txt    todo.txt,   1]
 - [1, 'NOW',     todo.txt,    now.txt,   1]
 - [1, 'LATER',   todo.txt,  later.txt,   0]
 """
-RULEB_YAMLFILE_STARTER_YAMLSTR = """\
+INITIAL_EXAMPLE_RULEB_YAMLFILE_STR = """\
 - [0, '.',       lines,         b.txt,   0]
 - [1, '^2019',   b.txt,      2019.txt,   1]
 - [1, '^2020',   b.txt,      2020.txt,   0]
@@ -55,5 +55,5 @@ def write_initial_rule_yamlfiles():
     rulea_file = os.path.join(config_path, "a", RULE_YAMLFILE_NAME)
     ruleb_file = os.path.join(config_path, "b", RULE_YAMLFILE_NAME)
     io.open(grule_file, "w", encoding="utf-8").write(INITIAL_GLOBALRULE_YAMLFILE_STR)
-    io.open(rulea_file, "w", encoding="utf-8").write(RULEA_YAMLFILE_STARTER_YAMLSTR)
-    io.open(ruleb_file, "w", encoding="utf-8").write(RULEB_YAMLFILE_STARTER_YAMLSTR)
+    io.open(rulea_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEA_YAMLFILE_STR)
+    io.open(ruleb_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEB_YAMLFILE_STR)
