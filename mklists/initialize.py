@@ -3,7 +3,7 @@
 import io
 import os
 
-# import yaml
+# from .utils import get_cwd_basename
 
 # @@TODO: distinguish between YAML string constants and
 # initial configuration values, which can directly be expressed
@@ -54,14 +54,13 @@ INITIAL_EXAMPLE_RULEB_YAMLFILE_STR = """\
 
 
 def load_config_yamlfile(mklists_yamlfile=CONFIG_YAMLFILE_NAME):
-    """try:
-        with open(mklists_yamlfile) as f:
-            yaml.load(
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_init_load_config_yamlfile
+    get_pyobj_from_yamlfile(mklists_yamlfile)
     """
 
 
 def write_initial_config_yamlfile():
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_initialize_write_initial_config_yamlfile
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_initial_config_yamlfile
     Write initial YAML config file ('/mklists.yml')."""
     # config_path = os.path.join(os.getcwd())
     # config_file = os.path.join(config_path, CONFIG_YAMLFILE_NAME)

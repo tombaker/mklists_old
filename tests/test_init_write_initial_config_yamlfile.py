@@ -9,8 +9,7 @@ from mklists.initialize import (
 )
 
 
-def test_initialize_write_initial_config_yamlfile(tmpdir):
+def test_init_write_initial_config_yamlfile(tmpdir):
     os.chdir(tmpdir)
     write_initial_config_yamlfile()
-    configfile = os.path.join(tmpdir, CONFIG_YAMLFILE_NAME)
-    assert io.open(configfile).read() == INITIAL_CONFIG_YAMLFILE_STR
+    assert io.open(CONFIG_YAMLFILE_NAME).read() == INITIAL_CONFIG_YAMLFILE_STR

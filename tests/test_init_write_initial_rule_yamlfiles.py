@@ -11,7 +11,7 @@ from mklists.initialize import (
 )
 
 
-def test_initialize_write_initial_rule_yamlfiles(tmpdir):
+def test_init_write_initial_rule_yamlfiles(tmpdir):
     os.chdir(tmpdir)
     write_initial_rule_yamlfiles()
     rulefile = os.path.join(tmpdir, RULE_YAMLFILE_NAME)
