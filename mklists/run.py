@@ -57,7 +57,7 @@ def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
     return dict(datadict)
 
 
-def get_dataline_list_from_listfiles(listfile_names=None):
+def load_dataline_from_listfiles(listfile_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:
