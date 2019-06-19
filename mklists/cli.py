@@ -30,27 +30,21 @@ def cli(ctx):
 
 
 @cli.command()
+@click.option("--newbie", is_flag=True, help="Initialize with example data and config")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(ctx):
+def init(ctx, newbie):
     """Initialize list repo"""
     # write_initial_config_yamlfile()
     # write_initial_rule_yamlfiles()
-
-
-@cli.command()
-@click.help_option(help="Show help and exit")
-@click.pass_context
-def newbie(ctx):
-    """Initialize list repo with example files"""
-    # write_initial_config_yamlfile()
-    # write_example_rule_yamlfiles()
+    # if newbie:
+    #     write_example_rule_yamlfiles()
+    #     write_example_listfiles()
 
 
 @cli.command()
 @click.option("--debug", is_flag=True, help="Run verbosely")
 @click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode")
-@click.option("--quiet", is_flag=True, help="Run silently, errors excepted")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def run(ctx, debug, dryrun, quiet):
@@ -64,10 +58,12 @@ def run(ctx, debug, dryrun, quiet):
     # move_current_listfiles_to_backupdir(ctx?)            - todo.py
     # write_datadict_to_listfiles_in_currentdir(lines)      - todo.py
     #
-    # STAGE1     make_backupdir_name, then os.mkdir(backupdir)     - utils.py
-    # STAGE1     delete_older_backups()                            - todo.py
+    # Next -----
+    # make_backupdir_name, then os.mkdir(backupdir)     - utils.py
+    # delete_older_backups()                            - todo.py
     #
-    # STAGE2 if html:
-    # STAGE2     write_datadict_to_htmlfiles_in_htmldir(lines)     - todo.py
-    # STAGE2 if files2dirs:
-    # STAGE2     move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
+    # Then -----
+    # if html:
+    #     write_datadict_to_htmlfiles_in_htmldir(lines)     - todo.py
+    # if files2dirs:
+    #     move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])

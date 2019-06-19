@@ -59,6 +59,10 @@ def load_config_yamlfile(mklists_yamlfile=CONFIG_YAMLFILE_NAME):
     """
 
 
+def write_example_listfiles():
+    """Write example data."""
+
+
 def write_example_rule_yamlfiles():
     """Write initial YAML rule files:
     * global rule file (/.rules)
