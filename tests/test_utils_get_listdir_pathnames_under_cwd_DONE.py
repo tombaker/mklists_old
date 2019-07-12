@@ -12,6 +12,12 @@ def test_get_listdir_pathnames_under_cwd(tmpdir):
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")
     tmpdirb.join(RULE_YAMLFILE_NAME).write("some more rules")
+    tmpdirc = tmpdir.mkdir("c")
+    tmpdirc.join(RULE_YAMLFILE_NAME).write("some rules")
     os.chdir(tmpdir)
-    expected = [os.path.join(tmpdir, "a"), os.path.join(tmpdir, "a/b")]
+    expected = [
+        os.path.join(tmpdir, "a"),
+        os.path.join(tmpdir, "a/b"),
+        os.path.join(tmpdir, "c"),
+    ]
     assert get_listdir_pathnames_under_cwd(tmpdir) == expected

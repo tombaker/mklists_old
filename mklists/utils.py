@@ -17,7 +17,8 @@ VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
 
 def get_cwd_basename(listdir=os.getcwd(), rootdir=None):
-    """@@@Redo this using os.path.basename"""
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_cwd_basename_DONE.py
+    @@@Redo this using os.path.basename"""
     return listdir[len(rootdir) :].strip("/").replace("/", "_")
 
 
@@ -45,7 +46,9 @@ def get_pyobj_from_yamlfile(yamlfile_name):
 
 
 def get_rootdir_pathname(here="."):
-    """Return project rootdir when executed in the rootdir or in a listdir."""
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_DONE.py
+    Return repo root directory when executed somewhere in repo.
+    @@@TODO 2019-06-19: look only for mandatory mklists.yml file."""
     os.chdir(here)
     while True:
         ls_cwd = os.listdir()
