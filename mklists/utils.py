@@ -47,8 +47,13 @@ def get_pyobj_from_yamlfile(yamlfile_name):
 
 def get_rootdir_pathname(here="."):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_DONE.py
-    Return repo root directory when executed somewhere in repo.
-    @@@TODO 2019-06-19: look only for mandatory mklists.yml file."""
+    Return repo root directory when executed anywhere within repo.
+
+    @@@TODO 2019-06-19: look only for mandatory mklists.yml file.
+
+    Starting at PWD, should look for:
+    * file 'mklists.yml' - and if found, return full pathname
+    * root directory - and if found, exit with error message"""
     os.chdir(here)
     while True:
         ls_cwd = os.listdir()
