@@ -22,7 +22,7 @@ def get_datadir_shortname(datadir_pathname=os.getcwd(), rootdir_pathname=None):
     return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
-def get_datadir_pathnames_under_rootdir(
+def get_datadir_pathnames_under_somedir(
     rootdir_name=".", rule_file_name=RULE_YAMLFILE_NAME
 ):
     """Return list of all data directories under a given root directory.
