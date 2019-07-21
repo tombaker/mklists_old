@@ -10,18 +10,18 @@ See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
 """
 
 
-# import os
-# import pytest
-# from mklists.initialize import CONFIG_YAMLFILE_NAME
-# from mklists.utils import get_rootdir_pathname
+import os
+import pytest
+from mklists.initialize import CONFIG_YAMLFILE_NAME
+from mklists.utils import get_rootdir_pathname
 
 
-# def test_get_rootdir_pathname_from_fixture_subdir(myrepo):
-#     """Find root pathname for fixture "myrepo"."""
-#     os.chdir(os.path.join(myrepo, "a"))
-#     assert CONFIG_YAMLFILE_NAME in os.listdir(get_rootdir_pathname())
-#
-#
+def test_get_rootdir_pathname_from_fixture_subdir(myrepo):
+    """Find root pathname for fixture "myrepo"."""
+    os.chdir(os.path.join(myrepo, "a"))
+    assert CONFIG_YAMLFILE_NAME in os.listdir(get_rootdir_pathname())
+
+
 # def test_get_rootdir_pathname_while_in_rootdir(tmpdir):
 #     """Find root directory while in root directory."""
 #     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
