@@ -101,7 +101,13 @@ def load_datalines_from_datafiles(listfile_names=None):
 
 
 def load_rules_from_rule_yamlfiles(verbose=True):
-    """Return list of rule objects from rule files."""
+    """Return list of rule objects from rule files.
+
+    2019-07-21: Starts by recursively looking in parent
+    directories for '.rules' and prepending them to list
+    of rule files. If '.rules' not found in parent
+    directory, stops looking.
+    """
 
     all_rules_list = []
     config_yamlfile = CONFIG_YAMLFILE_NAME

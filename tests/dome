@@ -1,0 +1,5 @@
+mv -vi test_init_load_config_yamlfile.py               test_init_load_config_yamlfile_TODO.py
+mv -vi test_init_write_example_datafiles.py            test_init_write_example_datafiles_TODO.py
+mv -vi test_init_write_initial_rule_yamlfiles.py       test_init_write_initial_rule_yamlfiles_TODO.py
+mv -vi test_run_load_rules_from_rule_yamlfiles.py      test_run_load_rules_from_rule_yamlfiles_TODO.py
+mv -vi test_run_move_current_datafiles_to_backupdir.py test_run_move_current_datafiles_to_backupdir_TODO.py
