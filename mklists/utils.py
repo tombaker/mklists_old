@@ -22,13 +22,16 @@ def get_datadir_shortname(datadir_pathname=os.getcwd(), rootdir_pathname=None):
     return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
-def get_datadir_pathnames_under_cwd(rootdir_name="."):
+def get_datadir_pathnames_under_rootdir(
+    rootdir_name=".", rule_file_name=RULE_YAMLFILE_NAME
+):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with a '.rules' file."""
     datadirs = []
-    for (dirpath, __, filenames) in os.walk(rootdir_name):
-        if RULE_YAMLFILE_NAME in filenames:
-            datadirs.append(os.path.join(dirpath))
+    for dirpath, dirs, files in os.walk(rootdir_name):
+        dirs[:] = [d for d in dirs if not d[0] == "."]
+        if rule_file_name in files:
+            datadirs.append(dirpath)
     return datadirs
 
 
