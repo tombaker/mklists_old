@@ -2,10 +2,10 @@
 
 import os
 from mklists.initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
-from mklists.utils import get_listdir_pathnames_under_cwd
+from mklists.utils import get_datadir_pathnames_under_cwd
 
 
-def test_get_listdir_pathnames_under_cwd(tmpdir):
+def test_get_datadir_pathnames_under_cwd(tmpdir):
     """List data directories found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -20,4 +20,4 @@ def test_get_listdir_pathnames_under_cwd(tmpdir):
         os.path.join(tmpdir, "a/b"),
         os.path.join(tmpdir, "c"),
     ]
-    assert get_listdir_pathnames_under_cwd(tmpdir) == expected
+    assert get_datadir_pathnames_under_cwd(tmpdir) == expected

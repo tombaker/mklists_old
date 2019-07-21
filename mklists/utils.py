@@ -16,20 +16,20 @@ URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
 
-def get_listdir_shortname(listdir_pathname=os.getcwd(), rootdir_pathname=None):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_listdir_shortname_REDO.py
+def get_datadir_shortname(datadir_pathname=os.getcwd(), rootdir_pathname=None):
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_datadir_shortname_REDO.py
     @@@Redo this using os.path.basename"""
-    return listdir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
+    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
-def get_listdir_pathnames_under_cwd(rootdir_name="."):
+def get_datadir_pathnames_under_cwd(rootdir_name="."):
     """Return list of all data directories under a given root directory.
     By definition, a data directory is a directory with a '.rules' file."""
-    listdirs = []
+    datadirs = []
     for (dirpath, __, filenames) in os.walk(rootdir_name):
         if RULE_YAMLFILE_NAME in filenames:
-            listdirs.append(os.path.join(dirpath))
-    return listdirs
+            datadirs.append(os.path.join(dirpath))
+    return datadirs
 
 
 def get_pyobj_from_yamlfile(yamlfile_name):
@@ -63,9 +63,9 @@ def get_rootdir_pathname(cwd=os.getcwd(), config_file_name=CONFIG_YAMLFILE_NAME)
         return os.getcwd()
 
 
-def ls_visible(listdir_name=os.getcwd()):
+def ls_visible(datadir_name=os.getcwd()):
     """Return names of visible files with names that are valid as listfiles."""
-    os.chdir(listdir_name)
+    os.chdir(datadir_name)
     all_listfile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         if not has_valid_name(filename):
@@ -107,9 +107,9 @@ def is_line_match_to_rule(given_rule=None, given_line=None):
     return False
 
 
-def make_backupdir_name(now=TIMESTAMP_STR, listdir_name=None):
+def make_backupdir_name(now=TIMESTAMP_STR, datadir_name=None):
     """@@@Docstring"""
-    return os.path.join(listdir_name, now)
+    return os.path.join(datadir_name, now)
 
 
 def make_htmlstr_from_textstr(string):
