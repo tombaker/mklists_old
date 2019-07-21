@@ -16,10 +16,10 @@ URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
 
-def get_listdir_shortname(listdir=os.getcwd(), rootdir=None):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_listdir_shortname_DONE.py
+def get_listdir_shortname(listdir_pathname=os.getcwd(), rootdir_pathname=None):
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_listdir_shortname_REDO.py
     @@@Redo this using os.path.basename"""
-    return listdir[len(rootdir) :].strip("/").replace("/", "_")
+    return listdir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
 def get_listdir_pathnames_under_cwd(rootdir_name="."):
@@ -46,14 +46,13 @@ def get_pyobj_from_yamlfile(yamlfile_name):
 
 
 def get_rootdir_pathname(here="."):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_DONE.py
-    Return repo root directory when executed anywhere within repo.
+    """Return repo root pathname when executed anywhere within repo.
 
-    @@@TODO 2019-06-19: look only for mandatory mklists.yml file.
+    Args:
 
-    Starting at PWD, should look for:
-    * file 'mklists.yml' - and if found, return full pathname
-    * root directory - and if found, exit with error message"""
+    See
+    /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_REDO.py
+    """
     os.chdir(here)
     while True:
         ls_cwd = os.listdir()
