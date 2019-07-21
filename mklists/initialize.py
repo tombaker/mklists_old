@@ -61,7 +61,7 @@ def load_config_yamlfile(mklists_yamlfile=CONFIG_YAMLFILE_NAME):
     yaml.load(open(mklists_yamlfile).read())
 
 
-def write_example_listfiles():
+def write_example_datafiles():
     """Write example data."""
 
 

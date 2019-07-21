@@ -25,9 +25,9 @@ def delete_older_backups():
     """
 
 
-def move_certain_listfiles_to_other_directories(files2dirs_dict=None):
+def move_certain_datafiles_to_other_directories(files2dirs_dict=None):
     """Args: files2dirs_dict: filename (key) and destination directory (value)
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_certain_listfiles_to_other_directories
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_certain_datafiles_to_other_directories
     """
 
 

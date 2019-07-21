@@ -66,9 +66,9 @@ def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
     return dict(datadict)
 
 
-def move_current_listfiles_to_backupdir(backupdir, backups=2):
+def move_current_datafiles_to_backupdir(backupdir, backups=2):
     """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_current_listfiles_to_backupdir
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_current_datafiles_to_backupdir
     Get number of backups as configuring (config['backups']
         If backups less than two, then backups = 2 ("mandatory")
     Create a backup directory.
@@ -81,7 +81,7 @@ def move_current_listfiles_to_backupdir(backupdir, backups=2):
     """
 
 
-def load_datalines_from_listfiles(listfile_names=None):
+def load_datalines_from_datafiles(listfile_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:
@@ -138,7 +138,7 @@ def load_rules_from_rule_yamlfiles(verbose=True):
     return ruleobj_list
 
 
-def write_datadict_to_listfiles_in_currentdir(datadict=None):
+def write_datadict_to_datafiles_in_currentdir(datadict=None):
     """
     -- Write out contents of datadict to working directory:
        -- datadict keys are names of files.

@@ -64,7 +64,7 @@ def get_rootdir_pathname(cwd=os.getcwd(), config_file_name=CONFIG_YAMLFILE_NAME)
 
 
 def ls_visible(datadir_name=os.getcwd()):
-    """Return names of visible files with names that are valid as listfiles."""
+    """Return names of visible files with names that are valid as datafiles."""
     os.chdir(datadir_name)
     all_listfile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:

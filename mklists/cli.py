@@ -24,7 +24,7 @@ def init(ctx, newbie):
     # write_initial_rule_yamlfiles()
     # if newbie:
     #     write_example_rule_yamlfiles()
-    #     write_example_listfiles()
+    #     write_example_datafiles()
 
 
 @cli.command()
@@ -35,13 +35,13 @@ def init(ctx, newbie):
 def run(ctx, debug, dryrun):
     """Sync list files to rules"""
     # ctx.obj    = load_config_yamlfile()
-    # lines_list = load_datalines_from_listfiles(listfiles)
+    # lines_list = load_datalines_from_datafiles(datafiles)
     #              use utils.py: ls_visible() - ?
     # rules_objs = load_rules_from_rule_yamlfiles()
     #
     # apply_rules_to_datalines(rule_objs, lines_list)
-    # move_current_listfiles_to_backupdir(ctx?)            - todo.py
-    # write_datadict_to_listfiles_in_currentdir(lines)      - todo.py
+    # move_current_datafiles_to_backupdir(ctx?)            - todo.py
+    # write_datadict_to_datafiles_in_currentdir(lines)      - todo.py
     #
     # Next -----
     # make_backupdir_name, then os.mkdir(backupdir)     - utils.py
@@ -51,4 +51,4 @@ def run(ctx, debug, dryrun):
     # if html:
     #     write_datadict_to_htmlfiles_in_htmldir(lines)     - todo.py
     # if files2dirs:
-    #     move_certain_listfiles_to_other_directories(ctx.obj["files2dirs"])
+    #     move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
