@@ -45,7 +45,7 @@ def get_pyobj_from_yamlfile(yamlfile_name):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
-def get_rootdir_pathname(here="."):
+def get_rootdir_pathname(cwd=os.getcwd(), config_file_name=CONFIG_YAMLFILE_NAME):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
@@ -53,21 +53,14 @@ def get_rootdir_pathname(here="."):
     See
     /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_REDO.py
     """
-    os.chdir(here)
-    while True:
-        ls_cwd = os.listdir()
-        if RULE_YAMLFILE_NAME in ls_cwd:
-            os.chdir(os.pardir)
-            continue
-        else:
-            break
-
-    if CONFIG_YAMLFILE_NAME in os.listdir():
-        return os.getcwd()
+    os.chdir(cwd)
+    while config_file_name not in os.listdir():
+        cwd_before_changing = os.getcwd()
+        os.chdir(os.pardir)
+        if cwd_before_changing == os.getcwd():
+            raise ConfigFileNotFoundError("No config file found - not a mklists repo.")
     else:
-        raise ConfigFileNotFoundError(
-            f"No {CONFIG_YAMLFILE_NAME} found. Try mklists init."
-        )
+        return os.getcwd()
 
 
 def ls_visible(listdir_name=os.getcwd()):
