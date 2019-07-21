@@ -16,8 +16,8 @@ URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
 
-def get_cwd_basename(listdir=os.getcwd(), rootdir=None):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_cwd_basename_DONE.py
+def get_listdir_shortname(listdir=os.getcwd(), rootdir=None):
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_listdir_shortname_DONE.py
     @@@Redo this using os.path.basename"""
     return listdir[len(rootdir) :].strip("/").replace("/", "_")
 

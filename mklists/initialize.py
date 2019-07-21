@@ -4,7 +4,7 @@ import io
 import os
 import yaml
 
-# from .utils import get_cwd_basename
+# from .utils import get_listdir_shortname
 
 # @@TODO: distinguish between YAML string constants and
 # initial configuration values, which can directly be expressed
