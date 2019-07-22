@@ -23,14 +23,24 @@ def get_datadir_shortname(datadir_pathname=os.getcwd(), rootdir_pathname=None):
 
 
 def get_datadir_pathnames_under_somedir(
-    rootdir_name=".", rule_file_name=RULE_YAMLFILE_NAME
+    somedir_pathname=os.getcwd(), rulefile_name=RULE_YAMLFILE_NAME
 ):
-    """Return list of all data directories under a given root directory.
-    By definition, a data directory is a directory with a '.rules' file."""
+    """Return list of data directories under a given directory.
+
+    "Data directories": directories with rules files (by default: '.rules').
+
+    Args:
+        :somedir_pathname: Root of directory tree with data directories.
+        :rulefile_name: Name of rule file (by default: '.rules').
+
+    2019-07-22: Two scenarios?
+    * mklists run         - runs in all data directories in repo
+    * mklists run --here  - runs just in current directory
+    """
     datadirs = []
-    for dirpath, dirs, files in os.walk(rootdir_name):
+    for dirpath, dirs, files in os.walk(somedir_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
-        if rule_file_name in files:
+        if rulefile_name in files:
             datadirs.append(dirpath)
     return datadirs
 
@@ -48,21 +58,23 @@ def get_pyobj_from_yamlfile(yamlfile_name):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
-def get_rootdir_pathname(cwd=os.getcwd(), config_file_name=CONFIG_YAMLFILE_NAME):
+def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
 
     See
-    /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_REDO.py
+    /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_DONE.py
     """
     os.chdir(cwd)
-    while config_file_name not in os.listdir():
+    # startdir = cwd
+    while configfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
-        if cwd_before_changing == os.getcwd():
+        if os.getcwd() == cwd_before_changing:
             raise ConfigFileNotFoundError("No config file found - not a mklists repo.")
     else:
+        # os.chdir(startdir)
         return os.getcwd()
 
 

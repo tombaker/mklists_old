@@ -1,4 +1,5 @@
 # Custom ignore rules from mklists project
+TESTDIR/
 .pytest_cache/
 .idea/
 Session.vim
