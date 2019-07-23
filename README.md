@@ -1,7 +1,7 @@
 mklists
 
 Current tagline - change in: README.md (here), /setup.py, /mklists/cli.py
-* Rebuild your lists by tweaking rules
+* Rebuild your todo lists by tweaking rules
 
 Next steps:
 * http://click.pocoo.org/6/utils/ - Click testing and file system isolation

@@ -8,7 +8,7 @@ import click
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx):
-    """Sync list files to your evolving rules"""
+    """Rebuild your todo lists by tweaking rules"""
 
 
 @cli.command()
@@ -30,10 +30,11 @@ def init(ctx, newbie):
 @cli.command()
 @click.option("--debug", is_flag=True, help="Run verbosely")
 @click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode")
+@click.option("--here", is_flag=True, help="Run in current working directory only")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def run(ctx, debug, dryrun):
-    """Sync list files to rules"""
+def run(ctx, debug, dryrun, here):
+    """Rebuild lists in (by default) entire repo"""
     # ctx.obj    = load_config_yamlfile()
     # lines_list = load_datalines_from_datafiles(datafiles)
     #              use utils.py: ls_visiblefiles() - ?
