@@ -132,13 +132,13 @@ def ls_visiblefiles(datadir_name=None):
     all_listfile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:
-            has_valid_name(filename)
+            is_valid_as_filename(filename)
         finally:
             all_listfile_names.append(filename)
     return sorted(all_listfile_names)
 
 
-def has_valid_name(
+def is_valid_as_filename(
     filename,
     current_dir=None,
     badpats=INVALID_FILENAME_PATTERNS,

@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from .utils import has_valid_name
+from .utils import is_valid_as_filename
 from .exceptions import (
     BadFilenameError,
     NotIntegerError,
@@ -64,7 +64,7 @@ class Rule:
     def _filenames_are_valid(self):
         """Returns True if filenames use only valid characters."""
         for filename in [self.source, self.target]:
-            if not has_valid_name(filename):
+            if not is_valid_as_filename(filename):
                 print(f"{repr(filename)} in rule: {self}")
                 raise BadFilenameError("is not a valid filename.")
         return True
