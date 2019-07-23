@@ -1,6 +1,16 @@
 """@@@Docstring"""
 
+import pytest
+import os
 from mklists.utils import has_valid_name
+
+
+def test_utils_has_valid_name_already_used_as_directory_name(tmpdir):
+    fname = "foobar"
+    tmpdir.mkdir("foobar")
+    os.chdir(tmpdir)
+    with pytest.raises(SystemExit):
+        has_valid_name(fname)
 
 
 def test_utils_has_valid_name():
