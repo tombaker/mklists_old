@@ -4,7 +4,7 @@ import io
 import os
 import yaml
 
-# from .utils import get_datadir_shortname
+# from .utils import get_datadir_backup_shortname
 
 # @@TODO: distinguish between YAML string constants and
 # initial configuration values, which can directly be expressed

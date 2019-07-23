@@ -5,7 +5,7 @@ def delete_older_backups():
     """
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_delete_older_backups.py
     Count number of backups under this directory:
-        Get short name of current data directory (get_datadir_shortname).
+        Get short name of current data directory (get_datadir_backup_shortname).
         Create list of directories under parent directory of backupdir.
             lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
             Example: if backup dir is

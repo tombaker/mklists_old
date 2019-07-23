@@ -31,8 +31,8 @@ def preserve_cwd(function):
     return decorator
 
 
-def get_datadir_shortname(datadir_pathname=None, rootdir_pathname=None):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_datadir_shortname_REDO.py
+def get_datadir_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_datadir_backup_shortname_REDO.py
     @@@Redo this using os.path.basename"""
     if not datadir_pathname:
         datadir_pathname = os.getcwd()
