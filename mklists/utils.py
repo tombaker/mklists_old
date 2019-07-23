@@ -93,7 +93,10 @@ def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
 
 @preserve_cwd
 def get_rulefile_chain(
-    start_pathname=os.getcwd(), end_pathname=None, rulefile_name=RULE_YAMLFILE_NAME
+    start_pathname=os.getcwd(),
+    end_pathname=None,
+    rulefile_name=RULE_YAMLFILE_NAME,
+    configfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return list of rule files from parent directories and current directory.
 
@@ -104,17 +107,15 @@ def get_rulefile_chain(
         :rulefile_name:
         :end_pathname:
     """
-    if not end_pathname:
-        end_pathname = get_rootdir_pathname()
-
     os.chdir(start_pathname)
     rulefile_pathnames_chain = []
     while rulefile_name in os.listdir():
-        rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rulefile_name))
-        os.chdir(os.pardir)
         if os.getcwd() == end_pathname:
-            rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rulefile_name))
             break
+        rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rulefile_name))
+        if configfile_name in os.listdir():
+            break
+        os.chdir(os.pardir)
 
     return rulefile_pathnames_chain
 
