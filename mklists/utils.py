@@ -131,9 +131,10 @@ def ls_visiblefiles(datadir_name=None):
     os.chdir(datadir_name)
     all_listfile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
-        if not has_valid_name(filename):
-            raise BadFilenameError(f"{repr(filename)} has bad characters or patterns.")
-        all_listfile_names.append(filename)
+        try:
+            has_valid_name(filename)
+        finally:
+            all_listfile_names.append(filename)
     return sorted(all_listfile_names)
 
 

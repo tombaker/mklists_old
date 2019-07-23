@@ -5,10 +5,18 @@ from mklists.utils import ls_visiblefiles
 
 
 def test_ls_visiblefiles(tmpdir):
-    """Test depends on get_lsvisible_names().
-    Directory 'a' should be ignored."""
+    """Ignores directory baz."""
     os.chdir(tmpdir)
-    tmpdir.join("bar").write("bar stuff\nmore bar stuff")
-    tmpdir.join("foo").write("foo stuff\nmore foo stuff")
+    tmpdir.join("bar").write("bar stuff")
+    tmpdir.join("foo").write("foo stuff")
     tmpdir.mkdir("baz")
     assert ls_visiblefiles(tmpdir) == ["bar", "foo"]
+
+
+def test_ls_visiblefiles_does_not_show_directories(tmpdir):
+    """Ignores dot file."""
+    os.chdir(tmpdir)
+    tmpdir.join(".bar").write("bar stuff")
+    tmpdir.join("foo").write("foo stuff")
+    tmpdir.mkdir("baz")
+    assert ls_visiblefiles(tmpdir) == ["foo"]
