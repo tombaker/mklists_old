@@ -1,9 +1,9 @@
 """@@@Docstring"""
 
-from mklists.utils import make_backup_dirname
+from mklists.backups import make_backup_dirname
 
 
-def test_utils_make_backup_dirname():
+def test_backups_make_backup_dirname():
     timestamp = "2019-01-03_1646_06488910"
     cwd_backup_shortname = "agenda"
     expected = "agenda/2019-01-03_1646_06488910"

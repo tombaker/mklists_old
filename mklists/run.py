@@ -66,21 +66,6 @@ def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
     return dict(datadict)
 
 
-def move_current_datafiles_to_backupdir(backupdir, backups=2):
-    """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_current_datafiles_to_backupdir
-    Get number of backups as configuring (config['backups']
-        If backups less than two, then backups = 2 ("mandatory")
-    Create a backup directory.
-        Generate a name for backupdir (make_backup_dirname).
-        Make dir: hard-coded parent dirname (_html) plus generated timestamped name.
-    Get list of existing visible files in data directory.
-    Move all visible files in data directory to backupdir.
-        for file in filelist:
-            shutil.move(file, backupdir)
-    """
-
-
 def load_datalines_from_datafiles(listfile_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []

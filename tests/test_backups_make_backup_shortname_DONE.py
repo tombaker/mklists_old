@@ -1,9 +1,9 @@
 """@@@Docstring"""
 
-from mklists.utils import make_backup_shortname
+from mklists.backups import make_backup_shortname
 
 
-def test_utils_make_backup_shortname():
+def test_backups_make_backup_shortname():
     root_dir = "/Users/tbaker/foobar"
     list_dir = "/Users/tbaker/foobar/agenda"
     expected = "agenda"
@@ -13,7 +13,7 @@ def test_utils_make_backup_shortname():
     )
 
 
-def test_utils_make_backup_shortname_two_deep():
+def test_backups_make_backup_shortname_two_deep():
     root_dir = "/Users/tbaker/foobar"
     list_dir = "/Users/tbaker/foobar/a/b"
     expected = "a_b"

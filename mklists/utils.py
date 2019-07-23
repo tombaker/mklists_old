@@ -1,4 +1,4 @@
-"""Utilities used by other modules"""
+"""Utilities used by other modules."""
 
 import datetime
 import os
@@ -9,10 +9,8 @@ from functools import wraps
 from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
 
-BACKUPDIR_NAME = ".backups"
 HTMLDIR_NAME = "_html"
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
@@ -175,16 +173,3 @@ def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:
         fout.write(yamlstr)
-
-
-def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_make_backup_shortname_REDO.py
-    @@@Redo this using os.path.basename"""
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
-
-
-def make_backup_dirname(now=TIMESTAMP_STR, datadir_name=None):
-    """@@@Docstring"""
-    return os.path.join(datadir_name, now)
