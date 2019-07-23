@@ -92,24 +92,28 @@ def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
 
 
 @preserve_cwd
-def get_rulefile_chain(intended_cwd=os.getcwd(), rulefile_name=RULE_YAMLFILE_NAME):
+def get_rulefile_chain(
+    start_pathname=os.getcwd(), end_pathname=None, rulefile_name=RULE_YAMLFILE_NAME
+):
     """Return list of rule files from parent directories and current directory.
 
+    See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rulefile_chain_TODO.py
+
     Args:
-        :intended_cwd:
+        :start_pathname:
         :rulefile_name:
-        :rootdir_pathname:
+        :end_pathname:
     """
-    rootdir_pathname = get_rootdir_pathname()
-    os.chdir(intended_cwd)
+    if not end_pathname:
+        end_pathname = get_rootdir_pathname()
+
+    os.chdir(start_pathname)
     rulefile_pathnames_chain = []
     while rulefile_name in os.listdir():
-        cwd_before_changing = os.getcwd()
+        rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rulefile_name))
         os.chdir(os.pardir)
-        if os.getcwd() == rootdir_pathname:
-            rulefile_pathnames_chain.insert(
-                0, os.path.join(cwd_before_changing, rulefile_name)
-            )
+        if os.getcwd() == end_pathname:
+            rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rulefile_name))
             break
 
     return rulefile_pathnames_chain

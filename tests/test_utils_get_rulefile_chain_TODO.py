@@ -4,7 +4,7 @@
 
 import os
 from mklists.initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
-from mklists.utils import get_rootdir_pathname, get_rulefile_chain
+from mklists.utils import get_rootdir_pathname, get_rulefile_chain, preserve_cwd
 
 
 def test_get_rulefile_chain_basic(tmpdir):
@@ -24,6 +24,4 @@ def test_get_rulefile_chain_basic(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert len(
-        get_rulefile_chain(currentdir_pathname=tmpdirc, rootdir_pathname=tmpdir)
-    ) == len(expected)
+    assert get_rulefile_chain(start_pathname=tmpdirc, end_pathname=tmpdir) == expected
