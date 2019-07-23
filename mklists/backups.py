@@ -2,7 +2,6 @@
 
 import datetime
 import os
-from .utils import preserve_cwd
 
 BACKUPDIR_NAME = ".backups"
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
@@ -16,18 +15,18 @@ def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
     return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
-def make_backup_dirname(now=TIMESTAMP_STR, datadir_name=None):
+def make_backupdir_pathname(now=TIMESTAMP_STR, backupdir_name=None):
     """@@@Docstring"""
-    return os.path.join(datadir_name, now)
+    return os.path.join(backupdir_name, now)
 
 
-def move_current_datafiles_to_backupdir(backupdir, backups=2):
+def move_datafiles_to_backupdir(backupdir, backups=2):
     """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_current_datafiles_to_backupdir
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_move_datafiles_to_backupdir
     Get number of backups as configuring (config['backups']
         If backups less than two, then backups = 2 ("mandatory")
     Create a backup directory.
-        Generate a name for backupdir (make_backup_dirname).
+        Generate a name for backupdir (make_backupdir_pathname).
         Make dir: hard-coded parent dirname (_html) plus generated timestamped name.
     Get list of existing visible files in data directory.
     Move all visible files in data directory to backupdir.

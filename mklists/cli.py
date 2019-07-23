@@ -40,11 +40,11 @@ def run(ctx, debug, dryrun):
     # rules_objs = load_rules_from_rule_yamlfiles()
     #
     # apply_rules_to_datalines(rule_objs, lines_list)
-    # move_current_datafiles_to_backupdir(ctx?)            - todo.py
+    # move_datafiles_to_backupdir(ctx?)            - todo.py
     # write_datadict_to_datafiles_in_currentdir(lines)      - todo.py
     #
     # Next -----
-    # make_backup_dirname, then os.mkdir(backupdir)     - utils.py
+    # make_backupdir_pathname, then os.mkdir(backupdir)     - utils.py
     # delete_older_backups()                            - todo.py
     #
     # Then -----

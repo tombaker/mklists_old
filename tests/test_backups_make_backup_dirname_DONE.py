@@ -1,13 +1,13 @@
 """@@@Docstring"""
 
-from mklists.backups import make_backup_dirname
+from mklists.backups import make_backupdir_pathname
 
 
-def test_backups_make_backup_dirname():
+def test_backups_make_backupdir_pathname():
     timestamp = "2019-01-03_1646_06488910"
-    cwd_backup_shortname = "agenda"
+    backup_shortname = "agenda"
     expected = "agenda/2019-01-03_1646_06488910"
     assert (
-        make_backup_dirname(datadir_name=cwd_backup_shortname, now=timestamp)
+        make_backupdir_pathname(now=timestamp, backupdir_name=backup_shortname)
         == expected
     )
