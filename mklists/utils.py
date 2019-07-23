@@ -5,6 +5,7 @@ import os
 import re
 import glob
 import yaml
+from functools import wraps
 from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
 
@@ -14,6 +15,20 @@ INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
+
+
+def preserve_cwd(function):
+    """Decorate a function so that changes of directory will not persist."""
+
+    @wraps(function)
+    def decorator(*args, **kwargs):
+        cwd = os.getcwd()
+        try:
+            return function(*args, **kwargs)
+        finally:
+            os.chdir(cwd)
+
+    return decorator
 
 
 def get_datadir_shortname(datadir_pathname=os.getcwd(), rootdir_pathname=None):
@@ -58,6 +73,7 @@ def get_pyobj_from_yamlfile(yamlfile_name):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
+@preserve_cwd
 def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
     """Return repo root pathname when executed anywhere within repo.
 
@@ -66,18 +82,40 @@ def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
     See
     /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_DONE.py
     """
-    os.chdir(cwd)
-    # startdir = cwd
     while configfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
         if os.getcwd() == cwd_before_changing:
             raise ConfigFileNotFoundError("No config file found - not a mklists repo.")
     else:
-        # os.chdir(startdir)
         return os.getcwd()
 
 
+@preserve_cwd
+def get_rulefile_chain(intended_cwd=os.getcwd(), rulefile_name=RULE_YAMLFILE_NAME):
+    """Return list of rule files from parent directories and current directory.
+
+    Args:
+        :intended_cwd:
+        :rulefile_name:
+        :rootdir_pathname:
+    """
+    rootdir_pathname = get_rootdir_pathname()
+    os.chdir(intended_cwd)
+    rulefile_pathnames_chain = []
+    while rulefile_name in os.listdir():
+        cwd_before_changing = os.getcwd()
+        os.chdir(os.pardir)
+        if os.getcwd() == rootdir_pathname:
+            rulefile_pathnames_chain.insert(
+                0, os.path.join(cwd_before_changing, rulefile_name)
+            )
+            break
+
+    return rulefile_pathnames_chain
+
+
+@preserve_cwd
 def ls_visible(datadir_name=os.getcwd()):
     """Return names of visible files with names that are valid as datafiles."""
     os.chdir(datadir_name)
