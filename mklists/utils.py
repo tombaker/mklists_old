@@ -121,8 +121,11 @@ def get_rulefile_chain(
 
 
 @preserve_cwd
-def ls_visible(datadir_name=None):
-    """Return names of visible files with names that are valid as datafiles."""
+def ls_visiblefiles(datadir_name=None):
+    """Return names of visible files with names that are valid as datafiles.
+
+    See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
+    """
     if not datadir_name:
         datadir_name = os.getcwd()
     os.chdir(datadir_name)
