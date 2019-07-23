@@ -44,7 +44,7 @@ def run(ctx, debug, dryrun):
     # write_datadict_to_datafiles_in_currentdir(lines)      - todo.py
     #
     # Next -----
-    # make_backupdir_name, then os.mkdir(backupdir)     - utils.py
+    # make_backup_dirname, then os.mkdir(backupdir)     - utils.py
     # delete_older_backups()                            - todo.py
     #
     # Then -----

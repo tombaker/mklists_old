@@ -9,7 +9,7 @@ from functools import wraps
 from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
 
-BACKUPDIR_NAME = "_backups"
+BACKUPDIR_NAME = ".backups"
 HTMLDIR_NAME = "_html"
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
@@ -29,14 +29,6 @@ def preserve_cwd(function):
             os.chdir(cwd)
 
     return decorator
-
-
-def get_datadir_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_datadir_backup_shortname_REDO.py
-    @@@Redo this using os.path.basename"""
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
 def get_datadir_pathnames_under_somedir(
@@ -172,11 +164,6 @@ def is_line_match_to_rule(given_rule=None, given_line=None):
     return False
 
 
-def make_backupdir_name(now=TIMESTAMP_STR, datadir_name=None):
-    """@@@Docstring"""
-    return os.path.join(datadir_name, now)
-
-
 def make_htmlstr_from_textstr(string):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
@@ -188,3 +175,16 @@ def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:
         fout.write(yamlstr)
+
+
+def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_make_backup_shortname_REDO.py
+    @@@Redo this using os.path.basename"""
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
+    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
+
+
+def make_backup_dirname(now=TIMESTAMP_STR, datadir_name=None):
+    """@@@Docstring"""
+    return os.path.join(datadir_name, now)

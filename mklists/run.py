@@ -72,7 +72,7 @@ def move_current_datafiles_to_backupdir(backupdir, backups=2):
     Get number of backups as configuring (config['backups']
         If backups less than two, then backups = 2 ("mandatory")
     Create a backup directory.
-        Generate a name for backupdir (make_backupdir_name).
+        Generate a name for backupdir (make_backup_dirname).
         Make dir: hard-coded parent dirname (_html) plus generated timestamped name.
     Get list of existing visible files in data directory.
     Move all visible files in data directory to backupdir.
