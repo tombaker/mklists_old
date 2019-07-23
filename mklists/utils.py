@@ -31,14 +31,16 @@ def preserve_cwd(function):
     return decorator
 
 
-def get_datadir_shortname(datadir_pathname=os.getcwd(), rootdir_pathname=None):
+def get_datadir_shortname(datadir_pathname=None, rootdir_pathname=None):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_datadir_shortname_REDO.py
     @@@Redo this using os.path.basename"""
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
     return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
 def get_datadir_pathnames_under_somedir(
-    somedir_pathname=os.getcwd(), rulefile_name=RULE_YAMLFILE_NAME
+    somedir_pathname=None, rulefile_name=RULE_YAMLFILE_NAME
 ):
     """Return list of data directories under a given directory.
 
@@ -52,6 +54,8 @@ def get_datadir_pathnames_under_somedir(
     * mklists run         - runs in all data directories in repo
     * mklists run --here  - runs just in current directory
     """
+    if not somedir_pathname:
+        somedir_pathname = os.getcwd()
     datadirs = []
     for dirpath, dirs, files in os.walk(somedir_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
@@ -74,7 +78,7 @@ def get_pyobj_from_yamlfile(yamlfile_name):
 
 
 @preserve_cwd
-def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
+def get_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
@@ -82,6 +86,8 @@ def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
     See
     /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_DONE.py
     """
+    if not cwd:
+        cwd = os.getcwd()
     while configfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
@@ -93,25 +99,24 @@ def get_rootdir_pathname(cwd=os.getcwd(), configfile_name=CONFIG_YAMLFILE_NAME):
 
 @preserve_cwd
 def get_rulefile_chain(
-    start_pathname=os.getcwd(),
-    end_pathname=None,
+    start_pathname=None,
     rulefile_name=RULE_YAMLFILE_NAME,
     configfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return list of rule files from parent directories and current directory.
 
-    See /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rulefile_chain_TODO.py
+    Looks no higher than root directory of mklists repo.
 
     Args:
         :start_pathname:
         :rulefile_name:
-        :end_pathname:
+        :configfile_name:
     """
+    if not start_pathname:
+        start_pathname = os.getcwd()
     os.chdir(start_pathname)
     rulefile_pathnames_chain = []
     while rulefile_name in os.listdir():
-        if os.getcwd() == end_pathname:
-            break
         rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rulefile_name))
         if configfile_name in os.listdir():
             break
@@ -121,8 +126,10 @@ def get_rulefile_chain(
 
 
 @preserve_cwd
-def ls_visible(datadir_name=os.getcwd()):
+def ls_visible(datadir_name=None):
     """Return names of visible files with names that are valid as datafiles."""
+    if not datadir_name:
+        datadir_name = os.getcwd()
     os.chdir(datadir_name)
     all_listfile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
