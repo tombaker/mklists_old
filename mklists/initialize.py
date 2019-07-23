@@ -1,4 +1,15 @@
-"""Write initial configuration and rule files."""
+"""Write initial configuration and rule files.
+
+$ mklists init --example (or --newbie)
+    These would be installed as examples:
+    * /mklists.yml
+    * /.rules
+    * /a/.rules
+    * /a/calendar.txt
+    * /a/todo.txt
+    * /logs/.rules
+    * /logs/log.txt
+"""
 
 import io
 import os

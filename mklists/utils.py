@@ -7,7 +7,12 @@ import glob
 import yaml
 from functools import wraps
 from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
-from .exceptions import BadFilenameError, BadYamlError, ConfigFileNotFoundError
+from .exceptions import (
+    BadFilenameError,
+    BadYamlError,
+    ConfigFileNotFoundError,
+    FilenameIsAlreadyDirnameError,
+)
 
 HTMLDIR_NAME = "_html"
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
@@ -129,15 +134,30 @@ def ls_visible(datadir_name=None):
     return sorted(all_listfile_names)
 
 
-def has_valid_name(filename, badpats=INVALID_FILENAME_PATTERNS):
-    """Return True if filename has no invalid characters or string patterns.
-    @@@Figure out how to pass in invalid filename patterns from context."""
+def has_valid_name(
+    filename,
+    current_dir=None,
+    badpats=INVALID_FILENAME_PATTERNS,
+    validchars_regex=VALID_FILENAME_CHARACTERS_REGEX,
+):
+    """Return True if filename:
+    * has no invalid characters (override defaults in mklists.yml)
+    * string patterns (override defaults in mklists.yml)
+    * does not match name of an existing directory in current_dir
+
+    """
+    if not current_dir:
+        current_dir = os.getcwd()
     for badpat in badpats:
         if re.search(badpat, filename):
             return False
     for char in filename:
-        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
+        if not bool(re.search(validchars_regex, char)):
             return False
+    if filename in [d for d in os.listdir() if os.path.isdir(d)]:
+        raise FilenameIsAlreadyDirnameError(
+            f"Filename {repr(filename)} is already used as a directory name."
+        )
     return True
 
 

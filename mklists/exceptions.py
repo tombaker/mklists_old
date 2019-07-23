@@ -64,6 +64,10 @@ class UninitializedSourceError(RuleError):
     """Source has not been initialized as a source (has no precedent)."""
 
 
+class FilenameIsAlreadyDirnameError(RuleError):
+    """Filename is already being used as a directory name."""
+
+
 # RulesError
 class RulesError(SystemExit):
     """Category of exceptions related to sets or rules."""

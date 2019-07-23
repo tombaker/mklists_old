@@ -1,4 +1,17 @@
-"""Utilities related to backups."""
+"""Utilities related to backups.
+
+When run, these directories would be created:
+    /.backups/a/2019-07-22_0907_07165222/
+    /.backups/a/2019-07-23_1611_05165896/
+    /.backups/a_a1/2019-07-22_0907_07165222/
+    /.backups/a_a1/2019-07-23_1611_05165896/
+    /.backups/logs/2019-07-22_0907_07165222/
+    /.backups/logs/2019-07-23_1611_05165896/
+
+directory_list = [ '2018-12-31.23414123', '2019-01-01.12155264', '2019-02-02.02265324' ]
+
+    BACKUPDIR_NAME / make_backup_shortname() / TIMESTAMP_STR
+"""
 
 import datetime
 import os
