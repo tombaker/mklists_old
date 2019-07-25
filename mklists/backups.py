@@ -20,6 +20,9 @@ get_rootdir_pathname() / BACKUPDIR_NAME / make_backup_shortname() / TIMESTAMP_ST
 
 import datetime
 import os
+import shutil
+from mklists.utils import preserve_cwd
+
 
 BACKUPDIR_NAME = ".backups"
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
@@ -67,25 +70,28 @@ def move_datafiles_to_backupdir(backupdir, backups=2):
     """
 
 
-def delete_older_backups():
+@preserve_cwd
+def delete_older_backups(
+    reporoot_pathname=None,
+    backups_dirname=None,
+    backup_shortname=None,
+    backup_depth=None,
+):
+    """Delete all but X number of backups of current working directory.
+
+    Args:
+        reporoot_pathname:
+        backups_dirname:
+        backup_shortname:
+        backup_depth: Number of backups to keep [default: 2]
+
+    See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backups_TODO.py
     """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_delete_older_backups.py
-    Count number of backups under this directory:
-        Get short name of current data directory (make_backup_shortname).
-        Create list of directories under parent directory of backupdir.
-            lsd_visible = [item for item in glob.glob('*') if os.path.isdir(item)]
-            Example: if backup dir is
-                mkrepo/_backups/a/2018-12-31.23414123
-            Then parent is
-                mkrepo/_backups/a
-            Resulting list might be:
-                [ '2018-12-31.23414123', '2019-01-01.12155264', '2019-02-02.02265324' ]
-    Either:
-        while len(lsd_visible) > backups:
-            file_to_be_deleted = lsd_visible.pop(0)
-            rm file_to_be_deleted
-    Or:
-        while len(directory_list) > backups:
-            dir_to_delete = directory_list.pop(0)
-            print(f"rm {dir_to_delete}")
-    """
+    backupdir = os.path.join(reporoot_pathname, backups_dirname, backup_shortname)
+    os.chdir(backupdir)
+    ls_backupdir = sorted(os.listdir())
+    print(ls_backupdir)
+    while len(ls_backupdir) > backup_depth:
+        timestamped_dir_to_delete = ls_backupdir.pop(0)
+        shutil.rmtree(timestamped_dir_to_delete)
+        print(f"rm {timestamped_dir_to_delete}")
