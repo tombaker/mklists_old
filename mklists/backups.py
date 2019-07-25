@@ -1,6 +1,6 @@
 """Utilities related to backups.
 
-When run, these directories would be created:
+Creates directories such as the following:
     /.backups/a/2019-07-22_0907_07165222/
     /.backups/a/2019-07-23_1611_05165896/
     /.backups/a_a1/2019-07-22_0907_07165222/
@@ -8,9 +8,14 @@ When run, these directories would be created:
     /.backups/logs/2019-07-22_0907_07165222/
     /.backups/logs/2019-07-23_1611_05165896/
 
+try:
+    os.remove(myfile)
+except OSError as e:  ## if failed, report it back to the user ##
+    print ("Error: %s - %s." % (e.filename, e.strerror))
+
 directory_list = [ '2018-12-31_0904_23414123', '2019-01-01_1105_12155264', '2019-02-02_1831_02265324' ]
 
-    get_rootdir_pathname() / BACKUPDIR_NAME / make_backup_shortname() / TIMESTAMP_STR
+get_rootdir_pathname() / BACKUPDIR_NAME / make_backup_shortname() / TIMESTAMP_STR
 """
 
 import datetime
@@ -28,9 +33,23 @@ def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
     return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
-def make_backupdir_pathname(now=TIMESTAMP_STR, backupdir_name=None):
-    """@@@Docstring"""
-    return os.path.join(backupdir_name, now)
+def make_backupdir_pathname(
+    reporoot_pathname=None,
+    backups_dirname=None,
+    backup_shortname=None,
+    timestamp_name=TIMESTAMP_STR,
+):
+    """Generate a timestamped pathname for backups.
+
+    Args:
+        reporoot_pathname: Full pathname of mklists repo root directory.
+        backups_dirname:
+        backup_shortname:
+        timestamp_name:
+    """
+    return os.path.join(
+        reporoot_pathname, backups_dirname, backup_shortname, timestamp_name
+    )
 
 
 def move_datafiles_to_backupdir(backupdir, backups=2):
