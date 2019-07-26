@@ -5,7 +5,7 @@ import os
 import re
 import glob
 import yaml
-from functools import wraps
+from mklists.decorators import preserve_cwd
 from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import (
     BadFilenameError,
@@ -18,20 +18,6 @@ HTMLDIR_NAME = "_html"
 INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
-
-
-def preserve_cwd(function):
-    """Decorate a function so that changes of directory will not persist."""
-
-    @wraps(function)
-    def decorator(*args, **kwargs):
-        cwd = os.getcwd()
-        try:
-            return function(*args, **kwargs)
-        finally:
-            os.chdir(cwd)
-
-    return decorator
 
 
 def get_datadir_pathnames_under_somedir(

@@ -3,7 +3,7 @@
 import datetime
 import os
 import shutil
-from mklists.utils import preserve_cwd
+from mklists.decorators import preserve_cwd
 
 
 BACKUPDIR_NAME = ".backups"
