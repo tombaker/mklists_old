@@ -61,16 +61,19 @@ def make_backupdir_pathname(
 
 
 @preserve_cwd
-def move_datafiles_to_backupdir(ls_datadir_filenames=None, backupdir_pathname=None):
+def move_datafiles_to_backupdir(
+    datadir_pathname=None, datadir_filenames=None, backupdir_pathname=None
+):
     """
-    Get list of existing visible files in data directory.
-    Move all visible files in data directory to backupdir.
+    Given list of visible files in data directory, move files to backupdir.
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_backups_move_datafiles_to_backupdir_TODO.py
     """
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
+    os.chdir(datadir_pathname)
     try:
-        for file in ls_datadir_filenames:
-            print(f"moving {file} to {backupdir_pathname}")
+        for file in datadir_filenames:
             shutil.move(file, backupdir_pathname)
     except OSError:
         print("Got an exception")
