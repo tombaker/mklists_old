@@ -46,6 +46,11 @@ def run(ctx, debug, dryrun, here):
     #
     # Next -----
     # make_backupdir_pathname, then os.mkdir(backupdir)     - utils.py
+    # Get number of backups as configuring (config['backups']
+    #     If backups less than two, then backups = 2 ("mandatory")
+    # Create a backup directory.
+    #     Generate a name for backupdir (make_backupdir_pathname).
+    #     Make dir: hard-coded parent dirname (.backups) plus generated timestamped name.
     # delete_older_backups()                            - todo.py
     #
     # Then -----

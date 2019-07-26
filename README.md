@@ -4,7 +4,6 @@ Current tagline - change in: README.md (here), /setup.py, /mklists/cli.py
 * Rebuild your todo lists by tweaking rules
 
 Next steps:
-* http://click.pocoo.org/6/utils/ - Click testing and file system isolation
 * Update pip distribution
 
 Note:
@@ -12,7 +11,7 @@ Note:
   disregard leading whitespace)
 
 Uses:
-* [Click](http://click.pocoo.org/7/)
+* [Click](http://click.pocoo.org/7/utils/) - Click testing and file system isolation
 * [Pytest](https://pytest.org/)
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)

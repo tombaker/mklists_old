@@ -122,7 +122,7 @@ def get_rulefile_chain(
 
 @preserve_cwd
 def ls_visiblefiles(datadir_name=None):
-    """Return names of visible files with names that are valid as datafiles.
+    """Return list of names of visible files with valid names.
 
     See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
     """
