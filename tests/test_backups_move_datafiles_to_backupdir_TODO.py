@@ -31,17 +31,18 @@ def test_backups_move_datafiles_to_backupdir(tmpdir):
     tmpdir_agendadir = tmpdir.mkdir(shortname)
     tmpdir_agendadir.join("file_a").write("some content")
     tmpdir_agendadir.join("file_b").write("some content")
-    os.chdir(tmpdir_agendadir)
-    ls_agendadir_before = sorted(os.listdir())
+    ls_agendadir_before = sorted(
+        os.listdir(tmpdir_agendadir)
+    )  # stand-in for ls_visiblefiles()
     move_datafiles_to_backupdir(
-        ls_datadir_filenames=ls_agendadir_before, backupdir_pathname=backupdir_fullpath
+        datadir_pathname=tmpdir_agendadir,
+        datadir_filenames=ls_agendadir_before,  # try putting sorted... here
+        backupdir_pathname=backupdir_fullpath,
     )
-    ls_agendadir_after = sorted(os.listdir())
-    os.chdir(backupdir_fullpath)
     expected = ["file_a", "file_b"]
-    ls_backupdir_agenda = sorted(os.listdir())
-    print(f"ls_agendadir_before = {ls_agendadir_before}")
-    print(f"expected = {expected}")
-    print(f"ls_backupdir_agenda = {ls_backupdir_agenda}")
-    assert ls_backupdir_agenda == expected
-    assert ls_agendadir_after == []
+    assert sorted(os.listdir(backupdir_fullpath)) == expected
+    assert sorted(os.listdir(tmpdir_agendadir)) == []
+
+    # print(f"ls_agendadir_before = {ls_agendadir_before}")
+    # print(f"expected = {expected}")
+    # print(f"ls_backupdir_agenda = {ls_backupdir_agenda}")
