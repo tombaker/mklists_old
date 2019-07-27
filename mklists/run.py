@@ -14,7 +14,7 @@ from .rules import Rule
 from .utils import return_pyobj_from_config_yamlfile, is_line_match_to_rule
 
 
-def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
+def return_datalines_dict_by_applying_rules(ruleobj_list=None, dataline_list=None):
     """Applies rules, one by one, to process an aggregated list of datalines.
 
     Args:
@@ -66,7 +66,7 @@ def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
     return dict(datadict)
 
 
-def load_datalines_from_datafiles(listfile_names=None):
+def return_datalines_list_from_datafiles(listfile_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
     for listfile in listfile_names:
@@ -85,7 +85,7 @@ def load_datalines_from_datafiles(listfile_names=None):
     return all_datalines
 
 
-def load_rules_from_rule_yamlfiles(
+def return_ruleobj_list_from_rule_yamlfiles(
     config_yamlfile=CONFIG_YAMLFILE_NAME, rule_yamlfile=RULE_YAMLFILE_NAME, verbose=True
 ):
     """Return list of rule objects from rule files.

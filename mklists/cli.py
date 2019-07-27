@@ -36,11 +36,11 @@ def init(ctx, newbie):
 def run(ctx, debug, dryrun, here):
     """Rebuild lists in (by default) entire repo"""
     # ctx.obj    = load_config_yamlfile()
-    # lines_list = load_datalines_from_datafiles(datafiles)
+    # lines_list = return_datalines_list_from_datafiles(datafiles)
     #              use utils.py: ls_visiblefiles() - ?
-    # rules_objs = load_rules_from_rule_yamlfiles()
+    # rules_objs = return_ruleobj_list_from_rule_yamlfiles()
     #
-    # apply_rules_to_datalines(rule_objs, lines_list)
+    # return_datalines_dict_by_applying_rules(rule_objs, lines_list)
     # move_datafiles_to_backupdir(ctx?)            - todo.py
     # write_datadict_to_datafiles_in_currentdir(lines)      - todo.py
     #
