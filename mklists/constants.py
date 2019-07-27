@@ -10,7 +10,7 @@ files2dirs: {
     move_to_a.txt: a,
 }
 """
-INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR = """\
+EXAMPLE_ROOTDIR_RULE_YAMLSTR = """\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
@@ -20,7 +20,7 @@ INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR = """\
 INITIAL_MINIMAL_RULEA_YAMLFILE_STR = """\
 - [0, '.',       lines,      consolidated_lines,   0]
 """
-INITIAL_EXAMPLE_RULEA_YAMLFILE_STR = """\
+EXAMPLE_RULEA_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      todo.txt,   0]
@@ -28,7 +28,8 @@ INITIAL_EXAMPLE_RULEA_YAMLFILE_STR = """\
 - [1, 'NOW',     todo.txt,   now.txt,    1]
 - [1, 'LATER',   todo.txt,   later.txt,  0]
 """
-INITIAL_EXAMPLE_RULEB_YAMLFILE_STR = """\
+
+EXAMPLE_RULEB_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      b.txt,      0]

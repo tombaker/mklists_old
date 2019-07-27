@@ -16,12 +16,12 @@ import os
 import yaml
 from .constants import (
     CONFIG_YAMLFILE_NAME,
-    RULE_YAMLFILE_NAME,
     INITIAL_CONFIG_YAMLFILE_STR,
-    INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR,
+    EXAMPLE_ROOTDIR_RULE_YAMLSTR,
+    EXAMPLE_RULEA_YAMLSTR,
+    EXAMPLE_RULEB_YAMLSTR,
     INITIAL_MINIMAL_RULEA_YAMLFILE_STR,
-    INITIAL_EXAMPLE_RULEA_YAMLFILE_STR,
-    INITIAL_EXAMPLE_RULEB_YAMLFILE_STR,
+    RULE_YAMLFILE_NAME,
 )
 
 
@@ -36,21 +36,24 @@ def write_example_datafiles():
     """Write example data."""
 
 
-def write_example_rule_yamlfiles():
+def write_example_rule_yamlfiles(
+    rulefile=RULE_YAMLFILE_NAME,
+    example_rootdir_rules=EXAMPLE_ROOTDIR_RULE_YAMLSTR,
+    example_datadira_rules=EXAMPLE_RULEA_YAMLSTR,
+    example_datadirb_rules=EXAMPLE_RULEB_YAMLSTR,
+):
     """Write initial YAML rule files:
     * global rule file (/.rules)
     * folder rule file (/a/.rules)"""
     config_path = os.path.join(os.getcwd())
-    grule_file = os.path.join(config_path, RULE_YAMLFILE_NAME)
+    grule_file = os.path.join(config_path, rulefile)
     os.makedirs(os.path.join(config_path, "a"))
     os.makedirs(os.path.join(config_path, "b"))
-    rulea_file = os.path.join(config_path, "a", RULE_YAMLFILE_NAME)
-    ruleb_file = os.path.join(config_path, "b", RULE_YAMLFILE_NAME)
-    io.open(grule_file, "w", encoding="utf-8").write(
-        INITIAL_EXAMPLE_GLOBALRULE_YAMLFILE_STR
-    )
-    io.open(rulea_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEA_YAMLFILE_STR)
-    io.open(ruleb_file, "w", encoding="utf-8").write(INITIAL_EXAMPLE_RULEB_YAMLFILE_STR)
+    rulea_file = os.path.join(config_path, "a", rulefile)
+    ruleb_file = os.path.join(config_path, "b", rulefile)
+    io.open(grule_file, "w", encoding="utf-8").write(example_rootdir_rules)
+    io.open(rulea_file, "w", encoding="utf-8").write(example_datadira_rules)
+    io.open(ruleb_file, "w", encoding="utf-8").write(example_datadirb_rules)
 
 
 def write_initial_config_yamlfile(
