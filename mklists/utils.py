@@ -20,7 +20,7 @@ URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
 
-def get_datadir_pathnames_under_somedir(
+def return_datadir_pathnames_under_somedir(
     somedir_pathname=None, rulefile_name=RULE_YAMLFILE_NAME
 ):
     """Return list of data directories under a given directory.
@@ -45,7 +45,7 @@ def get_datadir_pathnames_under_somedir(
     return datadirs
 
 
-def get_pyobj_from_yamlfile(yamlfile_name):
+def return_pyobj_from_config_yamlfile(yamlfile_name=None):
     """Returns Python object parsed from given YAML-format file."""
     try:
         yamlstr = open(yamlfile_name).read()
@@ -59,13 +59,13 @@ def get_pyobj_from_yamlfile(yamlfile_name):
 
 
 @preserve_cwd
-def get_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
+def return_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
 
     See
-    /Users/tbaker/github/tombaker/mklists/tests/test_utils_get_rootdir_pathname_DONE.py
+    /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_rootdir_pathname_DONE.py
     """
     if not cwd:
         cwd = os.getcwd()
@@ -79,7 +79,7 @@ def get_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
 
 
 @preserve_cwd
-def get_rulefile_chain(
+def return_rulefile_chain(
     start_pathname=None,
     rulefile_name=RULE_YAMLFILE_NAME,
     configfile_name=CONFIG_YAMLFILE_NAME,
@@ -125,7 +125,7 @@ def ls_visiblefiles(datadir_name=None):
 
 
 def is_valid_as_filename(
-    filename,
+    filename=None,
     current_dir=None,
     badpats=INVALID_FILENAME_PATTERNS,
     validchars_regex=VALID_FILENAME_CHARACTERS_REGEX,
@@ -172,14 +172,14 @@ def is_line_match_to_rule(given_rule=None, given_line=None):
     return False
 
 
-def make_htmlstr_from_textstr(string):
+def make_htmlstr_from_textstr(string=None):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
-def write_yamlstr_to_yamlfile(yamlstr, yamlfile_name):
+def write_yamlstr_to_yamlfile(yamlstr=None, yamlfile_name=None):
     """Write YAML string to YAML file."""
     with open(yamlfile_name, "w") as fout:
         fout.write(yamlstr)

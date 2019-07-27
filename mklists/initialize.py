@@ -67,7 +67,7 @@ INITIAL_EXAMPLE_RULEB_YAMLFILE_STR = """\
 
 def load_config_yamlfile(mklists_yamlfile=CONFIG_YAMLFILE_NAME):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_init_load_config_yamlfile
-    get_pyobj_from_yamlfile(mklists_yamlfile)
+    return_pyobj_from_config_yamlfile(mklists_yamlfile)
     """
     yaml.load(open(mklists_yamlfile).read())
 

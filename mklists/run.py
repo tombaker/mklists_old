@@ -11,7 +11,7 @@ from .exceptions import (
 )
 from .initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
-from .utils import get_pyobj_from_yamlfile, is_line_match_to_rule
+from .utils import return_pyobj_from_config_yamlfile, is_line_match_to_rule
 
 
 def apply_rules_to_datalines(ruleobj_list=None, dataline_list=None):
@@ -98,7 +98,7 @@ def load_rules_from_rule_yamlfiles(verbose=True):
     config_yamlfile = CONFIG_YAMLFILE_NAME
     rulefile = RULE_YAMLFILE_NAME
 
-    config_pydict = get_pyobj_from_yamlfile(config_yamlfile)
+    config_pydict = return_pyobj_from_config_yamlfile(config_yamlfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
@@ -108,7 +108,7 @@ def load_rules_from_rule_yamlfiles(verbose=True):
         if verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = get_pyobj_from_yamlfile(rulefile)
+    rules_pylist = return_pyobj_from_config_yamlfile(rulefile)
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:

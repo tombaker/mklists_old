@@ -24,7 +24,7 @@ def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
     Problem: "a_b" and "a/b" would both translate into shortname of "a_b" (clash)
     Solutions?
     * Use two underscores instead of one?
-    * for each dir in get_datadir_pathnames_under_somedir()
+    * for each dir in return_datadir_pathnames_under_somedir()
         accumulate a list of shortnames using make_backup_shortname(dir) => list comprehension
         accumulate a list of directory names in ".backups"
         compare the two lists and delete unused directories
@@ -45,7 +45,7 @@ def make_backupdir_pathname(
     """Generate a timestamped pathname for backups.
 
     Note: uses output of:
-    * get_rootdir_pathname() => here: tmpdir
+    * return_rootdir_pathname() => here: tmpdir
 
     Example output:
 
