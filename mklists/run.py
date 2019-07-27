@@ -14,7 +14,7 @@ from .rules import Rule
 from .utils import return_pyobj_from_config_yamlfile, is_line_match_to_rule
 
 
-def return_datalines_dict_by_applying_rules(ruleobj_list=None, dataline_list=None):
+def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=None):
     """Applies rules, one by one, to process an aggregated list of datalines.
 
     Args:

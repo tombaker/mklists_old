@@ -40,7 +40,7 @@ def run(ctx, debug, dryrun, here):
     #              use utils.py: ls_visiblefiles() - ?
     # rules_objs = return_ruleobj_list_from_rule_yamlfiles()
     #
-    # return_datalines_dict_by_applying_rules(rule_objs, lines_list)
+    # return_datalines_dict_after_applying_rules(rule_objs, lines_list)
     # move_datafiles_to_backupdir(ctx?)            - todo.py
     # write_datadict_to_datafiles_in_currentdir(lines)      - todo.py
     #
