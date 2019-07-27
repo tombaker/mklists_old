@@ -9,7 +9,7 @@ from .exceptions import (
     NotUTF8Error,
     RulefileNotFoundError,
 )
-from .initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
+from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
 from .utils import return_pyobj_from_config_yamlfile, is_line_match_to_rule
 
@@ -85,7 +85,9 @@ def load_datalines_from_datafiles(listfile_names=None):
     return all_datalines
 
 
-def load_rules_from_rule_yamlfiles(verbose=True):
+def load_rules_from_rule_yamlfiles(
+    config_yamlfile=CONFIG_YAMLFILE_NAME, rule_yamlfile=RULE_YAMLFILE_NAME, verbose=True
+):
     """Return list of rule objects from rule files.
 
     2019-07-21: Starts by recursively looking in parent
@@ -95,8 +97,6 @@ def load_rules_from_rule_yamlfiles(verbose=True):
     """
 
     all_rules_list = []
-    config_yamlfile = CONFIG_YAMLFILE_NAME
-    rulefile = RULE_YAMLFILE_NAME
 
     config_pydict = return_pyobj_from_config_yamlfile(config_yamlfile)
     try:
@@ -108,11 +108,11 @@ def load_rules_from_rule_yamlfiles(verbose=True):
         if verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = return_pyobj_from_config_yamlfile(rulefile)
+    rules_pylist = return_pyobj_from_config_yamlfile(rule_yamlfile)
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:
-        raise RulefileNotFoundError(f"Rule file {repr(rulefile)} was not found.")
+        raise RulefileNotFoundError(f"Rule file {repr(rule_yamlfile)} was not found.")
 
     if not all_rules_list:
         raise NoRulesError("No rules were found.")
