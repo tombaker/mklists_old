@@ -3,11 +3,8 @@
 import datetime
 import os
 import shutil
-from mklists.decorators import preserve_cwd
-
-
-BACKUPDIR_NAME = ".backups"
-TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+from .constants import BACKUPDIR_NAME, TIMESTAMP_STR
+from .decorators import preserve_cwd
 
 
 def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
