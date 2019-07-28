@@ -42,7 +42,7 @@ def run(ctx, debug, dryrun, here):
     #
     # return_datalines_dict_after_applying_rules(rule_objs, lines_list)
     # move_datafiles_to_backupdir(ctx?)            - todo.py
-    # write_datadict_to_datafiles_in_currentdir(lines)      - todo.py
+    # write_datafiles_from_datadict(lines)      - todo.py
     #
     # Next -----
     # make_backupdir_pathname, then os.mkdir(backupdir)     - utils.py

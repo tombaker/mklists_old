@@ -129,7 +129,7 @@ def return_ruleobj_list_from_rule_yamlfiles(
     return ruleobj_list
 
 
-def write_datadict_to_datafiles_in_currentdir(datadict=None):
+def write_datafiles_from_datadict(datadict=None):
     """
     -- Write out contents of datadict to working directory:
        -- datadict keys are names of files.
