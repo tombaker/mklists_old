@@ -20,7 +20,7 @@ def test_backups_delete_older_backups(tmpdir):
     expected = ["2019-01-03_1646_06488910", "2019-01-06_0112_06488910"]
     print(str(expected))
     delete_older_backups(
-        reporoot_pathname=tmpdir,
+        rootdir_pathname=tmpdir,
         backups_dirname=backups,
         backup_shortname=shortname,
         backup_depth=how_many_backups_to_keep,

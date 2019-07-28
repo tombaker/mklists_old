@@ -34,7 +34,7 @@ def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
 
 
 def make_backupdir_pathname(
-    reporoot_pathname=None,
+    rootdir_pathname=None,
     backups_dirname=None,
     backup_shortname=None,
     timestamp_name=TIMESTAMP_STR,
@@ -47,13 +47,13 @@ def make_backupdir_pathname(
     Example output:
 
     Args:
-        reporoot_pathname: Full pathname of mklists repo root directory.
+        rootdir_pathname: Full pathname of mklists repo root directory.
         backups_dirname:
         backup_shortname:
         timestamp_name:
     """
     return os.path.join(
-        reporoot_pathname, backups_dirname, backup_shortname, timestamp_name
+        rootdir_pathname, backups_dirname, backup_shortname, timestamp_name
     )
 
 
@@ -78,7 +78,7 @@ def move_datafiles_to_backupdir(
 
 @preserve_cwd
 def delete_older_backups(
-    reporoot_pathname=None,
+    rootdir_pathname=None,
     backups_dirname=None,
     backup_shortname=None,
     backup_depth=None,
@@ -86,14 +86,14 @@ def delete_older_backups(
     """Delete all but X number of backups of current working directory.
 
     Args:
-        reporoot_pathname:
+        rootdir_pathname:
         backups_dirname:
         backup_shortname:
         backup_depth: Number of backups to keep [default: 2]
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backups_TODO.py
     """
-    backupdir = os.path.join(reporoot_pathname, backups_dirname, backup_shortname)
+    backupdir = os.path.join(rootdir_pathname, backups_dirname, backup_shortname)
     os.chdir(backupdir)
     ls_backupdir = sorted(os.listdir())
     print(ls_backupdir)

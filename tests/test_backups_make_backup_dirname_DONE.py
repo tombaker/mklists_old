@@ -14,7 +14,7 @@ def test_backups_make_backupdir_pathname():
     expected = "/Users/tbaker/tmp/.backups/agenda/2019-01-03_1646_06488910"
     assert (
         make_backupdir_pathname(
-            reporoot_pathname=root,
+            rootdir_pathname=root,
             backups_dirname=backups,
             backup_shortname=shortname,
             timestamp_name=now,
