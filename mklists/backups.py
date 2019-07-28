@@ -7,7 +7,7 @@ from .constants import BACKUPDIR_NAME, TIMESTAMP_STR
 from .decorators import preserve_cwd
 
 
-def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
+def return_backupdir_shortname(datadir_pathname=None, rootdir_pathname=None):
     """Creates shortname for backup directory:
     * if directory is on top level, shortname is same as directory name
     * if directory is nested, shortname is chain of directory names separated by underscores
@@ -22,11 +22,11 @@ def make_backup_shortname(datadir_pathname=None, rootdir_pathname=None):
     Solutions?
     * Use two underscores instead of one?
     * for each dir in return_datadir_pathnames_under_somedir()
-        accumulate a list of shortnames using make_backup_shortname(dir) => list comprehension
+        accumulate a list of shortnames using return_backupdir_shortname(dir) => list comprehension
         accumulate a list of directory names in ".backups"
         compare the two lists and delete unused directories
 
-    See /Users/tbaker/github/tombaker/mklists/tests/test_utils_make_backup_shortname_REDO.py
+    See /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_backupdir_shortname_REDO.py
     """
     if not datadir_pathname:
         datadir_pathname = os.getcwd()
