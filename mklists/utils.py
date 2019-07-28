@@ -178,9 +178,3 @@ def make_htmlstr_from_textstr(string=None):
     if "<a href=" in string:
         return string
     return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
-
-
-def write_yamlstr_to_yamlfile(yamlstr=None, yamlfile_name=None):
-    """Write YAML string to YAML file."""
-    with open(yamlfile_name, "w") as fout:
-        fout.write(yamlstr)

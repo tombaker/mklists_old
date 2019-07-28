@@ -3,7 +3,8 @@
 
 import os
 import pytest
-from mklists.utils import return_pyobj_from_config_yamlfile, write_yamlstr_to_yamlfile
+import yaml
+from mklists.utils import return_pyobj_from_config_yamlfile
 
 
 def test_return_pyobj_from_config_yamlfile(tmpdir):
@@ -41,7 +42,8 @@ def test_read_yaml_config_yamlfile_given_good_yamlfile(tmpdir):
     lrules_yamlstr = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile(lrules_yamlstr, "_lrules")
+    with open("_lrules", "w") as fout:
+        fout.write(lrules_yamlstr)
     good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
     assert return_pyobj_from_config_yamlfile("_lrules") == good_pyobject
 
@@ -52,6 +54,7 @@ def test_read_yaml_config_yamlfile_given_bad_yaml(tmpdir):
     bad_yamlstr = """
     - [1, 'NOW', a, b, 0]
     + [1, 'LATER', a, c, 0]"""
-    write_yamlstr_to_yamlfile(bad_yamlstr, "_lrules_bad")
+    with open("_lrules_bad", "w") as fout:
+        fout.write(bad_yamlstr)
     with pytest.raises(SystemExit):
         return_pyobj_from_config_yamlfile("_lrules_bad")
