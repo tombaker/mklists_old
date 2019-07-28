@@ -33,7 +33,7 @@ def return_backupdir_shortname(datadir_pathname=None, rootdir_pathname=None):
     return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
-def make_backupdir_pathname(
+def return_backupdir_pathname(
     rootdir_pathname=None,
     backups_dirname=None,
     backup_shortname=None,
