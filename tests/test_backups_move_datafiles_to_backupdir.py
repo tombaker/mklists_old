@@ -33,7 +33,7 @@ def test_backups_move_datafiles_to_backupdir(tmpdir):
     tmpdir_agendadir.join("file_b").write("some content")
     ls_agendadir_before = sorted(
         os.listdir(tmpdir_agendadir)
-    )  # stand-in for ls_visiblefiles()
+    )  # stand-in for return_visiblefiles_list()
     move_datafiles_to_backupdir(
         datadir_pathname=tmpdir_agendadir,
         datadir_filenames=ls_agendadir_before,  # try putting sorted... here
