@@ -80,7 +80,7 @@ def return_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
 
 
 @preserve_cwd
-def return_rulefile_chain(
+def return_rulefile_chain_as_list(
     start_pathname=None,
     rulefile_name=RULE_YAMLFILE_NAME,
     configfile_name=CONFIG_YAMLFILE_NAME,
@@ -116,13 +116,13 @@ def return_visiblefiles_list(datadir_name=None):
     if not datadir_name:
         datadir_name = os.getcwd()
     os.chdir(datadir_name)
-    all_listfile_names = []
+    all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:
             is_valid_as_filename(filename)
         finally:
-            all_listfile_names.append(filename)
-    return sorted(all_listfile_names)
+            all_datafile_names.append(filename)
+    return sorted(all_datafile_names)
 
 
 def is_valid_as_filename(

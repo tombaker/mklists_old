@@ -25,11 +25,11 @@ from .constants import (
 )
 
 
-def load_config_yamlfile(mklists_yamlfile=CONFIG_YAMLFILE_NAME):
+def load_config_yamlfile(mklists_config_yamlfile=CONFIG_YAMLFILE_NAME):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_init_load_config_yamlfile
-    return_pyobj_from_config_yamlfile(mklists_yamlfile)
+    return_pyobj_from_config_yamlfile(mklists_config_yamlfile)
     """
-    yaml.load(open(mklists_yamlfile).read())
+    yaml.load(open(mklists_config_yamlfile).read())
 
 
 def write_example_datafiles():

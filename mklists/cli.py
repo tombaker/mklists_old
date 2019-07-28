@@ -30,31 +30,81 @@ def init(ctx, newbie):
 @cli.command()
 @click.option("--debug", is_flag=True, help="Run verbosely")
 @click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode")
-@click.option("--here", is_flag=True, help="Run in current working directory only")
+@click.option("--all", is_flag=True, help="Run in all data directories")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def run(ctx, debug, dryrun, here):
+def run(ctx, debug, dryrun, all):
     """Rebuild lists in (by default) entire repo"""
-    # ctx.obj    = load_config_yamlfile()
-    # lines_list = return_datalines_list_from_datafiles(datafiles)
-    #              use utils.py: return_visiblefiles_list() - ?
-    # rules_objs = return_ruleobj_list_from_rule_yamlfiles()
+
+    # rootdir_pathname   = return_rootdir_pathname(
+    #                          cwd=os.getcwd()
+    #                          configfile_name=CONFIG_YAMLFILE_NAME)
     #
-    # return_datalines_dict_after_applying_rules(rule_objs, lines_list)
-    # move_datafiles_to_backupdir(ctx?)            - todo.py
-    # write_datafiles_from_datadict(lines)      - todo.py
+    # ctx.obj            = load_config_yamlfile(mklists_config_yamlfile=CONFIG_YAMLFILE_NAME)
+
+    # if all:
+    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
+    #                              somedir_pathname=rootdir_pathname,
+    #                              rulefile_name=RULE_YAMLFILE_NAME)
+    # else:
+    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
+    #                              somedir_pathname=os.getcwd(),
+    #                              rulefile_name=RULE_YAMLFILE_NAME)
+    #     Or: datadir_pathnames = [ os.getcwd() ]
+
+    # for datadir in datadirs_pathnames:
+    #     datadir_pathname   = os.getcwd(datadit)
     #
-    # Next -----
-    # return_backupdir_pathname, then os.mkdir(backupdir)     - utils.py
-    # Get number of backups as configuring (config['backups']
-    #     If backups less than two, then backups = 2 ("mandatory")
-    # Create a backup directory.
-    #     Generate a name for backupdir (return_backupdir_pathname).
-    #     Make dir: hard-coded parent dirname (.backups) plus generated timestamped name.
-    # delete_older_backups()                            - todo.py
+    #     visiblefiles_list  = return_visiblefiles_list(datadir_name=datadir_pathname)
     #
-    # Then -----
+    #     datalines_list     = return_datalines_list_from_datafiles(
+    #                              datafile_names=visiblefiles_list)
+    #
+    #     backup_shortname   = return_backupdir_shortname(
+    #                              datadir_pathname=datadir_pathname,
+    #                              rootdir_pathname=rootdir_pathname)
+    #
+    #     backups_dirname    = [[get from ctx.obj <= config files]]
+    #
+    #     backupdir_pathname = return_backupdir_pathname(
+    #                              rootdir_pathname=rootdir_pathname,
+    #                              backups_dirname=backups_dirname,
+    #                              backup_shortname=backup_shortname,
+    #                              timestamp_name=TIMESTAMP_STR)
+    #
+    #     move_datafiles_to_backupdir(
+    #         datadir_pathname=datadir_pathname,
+    #         datadir_filenames=visiblefiles_list,
+    #         backupdir_pathname=backupdir_pathname)
+    #
+    #     delete_older_backups(
+    #         rootdir_pathname=None,
+    #         backups_dirname=None,
+    #         backup_shortname=None,
+    #         backup_depth=None)            # something like config['backups']
+    #
+    #     rulefile_chain     = return_rulefile_chain_as_list(
+    #                              start_pathname=None,
+    #                              rulefile_name=RULE_YAMLFILE_NAME,
+    #                              configfile_name=CONFIG_YAMLFILE_NAME)
+    #
+    #
+    #     @@REWRITE THE FOLLOWING TO TAKE rulefile_chain
+    #     ruleobj_list       = return_ruleobj_list_from_rule_yamlfiles(
+    #                              config_yamlfile=CONFIG_YAMLFILE_NAME,   # why is this needed??
+    #                              rule_yamlfile=RULE_YAMLFILE_NAME,       # shouldn't this be a chain of rule files?
+    #                              verbose=True)
+    #
+    #     datalines_dict     = return_datalines_dict_by_applying_rules(
+    #                              ruleobj_list=ruleobj_list,
+    #                              dataline_list=datalines_list)
+    #
+    #     write_datafiles_from_datadict(datadict=None)
+    #
+    #     if files2dirs:
+    #         move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
+
+    # Writing out HTML versions
     # if html:
+    #     [create html directory]
     #     write_datadict_to_htmlfiles_in_htmldir(lines)     - todo.py
-    # if files2dirs:
-    #     move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])

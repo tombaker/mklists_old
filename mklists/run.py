@@ -66,19 +66,19 @@ def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=
     return dict(datadict)
 
 
-def return_datalines_list_from_datafiles(listfile_names=None):
+def return_datalines_list_from_datafiles(datafile_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
-    for listfile in listfile_names:
+    for datafile in datafile_names:
         try:
-            listfile_lines = open(listfile).readlines()
+            datafile_lines = open(datafile).readlines()
         except UnicodeDecodeError:
-            raise NotUTF8Error(f"{repr(listfile)} is not UTF8-encoded.")
-        for line in listfile_lines:
+            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
+        for line in datafile_lines:
             if not line.rstrip():
                 print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(listfile)} has blank lines.")
-        all_datalines.extend(listfile_lines)
+                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
+        all_datalines.extend(datafile_lines)
 
     if not all_datalines:
         raise NoDataError("No data to process!")
