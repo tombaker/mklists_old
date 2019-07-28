@@ -108,7 +108,7 @@ def return_rulefile_chain(
 
 
 @preserve_cwd
-def ls_visiblefiles(datadir_name=None):
+def return_visiblefiles_list(datadir_name=None):
     """Return list of names of visible files with valid names.
 
     See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
@@ -173,7 +173,7 @@ def is_line_match_to_rule(given_rule=None, given_line=None):
     return False
 
 
-def make_htmlstr_from_textstr(string=None):
+def return_htmlstr_from_textstr(string=None):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string

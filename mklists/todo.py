@@ -16,5 +16,5 @@ def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
        -- datadict keys are filenames.
           -- for each filename, add file extension '.html'
        -- datadict values are contents of files.
-          -- filter each line through make_htmlstr_from_textstr.
+          -- filter each line through return_htmlstr_from_textstr.
     """

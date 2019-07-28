@@ -37,7 +37,7 @@ def run(ctx, debug, dryrun, here):
     """Rebuild lists in (by default) entire repo"""
     # ctx.obj    = load_config_yamlfile()
     # lines_list = return_datalines_list_from_datafiles(datafiles)
-    #              use utils.py: ls_visiblefiles() - ?
+    #              use utils.py: return_visiblefiles_list() - ?
     # rules_objs = return_ruleobj_list_from_rule_yamlfiles()
     #
     # return_datalines_dict_after_applying_rules(rule_objs, lines_list)
