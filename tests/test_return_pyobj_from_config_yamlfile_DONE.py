@@ -1,7 +1,7 @@
 """@@@Docstring"""
 
 import yaml
-from mklists.utils import return_pyobj_from_config_yamlfile
+from mklists.config import return_pyobj_from_config_yamlfile
 
 
 def test_write_yamlstr_to_yamlfile(tmpdir):

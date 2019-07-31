@@ -10,9 +10,9 @@ from .exceptions import (
     NotUTF8Error,
     RulefileNotFoundError,
 )
+from .config import return_pyobj_from_config_yamlfile
 from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
-from .utils import return_pyobj_from_config_yamlfile
 
 
 def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=None):

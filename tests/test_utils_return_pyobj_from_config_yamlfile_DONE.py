@@ -4,7 +4,7 @@
 import os
 import pytest
 import yaml
-from mklists.utils import return_pyobj_from_config_yamlfile
+from mklists.config import return_pyobj_from_config_yamlfile
 
 
 def test_return_pyobj_from_config_yamlfile(tmpdir):
