@@ -3,14 +3,14 @@
 
 import os
 import re
-from .constants import INVALID_FILENAME_PATTERNS, VALID_FILENAME_CHARACTERS_REGEX
+from .constants import INVALID_FILENAME_REGEXES, VALID_FILENAME_CHARACTERS_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError
 
 
 def is_valid_as_filename(
     filename=None,
     current_dir=None,
-    badpats=INVALID_FILENAME_PATTERNS,
+    badpats=INVALID_FILENAME_REGEXES,
     validchars_regex=VALID_FILENAME_CHARACTERS_REGEX,
 ):
     """Return True if filename:

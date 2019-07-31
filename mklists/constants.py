@@ -1,13 +1,22 @@
 import datetime
 
+# Time stampe
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 
+# Regular expressions
+INVALID_FILENAME_REGEXES = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
+URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
+
+# Directory names
 BACKUPDIR_NAME = ".backups"
+HTMLDIR_NAME = ".html"
 
+# File names
 CONFIG_YAMLFILE_NAME = "mklists.yml"
-
 RULE_YAMLFILE_NAME = ".rules"
 
+# Minimal configuration
 INITIAL_CONFIG_YAMLFILE_STR = """\
 backups: 3
 html: false
@@ -19,16 +28,16 @@ files2dirs: {
 }
 """
 
+INITIAL_MINIMAL_RULEA_YAMLFILE_STR = """\
+- [0, '.',       lines,      consolidated_lines,   0]
+"""
+
 EXAMPLE_ROOTDIR_RULE_YAMLSTR = """\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
 - [0, '^=',         lines,     move_to_a.txt,    1]
 - [0, '^2019|2020', lines,     move_to_logs.txt, 1]
-"""
-
-INITIAL_MINIMAL_RULEA_YAMLFILE_STR = """\
-- [0, '.',       lines,      consolidated_lines,   0]
 """
 
 EXAMPLE_RULEA_YAMLSTR = """\
@@ -47,8 +56,3 @@ EXAMPLE_RULEB_YAMLSTR = """\
 - [1, '^2019',   b.txt,      2019.txt,   1]
 - [1, '^2020',   b.txt,      2020.txt,   0]
 """
-
-HTMLDIR_NAME = "_html"
-INVALID_FILENAME_PATTERNS = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
