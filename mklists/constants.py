@@ -35,6 +35,7 @@ INITIAL_MINIMAL_RULEA_YAMLFILE_STR = """\
 - [0, '.',       lines,      consolidated_lines,   0]
 """
 
+# Newbie configuration files
 NEWBIE_ROOTDIR_RULE_YAMLSTR = """\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
@@ -43,7 +44,7 @@ NEWBIE_ROOTDIR_RULE_YAMLSTR = """\
 - [0, '^2019|2020', lines,     move_to_logs.txt, 1]
 """
 
-NEWBIE_RULEA_YAMLSTR = """\
+NEWBIE_ADIR_RULE_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      todo.txt,   0]
@@ -52,7 +53,7 @@ NEWBIE_RULEA_YAMLSTR = """\
 - [1, 'LATER',   todo.txt,   later.txt,  0]
 """
 
-NEWBIE_RULEB_YAMLSTR = """\
+NEWBIE_BDIR_RULE_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      b.txt,      0]
