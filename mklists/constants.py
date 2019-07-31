@@ -1,18 +1,21 @@
 import datetime
 
-# Time stampe
+# Time stamp
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+
 
 # Regular expressions
 INVALID_FILENAME_REGEXES = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 
-# Directory names
+
+# Names of directories
 BACKUPDIR_NAME = ".backups"
 HTMLDIR_NAME = ".html"
 
-# File names
+
+# Names of files
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 RULE_YAMLFILE_NAME = ".rules"
 
@@ -32,7 +35,7 @@ INITIAL_MINIMAL_RULEA_YAMLFILE_STR = """\
 - [0, '.',       lines,      consolidated_lines,   0]
 """
 
-EXAMPLE_ROOTDIR_RULE_YAMLSTR = """\
+NEWBIE_ROOTDIR_RULE_YAMLSTR = """\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
@@ -40,7 +43,7 @@ EXAMPLE_ROOTDIR_RULE_YAMLSTR = """\
 - [0, '^2019|2020', lines,     move_to_logs.txt, 1]
 """
 
-EXAMPLE_RULEA_YAMLSTR = """\
+NEWBIE_RULEA_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      todo.txt,   0]
@@ -49,7 +52,7 @@ EXAMPLE_RULEA_YAMLSTR = """\
 - [1, 'LATER',   todo.txt,   later.txt,  0]
 """
 
-EXAMPLE_RULEB_YAMLSTR = """\
+NEWBIE_RULEB_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      b.txt,      0]

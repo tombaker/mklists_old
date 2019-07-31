@@ -17,9 +17,9 @@ import yaml
 from .constants import (
     CONFIG_YAMLFILE_NAME,
     INITIAL_CONFIG_YAMLFILE_STR,
-    EXAMPLE_ROOTDIR_RULE_YAMLSTR,
-    EXAMPLE_RULEA_YAMLSTR,
-    EXAMPLE_RULEB_YAMLSTR,
+    NEWBIE_ROOTDIR_RULE_YAMLSTR,
+    NEWBIE_RULEA_YAMLSTR,
+    NEWBIE_RULEB_YAMLSTR,
     INITIAL_MINIMAL_RULEA_YAMLFILE_STR,
     RULE_YAMLFILE_NAME,
 )
@@ -38,9 +38,9 @@ def write_example_datafiles():
 
 def write_example_rule_yamlfiles(
     rulefile=RULE_YAMLFILE_NAME,
-    example_rootdir_rules=EXAMPLE_ROOTDIR_RULE_YAMLSTR,
-    example_datadira_rules=EXAMPLE_RULEA_YAMLSTR,
-    example_datadirb_rules=EXAMPLE_RULEB_YAMLSTR,
+    example_rootdir_rules=NEWBIE_ROOTDIR_RULE_YAMLSTR,
+    example_datadira_rules=NEWBIE_RULEA_YAMLSTR,
+    example_datadirb_rules=NEWBIE_RULEB_YAMLSTR,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
