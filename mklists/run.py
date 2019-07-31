@@ -1,6 +1,7 @@
 """Apply rules to process datalines."""
 
 from collections import defaultdict
+from .booleans import is_line_match_to_rule
 from .exceptions import (
     BadYamlRuleError,
     BlankLinesError,
@@ -11,7 +12,7 @@ from .exceptions import (
 )
 from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
-from .utils import return_pyobj_from_config_yamlfile, is_line_match_to_rule
+from .utils import return_pyobj_from_config_yamlfile
 
 
 def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=None):

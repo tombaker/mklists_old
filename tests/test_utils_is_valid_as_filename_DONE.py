@@ -2,7 +2,7 @@
 
 import pytest
 import os
-from mklists.utils import is_valid_as_filename
+from mklists.booleans import is_valid_as_filename
 
 
 def test_utils_is_valid_as_filename_exits_filename_uses_illegal_character():

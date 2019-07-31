@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from .utils import is_valid_as_filename
+from .booleans import is_valid_as_filename
 from .exceptions import (
     BadFilenameError,
     NotIntegerError,

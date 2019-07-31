@@ -1,6 +1,6 @@
 """Tests for run.py"""
 
-from mklists.utils import is_line_match_to_rule
+from mklists.booleans import is_line_match_to_rule
 from mklists.rules import Rule
 
 
