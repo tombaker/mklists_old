@@ -23,8 +23,8 @@ def init(ctx, newbie):
     # write_initial_config_yamlfile()
     # write_initial_rule_yamlfiles()
     # if newbie:
-    #     write_example_rule_yamlfiles()
-    #     write_example_datafiles()
+    #     write_newbie_rule_yamlfiles()
+    #     write_newbie_datafiles()
 
 
 @cli.command()
