@@ -43,12 +43,12 @@ import pytest
 from mklists.initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from mklists.utils import (
     return_rootdir_pathname,
-    return_rulefile_chain_as_list,
+    return_rule_filenames_chain_as_list,
     preserve_cwd,
 )
 
 
-def test_return_rulefile_chain_as_list_basic(tmpdir):
+def test_return_rule_filenames_chain_as_list_basic(tmpdir):
     """Normal case: happens to end in rootdir (with 'mklists.yml' file)."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -64,10 +64,10 @@ def test_return_rulefile_chain_as_list_basic(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert return_rulefile_chain_as_list(start_pathname=tmpdirc) == expected
+    assert return_rule_filenames_chain_as_list(start_pathname=tmpdirc) == expected
 
 
-def test_return_rulefile_chain_as_list_ends_before_repo_rootdir(tmpdir):
+def test_return_rule_filenames_chain_as_list_ends_before_repo_rootdir(tmpdir):
     """Chain of directories with '.rules' ends before repo rootdir."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -81,11 +81,11 @@ def test_return_rulefile_chain_as_list_ends_before_repo_rootdir(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert return_rulefile_chain_as_list(start_pathname=tmpdirc) == expected
+    assert return_rule_filenames_chain_as_list(start_pathname=tmpdirc) == expected
 
 
-def test_return_rulefile_chain_as_list_even_without_repo_rootdir(tmpdir):
-    """Shows that return_rulefile_chain_as_list() does not test whether
+def test_return_rule_filenames_chain_as_list_even_without_repo_rootdir(tmpdir):
+    """Shows that return_rule_filenames_chain_as_list() does not test whether
     start_pathname is in a mklists repo."""
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -98,11 +98,11 @@ def test_return_rulefile_chain_as_list_even_without_repo_rootdir(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert return_rulefile_chain_as_list(start_pathname=tmpdirc) == expected
+    assert return_rule_filenames_chain_as_list(start_pathname=tmpdirc) == expected
 
 
-def test_return_rulefile_chain_as_list_without_specifying_start_pathname(tmpdir):
-    """Shows that return_rulefile_chain_as_list() does not test whether
+def test_return_rule_filenames_chain_as_list_without_specifying_start_pathname(tmpdir):
+    """Shows that return_rule_filenames_chain_as_list() does not test whether
     start_pathname is in a mklists repo."""
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -117,4 +117,4 @@ def test_return_rulefile_chain_as_list_without_specifying_start_pathname(tmpdir)
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
     print(os.getcwd())
-    assert return_rulefile_chain_as_list() == expected
+    assert return_rule_filenames_chain_as_list() == expected

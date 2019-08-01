@@ -56,7 +56,7 @@ def return_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
 
 
 @preserve_cwd
-def return_rulefile_chain_as_list(
+def return_rule_filenames_chain_as_list(
     start_pathname=None,
     rulefile_name=RULE_YAMLFILE_NAME,
     configfile_name=CONFIG_YAMLFILE_NAME,
