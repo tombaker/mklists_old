@@ -5,7 +5,7 @@
 # import pytest
 # from mklists.initialize import (
 #     CONFIG_YAMLFILE_NAME,
-#     INITIAL_CONFIG_YAMLFILE_STR,
+#     MINIMAL_CONFIG_YAMLFILE_STR,
 #     load_config_yamlfile,
 #     write_initial_config_yamlfile,
 # )

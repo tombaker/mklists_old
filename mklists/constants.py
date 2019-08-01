@@ -19,8 +19,9 @@ HTMLDIR_NAME = ".html"
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 RULE_YAMLFILE_NAME = ".rules"
 
+
 # Minimal configuration
-INITIAL_CONFIG_YAMLFILE_STR = """\
+MINIMAL_CONFIG_YAMLFILE_STR = """\
 backups: 3
 html: false
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
@@ -28,23 +29,20 @@ verbose: false
 files2dirs: {
     move_to_logs.txt: logs,
     move_to_a.txt: a,
-}
-"""
+}"""
+MINIMAL_ADIR_RULES_YAMLFILE_STR = """\
+- [0, '.',       lines,      consolidated_lines,   0]"""
 
-INITIAL_MINIMAL_RULEA_YAMLFILE_STR = """\
-- [0, '.',       lines,      consolidated_lines,   0]
-"""
 
 # Newbie configuration files
-NEWBIE_ROOTDIR_RULE_YAMLSTR = """\
+NEWBIE_ROOTDIR_RULES_YAMLSTR = """\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
 - [0, '^=',         lines,     move_to_a.txt,    1]
-- [0, '^2019|2020', lines,     move_to_logs.txt, 1]
-"""
+- [0, '^2019|2020', lines,     move_to_logs.txt, 1]"""
 
-NEWBIE_ADIR_RULE_YAMLSTR = """\
+NEWBIE_ADIR_RULES_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      todo.txt,   0]
@@ -53,7 +51,7 @@ NEWBIE_ADIR_RULE_YAMLSTR = """\
 - [1, 'LATER',   todo.txt,   later.txt,  0]
 """
 
-NEWBIE_BDIR_RULE_YAMLSTR = """\
+NEWBIE_BDIR_RULES_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      b.txt,      0]

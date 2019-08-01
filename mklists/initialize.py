@@ -16,12 +16,12 @@ import os
 import yaml
 from .constants import (
     CONFIG_YAMLFILE_NAME,
-    INITIAL_CONFIG_YAMLFILE_STR,
-    NEWBIE_ROOTDIR_RULE_YAMLSTR,
-    NEWBIE_ADIR_RULE_YAMLSTR,
-    NEWBIE_BDIR_RULE_YAMLSTR,
-    INITIAL_MINIMAL_RULEA_YAMLFILE_STR,
     RULE_YAMLFILE_NAME,
+    MINIMAL_CONFIG_YAMLFILE_STR,
+    MINIMAL_ADIR_RULES_YAMLFILE_STR,
+    NEWBIE_ADIR_RULES_YAMLSTR,
+    NEWBIE_BDIR_RULES_YAMLSTR,
+    NEWBIE_ROOTDIR_RULES_YAMLSTR,
 )
 
 
@@ -38,9 +38,9 @@ def write_example_datafiles():
 
 def write_example_rule_yamlfiles(
     rulefile=RULE_YAMLFILE_NAME,
-    example_rootdir_rules=NEWBIE_ROOTDIR_RULE_YAMLSTR,
-    example_datadira_rules=NEWBIE_ADIR_RULE_YAMLSTR,
-    example_datadirb_rules=NEWBIE_BDIR_RULE_YAMLSTR,
+    example_rootdir_rules=NEWBIE_ROOTDIR_RULES_YAMLSTR,
+    example_datadira_rules=NEWBIE_ADIR_RULES_YAMLSTR,
+    example_datadirb_rules=NEWBIE_BDIR_RULES_YAMLSTR,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
@@ -58,7 +58,7 @@ def write_example_rule_yamlfiles(
 
 def write_initial_config_yamlfile(
     file_written_name=CONFIG_YAMLFILE_NAME,
-    file_written_string=INITIAL_CONFIG_YAMLFILE_STR,
+    file_written_string=MINIMAL_CONFIG_YAMLFILE_STR,
 ):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_initial_config_yamlfile
     Write initial YAML config file ('/mklists.yml')."""
