@@ -18,7 +18,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 def cli(ctx):
     """Rebuild your todo lists by tweaking rules"""
     config = ctx.obj = Config()
-    config.foo = 1
+    config.number = 1
 
 
 @cli.command()
@@ -29,7 +29,7 @@ def init(config, newbie):
     """Initialize list repo"""
     print("init ------")
     print(type(config))
-    print(config.foo)
+    print(config.number)
     # write_initial_config_yamlfile()
     # write_initial_rule_yamlfiles()
     # if newbie:
