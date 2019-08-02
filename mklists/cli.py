@@ -39,7 +39,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                          cwd=os.getcwd()
     #                          configfile_name=CONFIG_YAMLFILE_NAME)
     #
-    # ctx.obj            = load_config_yamlfile(mklists_config_yamlfile=CONFIG_YAMLFILE_NAME)
+    # ctx.obj            = return_pyobj_from_yamlfile(yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
@@ -94,7 +94,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              rule_yamlfile=RULE_YAMLFILE_NAME,       # shouldn't this be a chain of rule files?
     #                              verbose=True)
     #
-    #     datalines_dict     = return_datalines_dict_by_applying_rules(
+    #     datalines_dict     = return_datalines_dict_after_applying_rules(
     #                              ruleobj_list=ruleobj_list,
     #                              dataline_list=datalines_list)
     #

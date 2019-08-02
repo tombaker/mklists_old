@@ -33,7 +33,7 @@ def return_pyobj_from_yamlfile(yamlfile_name=None):
 
 
 def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=None):
-    """Applies rules, one by one, to process an aggregated list of datalines.
+    """Applies rules, one by one, to process aggregated datalines.
 
     Args:
         ruleobj_list: list of rule objects
@@ -104,7 +104,7 @@ def return_datalines_list_from_datafiles(datafile_names=None):
 
 
 def return_ruleobj_list_from_rule_yamlfiles(
-    config_yamlfile=CONFIG_YAMLFILE_NAME, rule_yamlfile=RULE_YAMLFILE_NAME, verbose=True
+    config_yamlfile=None, rule_yamlfile=None, verbose=None
 ):
     """Return list of rule objects from rule files.
 
@@ -147,7 +147,7 @@ def return_ruleobj_list_from_rule_yamlfiles(
     return ruleobj_list
 
 
-def return_htmlstr_from_textstr(string=None):
+def _return_htmlstr_from_textstr(string=None):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in string:
         return string
@@ -180,5 +180,5 @@ def write_htmlfiles_from_datadict(datadict=None, verbose=False):
        -- datadict keys are filenames.
           -- for each filename, add file extension '.html'
        -- datadict values are contents of files.
-          -- filter each line through return_htmlstr_from_textstr.
+          -- filter each line through _return_htmlstr_from_textstr.
     """
