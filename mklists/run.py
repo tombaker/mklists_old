@@ -17,19 +17,11 @@ from .exceptions import (
 )
 from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
+from .utils import _return_pyobj_from_yamlfile
 
 
-def _return_pyobj_from_yamlfile(yamlfile_name=None):
-    """Returns Python object parsed from given YAML-format file."""
-    try:
-        yamlstr = open(yamlfile_name).read()
-    except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
-
-    try:
-        return yaml.load(yamlstr)
-    except yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
+def return_configdict_from_config_yamlfile():
+    pass
 
 
 def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=None):
@@ -145,13 +137,6 @@ def return_ruleobj_list_from_rule_yamlfiles(
 
     # If no rules, return None or empty list?
     return ruleobj_list
-
-
-def _return_htmlstr_from_textstr(string=None):
-    """Return string with URLs wrapped in A_HREF tags."""
-    if "<a href=" in string:
-        return string
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
 def relocate_specified_datafiles_elsewhere(files2dirs_dict=None):
