@@ -39,7 +39,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                          cwd=os.getcwd()
     #                          configfile_name=CONFIG_YAMLFILE_NAME)
     #
-    # ctx.obj            = return_pyobj_from_yamlfile(yamlfile_name=CONFIG_YAMLFILE_NAME)
+    # ctx.obj            = _return_pyobj_from_yamlfile(yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(

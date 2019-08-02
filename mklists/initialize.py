@@ -13,7 +13,6 @@ $ mklists init --newbie
 
 import io
 import os
-import yaml
 from .constants import (
     CONFIG_YAMLFILE_NAME,
     RULE_YAMLFILE_NAME,
