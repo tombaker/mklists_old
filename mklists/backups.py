@@ -1,9 +1,8 @@
 """Utilities related to backups."""
 
-import datetime
 import os
 import shutil
-from .constants import BACKUPDIR_NAME, TIMESTAMP_STR
+from .constants import TIMESTAMP_STR
 from .decorators import preserve_cwd
 
 
