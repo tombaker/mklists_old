@@ -7,9 +7,9 @@ def move_certain_datafiles_to_other_directories(files2dirs_dict=None):
     """
 
 
-def write_datadict_to_htmlfiles_in_htmldir(datadict={}, verbose=False):
+def write_htmlfiles_from_datadict(datadict={}, verbose=False):
     """
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_datadict_to_htmlfiles_in_htmldir
+    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_htmlfiles_from_datadict
     -- Create htmldir (if it does not already exist).
     -- Delete files in htmldir (if files already exist there).
     -- Write out contents of datadict to working directory:

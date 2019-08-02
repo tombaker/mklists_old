@@ -1,14 +1,6 @@
 """CLI - command-line interface module"""
 
 import click
-import os
-
-
-class Config:
-    """Factory for configuration object."""
-
-
-pass_config = click.make_pass_decorator(Config, ensure=True)
 
 
 @click.group()
@@ -17,19 +9,17 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 @click.pass_context
 def cli(ctx):
     """Rebuild your todo lists by tweaking rules"""
-    config = ctx.obj = Config()
-    config.foo = 1
 
 
 @cli.command()
 @click.option("--newbie", is_flag=True, help="Initialize with example data and config")
 @click.help_option(help="Show help and exit")
-@pass_config
-def init(config, newbie):
+@click.pass_context
+def init(ctx, newbie):
     """Initialize list repo"""
-    print("init ------")
-    print(type(config))
-    print(config.foo)
+    import os
+
+    print(os.getcwd())
     # write_initial_config_yamlfile()
     # write_initial_rule_yamlfiles()
     # if newbie:
@@ -43,7 +33,7 @@ def init(config, newbie):
 @click.option("--all", is_flag=True, help="Run in all data directories")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def run(ctx, debug, dryrun, all):  # should be config
+def run(ctx, debug, dryrun, all):
     """Rebuild lists in (by default) entire repo"""
 
     # rootdir_pathname   = return_rootdir_pathname(
@@ -117,4 +107,4 @@ def run(ctx, debug, dryrun, all):  # should be config
     # Writing out HTML versions
     # if html:
     #     [create html directory]
-    #     write_htmlfiles_from_datadict(lines)     - todo.py
+    #     write_datadict_to_htmlfiles_in_htmldir(lines)     - todo.py
