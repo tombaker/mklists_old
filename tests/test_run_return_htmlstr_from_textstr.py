@@ -1,6 +1,6 @@
 """Test utils.py - return_htmlstr_from_textstr"""
 
-from mklists.utils import return_htmlstr_from_textstr
+from mklists.run import return_htmlstr_from_textstr
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_already_linkified():

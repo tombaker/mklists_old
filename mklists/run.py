@@ -1,7 +1,9 @@
 """Apply rules to process datalines."""
 
+import re
 from collections import defaultdict
 from .booleans import is_line_match_to_rule
+from .constants import URL_PATTERN_REGEX
 from .exceptions import (
     BadYamlRuleError,
     BlankLinesError,
@@ -128,6 +130,13 @@ def return_ruleobj_list_from_rule_yamlfiles(
 
     # If no rules, return None or empty list?
     return ruleobj_list
+
+
+def return_htmlstr_from_textstr(string=None):
+    """Return string with URLs wrapped in A_HREF tags."""
+    if "<a href=" in string:
+        return string
+    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
 
 
 def relocate_specified_datafiles_elsewhere(files2dirs_dict=None):

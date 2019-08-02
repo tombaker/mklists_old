@@ -4,7 +4,6 @@ import os
 import re
 import glob
 from .booleans import is_valid_as_filename
-from .constants import URL_PATTERN_REGEX
 from .decorators import preserve_cwd
 from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import ConfigFileNotFoundError
@@ -99,10 +98,3 @@ def return_visiblefiles_list(datadir_name=None):
         finally:
             all_datafile_names.append(filename)
     return sorted(all_datafile_names)
-
-
-def return_htmlstr_from_textstr(string=None):
-    """Return string with URLs wrapped in A_HREF tags."""
-    if "<a href=" in string:
-        return string
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
