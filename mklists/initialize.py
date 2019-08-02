@@ -67,6 +67,7 @@ def write_initial_config_yamlfile(
 
 def write_initial_rule_yamlfiles():
     """
+    MINIMAL_ADIR_RULES_YAMLFILE_STR
+
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_initial_rule_yamlfiles
     """
-    pass

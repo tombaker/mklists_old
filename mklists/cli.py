@@ -1,11 +1,25 @@
 """CLI - command-line interface module"""
 
-import click
 import os
+import click
 
 
 class Config:
-    """Factory for configuration object."""
+    """Factory for configuration object initialized with sensible defaults."""
+
+    def __init__(
+        self,
+        backup_depth=2,
+        files2dirs_dict=None,
+        html_yes=False,
+        invalid_filename_regexes=None,
+        verbose_yes=False,
+    ):
+        self.backup_depth = backup_depth
+        self.html_yes = html_yes
+        self.invalid_filename_regexes = invalid_filename_regexes
+        self.verbose_yes = verbose_yes
+        self.files2dirs_dict = files2dirs_dict
 
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
@@ -18,7 +32,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 def cli(ctx):
     """Rebuild your todo lists by tweaking rules"""
     config = ctx.obj = Config()
-    config.number = 1
+    print(f"config.backup_depth = {config.backup_depth}")
 
 
 @cli.command()
@@ -111,8 +125,8 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #     write_datafiles_from_datadict(datadict=None)
     #
-    #     if files2dirs:
-    #         relocate_specified_datafiles_elsewhere(ctx.obj["files2dirs"])
+    #     if files2dirs_dict:
+    #         relocate_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])
 
     # Writing out HTML versions
     # if html:

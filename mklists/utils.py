@@ -1,7 +1,6 @@
 """Utilities used by other modules."""
 
 import os
-import re
 import glob
 from .booleans import is_valid_as_filename
 from .decorators import preserve_cwd
@@ -50,8 +49,7 @@ def return_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
         os.chdir(os.pardir)
         if os.getcwd() == cwd_before_changing:
             raise ConfigFileNotFoundError("No config file found - not a mklists repo.")
-    else:
-        return os.getcwd()
+    return os.getcwd()
 
 
 @preserve_cwd

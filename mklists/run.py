@@ -1,8 +1,8 @@
 """Apply rules to process datalines."""
 
 import re
-import yaml
 from collections import defaultdict
+import yaml
 from .booleans import is_line_match_to_rule
 from .constants import URL_PATTERN_REGEX
 from .exceptions import (
