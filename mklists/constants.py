@@ -21,15 +21,12 @@ RULE_YAMLFILE_NAME = ".rules"
 
 
 # Minimal configuration
-MINIMAL_CONFIG_YAMLFILE_STR = """\
-backups: 3
-html: false
+MINIMAL_CONFIG_YAMLFILE_STR = """verbose: false
+html_yes: false
+backup_depth: 3
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
-verbose: false
-files2dirs: {
-    move_to_logs.txt: logs,
-    move_to_a.txt: a,
-}"""
+files2dirs_dict: {}"""
+
 MINIMAL_ADIR_RULES_YAMLFILE_STR = """\
 - [0, '.',       lines,      consolidated_lines,   0]"""
 

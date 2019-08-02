@@ -20,8 +20,8 @@ def init(ctx, newbie):
     import os
 
     print(os.getcwd())
-    # write_initial_config_yamlfile()
-    # write_initial_rule_yamlfiles()
+    # write_minimal_config_yamlfile()
+    # write_minimal_rule_yamlfiles()
     # if newbie:
     #     write_newbie_rule_yamlfiles()
     #     write_newbie_datafiles()

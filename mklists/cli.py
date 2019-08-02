@@ -4,51 +4,26 @@ import os
 import click
 
 
-class Config:
-    """Factory for configuration object initialized with sensible defaults."""
-
-    def __init__(
-        self,
-        backup_depth=2,
-        files2dirs_dict=None,
-        html_yes=False,
-        invalid_filename_regexes=None,
-        verbose_yes=False,
-    ):
-        self.backup_depth = backup_depth
-        self.html_yes = html_yes
-        self.invalid_filename_regexes = invalid_filename_regexes
-        self.verbose_yes = verbose_yes
-        self.files2dirs_dict = files2dirs_dict
-
-
-pass_config = click.make_pass_decorator(Config, ensure=True)
-
-
 @click.group()
 @click.version_option("0.1.5", help="Show version and exit")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx):
     """Rebuild your todo lists by tweaking rules"""
-    config = ctx.obj = Config()
-    print(f"config.backup_depth = {config.backup_depth}")
 
 
 @cli.command()
 @click.option("--newbie", is_flag=True, help="Initialize with example data and config")
 @click.help_option(help="Show help and exit")
-@pass_config
+@click.pass_context
 def init(config, newbie):
     """Initialize list repo"""
-    print("init ------")
-    print(type(config))
-    print(config.number)
-    # write_initial_config_yamlfile()
-    # write_initial_rule_yamlfiles()
+    # write_minimal_config_yamlfile()
+    # write_minimal_rule_yamlfiles()
     # if newbie:
-    #     write_newbie_rule_yamlfiles()
+    #     write_newbie_config_yamlfile()
     #     write_newbie_datafiles()
+    #     write_newbie_rule_yamlfiles()
 
 
 @cli.command()

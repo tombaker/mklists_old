@@ -19,7 +19,7 @@ from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
 
 
-def return_pyobj_from_config_yamlfile(yamlfile_name=None):
+def return_pyobj_from_yamlfile(yamlfile_name=None):
     """Returns Python object parsed from given YAML-format file."""
     try:
         yamlstr = open(yamlfile_name).read()
@@ -116,7 +116,7 @@ def return_ruleobj_list_from_rule_yamlfiles(
 
     all_rules_list = []
 
-    config_pydict = return_pyobj_from_config_yamlfile(config_yamlfile)
+    config_pydict = return_pyobj_from_yamlfile(config_yamlfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
@@ -126,7 +126,7 @@ def return_ruleobj_list_from_rule_yamlfiles(
         if verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = return_pyobj_from_config_yamlfile(rule_yamlfile)
+    rules_pylist = return_pyobj_from_yamlfile(rule_yamlfile)
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:
