@@ -1,20 +1,35 @@
 """Apply rules to process datalines."""
 
 import re
+import yaml
 from collections import defaultdict
 from .booleans import is_line_match_to_rule
 from .constants import URL_PATTERN_REGEX
 from .exceptions import (
+    BadYamlError,
     BadYamlRuleError,
     BlankLinesError,
+    ConfigFileNotFoundError,
     NoDataError,
     NoRulesError,
     NotUTF8Error,
     RulefileNotFoundError,
 )
-from .config import return_pyobj_from_config_yamlfile
 from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
+
+
+def return_pyobj_from_config_yamlfile(yamlfile_name=None):
+    """Returns Python object parsed from given YAML-format file."""
+    try:
+        yamlstr = open(yamlfile_name).read()
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
+
+    try:
+        return yaml.load(yamlstr)
+    except yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
 def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=None):
