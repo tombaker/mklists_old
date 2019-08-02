@@ -40,10 +40,10 @@ def init(config, newbie):
 @cli.command()
 @click.option("--debug", is_flag=True, help="Run verbosely")
 @click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode")
-@click.option("--all", is_flag=True, help="Run in all data directories")
+@click.option("--here-only", is_flag=True, help="Run only in current data directory")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def run(ctx, debug, dryrun, all):  # should be config
+def run(ctx, debug, dryrun, here_only):  # should be config
     """Rebuild lists in (by default) entire repo"""
 
     # rootdir_pathname   = return_rootdir_pathname(
@@ -52,15 +52,15 @@ def run(ctx, debug, dryrun, all):  # should be config
     #
     # ctx.obj            = load_config_yamlfile(mklists_config_yamlfile=CONFIG_YAMLFILE_NAME)
 
-    # if all:
-    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
-    #                              somedir_pathname=rootdir_pathname,
-    #                              rulefile_name=RULE_YAMLFILE_NAME)
-    # else:
+    # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              somedir_pathname=os.getcwd(),
     #                              rulefile_name=RULE_YAMLFILE_NAME)
     #     Or: datadir_pathnames = [ os.getcwd() ]
+    # else:
+    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
+    #                              somedir_pathname=rootdir_pathname,
+    #                              rulefile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
     #     datadir_pathname   = os.getcwd(datadit)
