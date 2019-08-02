@@ -112,7 +112,7 @@ def run(ctx, debug, dryrun, all):  # should be config
     #     write_datafiles_from_datadict(datadict=None)
     #
     #     if files2dirs:
-    #         move_certain_datafiles_to_other_directories(ctx.obj["files2dirs"])
+    #         relocate_specified_datafiles_elsewhere(ctx.obj["files2dirs"])
 
     # Writing out HTML versions
     # if html:

@@ -130,6 +130,12 @@ def return_ruleobj_list_from_rule_yamlfiles(
     return ruleobj_list
 
 
+def relocate_specified_datafiles_elsewhere(files2dirs_dict=None):
+    """Args: files2dirs_dict: filename (key) and destination directory (value)
+    See /Users/tbaker/github/tombaker/mklists/tests/test_run_relocate_specified_datafiles_elsewhere
+    """
+
+
 def write_datafiles_from_datadict(datadict=None):
     """
     -- Write out contents of datadict to working directory:
@@ -139,3 +145,16 @@ def write_datafiles_from_datadict(datadict=None):
     for (key, value) in datadict.items():
         with open(key, "w", encoding="utf-8") as fout:
             fout.writelines(value)
+
+
+def write_htmlfiles_from_datadict(datadict=None, verbose=False):
+    """
+    See /Users/tbaker/github/tombaker/mklists/tests/test_run_write_htmlfiles_from_datadict_LATER.py
+    -- Create htmldir (if it does not already exist).
+    -- Delete files in htmldir (if files already exist there).
+    -- Write out contents of datadict to working directory:
+       -- datadict keys are filenames.
+          -- for each filename, add file extension '.html'
+       -- datadict values are contents of files.
+          -- filter each line through return_htmlstr_from_textstr.
+    """
