@@ -1,23 +1,24 @@
 """Apply rules to process datalines."""
 
-import re
 from collections import defaultdict
-import yaml
 from .booleans import is_line_match_to_rule
-from .constants import URL_PATTERN_REGEX
 from .exceptions import (
-    BadYamlError,
     BadYamlRuleError,
     BlankLinesError,
-    ConfigFileNotFoundError,
     NoDataError,
     NoRulesError,
     NotUTF8Error,
     RulefileNotFoundError,
 )
-from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from .rules import Rule
 from .utils import _return_pyobj_from_yamlfile
+
+# import re
+# import yaml
+# from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
+# from .constants import URL_PATTERN_REGEX
+#     BadYamlError,
+#     ConfigFileNotFoundError,
 
 
 def return_configdict_from_config_yamlfile():
