@@ -59,7 +59,7 @@ def return_rootdir_pathname(
 
 @preserve_cwd
 def return_rule_filenames_chain_as_list(
-    start_pathname=None,
+    _start_pathname=None,
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     configfile_name=CONFIG_YAMLFILE_NAME,
 ):
@@ -68,13 +68,13 @@ def return_rule_filenames_chain_as_list(
     Looks no higher than root directory of mklists repo.
 
     Args:
-        start_pathname:
+        _start_pathname:
         _rule_yamlfile_name:
         configfile_name:
     """
-    if not start_pathname:
-        start_pathname = os.getcwd()
-    os.chdir(start_pathname)
+    if not _start_pathname:
+        _start_pathname = os.getcwd()
+    os.chdir(_start_pathname)
     rulefile_pathnames_chain = []
     while _rule_yamlfile_name in os.listdir():
         rulefile_pathnames_chain.insert(

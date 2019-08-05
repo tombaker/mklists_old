@@ -83,7 +83,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #         backup_depth=None)            # something like config['backups']
     #
     #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
-    #                              start_pathname=None,
+    #                              _start_pathname=None,
     #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME,
     #                              configfile_name=CONFIG_YAMLFILE_NAME)
     #
