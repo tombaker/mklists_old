@@ -8,9 +8,9 @@ from .exceptions import FilenameIsAlreadyDirnameError
 
 
 def is_valid_as_filename(
-    filename=None,
+    _file_tested_name=None,
     _current_dirname=None,
-    badpats=INVALID_FILENAME_REGEXES,
+    _invalid_filename_regexes=INVALID_FILENAME_REGEXES,
     validchars_regex=VALID_FILENAME_CHARACTERS_REGEX,
 ):
     """Return True if filename:
@@ -21,35 +21,35 @@ def is_valid_as_filename(
     """
     if not _current_dirname:
         _current_dirname = os.getcwd()
-    for badpat in badpats:
-        if re.search(badpat, filename):
+    for badpat in _invalid_filename_regexes:
+        if re.search(badpat, _file_tested_name):
             return False
-    for char in filename:
+    for char in _file_tested_name:
         if not bool(re.search(validchars_regex, char)):
             return False
-    if filename in [d for d in os.listdir() if os.path.isdir(d)]:
+    if _file_tested_name in [d for d in os.listdir() if os.path.isdir(d)]:
         raise FilenameIsAlreadyDirnameError(
-            f"Filename {repr(filename)} is already used as a directory name."
+            f"Filename {repr(_file_tested_name)} is already used as a directory name."
         )
     return True
 
 
-def is_line_match_to_rule(given_rule=None, given_line=None):
+def is_line_match_to_rule(_given_ruleobj=None, given_line=None):
     """Returns True if data line matches pattern specified in given rule."""
 
     # Line does not match if given field greater than number of fields in line.
-    if given_rule.source_matchfield > len(given_line.split()):
+    if _given_ruleobj.source_matchfield > len(given_line.split()):
         return False
 
     # Line matches if given field is zero and pattern found anywhere in line.
-    if given_rule.source_matchfield == 0:
-        if re.search(given_rule.source_matchpattern, given_line):
+    if _given_ruleobj.source_matchfield == 0:
+        if re.search(_given_ruleobj.source_matchpattern, given_line):
             return True
 
     # Line matches if pattern is found in given field.
-    if given_rule.source_matchfield > 0:
-        eth = given_rule.source_matchfield - 1
-        if re.search(given_rule.source_matchpattern, given_line.split()[eth]):
+    if _given_ruleobj.source_matchfield > 0:
+        eth = _given_ruleobj.source_matchfield - 1
+        if re.search(_given_ruleobj.source_matchpattern, given_line.split()[eth]):
             return True
 
     return False
