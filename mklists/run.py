@@ -96,7 +96,7 @@ def return_datalines_list_from_datafiles(datafile_names=None):
 
 
 def return_ruleobj_list_from_rule_yamlfiles(
-    config_yamlfile=None, rule_yamlfile=None, verbose=None
+    config_yamlfile=None, rule_yamlfile=None, _verbose=None
 ):
     """Return list of rule objects from rule files.
 
@@ -112,10 +112,10 @@ def return_ruleobj_list_from_rule_yamlfiles(
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
-        if verbose:
+        if _verbose:
             print("No global rules found - skipping.")
     except TypeError:
-        if verbose:
+        if _verbose:
             print("No global rules found - skipping.")
 
     rules_pylist = _return_pyobj_from_yamlfile(rule_yamlfile)
@@ -156,7 +156,7 @@ def write_datafiles_from_datadict(datadict=None):
             fout.writelines(value)
 
 
-def write_htmlfiles_from_datadict(datadict=None, verbose=False):
+def write_htmlfiles_from_datadict(datadict=None, _verbose=False):
     """
     See /Users/tbaker/github/tombaker/mklists/tests/test_run_write_htmlfiles_from_datadict_LATER.py
     -- Create htmldir (if it does not already exist).

@@ -36,7 +36,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     """Rebuild lists in (by default) entire repo"""
 
     # rootdir_pathname   = return_rootdir_pathname(
-    #                          cwd=os.getcwd()
+    #                          _current_dirname=os.getcwd()
     #                          configfile_name=CONFIG_YAMLFILE_NAME)
     #
     # ctx.obj            = _return_pyobj_from_yamlfile(yamlfile_name=CONFIG_YAMLFILE_NAME)
@@ -67,9 +67,9 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #     backupdir_pathname = return_backupdir_pathname(
     #                              rootdir_pathname=rootdir_pathname,
-    #                              backups_dirname=backups_dirname,
+    #                              _backupdir_pathname=backups_dirname,
     #                              backup_shortname=backup_shortname,
-    #                              timestamp_name=TIMESTAMP_STR)
+    #                              _timestamp_str=TIMESTAMP_STR)
     #
     #     move_datafiles_to_backupdir(
     #         datadir_pathname=datadir_pathname,
@@ -78,7 +78,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #     delete_older_backups(
     #         rootdir_pathname=None,
-    #         backups_dirname=None,
+    #         _backupdir_pathname=None,
     #         backup_shortname=None,
     #         backup_depth=None)            # something like config['backups']
     #

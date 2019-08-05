@@ -34,9 +34,9 @@ def return_backupdir_shortname(datadir_pathname=None, rootdir_pathname=None):
 
 def return_backupdir_pathname(
     rootdir_pathname=None,
-    backups_dirname=None,
+    _backupdir_pathname=None,
     backup_shortname=None,
-    timestamp_name=TIMESTAMP_STR,
+    _timestamp_str=TIMESTAMP_STR,
 ):
     """Generate a timestamped pathname for backups.
 
@@ -47,12 +47,12 @@ def return_backupdir_pathname(
 
     Args:
         rootdir_pathname: Full pathname of mklists repo root directory.
-        backups_dirname:
+        _backupdir_pathname:
         backup_shortname:
-        timestamp_name:
+        _timestamp_str:
     """
     return os.path.join(
-        rootdir_pathname, backups_dirname, backup_shortname, timestamp_name
+        rootdir_pathname, _backupdir_pathname, backup_shortname, _timestamp_str
     )
 
 

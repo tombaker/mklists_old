@@ -15,9 +15,9 @@ def test_backups_return_backupdir_pathname():
     assert (
         return_backupdir_pathname(
             rootdir_pathname=root,
-            backups_dirname=backups,
+            _backupdir_pathname=backups,
             backup_shortname=shortname,
-            timestamp_name=now,
+            _timestamp_str=now,
         )
         == expected
     )

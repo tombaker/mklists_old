@@ -37,7 +37,9 @@ def return_datadir_pathnames_under_somedir(
 
 
 @preserve_cwd
-def return_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
+def return_rootdir_pathname(
+    _current_dirname=None, configfile_name=CONFIG_YAMLFILE_NAME
+):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
@@ -45,8 +47,8 @@ def return_rootdir_pathname(cwd=None, configfile_name=CONFIG_YAMLFILE_NAME):
     See
     /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_rootdir_pathname_DONE.py
     """
-    if not cwd:
-        cwd = os.getcwd()
+    if not _current_dirname:
+        _current_dirname = os.getcwd()
     while configfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
@@ -114,8 +116,8 @@ def _return_pyobj_from_yamlfile(yamlfile_name=None):
         raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
 
 
-def _return_htmlstr_from_textstr(string=None):
+def _return_htmlstr_from_textstr(text_string=None):
     """Return string with URLs wrapped in A_HREF tags."""
-    if "<a href=" in string:
-        return string
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', string)
+    if "<a href=" in text_string:
+        return text_string
+    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', text_string)

@@ -9,18 +9,18 @@ from .exceptions import FilenameIsAlreadyDirnameError
 
 def is_valid_as_filename(
     filename=None,
-    current_dir=None,
+    _current_dirname=None,
     badpats=INVALID_FILENAME_REGEXES,
     validchars_regex=VALID_FILENAME_CHARACTERS_REGEX,
 ):
     """Return True if filename:
     * has no invalid characters (override defaults in mklists.yml)
     * string patterns (override defaults in mklists.yml)
-    * does not match name of an existing directory in current_dir
+    * does not match name of an existing directory in current directory
 
     """
-    if not current_dir:
-        current_dir = os.getcwd()
+    if not _current_dirname:
+        _current_dirname = os.getcwd()
     for badpat in badpats:
         if re.search(badpat, filename):
             return False
