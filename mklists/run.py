@@ -25,11 +25,11 @@ def return_configdict_from_config_yamlfile():
     pass
 
 
-def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=None):
+def return_datalines_dict_after_applying_rules(_ruleobj_list=None, dataline_list=None):
     """Applies rules, one by one, to process aggregated datalines.
 
     Args:
-        ruleobj_list: list of rule objects
+        _ruleobj_list: list of rule objects
         dataline_list: list of strings (all data lines)
 
     Returns:
@@ -40,14 +40,14 @@ def return_datalines_dict_after_applying_rules(ruleobj_list=None, dataline_list=
     datadict = defaultdict(list)
     first_key_is_initialized = False
 
-    if not ruleobj_list:
+    if not _ruleobj_list:
         raise NoRulesError("No rules specified.")
 
     if not dataline_list:
         raise NoDataError("No data specified.")
 
     # Evaluate rules, one-by-one, to process entries in datadict.
-    for ruleobj in ruleobj_list:
+    for ruleobj in _ruleobj_list:
 
         # Initialize datadict with first rule.
         #    key: valid filename (from 'source' field of first ruleobj)

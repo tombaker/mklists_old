@@ -22,7 +22,7 @@ def test_return_datalines_dict_after_applying_rules_no_data_specified():
     """Not passing data to return_datalines_dict_after_applying_rules raises SystemExit."""
     with pytest.raises(SystemExit):
         return_datalines_dict_after_applying_rules(
-            ruleobj_list=[[Rule(1, "a", "b", "c", 2)]]
+            _ruleobj_list=[[Rule(1, "a", "b", "c", 2)]]
         )
 
 

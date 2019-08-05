@@ -1,6 +1,6 @@
 """CLI - command-line interface module"""
 
-import os
+# import os
 import click
 
 
@@ -95,7 +95,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              verbose=True)
     #
     #     datalines_dict     = return_datalines_dict_after_applying_rules(
-    #                              ruleobj_list=ruleobj_list,
+    #                              _ruleobj_list=ruleobj_list,
     #                              dataline_list=datalines_list)
     #
     #     write_datafiles_from_datadict(datadict=None)
