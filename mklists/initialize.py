@@ -35,7 +35,7 @@ def write_newbie_datafiles():
 
 
 def write_newbie_rule_yamlfiles(
-    rulefile=RULE_YAMLFILE_NAME,
+    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     newbie_rootdir_rules=NEWBIE_ROOTDIR_RULES_YAMLSTR,
     newbie_datadira_rules=NEWBIE_ADIR_RULES_YAMLSTR,
     newbie_datadirb_rules=NEWBIE_BDIR_RULES_YAMLSTR,
@@ -44,11 +44,11 @@ def write_newbie_rule_yamlfiles(
     * global rule file (/.rules)
     * folder rule file (/a/.rules)"""
     config_path = os.path.join(os.getcwd())
-    grule_file = os.path.join(config_path, rulefile)
+    grule_file = os.path.join(config_path, _rule_yamlfile_name)
     os.makedirs(os.path.join(config_path, "a"))
     os.makedirs(os.path.join(config_path, "b"))
-    rulea_file = os.path.join(config_path, "a", rulefile)
-    ruleb_file = os.path.join(config_path, "b", rulefile)
+    rulea_file = os.path.join(config_path, "a", _rule_yamlfile_name)
+    ruleb_file = os.path.join(config_path, "b", _rule_yamlfile_name)
     io.open(grule_file, "w", encoding="utf-8").write(newbie_rootdir_rules)
     io.open(rulea_file, "w", encoding="utf-8").write(newbie_datadira_rules)
     io.open(ruleb_file, "w", encoding="utf-8").write(newbie_datadirb_rules)

@@ -44,17 +44,17 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              somedir_pathname=os.getcwd(),
-    #                              rulefile_name=RULE_YAMLFILE_NAME)
+    #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME)
     #     Or: datadir_pathnames = [ os.getcwd() ]
     # else:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              somedir_pathname=rootdir_pathname,
-    #                              rulefile_name=RULE_YAMLFILE_NAME)
+    #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
     #     datadir_pathname   = os.getcwd(datadit)
     #
-    #     visiblefiles_list  = return_visiblefiles_list(datadir_name=datadir_pathname)
+    #     visiblefiles_list  = return_visiblefiles_list(datadir_pathname=datadir_pathname)
     #
     #     datalines_list     = return_datalines_list_from_datafiles(
     #                              datafile_names=visiblefiles_list)
@@ -84,7 +84,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
     #                              start_pathname=None,
-    #                              rulefile_name=RULE_YAMLFILE_NAME,
+    #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME,
     #                              configfile_name=CONFIG_YAMLFILE_NAME)
     #
     #

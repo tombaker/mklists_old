@@ -12,7 +12,7 @@ from .exceptions import BadYamlError, ConfigFileNotFoundError
 
 
 def return_datadir_pathnames_under_somedir(
-    somedir_pathname=None, rulefile_name=RULE_YAMLFILE_NAME
+    somedir_pathname=None, _rule_yamlfile_name_name=RULE_YAMLFILE_NAME
 ):
     """Return list of data directories under a given directory.
 
@@ -20,7 +20,7 @@ def return_datadir_pathnames_under_somedir(
 
     Args:
         :somedir_pathname: Root of directory tree with data directories.
-        :rulefile_name: Name of rule file (by default: '.rules').
+        :_rule_yamlfile_name_name: Name of rule file (by default: '.rules').
 
     2019-07-22: Two scenarios?
     * mklists run         - runs in all data directories in repo
@@ -31,7 +31,7 @@ def return_datadir_pathnames_under_somedir(
     datadirs = []
     for dirpath, dirs, files in os.walk(somedir_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
-        if rulefile_name in files:
+        if _rule_yamlfile_name_name in files:
             datadirs.append(dirpath)
     return datadirs
 
@@ -60,7 +60,7 @@ def return_rootdir_pathname(
 @preserve_cwd
 def return_rule_filenames_chain_as_list(
     start_pathname=None,
-    rulefile_name=RULE_YAMLFILE_NAME,
+    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     configfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return list of rule files from parent directories and current directory.
@@ -68,16 +68,18 @@ def return_rule_filenames_chain_as_list(
     Looks no higher than root directory of mklists repo.
 
     Args:
-        :start_pathname:
-        :rulefile_name:
-        :configfile_name:
+        start_pathname:
+        _rule_yamlfile_name:
+        configfile_name:
     """
     if not start_pathname:
         start_pathname = os.getcwd()
     os.chdir(start_pathname)
     rulefile_pathnames_chain = []
-    while rulefile_name in os.listdir():
-        rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rulefile_name))
+    while _rule_yamlfile_name in os.listdir():
+        rulefile_pathnames_chain.insert(
+            0, os.path.join(os.getcwd(), _rule_yamlfile_name)
+        )
         if configfile_name in os.listdir():
             break
         os.chdir(os.pardir)
@@ -86,14 +88,14 @@ def return_rule_filenames_chain_as_list(
 
 
 @preserve_cwd
-def return_visiblefiles_list(datadir_name=None):
+def return_visiblefiles_list(datadir_pathname=None):
     """Return list of names of visible files with valid names.
 
     See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
     """
-    if not datadir_name:
-        datadir_name = os.getcwd()
-    os.chdir(datadir_name)
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
+    os.chdir(datadir_pathname)
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:
