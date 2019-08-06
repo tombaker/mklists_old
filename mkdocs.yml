@@ -1,6 +1,7 @@
 site_name: mklists
 pages:
     - Home: 'index.md'
+    - Naming: 'naming.md'
     - History: 'history.md'
 site_url: http://mklists.com
 repo_url: https://github.com/tombaker/mklists
