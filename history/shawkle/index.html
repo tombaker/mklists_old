@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Shawkle - mklists</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Shawkle";
+    var mkdocs_page_input_path = "history/shawkle.md";
+    var mkdocs_page_url = "/history/shawkle/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> mklists</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../">History</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../wishlist/">Wish List</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">mklists</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Shawkle</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/tombaker/mklists/edit/master/docs/history/shawkle.md"
+          class="icon icon-github"> Edit on Github</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <pre><code>#!/bin/pdksh
+# @(#) shawkle  A rule-based list processor
+# Author: Thomas Baker &lt;tbaker@unix.amherst.edu&gt; (1994)
+#                      &lt;thomas.baker@bi.fhg.de&gt; (2002)
+# 
+# Based on program &quot;shuffle&quot;, originally published in 1994 as
+#    &quot;Shuffle: a rule-based list processor&quot; in: Thomas, Rebecca, 
+#    &quot;The data shuffle&quot; [monthly column ``Wizard's Grabbag''],
+#    UnixWorld Open Computing} 11(6), pp. 123-127.
+#
+# 1995:       Further modified by author:
+#             Uses &quot;gawk&quot; instead of &quot;grep&quot; in the main
+#             function (movelines), allowing rules to specify matches to *fields*.
+# 1995-10-02: Added &quot;data&quot; in filetype detection line because file sees umlauts as &quot;data&quot;
+#       Changed: { file $File | grep -E 'data|text|empty|shell' &gt;|$Devnull 2&gt;&amp;1;} ||
+# 1999-09-03: Appended urlify-lists functionality
+# 2000-01-18: Added modules at end to move various files to other directories
+# 2002-01-16: Further configured for Voltimand (Dell laptop)
+# 2002-04-04: Unix and Unix-under-Windows variables separated for clarity
+#             Now MKS and Cygwin support &quot;hidden&quot; .filenames (starting with &quot;dot&quot;)
+# 2002-06-17: Ported shawkle from MKS to Cygwin
+#             1c1        # CHANGED MKS/ksh to AST/ksh
+#             &lt; #!e:/mks/mksnt/sh.exe
+#             &gt; #!/ast/bin/ksh
+#             75c75      # egrep -&gt; grep -E
+#             &lt; egrep -v '^$' |                     # Remove blank lines.
+#             &gt; grep -Ev '^$' |                     # Remove blank lines.
+#             123c123      # egrep -&gt; grep -E
+#             &lt;     { file $File | egrep 'data|text|empty|shell' &gt;|$Devnull 2&gt;&amp;1;} ||
+#             &gt;     { file $File | grep -E 'data|text|empty|shell' &gt;|$Devnull 2&gt;&amp;1;} ||
+#             125c125      # egrep -&gt; grep -E
+#             &lt;     egrep '^[   ]*$' $File &gt;|$Devnull 2&gt;&amp;1 &amp;&amp;
+#             &gt;     grep -E '^[   ]*$' $File &gt;|$Devnull 2&gt;&amp;1 &amp;&amp;
+#             141c141      # egrep -&gt; grep -E
+#             &lt; egrep -v '^$' |                     # Remove blank lines
+#             &gt; grep -Ev '^$' |                     # Remove blank lines
+#             173c173
+#             &lt; e:/u/bin/urlify-lists 1&gt;&gt;$NULL &amp;
+#             &gt; /cygdrive/e/u/cygbin/urlify-lists 1&gt;&gt;$NULL &amp;
+# 2002-06-17: Added &quot;game&quot; in filetype detection line because file sees some lines as &quot;game dumps&quot;
+#             { file $File | grep -E 'data|text|empty|shell|game' &gt;|$Devnull 2&gt;&amp;1;} ||
+# 2003-05-11: Added /cygdrive/a/u/lines/agenda/.rulesall, called $Rulesall below.
+#             This implies at a minimum that every shawkle directory will use
+#             the default name &quot;lines&quot; and that the $Rulesall rules will apply to the
+#             data in every directory where shawkle is run.
+# 2003-05-22: Added flip -ub to make sure everything is in Unix text format.
+# 2003-10-20: Cygwin now has pdksh, so now use instead of AST KSH
+# 2003-11-03: Changed &quot;file&quot; to &quot;file -i&quot; to ensure that text is seen as text, in line:
+#             Change: { file -i $File | grep -E 'data|text|empty|shell|game' &gt;|$Devnull 2&gt;&amp;1;} ||
+#             To:     { file -i $File | grep -E 'text|empty' &gt;|$Devnull 2&gt;&amp;1;} ||
+# 2003-11-08: DANGER!  Need to add new sanity check for .rule file, somthing like:
+#             toupper($3) == toupper($4) { print $0, &quot;: &quot;, $3, &quot;and&quot;, $4, &quot;same under WIN2000!&quot; 
+#             Problem: a rule like &quot;0|KEYWORD|Filename|FILENAME|' will quickly generate
+#             a runaway process, filling up the hard disk (400+ MB in just 10-15 seconds...)
+#             and can only be stopped by Ctrl-C!
+# 2004-09-09 &quot;file -i&quot; option makes &quot;file&quot; use an alternative magic file!
+#             This makes it interpret an &quot;ASCII text&quot; starting with &quot;MMI &quot; as &quot;image/tiff&quot;!
+#             Solution for now: use &quot;DCMMI&quot; as keyword.
+# 2006-06-16  This slighly pared-down, cleaned-up version prepared for Gina Trapani
+#
+# To configure for a particular system, edit the following
+# -- First line (#!e:/mks/mksnt/sh.exe or #!/bin/ksh as needed)
+# -- Configuration variables (possibly commenting out Unix-under-Windows variables)
+# -- Appendix 1: calls &quot;urlify-lists&quot; to create parallel directory with .html lists:
+#    For each $LISTS/agenda*, creates $LISTS/_html/html-agenda*
+#    Comment out Appendix 1 or install/configure &quot;urlify-lists&quot; script
+#    Note that &quot;urlify-lists&quot; calls the script &quot;urlify&quot;, which must itself be configured
+# -- Appendix 2: moves various files to other directories as needed
+#    Comment out Appendix 2 or configure as needed
+
+$DBG_SH                             # Dormant debugging directive
+umask 077
+
+trap 'rm -f $Tmpfile $Targetfilenames &gt;|$Devnull 2&gt;&amp;1; \
+    exit $Stat' 0
+trap 'print -u2 &quot;$(basename $0): Interrupted!&quot;; exit' 1 2 3 15
+
+# CONFIGURATION
+Allfiles=combined.dat               # File for all catenated input files
+Bkupdir=.backup                     # Input-files backup directory
+Devnull=&quot;/dev/null&quot;                 # Bit-bucket file
+Rulefile=.rules                     # Local rule file
+Ruleall=.ruleall                    # Global rule file (added 2003-05-11)
+Usage=&quot;Usage: $(basename $0) datafile [datafile ...]&quot; # Correct usage
+Tmpdir=/tmp                         # Temporary directory
+Targetfilenames=$Tmpdir/sht$$.tmp   # Target-names file (uses $Tmpdir)
+Tmpfile=$Tmpdir/shf$$.tmp           # Temporary work file (uses $Tmpdir)
+
+# UNIX-UNDER-WINDOWS CONFIGURATION: comment out if using Unix/Linux
+Tmpdir=c:/cygwin/tmp                # MKS/Unix temporary directory
+Devnull=$Tmpdir/null                # Bit-bucket file, alternative (using $Tmpdir)
+
+# FUNCTION DEFINITIONS:
+function usage_exit {
+    print -u2 &quot;$Usage&quot;; Stat=1 ; exit
+}
+function movelines { # Args: $Searchfield $Searchkey $Source $Target $Sortcmd
+#    print -n &quot;Lines with [$2] in field $1 moved from \&quot;&quot;$3&quot;\&quot; to \&quot;&quot;$4&quot;\&quot;&quot;
+    print -n &quot;$1 [$2] \&quot;&quot;$3&quot;\&quot; to \&quot;&quot;$4&quot;\&quot;&quot;
+    #egrep &quot;$2&quot; $3 &gt;&gt;$4; egrep -v &quot;$2&quot; $3 &gt;|$Tmpfile; mv $Tmpfile $3
+    gawk '$'$Searchfield' ~ /'$Searchkey'/' $3 &gt;&gt;$4
+    gawk '$'$Searchfield' !~ /'$Searchkey'/' $3 &gt;|$Tmpfile; mv $Tmpfile $3
+    [ &quot;$5&quot; ] &amp;&amp; print &quot;, ${5}.&quot; || print &quot;.&quot; # Print sort command
+    [ &quot;$5&quot; ] &amp;&amp; { eval $5 -o $4 $4 ||
+        { print &quot;\aBad rule-file sort command: $5&quot;; Stat=2; exit;};}
+}
+
+# PROCESS COMMAND-LINE ARGUMENTS:
+case $# in      # User must specify at least one file-name argument
+    0)  usage_exit ;;
+esac
+
+# SANITY CHECK: Rule file:
+[ -r $Ruleall ] ||
+    { print -u2 &quot;\aCannot read \&quot;$Ruleall\&quot; file!&quot;; Stat=4; exit;}
+[ -r $Rulefile ] ||
+    { print -u2 &quot;\aCannot read \&quot;$Rulefile\&quot; file!&quot;; Stat=4; exit;}
+sed 's/#.*$//' $Ruleall $Rulefile | # Remove comments.
+grep -Ev '^$' |                     # Remove blank lines.
+gawk -F\| '                         # Rules separated by vertical bar
+NR == 1 &amp;&amp; ($2 != &quot;.&quot; || $3 != &quot;$Allfiles&quot;) {   # Check first rule
+    print $0, &quot;: rule 1 is illegal!&quot; }
+NF != 4 &amp;&amp; NF != 5 {                # All rules have 4 or 5 fields.
+    print $0, &quot;: must have 4 or 5 fields!&quot; }
+$3 == $4 {                          # Source different from target.
+    print $0, &quot;: source cannot equal target!&quot; }
+$5 != &quot;&quot; &amp;&amp; $5 !~ /^sort/ {         # Field 5 is for sort commands.
+    print $0, &quot;: field 5 is only for sort!&quot; }
+$1 == &quot;&quot; || $2 == &quot;&quot; || $3 == &quot;&quot; || $4 == &quot;&quot; {  # First four fields non-empty.
+    print $0, &quot;: 1 of first four fields is empty!&quot; }
+{ target[$4] = 1 }                  # Note names of target files
+NR &gt; 1 {                            # For all lines after the first
+    if ($3 in target)               # If source file is also a target
+        next;                       # No problem, fetch next input line
+    else print $0, &quot;: &quot;, $3, &quot;has no precedent!&quot;
+}' &gt;| $Tmpfile                      # Save unique lines and display
+[ -s $Tmpfile ] &amp;&amp;
+    { print -u2 &quot;Bad rule format:\n$(cat $Tmpfile)&quot;; Stat=5; exit;}
+
+# SANITY CHECKS: Current directory, combined data, backup directory:
+[ -w &quot;.&quot; ] ||                       # Current (data) directory
+    { print -u2 &quot;\aCannot write to current directory!&quot;; Stat=6; exit;}
+[ -f $Allfiles ] &amp;&amp;                 # Combined data file
+    { print -u2 &quot;\a\&quot;$Allfiles\&quot; should not yet exist!&quot;; Stat=7; exit;}
+[ -d $Bkupdir ] || mkdir $Bkupdir 2&gt;|$Devnull ||
+    { print -u2 &quot;\aCannot make directory \&quot;$Bkupdir\&quot;!&quot;; Stat=8; exit;}
+[ &quot;$(ls $Bkupdir)&quot; ] &amp;&amp; {           # if there are files in backup dir
+# Note: Following line commented out and ans=&quot;y&quot; added.
+# print -n &quot;Okay to replace files in $Bkupdir (y*|Y*/n)? &quot;; read ans
+ans=&quot;y&quot;
+case $ans in
+    y*|Y*)  rm -f $Bkupdir/* &gt;|$Devnull 2&gt;&amp;1 ;; # Remove old backups
+    *)      print &quot;Exiting, check $Bkupdir directory.&quot;; Stat=0; exit ;;
+esac;}
+
+# CHECK DATA FILES, BACK UP, THEN COMBINE INTO A COMMON FILE:
+for File in &quot;$@&quot;; do
+    [ -d $File ] &amp;&amp; continue                # Ignore directories.
+    [ &quot;$File&quot; = &quot;$Rulefile&quot; ] &amp;&amp; continue   # Ignore rules (just data).
+    [ &quot;$(dirname $File)&quot; = &quot;.&quot; ] || [ &quot;$(dirname $File)&quot; = &quot;$PWD&quot; ] ||
+        { print -u2 &quot;\aData files must be in current directory!&quot;
+        Stat=9; exit;}
+    [ -r $File ] ||
+        { print -u2 &quot;\a\&quot;$File\&quot; file not readable.&quot;; Stat=10; exit;}
+    { file -i $File | grep -E 'text|empty' &gt;|$Devnull 2&gt;&amp;1;} ||
+        { print -u2 &quot;\a\&quot;$File\&quot; not text nor empty.&quot;; Stat=11; exit;}
+    grep -E '^[   ]*$' $File &gt;|$Devnull 2&gt;&amp;1 &amp;&amp;
+        { print -u2 &quot;\a\&quot;$File\&quot; has blank lines!&quot;; Stat=12; exit;}
+    cp $File $Bkupdir ||    # Copy to backup directory.
+        { print -u2 &quot;\aCannot back up $File!&quot;; Stat=13; exit;}
+    cat $File &gt;&gt; $Allfiles; rm $File   # Combine into common file.
+done
+
+# CHECK COMBINED DATA FILE:
+[ -s $Allfiles ] || { print -u2 &quot;\aNo data to process!&quot;; Stat=14; exit;}
+flip -ub $Allfiles # Added 2003-05-22
+Beforesize=$(wc -c &lt;$Allfiles | gawk '{ print $1 }') # Data size before
+print &quot;Data backed up to \&quot;$Bkupdir\&quot;, concatenated in \&quot;$Allfiles\&quot;.&quot;
+
+# PROCESS DATA FILES under direction of rule file:
+OldIFS=&quot;$IFS&quot;               # Save old internal field separator char(s)
+IFS=&quot;|&quot;                     # Rule-file field separator for &quot;read&quot;
+sed 's/#.*$//' $Ruleall $Rulefile | # Remove rule-file comments
+grep -Ev '^$' |                     # Remove blank lines
+while read Searchfield Searchkey From To Sortcmd ; do # fields into variables
+    eval Source=$From; eval Target=$To      # interpolate these var.
+    movelines $Searchfield $Searchkey $Source $Target $Sortcmd # Do the shuffle
+    print -u3 &quot;$Target&quot;             # Output goes to fd 3.
+done 3&gt;| $Targetfilenames           # Store fd3 output in a file.
+IFS=&quot;$OldIFS&quot;                       # Restore original IFS values.
+Targetnames=$(sort -u $Targetfilenames) # Place unique list in variable.
+
+# CONCLUSION: Cleanup and exit message:
+chmod go-r $Targetnames
+flip -ub $Targetnames         # Mar 2002: MKS command to convert all files to Unix text
+for File in $Targetnames $Allfiles; do
+    [ -s $File ] || rm $File        # Erase data files if empty
+done
+if [ $Beforesize -ne $(cat $Targetnames 2&gt;|$Devnull | wc -c) ]; then
+    print -u2 &quot;Warning: data may have been lost--use backup!\a\a\a&quot;
+else
+    print -u2 &quot;Done: data shawkled and intact!&quot;
+fi
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>
