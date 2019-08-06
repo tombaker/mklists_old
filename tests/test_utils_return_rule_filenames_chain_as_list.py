@@ -64,7 +64,7 @@ def test_return_rule_filenames_chain_as_list_basic(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert return_rule_filenames_chain_as_list(_start_pathname=tmpdirc) == expected
+    assert return_rule_filenames_chain_as_list(_startdir_pathname=tmpdirc) == expected
 
 
 def test_return_rule_filenames_chain_as_list_ends_before_repo_rootdir(tmpdir):
@@ -81,12 +81,12 @@ def test_return_rule_filenames_chain_as_list_ends_before_repo_rootdir(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert return_rule_filenames_chain_as_list(_start_pathname=tmpdirc) == expected
+    assert return_rule_filenames_chain_as_list(_startdir_pathname=tmpdirc) == expected
 
 
 def test_return_rule_filenames_chain_as_list_even_without_repo_rootdir(tmpdir):
     """Shows that return_rule_filenames_chain_as_list() does not test whether
-    _start_pathname is in a mklists repo."""
+    _startdir_pathname is in a mklists repo."""
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")
@@ -98,12 +98,14 @@ def test_return_rule_filenames_chain_as_list_even_without_repo_rootdir(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert return_rule_filenames_chain_as_list(_start_pathname=tmpdirc) == expected
+    assert return_rule_filenames_chain_as_list(_startdir_pathname=tmpdirc) == expected
 
 
-def test_return_rule_filenames_chain_as_list_without_specifying_start_pathname(tmpdir):
+def test_return_rule_filenames_chain_as_list_without_specifying_startdir_pathname(
+    tmpdir
+):
     """Shows that return_rule_filenames_chain_as_list() does not test whether
-    _start_pathname is in a mklists repo."""
+    _startdir_pathname is in a mklists repo."""
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")

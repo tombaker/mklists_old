@@ -12,24 +12,24 @@ from .exceptions import BadYamlError, ConfigFileNotFoundError
 
 
 def return_datadir_pathnames_under_somedir(
-    somedir_pathname=None, _rule_yamlfile_name_name=RULE_YAMLFILE_NAME
+    _somedir_pathname=None, _rule_yamlfile_name_name=RULE_YAMLFILE_NAME
 ):
     """Return list of data directories under a given directory.
 
     "Data directories": directories with rules files (by default: '.rules').
 
     Args:
-        :somedir_pathname: Root of directory tree with data directories.
+        :_somedir_pathname: Root of directory tree with data directories.
         :_rule_yamlfile_name_name: Name of rule file (by default: '.rules').
 
     2019-07-22: Two scenarios?
     * mklists run         - runs in all data directories in repo
     * mklists run --here  - runs just in current directory
     """
-    if not somedir_pathname:
-        somedir_pathname = os.getcwd()
+    if not _somedir_pathname:
+        _somedir_pathname = os.getcwd()
     datadirs = []
-    for dirpath, dirs, files in os.walk(somedir_pathname):
+    for dirpath, dirs, files in os.walk(_somedir_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
         if _rule_yamlfile_name_name in files:
             datadirs.append(dirpath)
@@ -59,7 +59,7 @@ def return_rootdir_pathname(
 
 @preserve_cwd
 def return_rule_filenames_chain_as_list(
-    _start_pathname=None,
+    _startdir_pathname=None,
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _configfile_name=CONFIG_YAMLFILE_NAME,
 ):
@@ -68,13 +68,13 @@ def return_rule_filenames_chain_as_list(
     Looks no higher than root directory of mklists repo.
 
     Args:
-        _start_pathname:
+        _startdir_pathname:
         _rule_yamlfile_name:
         _configfile_name:
     """
-    if not _start_pathname:
-        _start_pathname = os.getcwd()
-    os.chdir(_start_pathname)
+    if not _startdir_pathname:
+        _startdir_pathname = os.getcwd()
+    os.chdir(_startdir_pathname)
     rulefile_pathnames_chain = []
     while _rule_yamlfile_name in os.listdir():
         rulefile_pathnames_chain.insert(
@@ -88,14 +88,14 @@ def return_rule_filenames_chain_as_list(
 
 
 @preserve_cwd
-def return_visiblefiles_list(datadir_pathname=None):
+def return_visiblefiles_list(_datadir_pathname=None):
     """Return list of names of visible files with valid names.
 
     See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
     """
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    os.chdir(datadir_pathname)
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
+    os.chdir(_datadir_pathname)
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:

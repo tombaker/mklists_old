@@ -43,47 +43,47 @@ def run(ctx, debug, dryrun, here_only):  # should be config
 
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
-    #                              somedir_pathname=os.getcwd(),
+    #                              _somedir_pathname=os.getcwd(),
     #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME)
     #     Or: datadir_pathnames = [ os.getcwd() ]
     # else:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
-    #                              somedir_pathname=rootdir_pathname,
+    #                              _somedir_pathname=rootdir_pathname,
     #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
     #     datadir_pathname   = os.getcwd(datadit)
     #
-    #     visiblefiles_list  = return_visiblefiles_list(datadir_pathname=datadir_pathname)
+    #     visiblefiles_list  = return_visiblefiles_list(_datadir_pathname=datadir_pathname)
     #
     #     datalines_list     = return_datalines_list_from_datafiles(
-    #                              datafile_names=visiblefiles_list)
+    #                              _datafiles_names=visiblefiles_list)
     #
     #     backup_shortname   = return_backupdir_shortname(
-    #                              datadir_pathname=datadir_pathname,
-    #                              rootdir_pathname=rootdir_pathname)
+    #                              _datadir_pathname=datadir_pathname,
+    #                              _rootdir_pathname=rootdir_pathname)
     #
     #     backups_dirname    = [[get from ctx.obj <= config files]]
     #
     #     backupdir_pathname = return_backupdir_pathname(
-    #                              rootdir_pathname=rootdir_pathname,
+    #                              _rootdir_pathname=rootdir_pathname,
     #                              _backupdir_pathname=backups_dirname,
-    #                              backup_shortname=backup_shortname,
+    #                              _backupdir_shortname=backup_shortname,
     #                              _timestamp_str=TIMESTAMP_STR)
     #
     #     move_datafiles_to_backupdir(
-    #         datadir_pathname=datadir_pathname,
-    #         datadir_filenames=visiblefiles_list,
-    #         backupdir_pathname=backupdir_pathname)
+    #         _datadir_pathname=datadir_pathname,
+    #         _datafiles_names=visiblefiles_list,
+    #         _backupdir_pathname=backupdir_pathname)
     #
     #     delete_older_backups(
-    #         rootdir_pathname=None,
+    #         _rootdir_pathname=None,
     #         _backupdir_pathname=None,
-    #         backup_shortname=None,
+    #         _backupdir_shortname=None,
     #         backup_depth=None)            # something like config['backups']
     #
     #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
-    #                              _start_pathname=None,
+    #                              _startdir_pathname=None,
     #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME,
     #                              _configfile_name=CONFIG_YAMLFILE_NAME)
     #
@@ -91,14 +91,14 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #     @@REWRITE THE FOLLOWING TO TAKE rule_filenames_chain
     #     ruleobj_list       = return_ruleobj_list_from_rule_yamlfiles(
     #                              config_yamlfile=CONFIG_YAMLFILE_NAME,   # why is this needed??
-    #                              rule_yamlfile=RULE_YAMLFILE_NAME,       # shouldn't this be a chain of rule files?
+    #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,       # shouldn't this be a chain of rule files?
     #                              verbose=True)
     #
-    #     datalines_dict     = return_datalines_dict_after_applying_rules(
-    #                              _ruleobj_list=ruleobj_list,
-    #                              dataline_list=datalines_list)
+    #     datalines_dict     = return_filename2datalines_dict_after_applying_rules(
+    #                              _ruleobjs_list=ruleobj_list,
+    #                              _datalines_list=datalines_list)
     #
-    #     write_datafiles_from_datadict(datadict=None)
+    #     write_datafiles_from_datadict(_filename2datalines_dict=None)
     #
     #     if files2dirs_dict:
     #         relocate_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])

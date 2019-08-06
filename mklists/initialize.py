@@ -57,11 +57,11 @@ def write_newbie_rule_yamlfiles(
 
 def write_minimal_config_yamlfile(
     _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
-    file_written_string=MINIMAL_CONFIG_YAMLFILE_STR,
+    _file_tobewritten_str=MINIMAL_CONFIG_YAMLFILE_STR,
 ):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_minimal_config_yamlfile
     Write initial YAML config file ('/mklists.yml')."""
-    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(file_written_string)
+    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
 
 
 def write_minimal_rule_yamlfiles():

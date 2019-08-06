@@ -34,23 +34,23 @@ def is_valid_as_filename(
     return True
 
 
-def is_line_match_to_rule(_given_ruleobj=None, _given_datafile_line=None):
+def is_line_match_to_rule(_given_rule_obj=None, _given_datafile_line=None):
     """Returns True if data line matches pattern specified in given rule."""
 
     # Line does not match if given field greater than number of fields in line.
-    if _given_ruleobj.source_matchfield > len(_given_datafile_line.split()):
+    if _given_rule_obj.source_matchfield > len(_given_datafile_line.split()):
         return False
 
     # Line matches if given field is zero and pattern found anywhere in line.
-    if _given_ruleobj.source_matchfield == 0:
-        if re.search(_given_ruleobj.source_matchpattern, _given_datafile_line):
+    if _given_rule_obj.source_matchfield == 0:
+        if re.search(_given_rule_obj.source_matchpattern, _given_datafile_line):
             return True
 
     # Line matches if pattern is found in given field.
-    if _given_ruleobj.source_matchfield > 0:
-        eth = _given_ruleobj.source_matchfield - 1
+    if _given_rule_obj.source_matchfield > 0:
+        eth = _given_rule_obj.source_matchfield - 1
         if re.search(
-            _given_ruleobj.source_matchpattern, _given_datafile_line.split()[eth]
+            _given_rule_obj.source_matchpattern, _given_datafile_line.split()[eth]
         ):
             return True
 

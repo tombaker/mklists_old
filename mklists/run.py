@@ -25,12 +25,14 @@ def return_configdict_from_config_yamlfile():
     pass
 
 
-def return_datalines_dict_after_applying_rules(_ruleobj_list=None, dataline_list=None):
+def return_filename2datalines_dict_after_applying_rules(
+    _ruleobjs_list=None, _datalines_list=None
+):
     """Applies rules, one by one, to process aggregated datalines.
 
     Args:
-        _ruleobj_list: list of rule objects
-        dataline_list: list of strings (all data lines)
+        _ruleobjs_list: list of rule objects
+        _datalines_list: list of strings (all data lines)
 
     Returns:
         datadict - dictionary where:
@@ -40,20 +42,20 @@ def return_datalines_dict_after_applying_rules(_ruleobj_list=None, dataline_list
     datadict = defaultdict(list)
     first_key_is_initialized = False
 
-    if not _ruleobj_list:
+    if not _ruleobjs_list:
         raise NoRulesError("No rules specified.")
 
-    if not dataline_list:
+    if not _datalines_list:
         raise NoDataError("No data specified.")
 
     # Evaluate rules, one-by-one, to process entries in datadict.
-    for ruleobj in _ruleobj_list:
+    for ruleobj in _ruleobjs_list:
 
         # Initialize datadict with first rule.
         #    key: valid filename (from 'source' field of first ruleobj)
         #    value: list of all data lines
         if not first_key_is_initialized:
-            datadict[ruleobj.source] = dataline_list
+            datadict[ruleobj.source] = _datalines_list
             first_key_is_initialized = True
 
         # Match lines in 'ruleobj.source' against 'rulesobj.regex'.
@@ -77,10 +79,10 @@ def return_datalines_dict_after_applying_rules(_ruleobj_list=None, dataline_list
     return dict(datadict)
 
 
-def return_datalines_list_from_datafiles(datafile_names=None):
+def return_datalines_list_from_datafiles(_datafiles_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
-    for datafile in datafile_names:
+    for datafile in _datafiles_names:
         try:
             datafile_lines = open(datafile).readlines()
         except UnicodeDecodeError:
@@ -97,7 +99,7 @@ def return_datalines_list_from_datafiles(datafile_names=None):
 
 
 def return_ruleobj_list_from_rule_yamlfiles(
-    config_yamlfile=None, rule_yamlfile=None, _verbose=None
+    config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
 ):
     """Return list of rule objects from rule files.
 
@@ -119,11 +121,13 @@ def return_ruleobj_list_from_rule_yamlfiles(
         if _verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = _return_pyobj_from_yamlfile(rule_yamlfile)
+    rules_pylist = _return_pyobj_from_yamlfile(_rule_yamlfile_name)
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:
-        raise RulefileNotFoundError(f"Rule file {repr(rule_yamlfile)} was not found.")
+        raise RulefileNotFoundError(
+            f"Rule file {repr(_rule_yamlfile_name)} was not found."
+        )
 
     if not all_rules_list:
         raise NoRulesError("No rules were found.")
@@ -140,31 +144,31 @@ def return_ruleobj_list_from_rule_yamlfiles(
     return ruleobj_list
 
 
-def relocate_specified_datafiles_elsewhere(files2dirs_dict=None):
-    """Args: files2dirs_dict: filename (key) and destination directory (value)
+def relocate_specified_datafiles_elsewhere(_filename2dirname_dict=None):
+    """Args: _filename2dirname_dict: filename (key) and destination directory (value)
     See /Users/tbaker/github/tombaker/mklists/tests/test_run_relocate_specified_datafiles_elsewhere
     """
 
 
-def write_datafiles_from_datadict(datadict=None):
+def write_datafiles_from_datadict(_filename2datalines_dict=None):
     """
-    -- Write out contents of datadict to working directory:
-       -- datadict keys are names of files.
-       -- datadict values are contents of files.
+    -- Write out contents of _filename2datalines_dict to working directory:
+       -- _filename2datalines_dict keys are names of files.
+       -- _filename2datalines_dict values are contents of files.
     """
-    for (key, value) in datadict.items():
+    for (key, value) in _filename2datalines_dict.items():
         with open(key, "w", encoding="utf-8") as fout:
             fout.writelines(value)
 
 
-def write_htmlfiles_from_datadict(datadict=None, _verbose=False):
+def write_htmlfiles_from_datadict(_filename2datalines_dict=None, _verbose=False):
     """
     See /Users/tbaker/github/tombaker/mklists/tests/test_run_write_htmlfiles_from_datadict_LATER.py
     -- Create htmldir (if it does not already exist).
     -- Delete files in htmldir (if files already exist there).
-    -- Write out contents of datadict to working directory:
-       -- datadict keys are filenames.
+    -- Write out contents of _filename2datalines_dict to working directory:
+       -- _filename2datalines_dict keys are filenames.
           -- for each filename, add file extension '.html'
-       -- datadict values are contents of files.
+       -- _filename2datalines_dict values are contents of files.
           -- filter each line through _return_htmlstr_from_textstr.
     """

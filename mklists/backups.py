@@ -6,7 +6,7 @@ from .constants import TIMESTAMP_STR
 from .decorators import preserve_cwd
 
 
-def return_backupdir_shortname(datadir_pathname=None, rootdir_pathname=None):
+def return_backupdir_shortname(_datadir_pathname=None, _rootdir_pathname=None):
     """Creates shortname for backup directory:
     * if directory is on top level, shortname is same as directory name
     * if directory is nested, shortname is chain of directory names separated by underscores
@@ -27,15 +27,15 @@ def return_backupdir_shortname(datadir_pathname=None, rootdir_pathname=None):
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_backupdir_shortname_REDO.py
     """
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
+    return _datadir_pathname[len(_rootdir_pathname) :].strip("/").replace("/", "_")
 
 
 def return_backupdir_pathname(
-    rootdir_pathname=None,
+    _rootdir_pathname=None,
     _backupdir_pathname=None,
-    backup_shortname=None,
+    _backupdir_shortname=None,
     _timestamp_str=TIMESTAMP_STR,
 ):
     """Generate a timestamped pathname for backups.
@@ -46,53 +46,53 @@ def return_backupdir_pathname(
     Example output:
 
     Args:
-        rootdir_pathname: Full pathname of mklists repo root directory.
+        _rootdir_pathname: Full pathname of mklists repo root directory.
         _backupdir_pathname:
-        backup_shortname:
+        _backupdir_shortname:
         _timestamp_str:
     """
     return os.path.join(
-        rootdir_pathname, _backupdir_pathname, backup_shortname, _timestamp_str
+        _rootdir_pathname, _backupdir_pathname, _backupdir_shortname, _timestamp_str
     )
 
 
 @preserve_cwd
 def move_datafiles_to_backupdir(
-    datadir_pathname=None, datadir_filenames=None, backupdir_pathname=None
+    _datadir_pathname=None, _datafiles_names=None, _backupdir_pathname=None
 ):
     """
     Given list of visible files in data directory, move files to backupdir.
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_backups_move_datafiles_to_backupdir_TODO.py
     """
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    os.chdir(datadir_pathname)
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
+    os.chdir(_datadir_pathname)
     try:
-        for file in datadir_filenames:
-            shutil.move(file, backupdir_pathname)
+        for file in _datafiles_names:
+            shutil.move(file, _backupdir_pathname)
     except OSError:
         print("Got an exception")
 
 
 @preserve_cwd
 def delete_older_backups(
-    rootdir_pathname=None,
+    _rootdir_pathname=None,
     backups_dirname=None,
-    backup_shortname=None,
+    _backupdir_shortname=None,
     backup_depth=None,
 ):
     """Delete all but X number of backups of current working directory.
 
     Args:
-        rootdir_pathname:
+        _rootdir_pathname:
         backups_dirname:
-        backup_shortname:
+        _backupdir_shortname:
         backup_depth: Number of backups to keep [default: 2]
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backups_TODO.py
     """
-    backupdir = os.path.join(rootdir_pathname, backups_dirname, backup_shortname)
+    backupdir = os.path.join(_rootdir_pathname, backups_dirname, _backupdir_shortname)
     os.chdir(backupdir)
     ls_backupdir = sorted(os.listdir())
     print(ls_backupdir)
