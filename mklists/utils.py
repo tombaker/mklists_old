@@ -11,7 +11,7 @@ from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import BadYamlError, ConfigFileNotFoundError
 
 
-def return_rule_yamlfile_pathnames_under_somedir(
+def return_rulefile_pathnames_under_somedir(
     _somedir_pathname=None, _rule_yamlfile_name=RULE_YAMLFILE_NAME
 ):
     """Return list of data directories under a given directory.

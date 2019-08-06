@@ -43,11 +43,11 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
-    #     datadir_pathnames  = return_rule_yamlfile_pathnames_under_somedir(
+    #     datadir_pathnames  = return_rulefile_pathnames_under_somedir(
     #                              _somedir_pathname=currentdir_pathname,
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
     # else:
-    #     datadir_pathnames  = return_rule_yamlfile_pathnames_under_somedir(
+    #     datadir_pathnames  = return_rulefile_pathnames_under_somedir(
     #                              _somedir_pathname=rootdir_pathname,
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
