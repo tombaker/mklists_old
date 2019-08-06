@@ -2,10 +2,10 @@
 
 import os
 from mklists.initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
-from mklists.utils import return_rulefile_pathnames_under_somedir
+from mklists.utils import return_datadir_pathnames_under_somedir
 
 
-def test_return_rulefile_pathnames_under_somedir(tmpdir):
+def test_return_datadir_pathnames_under_somedir(tmpdir):
     """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -22,10 +22,10 @@ def test_return_rulefile_pathnames_under_somedir(tmpdir):
         os.path.join(tmpdir, "a/b"),
         os.path.join(tmpdir, "c"),
     ]
-    assert return_rulefile_pathnames_under_somedir(_somedir_pathname=tmpdir) == expected
+    assert return_datadir_pathnames_under_somedir(_somedir_pathname=tmpdir) == expected
 
 
-def test_return_rulefile_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
+def test_return_datadir_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
     """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -44,10 +44,10 @@ def test_return_rulefile_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
         os.path.join(tmpdir, "a/b"),
         os.path.join(tmpdir, "c"),
     ]
-    assert return_rulefile_pathnames_under_somedir(_somedir_pathname=tmpdir) == expected
+    assert return_datadir_pathnames_under_somedir(_somedir_pathname=tmpdir) == expected
 
 
-def test_return_rulefile_pathnames_under_somedir_just_one(tmpdir):
+def test_return_datadir_pathnames_under_somedir_just_one(tmpdir):
     """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -55,4 +55,4 @@ def test_return_rulefile_pathnames_under_somedir_just_one(tmpdir):
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
     os.chdir(tmpdir)
     expected = [tmpdir, os.path.join(tmpdir, "a")]
-    assert return_rulefile_pathnames_under_somedir(_somedir_pathname=tmpdir) == expected
+    assert return_datadir_pathnames_under_somedir(_somedir_pathname=tmpdir) == expected

@@ -43,15 +43,20 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
-    #     datadir_pathnames  = return_rulefile_pathnames_under_somedir(
+    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              _somedir_pathname=currentdir_pathname,
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
     # else:
-    #     datadir_pathnames  = return_rulefile_pathnames_under_somedir(
+    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              _somedir_pathname=rootdir_pathname,
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
+    #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
+    #                                    _startdir_pathname=None,
+    #                                    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
+    #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    #
     #     datadir_pathname   = os.getcwd(datadit)
     #
     #     visiblefiles_list  = return_visiblefiles_list(_datadir_pathname=datadir_pathname)
@@ -81,11 +86,6 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #         _backupdir_pathname=None,
     #         _backupdir_shortname=None,
     #         _backup_depth_int=None)            # something like config['backups']
-    #
-    #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
-    #                              _startdir_pathname=None,
-    #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     #
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rule_filenames_chain

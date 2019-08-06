@@ -20,7 +20,7 @@ def return_backupdir_shortname(_datadir_pathname=None, _rootdir_pathname=None):
     Problem: "a_b" and "a/b" would both translate into shortname of "a_b" (clash)
     Solutions?
     * Use two underscores instead of one?
-    * for each dir in return_rulefile_pathnames_under_somedir()
+    * for each dir in return_datadir_pathnames_under_somedir()
         accumulate a list of shortnames using return_backupdir_shortname(dir) => list comprehension
         accumulate a list of directory names in ".backups"
         compare the two lists and delete unused directories
