@@ -1,4 +1,5 @@
 # Custom ignore rules from mklists project
+site/
 mklists/cli2.py
 TESTDIR/
 .pytest_cache/

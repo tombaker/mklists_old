@@ -1,0 +1,12 @@
+site_name: mklists
+pages:
+    - Home: 'index.md'
+    - History: 'history.md'
+site_url: http://mklists.com
+repo_url: https://github.com/tombaker/mklists
+repo_name: 'Github'
+edit_uri: 'edit/master/docs/'
+site_description: 'mklists: recompose plain text lists by tweaking rules'
+remote_branch: gh-pages
+theme: readthedocs
+dev_addr: 'localhost:1313'

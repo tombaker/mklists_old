@@ -9,7 +9,7 @@ import click
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx):
-    """Rebuild your todo lists by tweaking rules"""
+    """Recompose plain text lists by tweaking rules"""
 
 
 @cli.command()

@@ -1,7 +1,7 @@
 mklists
 
-Current tagline - change in: README.md (here), /setup.py, /mklists/cli.py
-* Rebuild your todo lists by tweaking rules
+Current tagline - change in: README.md /setup.py /mklists/cli.py /mkdocs.yml $MKLNOTES/README.md
+* Recompose plain text lists by tweaking rules
 
 Next steps:
 * Update pip distribution
