@@ -46,7 +46,7 @@ NEWBIE_ROOTDIR_RULES_YAMLSTR = """\
 - [0, '^=',         lines,     move_to_a.txt,    1]
 - [0, '^2019|2020', lines,     move_to_logs.txt, 1]"""
 
-NEWBIE_ADIR_RULES_YAMLSTR = """\
+NEWBIE_DATADIRA_RULES_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      todo.txt,   0]
@@ -55,7 +55,7 @@ NEWBIE_ADIR_RULES_YAMLSTR = """\
 - [1, 'LATER',   todo.txt,   later.txt,  0]
 """
 
-NEWBIE_BDIR_RULES_YAMLSTR = """\
+NEWBIE_DATADIRB_RULES_YAMLSTR = """\
 # This file: Rules specific to this list folder.
 # At runtime, these rules are appended to the global rules.
 - [0, '.',       lines,      b.txt,      0]

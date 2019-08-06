@@ -18,8 +18,8 @@ from .constants import (
     RULE_YAMLFILE_NAME,
     MINIMAL_CONFIG_YAMLFILE_STR,
     NEWBIE_CONFIG_YAMLFILE_STR,
-    NEWBIE_ADIR_RULES_YAMLSTR,
-    NEWBIE_BDIR_RULES_YAMLSTR,
+    NEWBIE_DATADIRA_RULES_YAMLSTR,
+    NEWBIE_DATADIRB_RULES_YAMLSTR,
     NEWBIE_ROOTDIR_RULES_YAMLSTR,
 )
 
@@ -42,8 +42,8 @@ def write_newbie_datafiles():
 def write_newbie_rule_yamlfiles(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _newbie_rootdir_rules_yamlstr=NEWBIE_ROOTDIR_RULES_YAMLSTR,
-    _newbie_datadira_rules_yamlstr=NEWBIE_ADIR_RULES_YAMLSTR,
-    _newbie_datadirb_rules_yamlstr=NEWBIE_BDIR_RULES_YAMLSTR,
+    _newbie_datadira_rules_yamlstr=NEWBIE_DATADIRA_RULES_YAMLSTR,
+    _newbie_datadirb_rules_yamlstr=NEWBIE_DATADIRB_RULES_YAMLSTR,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
