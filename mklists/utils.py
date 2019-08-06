@@ -12,15 +12,16 @@ from .exceptions import BadYamlError, ConfigFileNotFoundError
 
 
 def return_datadir_pathnames_under_somedir(
-    _somedir_pathname=None, _rule_yamlfile_name=RULE_YAMLFILE_NAME
+    _rootdir_pathname=None, _somedir_pathname=None, _rule_yamlfile_name=None
 ):
     """Return list of data directories under a given directory.
 
     "Data directories": directories with rules files (by default: '.rules').
 
     Args:
-        :_somedir_pathname: Root of directory tree with data directories.
-        :_rule_yamlfile_name: Name of rule file (by default: '.rules').
+        _rootdir_pathname: Root of mklists repository.
+        _somedir_pathname: Root of data subdirectories.
+        _rule_yamlfile_name: Name of rule file.
 
     2019-07-22: Two scenarios?
     * mklists run         - runs in all data directories in repo
@@ -28,11 +29,16 @@ def return_datadir_pathnames_under_somedir(
     """
     if not _somedir_pathname:
         _somedir_pathname = os.getcwd()
+
     datadirs = []
     for dirpath, dirs, files in os.walk(_somedir_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
         if _rule_yamlfile_name in files:
             datadirs.append(dirpath)
+
+    if _rootdir_pathname in datadirs:
+        datadirs.remove(_rootdir_pathname)
+
     return datadirs
 
 

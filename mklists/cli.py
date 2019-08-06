@@ -44,16 +44,18 @@ def run(ctx, debug, dryrun, here_only):  # should be config
 
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
+    #                              _rootdir_pathname=rootdir_pathname,
     #                              _somedir_pathname=currentdir_pathname,
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
     # else:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
+    #                              _rootdir_pathname=rootdir_pathname,
     #                              _somedir_pathname=rootdir_pathname,
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
     #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
-    #                                    _startdir_pathname=None,
+    #                                    _startdir_pathname=datadir,
     #                                    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     #
