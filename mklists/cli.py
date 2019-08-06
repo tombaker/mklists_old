@@ -37,9 +37,9 @@ def run(ctx, debug, dryrun, here_only):  # should be config
 
     # rootdir_pathname   = return_rootdir_pathname(
     #                          _current_dirname=os.getcwd()
-    #                          configfile_name=CONFIG_YAMLFILE_NAME)
+    #                          _configfile_name=CONFIG_YAMLFILE_NAME)
     #
-    # ctx.obj            = _return_pyobj_from_yamlfile(yamlfile_name=CONFIG_YAMLFILE_NAME)
+    # ctx.obj            = _return_pyobj_from_yamlfile(_generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
@@ -85,7 +85,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
     #                              _start_pathname=None,
     #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME,
-    #                              configfile_name=CONFIG_YAMLFILE_NAME)
+    #                              _configfile_name=CONFIG_YAMLFILE_NAME)
     #
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rule_filenames_chain

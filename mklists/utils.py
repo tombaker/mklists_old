@@ -38,7 +38,7 @@ def return_datadir_pathnames_under_somedir(
 
 @preserve_cwd
 def return_rootdir_pathname(
-    _current_dirname=None, configfile_name=CONFIG_YAMLFILE_NAME
+    _current_dirname=None, _configfile_name=CONFIG_YAMLFILE_NAME
 ):
     """Return repo root pathname when executed anywhere within repo.
 
@@ -49,7 +49,7 @@ def return_rootdir_pathname(
     """
     if not _current_dirname:
         _current_dirname = os.getcwd()
-    while configfile_name not in os.listdir():
+    while _configfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
         if os.getcwd() == cwd_before_changing:
@@ -61,7 +61,7 @@ def return_rootdir_pathname(
 def return_rule_filenames_chain_as_list(
     _start_pathname=None,
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    configfile_name=CONFIG_YAMLFILE_NAME,
+    _configfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return list of rule files from parent directories and current directory.
 
@@ -70,7 +70,7 @@ def return_rule_filenames_chain_as_list(
     Args:
         _start_pathname:
         _rule_yamlfile_name:
-        configfile_name:
+        _configfile_name:
     """
     if not _start_pathname:
         _start_pathname = os.getcwd()
@@ -80,7 +80,7 @@ def return_rule_filenames_chain_as_list(
         rulefile_pathnames_chain.insert(
             0, os.path.join(os.getcwd(), _rule_yamlfile_name)
         )
-        if configfile_name in os.listdir():
+        if _configfile_name in os.listdir():
             break
         os.chdir(os.pardir)
 
@@ -105,17 +105,19 @@ def return_visiblefiles_list(datadir_pathname=None):
     return sorted(all_datafile_names)
 
 
-def _return_pyobj_from_yamlfile(yamlfile_name=None):
+def _return_pyobj_from_yamlfile(_generic_yamlfile_name=None):
     """Returns Python object parsed from given YAML-format file."""
     try:
-        yamlstr = open(yamlfile_name).read()
+        yamlstr = open(_generic_yamlfile_name).read()
     except FileNotFoundError:
-        raise ConfigFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
+        raise ConfigFileNotFoundError(
+            f"YAML file {repr(_generic_yamlfile_name)} not found."
+        )
 
     try:
         return yaml.load(yamlstr)
     except yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML in {repr(yamlfile_name)}.")
+        raise BadYamlError(f"Badly formatted YAML in {repr(_generic_yamlfile_name)}.")
 
 
 def _return_htmlstr_from_textstr(text_string=None):

@@ -8,7 +8,7 @@ from .exceptions import FilenameIsAlreadyDirnameError
 
 
 def is_valid_as_filename(
-    _file_tested_name=None,
+    _file_tobetested_name=None,
     _current_dirname=None,
     _invalid_filename_regexes=INVALID_FILENAME_REGEXES,
     validchars_regex=VALID_FILENAME_CHARACTERS_REGEX,
@@ -22,14 +22,14 @@ def is_valid_as_filename(
     if not _current_dirname:
         _current_dirname = os.getcwd()
     for badpat in _invalid_filename_regexes:
-        if re.search(badpat, _file_tested_name):
+        if re.search(badpat, _file_tobetested_name):
             return False
-    for char in _file_tested_name:
+    for char in _file_tobetested_name:
         if not bool(re.search(validchars_regex, char)):
             return False
-    if _file_tested_name in [d for d in os.listdir() if os.path.isdir(d)]:
+    if _file_tobetested_name in [d for d in os.listdir() if os.path.isdir(d)]:
         raise FilenameIsAlreadyDirnameError(
-            f"Filename {repr(_file_tested_name)} is already used as a directory name."
+            f"Filename {repr(_file_tobetested_name)} is already used as a directory name."
         )
     return True
 
