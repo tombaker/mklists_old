@@ -32,6 +32,13 @@ MINIMAL_ADIR_RULES_YAMLFILE_STR = """\
 
 
 # Newbie configuration files
+NEWBIE_CONFIG_YAMLFILE_STR = """# Configuration file with comments
+verbose: false
+html_yes: false
+backup_depth_int: 3
+invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
+files2dirs_dict: {}"""
+
 NEWBIE_ROOTDIR_RULES_YAMLSTR = """\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
