@@ -17,6 +17,7 @@ from .constants import (
     CONFIG_YAMLFILE_NAME,
     RULE_YAMLFILE_NAME,
     MINIMAL_CONFIG_YAMLFILE_STR,
+    NEWBIE_CONFIG_YAMLFILE_STR,
     NEWBIE_ADIR_RULES_YAMLSTR,
     NEWBIE_BDIR_RULES_YAMLSTR,
     NEWBIE_ROOTDIR_RULES_YAMLSTR,
@@ -25,7 +26,10 @@ from .constants import (
 #     MINIMAL_ADIR_RULES_YAMLFILE_STR,
 
 
-def write_newbie_config_yamlfile():
+def write_newbie_config_yamlfile(
+    _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+    _newbie_config_yamlfile_str=NEWBIE_CONFIG_YAMLFILE_STR,
+):
     """
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_minimal_rule_yamlfiles
     """
