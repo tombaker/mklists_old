@@ -21,7 +21,7 @@ def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
     os.chdir(os.path.join(myrepo, "a"))
     curdir = os.getcwd()
     assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_current_dirname=curdir)
+        return_rootdir_pathname(_currentdir_pathname=curdir)
     )
 
 
@@ -31,7 +31,7 @@ def test_return_rootdir_pathname_while_in_rootdir(tmpdir):
     os.chdir(tmpdir)
     curdir = os.getcwd()
     assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_current_dirname=curdir)
+        return_rootdir_pathname(_currentdir_pathname=curdir)
     )
 
 
@@ -42,7 +42,7 @@ def test_return_rootdir_pathname_while_in_subdir_one_deep(tmpdir):
     os.chdir(tmpdira)
     curdir = os.getcwd()
     assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_current_dirname=curdir)
+        return_rootdir_pathname(_currentdir_pathname=curdir)
     )
 
 
@@ -54,7 +54,7 @@ def test_return_rootdir_pathname_while_in_subdir_two_deep(tmpdir):
     os.chdir(tmpdirb)
     curdir = os.getcwd()
     assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_current_dirname=curdir)
+        return_rootdir_pathname(_currentdir_pathname=curdir)
     )
 
 
@@ -67,7 +67,7 @@ def test_return_rootdir_pathname_while_in_subdir_three_deep(tmpdir):
     os.chdir(tmpdirc)
     curdir = os.getcwd()
     assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_current_dirname=curdir)
+        return_rootdir_pathname(_currentdir_pathname=curdir)
     )
 
 
@@ -79,4 +79,4 @@ def test_not_return_rootdir_pathname_when_configfile_not_found(tmpdir):
     os.chdir(tmpdirc)
     curdir = os.getcwd()
     with pytest.raises(SystemExit):
-        return_rootdir_pathname(_current_dirname=curdir)
+        return_rootdir_pathname(_currentdir_pathname=curdir)

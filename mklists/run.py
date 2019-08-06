@@ -11,7 +11,7 @@ from .exceptions import (
     RulefileNotFoundError,
 )
 from .rules import Rule
-from .utils import _return_pyobj_from_yamlfile
+from .utils import return_pyobj_from_yamlfile
 
 # import re
 # import yaml
@@ -111,7 +111,7 @@ def return_ruleobj_list_from_rule_yamlfiles(
 
     all_rules_list = []
 
-    config_pydict = _return_pyobj_from_yamlfile(config_yamlfile)
+    config_pydict = return_pyobj_from_yamlfile(config_yamlfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
@@ -121,7 +121,7 @@ def return_ruleobj_list_from_rule_yamlfiles(
         if _verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = _return_pyobj_from_yamlfile(_rule_yamlfile_name)
+    rules_pylist = return_pyobj_from_yamlfile(_rule_yamlfile_name)
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:

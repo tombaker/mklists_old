@@ -35,21 +35,22 @@ def init(config, newbie):
 def run(ctx, debug, dryrun, here_only):  # should be config
     """Rebuild lists in (by default) entire repo"""
 
-    # rootdir_pathname   = return_rootdir_pathname(
-    #                          _current_dirname=os.getcwd()
-    #                          _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
-    #
-    # ctx.obj            = _return_pyobj_from_yamlfile(_generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    # currentdir_pathname    = os.getcwd()
+    # rootdir_pathname       = return_rootdir_pathname(
+    #                              _currentdir_pathname=currentdir_pathname
+    #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    # ctx.obj               = return_pyobj_from_yamlfile(
+    #                              _generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              _somedir_pathname=os.getcwd(),
-    #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME)
+    #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
     #     Or: datadir_pathnames = [ os.getcwd() ]
     # else:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              _somedir_pathname=rootdir_pathname,
-    #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME)
+    #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
     #     datadir_pathname   = os.getcwd(datadit)
@@ -84,7 +85,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
     #                              _startdir_pathname=None,
-    #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME,
+    #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     #
     #

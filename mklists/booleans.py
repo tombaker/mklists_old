@@ -9,7 +9,7 @@ from .exceptions import FilenameIsAlreadyDirnameError
 
 def is_valid_as_filename(
     _file_tobetested_name=None,
-    _current_dirname=None,
+    _currentdir_pathname=None,
     _invalid_filename_regexes_list=INVALID_FILENAME_REGEXES,
     _valid_filename_characters_regex_str=VALID_FILENAME_CHARACTERS_REGEX,
 ):
@@ -19,8 +19,8 @@ def is_valid_as_filename(
     * does not match name of an existing directory in current directory
 
     """
-    if not _current_dirname:
-        _current_dirname = os.getcwd()
+    if not _currentdir_pathname:
+        _currentdir_pathname = os.getcwd()
     for badpat in _invalid_filename_regexes_list:
         if re.search(badpat, _file_tobetested_name):
             return False

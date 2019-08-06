@@ -12,7 +12,7 @@ from .exceptions import BadYamlError, ConfigFileNotFoundError
 
 
 def return_datadir_pathnames_under_somedir(
-    _somedir_pathname=None, _rule_yamlfile_name_name=RULE_YAMLFILE_NAME
+    _somedir_pathname=None, _rule_yamlfile_name=RULE_YAMLFILE_NAME
 ):
     """Return list of data directories under a given directory.
 
@@ -20,7 +20,7 @@ def return_datadir_pathnames_under_somedir(
 
     Args:
         :_somedir_pathname: Root of directory tree with data directories.
-        :_rule_yamlfile_name_name: Name of rule file (by default: '.rules').
+        :_rule_yamlfile_name: Name of rule file (by default: '.rules').
 
     2019-07-22: Two scenarios?
     * mklists run         - runs in all data directories in repo
@@ -31,14 +31,14 @@ def return_datadir_pathnames_under_somedir(
     datadirs = []
     for dirpath, dirs, files in os.walk(_somedir_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
-        if _rule_yamlfile_name_name in files:
+        if _rule_yamlfile_name in files:
             datadirs.append(dirpath)
     return datadirs
 
 
 @preserve_cwd
 def return_rootdir_pathname(
-    _current_dirname=None, _config_yamlfile_name=CONFIG_YAMLFILE_NAME
+    _currentdir_pathname=None, _config_yamlfile_name=CONFIG_YAMLFILE_NAME
 ):
     """Return repo root pathname when executed anywhere within repo.
 
@@ -47,8 +47,8 @@ def return_rootdir_pathname(
     See
     /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_rootdir_pathname_DONE.py
     """
-    if not _current_dirname:
-        _current_dirname = os.getcwd()
+    if not _currentdir_pathname:
+        _currentdir_pathname = os.getcwd()
     while _config_yamlfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
@@ -105,7 +105,7 @@ def return_visiblefiles_list(_datadir_pathname=None):
     return sorted(all_datafile_names)
 
 
-def _return_pyobj_from_yamlfile(_generic_yamlfile_name=None):
+def return_pyobj_from_yamlfile(_generic_yamlfile_name=None):
     """Returns Python object parsed from given YAML-format file."""
     try:
         yamlstr = open(_generic_yamlfile_name).read()
