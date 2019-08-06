@@ -21,8 +21,8 @@ def test_backups_delete_older_backups(tmpdir):
     print(str(expected))
     delete_older_backups(
         _rootdir_pathname=tmpdir,
-        backups_dirname=backups,
+        _backupdir_pathname=backups,
         _backupdir_shortname=shortname,
-        backup_depth=how_many_backups_to_keep,
+        _backup_depth_int=how_many_backups_to_keep,
     )
     assert sorted(os.listdir(tmpdir_backupdir_agenda)) == expected

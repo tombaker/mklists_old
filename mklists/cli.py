@@ -37,7 +37,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
 
     # rootdir_pathname   = return_rootdir_pathname(
     #                          _current_dirname=os.getcwd()
-    #                          _configfile_name=CONFIG_YAMLFILE_NAME)
+    #                          _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     #
     # ctx.obj            = _return_pyobj_from_yamlfile(_generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
@@ -80,12 +80,12 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #         _rootdir_pathname=None,
     #         _backupdir_pathname=None,
     #         _backupdir_shortname=None,
-    #         backup_depth=None)            # something like config['backups']
+    #         _backup_depth_int=None)            # something like config['backups']
     #
     #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
     #                              _startdir_pathname=None,
     #                              _rule_yamlfile_name_name=RULE_YAMLFILE_NAME,
-    #                              _configfile_name=CONFIG_YAMLFILE_NAME)
+    #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     #
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rule_filenames_chain

@@ -22,7 +22,7 @@ def test_utils_is_valid_as_filename():
     fname = "foobar.txt"
     bad_patterns = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
     assert is_valid_as_filename(
-        _file_tobetested_name=fname, _invalid_filename_regexes=bad_patterns
+        _file_tobetested_name=fname, _invalid_filename_regexes_list=bad_patterns
     )
 
 
@@ -31,7 +31,7 @@ def test_utils_is_valid_as_filename_dotfile():
     bad_patterns = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
     assert (
         is_valid_as_filename(
-            _file_tobetested_name=fname, _invalid_filename_regexes=bad_patterns
+            _file_tobetested_name=fname, _invalid_filename_regexes_list=bad_patterns
         )
         is False
     )
@@ -42,7 +42,7 @@ def test_utils_is_valid_as_filename_bad_filename_extension():
     bad_patterns = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
     assert (
         is_valid_as_filename(
-            _file_tobetested_name=fname, _invalid_filename_regexes=bad_patterns
+            _file_tobetested_name=fname, _invalid_filename_regexes_list=bad_patterns
         )
         is False
     )

@@ -10,8 +10,8 @@ from .exceptions import FilenameIsAlreadyDirnameError
 def is_valid_as_filename(
     _file_tobetested_name=None,
     _current_dirname=None,
-    _invalid_filename_regexes=INVALID_FILENAME_REGEXES,
-    validchars_regex=VALID_FILENAME_CHARACTERS_REGEX,
+    _invalid_filename_regexes_list=INVALID_FILENAME_REGEXES,
+    _valid_filename_characters_regex_str=VALID_FILENAME_CHARACTERS_REGEX,
 ):
     """Return True if filename:
     * has no invalid characters (override defaults in mklists.yml)
@@ -21,11 +21,11 @@ def is_valid_as_filename(
     """
     if not _current_dirname:
         _current_dirname = os.getcwd()
-    for badpat in _invalid_filename_regexes:
+    for badpat in _invalid_filename_regexes_list:
         if re.search(badpat, _file_tobetested_name):
             return False
     for char in _file_tobetested_name:
-        if not bool(re.search(validchars_regex, char)):
+        if not bool(re.search(_valid_filename_characters_regex_str, char)):
             return False
     if _file_tobetested_name in [d for d in os.listdir() if os.path.isdir(d)]:
         raise FilenameIsAlreadyDirnameError(
@@ -34,23 +34,23 @@ def is_valid_as_filename(
     return True
 
 
-def is_line_match_to_rule(_given_rule_obj=None, _given_datafile_line=None):
+def is_line_match_to_rule(_given_rule_pyobj=None, _given_datafile_line_str=None):
     """Returns True if data line matches pattern specified in given rule."""
 
     # Line does not match if given field greater than number of fields in line.
-    if _given_rule_obj.source_matchfield > len(_given_datafile_line.split()):
+    if _given_rule_pyobj.source_matchfield > len(_given_datafile_line_str.split()):
         return False
 
     # Line matches if given field is zero and pattern found anywhere in line.
-    if _given_rule_obj.source_matchfield == 0:
-        if re.search(_given_rule_obj.source_matchpattern, _given_datafile_line):
+    if _given_rule_pyobj.source_matchfield == 0:
+        if re.search(_given_rule_pyobj.source_matchpattern, _given_datafile_line_str):
             return True
 
     # Line matches if pattern is found in given field.
-    if _given_rule_obj.source_matchfield > 0:
-        eth = _given_rule_obj.source_matchfield - 1
+    if _given_rule_pyobj.source_matchfield > 0:
+        eth = _given_rule_pyobj.source_matchfield - 1
         if re.search(
-            _given_rule_obj.source_matchpattern, _given_datafile_line.split()[eth]
+            _given_rule_pyobj.source_matchpattern, _given_datafile_line_str.split()[eth]
         ):
             return True
 

@@ -23,7 +23,7 @@ RULE_YAMLFILE_NAME = ".rules"
 # Minimal configuration
 MINIMAL_CONFIG_YAMLFILE_STR = """verbose: false
 html_yes: false
-backup_depth: 3
+backup_depth_int: 3
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
 files2dirs_dict: {}"""
 

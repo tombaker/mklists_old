@@ -78,25 +78,27 @@ def move_datafiles_to_backupdir(
 @preserve_cwd
 def delete_older_backups(
     _rootdir_pathname=None,
-    backups_dirname=None,
+    _backupdir_pathname=None,
     _backupdir_shortname=None,
-    backup_depth=None,
+    _backup_depth_int=None,
 ):
     """Delete all but X number of backups of current working directory.
 
     Args:
         _rootdir_pathname:
-        backups_dirname:
+        _backupdir_pathname:
         _backupdir_shortname:
-        backup_depth: Number of backups to keep [default: 2]
+        _backup_depth_int: Number of backups to keep [default: 2]
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backups_TODO.py
     """
-    backupdir = os.path.join(_rootdir_pathname, backups_dirname, _backupdir_shortname)
+    backupdir = os.path.join(
+        _rootdir_pathname, _backupdir_pathname, _backupdir_shortname
+    )
     os.chdir(backupdir)
     ls_backupdir = sorted(os.listdir())
     print(ls_backupdir)
-    while len(ls_backupdir) > backup_depth:
+    while len(ls_backupdir) > _backup_depth_int:
         timestamped_dir_to_delete = ls_backupdir.pop(0)
         shutil.rmtree(timestamped_dir_to_delete)
         print(f"rm {timestamped_dir_to_delete}")
