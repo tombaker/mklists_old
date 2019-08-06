@@ -2,11 +2,11 @@
 
 import os
 from mklists.initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
-from mklists.utils import return_datadir_pathnames_under_somedir
+from mklists.utils import return_rule_yamlfile_pathnames_under_somedir
 
 
-def test_return_datadir_pathnames_under_somedir(tmpdir):
-    """List data directories found under project root."""
+def test_return_rule_yamlfile_pathnames_under_somedir(tmpdir):
+    """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdira = tmpdir.mkdir("a")
@@ -22,11 +22,14 @@ def test_return_datadir_pathnames_under_somedir(tmpdir):
         os.path.join(tmpdir, "a/b"),
         os.path.join(tmpdir, "c"),
     ]
-    assert return_datadir_pathnames_under_somedir(tmpdir) == expected
+    assert (
+        return_rule_yamlfile_pathnames_under_somedir(_somedir_pathname=tmpdir)
+        == expected
+    )
 
 
-def test_return_datadir_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
-    """List data directories found under project root."""
+def test_return_rule_yamlfile_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
+    """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdir_hidden = tmpdir.mkdir(".hidden")
@@ -44,4 +47,21 @@ def test_return_datadir_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
         os.path.join(tmpdir, "a/b"),
         os.path.join(tmpdir, "c"),
     ]
-    assert return_datadir_pathnames_under_somedir(tmpdir) == expected
+    assert (
+        return_rule_yamlfile_pathnames_under_somedir(_somedir_pathname=tmpdir)
+        == expected
+    )
+
+
+def test_return_rule_yamlfile_pathnames_under_somedir_just_one(tmpdir):
+    """List rulefile pathnames found under project root."""
+    tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
+    tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdira = tmpdir.mkdir("a")
+    tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
+    os.chdir(tmpdir)
+    expected = [tmpdir, os.path.join(tmpdir, "a")]
+    assert (
+        return_rule_yamlfile_pathnames_under_somedir(_somedir_pathname=tmpdir)
+        == expected
+    )
