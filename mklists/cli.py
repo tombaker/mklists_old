@@ -54,7 +54,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
-    #     rule_filenames_chain     = return_rule_filenames_chain_as_list(
+    #     rulefile_pathnames_chain     = return_rulefile_pathnames_chain_as_list(
     #                                    _startdir_pathname=datadir,
     #                                    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
@@ -90,7 +90,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #         _backup_depth_int=None)            # something like config['backups']
     #
     #
-    #     @@REWRITE THE FOLLOWING TO TAKE rule_filenames_chain
+    #     @@REWRITE THE FOLLOWING TO TAKE rulefile_pathnames_chain
     #     ruleobj_list       = return_ruleobj_list_from_rule_yamlfiles(
     #                              config_yamlfile=CONFIG_YAMLFILE_NAME,   # why is this needed??
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,       # shouldn't this be a chain of rule files?

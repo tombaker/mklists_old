@@ -64,7 +64,7 @@ def return_rootdir_pathname(
 
 
 @preserve_cwd
-def return_rule_filenames_chain_as_list(
+def return_rulefile_pathnames_chain_as_list(
     _startdir_pathname=None,
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
