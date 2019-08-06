@@ -61,11 +61,6 @@
     </ul>
 	    </li>
           
-            <li class="toctree-l1">
-		
-    <a class="" href="../wishlist/">Wish List</a>
-	    </li>
-          
         </ul>
       </div>
       &nbsp;
@@ -101,47 +96,17 @@
           <div role="main">
             <div class="section">
               
-                <p>The idea for what is now called <code>mklists</code> dates back to 1993, and I have been
-using the script in various incarnations almost every day, sometimes every hour
-since then.  Since the script processes plain-text lists</p>
-<p>The <a href="http://github.com/tombaker/mklists">mklists project</a> aims at implementing
-the latest iteration of a script first published:
-* in 1994 as
-  <a href="http://web.archive.org/web/20080807155330/http://web.bilkent.edu.tr/Online/uworld/archives/94/grabbag/06.lst.html#L1A"><code>shuffle</code></a>,
-  a Korn shell script based extensively on <code>grep</code>, which was which was featured in a 
-  <a href="http://web.archive.org/web/20080513171823/http://web.bilkent.edu.tr/Online/uworld/archives/94/grabbag/06.txt.html">column by Becca Thomas in UnixWorld</a>.
-  <code>shuffle</code> was written using the MKS Toolkit, a Unix shell environment, running on DOS 3.3.
-* in 2006 as <a href="shawkle/"><code>shawkle</code></a>, which improved on <code>shuffle</code> by using <code>awk</code> for field-based pattern matching 
-  (hence: <code>shawkle</code>).  This iteration of the program was featured in <a href="http://lifehacker.com/217063/getting-things-done-with-rule+based-list-processing">lifehacker.com</a>
-  with an introduction by Gina Trapani.
-* starting in 2011, as <a href="https://github.com/tombaker/shawkle/blob/master/shawkle.py"><code>shawkle.py</code></a>, 
-  a re-write of the <code>shawkle</code> idea in Python, partly with the aim of teaching myself Python.</p>
-<p>The 2012 Python script introduced the idea of automating the movement of list
-items between folders according to rules.
-<a href="https://github.com/tombaker/shawkle/blob/master/shuffle.py"><code>shuffle.py</code></a>, is
-stable, orders of magnitude faster its shell-based predecessors, and I still
-use it every day for my work.  Over the years I have had to patch it only two
-or three times to handle edge cases.  </p>
-<p>The idea of re-implementing the <code>shawkle</code> idea under the name <code>mklists</code>, with a
-proper test suite and documentation, was inspired by reading David Copeland's
-excellent <em>Build Awesome Command-Line Applications in Ruby</em> in 2012.  Seeing
-this as an opportunity to learn Ruby, I made some progress on aspects of
-<code>mklists.rb</code> as a back-burner project.  This work, along with work on the
-Python version using test-driven development with <code>py.test</code>, proceeded at a low
-level, as time allowed, in previous incarnations of the <a href="https://github.com/tombaker/mklists"><code>mklists</code> Github
-repo</a>.</p>
-<p>In June 2017, my discovery of the excellent (and fortuitously named) static
-site generator <a href="https://github.com"><code>MkDocs</code></a> gave me a day-job-related reason
-to re-start the Github repo, in the spirit of "documentation-driven
-development", with its own website.</p>
+                <p>The <a href="http://github.com/tombaker/mklists">mklists project</a> aims at implementing the latest iteration of a script that was first started in 1993 and published:
+* in 1994 as <a href="http://web.archive.org/web/20080807155330/http://web.bilkent.edu.tr/Online/uworld/archives/94/grabbag/06.lst.html#L1A"><code>shuffle</code></a>.  This first iteration, written in Korn shell, was featured in a <a href="http://web.archive.org/web/20080513171823/http://web.bilkent.edu.tr/Online/uworld/archives/94/grabbag/06.txt.html">column by Becca Thomas in UnixWorld</a>.  <code>shuffle</code> was written using the MKS Toolkit, a Unix shell environment, running on DOS 3.3.
+* in 2006 as <a href="history/shawkle.md"><code>shawkle</code></a>.  This second iteration, written in Bash shell, improved on <code>shuffle</code> by using <code>awk</code> for field-based pattern matching (hence the name <code>shawkle</code>). It was featured in <a href="http://lifehacker.com/217063/getting-things-done-with-rule+based-list-processing">lifehacker.com</a> with an introduction by Gina Trapani.
+* starting in 2011, as <a href="https://github.com/tombaker/shawkle/blob/master/shuffle.py"><code>shuffle.py</code></a>.  This was a re-implementation of the <code>shawkle</code> idea in Python, undertaken in large part as a way to teach myself Python.  This iteration, which introduced the idea of automating the movement of list items between folders, was much faster than the older shell scripts, and it became stable and reliable enough to use almost every day from 2011 through 2019.</p>
+<p>The idea of undertaking yet another iteration, under the name <code>mklists</code>, with a proper test suite and documentation, was inspired by reading David Copeland's excellent book, <em>Build Awesome Command-Line Applications in Ruby</em>(https://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby) in 2012.  After learning Ruby and working for awhile on <code>mklists.rb</code>, I archived the unfinished Ruby implementation in early 2017, switched back to Python, and re-started <a href="https://github.com/tombaker/mklists">this Github repository</a>.</p>
               
             </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../wishlist/" class="btn btn-neutral float-right" title="Wish List">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -172,8 +137,6 @@ development", with its own website.</p>
       
         <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../wishlist/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
