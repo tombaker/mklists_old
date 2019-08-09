@@ -3,7 +3,7 @@
 import os
 import glob
 import re
-import yaml
+import ruamel.yaml
 from .booleans import is_valid_as_filename
 from .constants import URL_PATTERN_REGEX
 from .decorators import preserve_cwd
@@ -121,8 +121,8 @@ def return_pyobj_from_yamlfile(_generic_yamlfile_name=None):
         )
 
     try:
-        return yaml.load(yamlstr)
-    except yaml.YAMLError:
+        return ruamel.yaml.safe_load(yamlstr)
+    except ruamel.yaml.YAMLError:
         raise BadYamlError(f"Badly formatted YAML in {repr(_generic_yamlfile_name)}.")
 
 
