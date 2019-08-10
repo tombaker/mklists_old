@@ -13,13 +13,6 @@ from .exceptions import (
 from .rules import Rule
 from .utils import return_pyobj_from_yamlfile
 
-# import re
-# import yaml
-# from .constants import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
-# from .constants import URL_PATTERN_REGEX
-#     BadYamlError,
-#     ConfigFileNotFoundError,
-
 
 def return_configdict_from_config_yamlfile():
     pass
