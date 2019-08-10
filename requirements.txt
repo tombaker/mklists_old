@@ -2,3 +2,5 @@ chardet==3.0.4
 click==7.0
 ruamel.yaml==0.16.1
 ruamel.yaml.clib==0.1.2
+pytest==3.9.1
+pytest-cov==2.6.0
