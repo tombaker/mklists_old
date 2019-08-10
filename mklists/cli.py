@@ -33,7 +33,7 @@ def init(config, newbie):
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def run(ctx, debug, dryrun, here_only):  # should be config
-    """Rebuild lists in (by default) entire repo"""
+    """Rebuild lists, by default in whole repo"""
 
     # currentdir_pathname    = os.getcwd()
     # rootdir_pathname       = return_rootdir_pathname(
