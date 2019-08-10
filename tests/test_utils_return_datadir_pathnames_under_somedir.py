@@ -84,7 +84,8 @@ def test_return_datadir_pathnames_under_somedir_just_one(tmpdir):
 
 
 def test_return_datadir_pathnames_under_somedir_rootdir_has_no_rulefile(tmpdir):
-    """List rulefile pathnames found under project root."""
+    """List rulefile pathnames found under project root where
+    there is no rulefile in the root directory itself."""
     rootdir_pathname = tmpdir
     rule_yamlfile_name = RULE_YAMLFILE_NAME
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")

@@ -3,7 +3,6 @@
 
 import os
 import pytest
-import ruamel.yaml
 from mklists.utils import return_pyobj_from_yamlfile
 
 
