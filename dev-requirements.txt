@@ -16,7 +16,6 @@ py==1.7.0
 pyaml==17.12.1
 pytest==3.9.1
 pytest-cov==2.6.0
-PyYAML==3.13
 requests==2.20.0
 requests-toolbelt==0.8.0
 ruamel.yaml==0.16.1
