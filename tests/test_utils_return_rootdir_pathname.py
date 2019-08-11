@@ -1,19 +1,41 @@
-"""Return repo root pathname when executed anywhere within repo.
-
-    Look for mandatory file CONFIG_YAMLFILE_NAME ('mklists.yml').
-
-    Starting at PWD, should look for:
-    * file 'mklists.yml' - and if found, return full pathname
+"""
+Returns repo root pathname when executed anywhere within repo.
+* Starting at PWD, looks for:
+    * mandatory CONFIG_YAMLFILE_NAME ('mklists.yml')
     * root directory - and if found, exit with error message
 
 See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
 """
 
-
 import os
 import pytest
-from mklists.initialize import CONFIG_YAMLFILE_NAME
+from mklists.initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from mklists.utils import return_rootdir_pathname
+
+
+TEST_MINIMAL_CONFIG_YAMLFILE_STR = r"""\
+invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
+"""
+
+TEST_RULE_GLOBAL_YAMLFILE_YAMLSTR = """\
+- [0, '.', all, lines, 0]
+"""
+
+TEST_RULE_YAMLFILEA_YAMLSTR = """\
+- [2, 'NOW',     lines,  now,     1]
+- [2, 'LATER',   lines,  later,   0]
+"""
+
+
+@pytest.fixture(name="myrepo")
+def fixture_myrepo(tmpdir_factory):
+    """Return temporary mklists repo 'myrepo'."""
+    root_dir = tmpdir_factory.mktemp("myrepo")
+    subdir_a = root_dir.mkdir("a")
+    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_MINIMAL_CONFIG_YAMLFILE_STR)
+    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_RULE_GLOBAL_YAMLFILE_YAMLSTR)
+    subdir_a.join(RULE_YAMLFILE_NAME).write(TEST_RULE_YAMLFILEA_YAMLSTR)
+    return root_dir
 
 
 def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
