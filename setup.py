@@ -19,7 +19,7 @@ setup(
     ],
     url="https://github.com/tombaker/mklists",
     packages=find_packages(exclude=["tests"]),
-    install_requires=["pyyaml", "Click", "dataclasses"],
+    install_requires=["ruamel.yaml", "Click", "dataclasses"],
     entry_points="""
         [console_scripts]
         mklists=mklists.cli:cli
