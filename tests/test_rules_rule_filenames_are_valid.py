@@ -6,24 +6,24 @@ from mklists.rules import Rule
 
 def test_rule_filenames_are_valid_source_filename_valid():
     """Third field of Rule object ('source') is valid as a filename."""
-    x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
-    assert x._filenames_are_valid()
+    rule_instance = Rule(1, "^X 19", "a.txt", "b.txt", 2)
+    assert rule_instance._filenames_are_valid()
 
 
 def test_rule_filenames_are_valid_target_filename_valid():
     """Fourth field of Rule object ('target') is valid as a filename."""
-    x = Rule(1, "^X 19", "a.txt", "b.txt", 2)
-    assert x._filenames_are_valid()
+    rule_instance = Rule(1, "^X 19", "a.txt", "b.txt", 2)
+    assert rule_instance._filenames_are_valid()
 
 
 def test_rule_filenames_are_valid_target_filename_not_valid():
     """Fourth field of Rule object ('target') not valid, raises SystemExit."""
-    x = Rule(1, "^X 19", "a.txt", "b^.txt", 2)
+    rule_instance = Rule(1, "^X 19", "a.txt", "b^.txt", 2)
     with pytest.raises(SystemExit):
-        x._filenames_are_valid()
+        rule_instance._filenames_are_valid()
 
 
 def test_rule_field_source():
     """Third field of Rule object is 'source'."""
-    x = Rule(1, ".", "a", "b", 2)
-    assert x.source == "a"
+    rule_instance = Rule(1, ".", "a", "b", 2)
+    assert rule_instance.source == "a"

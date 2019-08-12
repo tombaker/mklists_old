@@ -6,15 +6,15 @@ from mklists.exceptions import ConfigFileNotFoundError
 from mklists.run import return_configdict_from_config_yamlfile
 from mklists.utils import return_pyobj_from_yamlfile
 
-config_yamlfile_name = "mklists.yml"
+CONFIG_YAMLFILE_NAME = "mklists.yml"
 
-config_yamlfile_str = r"""verbose: false
+CONFIG_YAMLFILE_STR = r"""verbose: false
 html_yes: false
 backup_depth_int: 3
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
 files2dirs_dict: {}"""
 
-config_yamlfile_str_commented_out = r"""verbose: false
+CONFIG_YAMLFILE_STR_COMMENTED_OUT = r"""verbose: false
 # html_yes: false
 """
 
@@ -29,10 +29,10 @@ def test_run_return_configdict_from_config_yamlfile(tmpdir):
         "invalid_filename_patterns": ["\\.swp$", "\\.tmp$", "~$", "^\\."],
         "files2dirs_dict": {},
     }
-    tmpdir.join(config_yamlfile_name).write(config_yamlfile_str)
+    tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR)
     assert (
         return_configdict_from_config_yamlfile(
-            _config_yamlfile_name=config_yamlfile_name
+            _config_yamlfile_name=CONFIG_YAMLFILE_NAME
         )
         == expected
     )
@@ -43,28 +43,28 @@ def test_run_return_configdict_from_config_yamlfile_notfound(tmpdir):
     os.chdir(tmpdir)
     with pytest.raises(ConfigFileNotFoundError):
         return_configdict_from_config_yamlfile(
-            _config_yamlfile_name=config_yamlfile_name
+            _config_yamlfile_name=CONFIG_YAMLFILE_NAME
         )
 
 
 def test_run_yamlstr_written_correctly_to_file(tmpdir):
     os.chdir(tmpdir)
-    tmpdir.join(config_yamlfile_name).write(config_yamlfile_str_commented_out)
-    assert config_yamlfile_str_commented_out == open(config_yamlfile_name).read()
+    tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR_COMMENTED_OUT)
+    assert CONFIG_YAMLFILE_STR_COMMENTED_OUT == open(CONFIG_YAMLFILE_NAME).read()
 
 
 def test_run_return_configdict_from_config_yamlfile_with_entries_commented_out(tmpdir):
     """In this example, many of the entries are commented out."""
     os.chdir(tmpdir)
     expected = {"verbose": False}
-    tmpdir.join(config_yamlfile_name).write(config_yamlfile_str_commented_out)
+    tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR_COMMENTED_OUT)
     assert (
-        return_pyobj_from_yamlfile(_generic_yamlfile_name=config_yamlfile_name)
+        return_pyobj_from_yamlfile(_generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
         == expected
     )
     assert (
         return_configdict_from_config_yamlfile(
-            _config_yamlfile_name=config_yamlfile_name
+            _config_yamlfile_name=CONFIG_YAMLFILE_NAME
         )
         == expected
     )

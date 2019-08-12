@@ -4,6 +4,9 @@ run.py: return_ruleobj_list_from_rule_yamlfiles
     _rule_yamlfile_name=RULE_YAMLFILE_NAME
 """
 
+import pytest
 
+
+@pytest.mark.skip(reason="todo")
 def test_run_return_ruleobj_list_from_rule_yamlfiles():
-    pass
+    assert False
