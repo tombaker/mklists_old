@@ -20,15 +20,23 @@ from .constants import (
     NEWBIE_CONFIG_YAMLFILE_STR,
     NEWBIE_DATADIRA_RULES_YAMLSTR,
     NEWBIE_DATADIRB_RULES_YAMLSTR,
-    NEWBIE_ROOTDIR_RULES_YAMLSTR,
+    ROOTDIR_RULES_YAMLSTR,
 )
 
 
-def write_newbie_config_yamlfile(
-    _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
-    _newbie_config_yamlfile_str=NEWBIE_CONFIG_YAMLFILE_STR,
+def write_config_yamlfile(
+    _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
+    _file_tobewritten_str=MINIMAL_CONFIG_YAMLFILE_STR,
 ):
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_config_yamlfile
+    Write initial YAML config file ('/mklists.yml')."""
+    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
+
+
+def write_minimal_rule_yamlfiles():
     """
+    MINIMAL_ADIR_RULES_YAMLFILE_STR
+
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_minimal_rule_yamlfiles
     """
 
@@ -39,7 +47,7 @@ def write_newbie_datafiles():
 
 def write_newbie_rule_yamlfiles(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    _newbie_rootdir_rules_yamlstr=NEWBIE_ROOTDIR_RULES_YAMLSTR,
+    _newbie_rootdir_rules_yamlstr=ROOTDIR_RULES_YAMLSTR,
     _newbie_datadira_rules_yamlstr=NEWBIE_DATADIRA_RULES_YAMLSTR,
     _newbie_datadirb_rules_yamlstr=NEWBIE_DATADIRB_RULES_YAMLSTR,
 ):
@@ -55,20 +63,3 @@ def write_newbie_rule_yamlfiles(
     io.open(grule_file, "w", encoding="utf-8").write(_newbie_rootdir_rules_yamlstr)
     io.open(rulea_file, "w", encoding="utf-8").write(_newbie_datadira_rules_yamlstr)
     io.open(ruleb_file, "w", encoding="utf-8").write(_newbie_datadirb_rules_yamlstr)
-
-
-def write_minimal_config_yamlfile(
-    _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
-    _file_tobewritten_str=MINIMAL_CONFIG_YAMLFILE_STR,
-):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_minimal_config_yamlfile
-    Write initial YAML config file ('/mklists.yml')."""
-    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
-
-
-def write_minimal_rule_yamlfiles():
-    """
-    MINIMAL_ADIR_RULES_YAMLFILE_STR
-
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_minimal_rule_yamlfiles
-    """

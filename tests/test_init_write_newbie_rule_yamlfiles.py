@@ -3,7 +3,7 @@
 import io
 import os
 from mklists.constants import (
-    NEWBIE_ROOTDIR_RULES_YAMLSTR,
+    ROOTDIR_RULES_YAMLSTR,
     NEWBIE_DATADIRA_RULES_YAMLSTR,
     NEWBIE_DATADIRB_RULES_YAMLSTR,
     RULE_YAMLFILE_NAME,
@@ -16,7 +16,7 @@ def test_init_write_newbie_rule_yamlfiles(tmpdir):
     os.chdir(tmpdir)
     write_newbie_rule_yamlfiles()
     rulefile = os.path.join(tmpdir, RULE_YAMLFILE_NAME)
-    assert io.open(rulefile).read() == NEWBIE_ROOTDIR_RULES_YAMLSTR
+    assert io.open(rulefile).read() == ROOTDIR_RULES_YAMLSTR
 
 
 def test_initialize_config_yamlfiles_rulea(tmpdir):

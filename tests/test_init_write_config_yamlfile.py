@@ -7,14 +7,14 @@ import os
 from mklists.initialize import (
     CONFIG_YAMLFILE_NAME,
     MINIMAL_CONFIG_YAMLFILE_STR,
-    write_minimal_config_yamlfile,
+    write_config_yamlfile,
 )
 
 
-def test_init_write_minimal_config_yamlfile(tmpdir):
+def test_init_write_config_yamlfile(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)
-    write_minimal_config_yamlfile(
+    write_config_yamlfile(
         _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
         _file_tobewritten_str=MINIMAL_CONFIG_YAMLFILE_STR,
     )
@@ -37,6 +37,6 @@ def test_init_write_minimal_config_yamlfile(tmpdir):
 # MINIMAL_CONFIG_YAMLFILE_STR
 # MINIMAL_ADIR_RULES_YAMLFILE_STR
 # NEWBIE_CONFIG_YAMLFILE_STR
-# NEWBIE_ROOTDIR_RULES_YAMLSTR
+# ROOTDIR_RULES_YAMLSTR
 # NEWBIE_DATADIRA_RULES_YAMLSTR
 # NEWBIE_DATADIRB_RULES_YAMLSTR

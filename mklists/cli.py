@@ -17,8 +17,10 @@ def cli(ctx):
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(config, newbie):
-    """Initialize list repo"""
-    # write_minimal_config_yamlfile()
+    """Initialize list repo
+    @@@TODO Optional directory name as argument.
+    """
+    # write_config_yamlfile()
     # write_minimal_rule_yamlfiles()
     # if newbie:
     #     write_newbie_config_yamlfile()

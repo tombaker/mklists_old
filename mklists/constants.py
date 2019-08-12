@@ -41,7 +41,7 @@ backup_depth_int: 3
 invalid_filename_patterns: [\.swp$, \.tmp$, ~$, ^\.]
 files2dirs_dict: {}"""
 
-NEWBIE_ROOTDIR_RULES_YAMLSTR = r"""\
+ROOTDIR_RULES_YAMLSTR = r"""\
 # This file: Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
