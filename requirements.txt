@@ -3,4 +3,4 @@ pytest==3.8.2
 click==6.7
 dataclasses==0.6
 ruamel.base==1.0.0
-PyYAML==5.1.2
+ruamel.yaml==0.16.1
