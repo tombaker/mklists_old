@@ -47,6 +47,7 @@ def test_utils_is_valid_as_filename_dotfile():
 
 
 def test_utils_is_valid_as_filename_dotfile_emacs_backup_file():
+    """@@@Docstring"""
     fname = "foobar.txt~"
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
@@ -58,6 +59,7 @@ def test_utils_is_valid_as_filename_dotfile_emacs_backup_file():
 
 
 def test_utils_is_valid_as_filename_bad_filename_extension():
+    """@@@Docstring"""
     fname = "foobar.swp"
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
