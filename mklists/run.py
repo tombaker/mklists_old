@@ -14,8 +14,16 @@ from .rules import Rule
 from .utils import return_pyobj_from_yamlfile
 
 
-def return_configdict_from_config_yamlfile():
-    pass
+def return_configdict_from_config_yamlfile(_config_yamlfile_name=None, _verbose=None):
+    """@@@Docstring"""
+    try:
+        configdict = return_pyobj_from_yamlfile(_config_yamlfile_name)
+    except FileNotFoundError:
+        raise FileNotFoundError(
+            f"Configuration file {repr(_config_yamlfile_name)} not found."
+        )
+
+    return configdict
 
 
 def return_filename2datalines_dict_after_applying_rules(
@@ -92,7 +100,7 @@ def return_datalines_list_from_datafiles(_datafiles_names=None):
 
 
 def return_ruleobj_list_from_rule_yamlfiles(
-    config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
+    _config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
 ):
     """Return list of rule objects from rule files.
 
@@ -100,11 +108,13 @@ def return_ruleobj_list_from_rule_yamlfiles(
     directories for '.rules' and prepending them to list
     of rule files. If '.rules' not found in parent
     directory, stops looking.
+
+    @@@ 2019-08-12: Change parameter _config_yamlfile to _config_pydict
     """
 
     all_rules_list = []
 
-    config_pydict = return_pyobj_from_yamlfile(config_yamlfile)
+    config_pydict = return_pyobj_from_yamlfile(_config_yamlfile)
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
@@ -118,9 +128,7 @@ def return_ruleobj_list_from_rule_yamlfiles(
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:
-        raise RulefileNotFoundError(
-            f"Rule file {repr(_rule_yamlfile_name)} was not found."
-        )
+        raise RulefileNotFoundError(f"Rule file {repr(_rule_yamlfile_name)} not found.")
 
     if not all_rules_list:
         raise NoRulesError("No rules were found.")

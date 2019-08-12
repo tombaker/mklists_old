@@ -23,8 +23,6 @@ from .constants import (
     NEWBIE_ROOTDIR_RULES_YAMLSTR,
 )
 
-#     MINIMAL_ADIR_RULES_YAMLFILE_STR,
-
 
 def write_newbie_config_yamlfile(
     _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
