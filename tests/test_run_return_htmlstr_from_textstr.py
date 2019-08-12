@@ -26,8 +26,8 @@ def test_utils_return_htmlstr_from_textstr_linkified_line_non_url():
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_question_mark():
     """@@@Docstring"""
-    putin = """http://192.168.2.1/html/login/status.html?lang=en"""
-    putout = """<a href="http://192.168.2.1/html/login/status.html?lang=en">http://192.168.2.1/html/login/status.html?lang=en</a>"""
+    putin = """http://192.168.2.1/x.html?lang=en"""
+    putout = """<a href="http://192.168.2.1/x.html?lang=en">http://192.168.2.1/x.html?lang=en</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
@@ -40,43 +40,43 @@ def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_ip_address():
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_3d():
     """@@@Docstring"""
-    putin = """http://carnegieeurope.eu/strategiceurope/?fa=3D64063="""
-    putout = """<a href="http://carnegieeurope.eu/strategiceurope/?fa=3D64063=">http://carnegieeurope.eu/strategiceurope/?fa=3D64063=</a>"""
+    putin = """http://foo.eu/?fa=3D64063="""
+    putout = """<a href="http://foo.eu/?fa=3D64063=">http://foo.eu/?fa=3D64063=</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_hashsign():
     """@@@Docstring"""
-    putin = """http://ctrlpvim.github.io/ctrlp.vim/#installation"""
-    putout = """<a href="http://ctrlpvim.github.io/ctrlp.vim/#installation">http://ctrlpvim.github.io/ctrlp.vim/#installation</a>"""
+    putin = """http://bar.github.io/#inst"""
+    putout = """<a href="http://bar.github.io/#inst">http://bar.github.io/#inst</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_colon():
     """@@@Docstring"""
-    putin = """http://en.wikipedia.org/wiki/Talk:Dublin_Core"""
-    putout = """<a href="http://en.wikipedia.org/wiki/Talk:Dublin_Core">http://en.wikipedia.org/wiki/Talk:Dublin_Core</a>"""
+    putin = """http://foobar.org/Talk:Xyz"""
+    putout = """<a href="http://foobar.org/Talk:Xyz">http://foobar.org/Talk:Xyz</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_escaped_characters():
     """@@@Docstring"""
-    putin = """http://en.wikipedia.org/wiki/USS_Rizzi_%28DE-537%29"""
-    putout = """<a href="http://en.wikipedia.org/wiki/USS_Rizzi_%28DE-537%29">http://en.wikipedia.org/wiki/USS_Rizzi_%28DE-537%29</a>"""
+    putin = """http://ex.org/Rizzi_%28DE-537%29"""
+    putout = """<a href="http://ex.org/Rizzi_%28DE-537%29">http://ex.org/Rizzi_%28DE-537%29</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_colon2():
     """@@@Docstring"""
-    putin = """http://explore.dublincore.net/rdf/lrmi/#/resource"""
-    putout = """<a href="http://explore.dublincore.net/rdf/lrmi/#/resource">http://explore.dublincore.net/rdf/lrmi/#/resource</a>"""
+    putin = """http://ex.net/rdf/lrmi/#/resource"""
+    putout = """<a href="http://ex.net/rdf/lrmi/#/resource">http://ex.net/rdf/lrmi/#/resource</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_bang():
     """@@@Docstring"""
-    putin = """http://twitter.com/#!/search/%23dcmi11"""
-    putout = """<a href="http://twitter.com/#!/search/%23dcmi11">http://twitter.com/#!/search/%23dcmi11</a>"""
+    putin = """http://ex.com/#!/search/%23dcmi11"""
+    putout = """<a href="http://ex.com/#!/search/%23dcmi11">http://ex.com/#!/search/%23dcmi11</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
@@ -89,20 +89,22 @@ def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_comma():
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_url_with_https():
     """@@@Docstring"""
-    putin = """https://www.w3.org/2013/data/CG/wiki"""
-    putout = """<a href="https://www.w3.org/2013/data/CG/wiki">https://www.w3.org/2013/data/CG/wiki</a>"""
+    putin = """https://www.w3.org/wiki"""
+    putout = """<a href="https://www.w3.org/wiki">https://www.w3.org/wiki</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_surrounded_by_brackets():
     """@@@Docstring"""
-    putin = """see info (https://www.w3.org/2013/data/CG/wiki)'"""
-    putout = """see info (<a href="https://www.w3.org/2013/data/CG/wiki">https://www.w3.org/2013/data/CG/wiki</a>)'"""
+    putin = """see info (https://www.w3.org/wiki)'"""
+    putout = (
+        """see info (<a href="https://www.w3.org/wiki">https://www.w3.org/wiki</a>)'"""
+    )
     assert _return_htmlstr_from_textstr(putin) == putout
 
 
 def test_utils_return_htmlstr_from_textstr_linkified_line_with_two_urls():
     """@@@Docstring"""
-    putin = """see info (https://example1.org), http://example2.org)"""
-    putout = """see info (<a href="https://example1.org">https://example1.org</a>), <a href="http://example2.org">http://example2.org</a>)"""
+    putin = """(https://1) http://2"""
+    putout = """(<a href="https://1">https://1</a>) <a href="http://2">http://2</a>"""
     assert _return_htmlstr_from_textstr(putin) == putout

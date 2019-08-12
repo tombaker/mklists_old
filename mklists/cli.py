@@ -92,9 +92,10 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rulefile_pathnames_chain
     #     ruleobj_list       = return_ruleobj_list_from_rule_yamlfiles(
-    #                              config_yamlfile=CONFIG_YAMLFILE_NAME,   # why is this needed??
-    #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,       # shouldn't this be a chain of rule files?
+    #                              config_yamlfile=CONFIG_YAMLFILE_NAME, # needed??
+    #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
+    #                              Shouldn't this be a chain of rule files?
     #
     #     datalines_dict     = return_filename2datalines_dict_after_applying_rules(
     #                              _ruleobjs_list=ruleobj_list,

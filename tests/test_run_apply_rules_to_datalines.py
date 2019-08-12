@@ -6,7 +6,8 @@ from mklists.rules import Rule
 
 
 def test_return_filename2datalines_dict_after_applying_rules_no_rules_specified():
-    """Not passing rules to return_filename2datalines_dict_after_applying_rules raises SystemExit."""
+    """Not passing rules to return_filename2datalines_dict_after_applying_rules
+    raises SystemExit."""
     with pytest.raises(SystemExit):
         return_filename2datalines_dict_after_applying_rules(
             _datalines_list=[["a line\n"]]
