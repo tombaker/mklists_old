@@ -4,6 +4,7 @@ from mklists.backups import return_backupdir_shortname
 
 
 def test_backups_return_backupdir_shortname():
+    """@@@Docstring"""
     root_dir = "/Users/tbaker/foobar"
     list_dir = "/Users/tbaker/foobar/agenda"
     expected = "agenda"
@@ -16,6 +17,7 @@ def test_backups_return_backupdir_shortname():
 
 
 def test_backups_return_backupdir_shortname_two_deep():
+    """@@@Docstring"""
     root_dir = "/Users/tbaker/foobar"
     list_dir = "/Users/tbaker/foobar/a/b"
     expected = "a_b"

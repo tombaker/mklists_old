@@ -11,6 +11,7 @@ def test_utils_is_valid_as_filename_exits_filename_uses_illegal_character():
 
 
 def test_utils_is_valid_as_filename_exits_already_used_as_directory_name(tmpdir):
+    """@@@Docstring"""
     fname = "foobar"
     tmpdir.mkdir("foobar")
     os.chdir(tmpdir)
@@ -34,6 +35,7 @@ def test_utils_is_valid_as_filename():
 
 
 def test_utils_is_valid_as_filename_dotfile():
+    """@@@Docstring"""
     fname = ".foobar.txt"
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (

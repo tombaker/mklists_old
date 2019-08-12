@@ -12,6 +12,7 @@ from mklists.initialize import (
 
 
 def test_init_write_minimal_config_yamlfile(tmpdir):
+    """@@@Docstring"""
     os.chdir(tmpdir)
     write_minimal_config_yamlfile()
     assert io.open(CONFIG_YAMLFILE_NAME).read() == MINIMAL_CONFIG_YAMLFILE_STR

@@ -7,6 +7,7 @@ from mklists.backups import return_backupdir_pathname
 
 
 def test_backups_return_backupdir_pathname():
+    """@@@Docstring"""
     root = "/Users/tbaker/tmp"
     backups = ".backups"
     shortname = "agenda"

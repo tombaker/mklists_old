@@ -48,6 +48,7 @@ def test_run_return_configdict_from_config_yamlfile_notfound(tmpdir):
 
 
 def test_run_yamlstr_written_correctly_to_file(tmpdir):
+    """@@@Docstring"""
     os.chdir(tmpdir)
     tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR_COMMENTED_OUT)
     assert CONFIG_YAMLFILE_STR_COMMENTED_OUT == open(CONFIG_YAMLFILE_NAME).read()

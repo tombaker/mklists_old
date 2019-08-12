@@ -14,6 +14,7 @@ def test_return_filename2datalines_dict_after_applying_rules_no_rules_specified(
 
 
 def test_return_filename2datalines_dict_after_applying_rules_no_rules_specified_either():
+    """@@@Docstring"""
     rules = []
     lines = ["NOW Summer\n", "LATER Winter\n"]
     with pytest.raises(SystemExit):
@@ -29,6 +30,7 @@ def test_return_filename2datalines_dict_after_applying_rules_no_data_specified()
 
 
 def test_return_filename2datalines_dict_after_applying_rules_no_data_specified_either():
+    """@@@Docstring"""
     rules = [
         Rule(1, "NOW", "a.txt", "now.txt", 0),
         Rule(1, "LATER", "a.txt", "later.txt", 0),
@@ -47,6 +49,7 @@ def test_return_filename2datalines_dict_after_applying_rules_correct_result():
 
 
 def test_return_filename2datalines_dict_after_applying_rules_another_correct_result():
+    """@@@Docstring"""
     rules = [Rule(2, "i", "a.txt", "b.txt", 1)]
     lines = ["two ticks\n", "an ant\n", "the mite\n"]
     mdict = {"a.txt": ["an ant\n"], "b.txt": ["the mite\n", "two ticks\n"]}
@@ -54,6 +57,7 @@ def test_return_filename2datalines_dict_after_applying_rules_another_correct_res
 
 
 def test_return_filename2datalines_dict_after_applying_rules_yet_another_correct_result():
+    """@@@Docstring"""
     rules = [
         Rule(1, "NOW", "a.txt", "now.txt", 0),
         Rule(1, "LATER", "a.txt", "later.txt", 0),
@@ -64,6 +68,7 @@ def test_return_filename2datalines_dict_after_applying_rules_yet_another_correct
 
 
 def test_return_filename2datalines_dict_after_applying_rules_correct_result_too():
+    """@@@Docstring"""
     rules = [Rule(1, ".", "a.txt", "now.txt", 1)]
     lines = ["LATER Winter\n", "NOW Summer\n"]
     mdict = {"now.txt": ["NOW Summer\n", "LATER Winter\n"], "a.txt": []}

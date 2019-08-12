@@ -8,6 +8,7 @@ from mklists.decorators import preserve_cwd
 
 
 def test_preserve_cwd(tmpdir):
+    """@@@Docstring"""
     os.chdir(tmpdir)
     directory_before = os.getcwd()
     tmpdir_some_directory = tmpdir.mkdir("some_directory")

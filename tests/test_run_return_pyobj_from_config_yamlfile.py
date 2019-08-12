@@ -7,6 +7,7 @@ from mklists.utils import return_pyobj_from_yamlfile
 
 
 def test_return_pyobj_from_yamlfile(tmpdir):
+    """@@@Docstring"""
     os.chdir(tmpdir)
     yaml_str = "backups: 3\nverbose: false"
     yamlfile = "mklists.yml"
