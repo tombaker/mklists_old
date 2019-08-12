@@ -39,13 +39,8 @@ $ mklists run --here
 """
 
 import os
-import pytest
 from mklists.initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
-from mklists.utils import (
-    return_rootdir_pathname,
-    return_rulefile_pathnames_chain_as_list,
-    preserve_cwd,
-)
+from mklists.utils import return_rulefile_pathnames_chain_as_list
 
 
 def test_return_rulefile_pathnames_chain_as_list_basic(tmpdir):

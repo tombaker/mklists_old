@@ -2,7 +2,6 @@
 
 import os
 import pytest
-import ruamel.yaml
 from mklists.exceptions import ConfigFileNotFoundError
 from mklists.run import return_configdict_from_config_yamlfile
 from mklists.utils import return_pyobj_from_yamlfile

@@ -1,7 +1,7 @@
 """@@@Docstring"""
 
-import pytest
 import os
+import pytest
 from mklists.booleans import is_valid_as_filename
 
 
@@ -19,7 +19,7 @@ def test_utils_is_valid_as_filename_exits_already_used_as_directory_name(tmpdir)
 
 
 def test_utils_is_valid_as_filename():
-    """Note: previously assigned bad patterns as follows:
+    r"""Note: previously assigned bad patterns as follows:
     bad_patterns = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
 
     Note: in YAML, the Python string "\\.swp$" should be expressed either:
