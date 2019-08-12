@@ -6,7 +6,7 @@ import io
 import os
 from mklists.initialize import (
     CONFIG_YAMLFILE_NAME,
-    MINIMAL_CONFIG_YAMLFILE_STR,
+    CONFIG_YAMLFILE_STR,
     write_config_yamlfile,
 )
 
@@ -16,9 +16,9 @@ def test_init_write_config_yamlfile(tmpdir):
     os.chdir(tmpdir)
     write_config_yamlfile(
         _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
-        _file_tobewritten_str=MINIMAL_CONFIG_YAMLFILE_STR,
+        _file_tobewritten_str=CONFIG_YAMLFILE_STR,
     )
-    assert io.open(CONFIG_YAMLFILE_NAME).read() == MINIMAL_CONFIG_YAMLFILE_STR
+    assert io.open(CONFIG_YAMLFILE_NAME).read() == CONFIG_YAMLFILE_STR
 
 
 # test_init_write_initial_rule_yamlfiles.py
@@ -34,9 +34,9 @@ def test_init_write_config_yamlfile(tmpdir):
 # HTMLDIR_NAME
 # CONFIG_YAMLFILE_NAME
 # RULE_YAMLFILE_NAME
-# MINIMAL_CONFIG_YAMLFILE_STR
+# CONFIG_YAMLFILE_STR
 # MINIMAL_ADIR_RULES_YAMLFILE_STR
-# NEWBIE_CONFIG_YAMLFILE_STR
+# CONFIG_YAMLFILE_STR
 # ROOTDIR_RULES_YAMLSTR
 # NEWBIE_DATADIRA_RULES_YAMLSTR
 # NEWBIE_DATADIRB_RULES_YAMLSTR

@@ -13,15 +13,15 @@ from mklists.initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from mklists.utils import return_rootdir_pathname
 
 
-TEST_MINIMAL_CONFIG_YAMLFILE_STR = r"""\
+TEST_CONFIG_YAMLFILE_STR = r"""\
 invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
 """
 
-TEST_RULE_GLOBAL_YAMLFILE_YAMLSTR = """\
+TEST_ROOTDIR_YAMLFILE_STR = """\
 - [0, '.', all, lines, 0]
 """
 
-TEST_RULE_YAMLFILEA_YAMLSTR = """\
+TEST_DATADIRA_YAMLFILE_STR = """\
 - [2, 'NOW',     lines,  now,     1]
 - [2, 'LATER',   lines,  later,   0]
 """
@@ -32,9 +32,9 @@ def fixture_myrepo(tmpdir_factory):
     """Return temporary mklists repo 'myrepo'."""
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
-    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_MINIMAL_CONFIG_YAMLFILE_STR)
-    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_RULE_GLOBAL_YAMLFILE_YAMLSTR)
-    subdir_a.join(RULE_YAMLFILE_NAME).write(TEST_RULE_YAMLFILEA_YAMLSTR)
+    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_STR)
+    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_ROOTDIR_YAMLFILE_STR)
+    subdir_a.join(RULE_YAMLFILE_NAME).write(TEST_DATADIRA_YAMLFILE_STR)
     return root_dir
 
 

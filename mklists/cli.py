@@ -18,7 +18,7 @@ def cli(ctx):
 @click.pass_context
 def init(config, newbie):
     """Initialize list repo
-    @@@TODO Optional directory name as argument.
+    @@@TODO Add argument: optional directory name of mklists repository.
     """
     # write_config_yamlfile()
     # write_minimal_rule_yamlfiles()
@@ -97,7 +97,6 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              config_yamlfile=CONFIG_YAMLFILE_NAME, # needed??
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
-    #                              Shouldn't this be a chain of rule files?
     #
     #     datalines_dict     = return_filename2datalines_dict_after_applying_rules(
     #                              _ruleobjs_list=ruleobj_list,

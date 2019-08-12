@@ -5,7 +5,7 @@ import os
 import pytest
 from mklists.initialize import (
     CONFIG_YAMLFILE_NAME,
-    MINIMAL_CONFIG_YAMLFILE_STR,
+    CONFIG_YAMLFILE_STR,
     write_config_yamlfile,
 )
 

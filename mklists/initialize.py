@@ -15,18 +15,17 @@ import io
 import os
 from .constants import (
     CONFIG_YAMLFILE_NAME,
-    RULE_YAMLFILE_NAME,
-    MINIMAL_CONFIG_YAMLFILE_STR,
-    NEWBIE_CONFIG_YAMLFILE_STR,
+    CONFIG_YAMLFILE_STR,
     NEWBIE_DATADIRA_RULES_YAMLSTR,
     NEWBIE_DATADIRB_RULES_YAMLSTR,
     ROOTDIR_RULES_YAMLSTR,
+    RULE_YAMLFILE_NAME,
 )
 
 
 def write_config_yamlfile(
     _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
-    _file_tobewritten_str=MINIMAL_CONFIG_YAMLFILE_STR,
+    _file_tobewritten_str=CONFIG_YAMLFILE_STR,
 ):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_config_yamlfile
     Write initial YAML config file ('/mklists.yml')."""
