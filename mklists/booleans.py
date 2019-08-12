@@ -18,6 +18,10 @@ def is_valid_as_filename(
     * string patterns (override defaults in mklists.yml)
     * does not match name of an existing directory in current directory
 
+    @@@ 2018-08-12
+    Maybe this should _not_ take _invalid_filename_regexes_list and
+    _valid_filename_characters_regex_str as arguments but should read
+    them from the context object.
     """
     if not _currentdir_pathname:
         _currentdir_pathname = os.getcwd()
