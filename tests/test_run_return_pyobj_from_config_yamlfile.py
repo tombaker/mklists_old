@@ -39,11 +39,11 @@ def test_return_pyobj_from_yamlfile_file_not_found(tmpdir):
 def test_read_yaml_config_yamlfile_given_good_yamlfile(tmpdir):
     """Writes string to YAML rulefile, reads back to list of lists."""
     os.chdir(tmpdir)
-    lrules_yamlstr = """
+    lrules_yamlfile_str = """
     - [1, 'NOW', a, b, 0]
     - [1, 'LATER', a, c, 0]"""
     with open("_lrules", "w") as fout:
-        fout.write(lrules_yamlstr)
+        fout.write(lrules_yamlfile_str)
     good_pyobject = [[1, "NOW", "a", "b", 0], [1, "LATER", "a", "c", 0]]
     assert return_pyobj_from_yamlfile("_lrules") == good_pyobject
 

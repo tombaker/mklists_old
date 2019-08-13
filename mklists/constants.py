@@ -31,21 +31,21 @@ RULE_YAMLFILE_NAME = ".rules"
 MINIMAL_DATADIRA_RULES_YAMLFILE_STR = r"""\
 - [0, '.',       lines,      consolidated_lines,   0]"""
 
-ROOTDIR_RULES_YAMLSTR = r"""# Global rules, applied before rules specific to a list folder.
+ROOTDIR_RULES_YAMLFILE_STR = r"""# Global rules, applied before rules specific to a list folder.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
 - [1, 'NOW',        lines,     alines,           1]
 - [1, 'LATER',      lines,     alines,           1]
 - [0, '^2019|2020', lines,     blines,           1]"""
 
-EXAMPLE_DATADIRA_RULES_YAMLSTR = r"""# Rules specific to this folder - appended to global rules.
+EXAMPLE_DATADIRA_RULES_YAMLFILE_STR = r"""# Rules specific to this folder - appended to global rules.
 - [0, '.',       lines,      todo.txt,   0]
 - [0, '.',       alines,     todo.txt,   1]
 - [1, 'NOW',     todo.txt,   now.txt,    1]
 - [1, 'LATER',   todo.txt,   later.txt,  0]
 """
 
-EXAMPLE_DATADIRB_RULES_YAMLSTR = r"""# Rules specific to this folder - appended to global rules.
+EXAMPLE_DATADIRB_RULES_YAMLFILE_STR = r"""# Rules specific to this folder - appended to global rules.
 - [0, '.',       lines,      blines,     0]
 - [1, '^2019',   blines,     2019.txt,   1]
 - [1, '^2020',   blines,     2020.txt,   0]

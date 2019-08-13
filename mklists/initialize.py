@@ -16,9 +16,9 @@ import os
 from .constants import (
     CONFIG_YAMLFILE_NAME,
     CONFIG_YAMLFILE_STR,
-    EXAMPLE_DATADIRA_RULES_YAMLSTR,
-    EXAMPLE_DATADIRB_RULES_YAMLSTR,
-    ROOTDIR_RULES_YAMLSTR,
+    EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
+    EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
+    ROOTDIR_RULES_YAMLFILE_STR,
     RULE_YAMLFILE_NAME,
 )
 
@@ -46,9 +46,9 @@ def write_newbie_datafiles():
 
 def write_newbie_rule_yamlfiles(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    _newbie_rootdir_rules_yamlstr=ROOTDIR_RULES_YAMLSTR,
-    _newbie_datadira_rules_yamlstr=EXAMPLE_DATADIRA_RULES_YAMLSTR,
-    _newbie_datadirb_rules_yamlstr=EXAMPLE_DATADIRB_RULES_YAMLSTR,
+    _newbie_rootdir_rules_yamlfile_str=ROOTDIR_RULES_YAMLFILE_STR,
+    _newbie_datadira_rules_yamlfile_str=EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
+    _newbie_datadirb_rules_yamlfile_str=EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
@@ -59,6 +59,10 @@ def write_newbie_rule_yamlfiles(
     os.makedirs(os.path.join(config_path, "b"))
     rulea_file = os.path.join(config_path, "a", _rule_yamlfile_name)
     ruleb_file = os.path.join(config_path, "b", _rule_yamlfile_name)
-    io.open(grule_file, "w", encoding="utf-8").write(_newbie_rootdir_rules_yamlstr)
-    io.open(rulea_file, "w", encoding="utf-8").write(_newbie_datadira_rules_yamlstr)
-    io.open(ruleb_file, "w", encoding="utf-8").write(_newbie_datadirb_rules_yamlstr)
+    io.open(grule_file, "w", encoding="utf-8").write(_newbie_rootdir_rules_yamlfile_str)
+    io.open(rulea_file, "w", encoding="utf-8").write(
+        _newbie_datadira_rules_yamlfile_str
+    )
+    io.open(ruleb_file, "w", encoding="utf-8").write(
+        _newbie_datadirb_rules_yamlfile_str
+    )
