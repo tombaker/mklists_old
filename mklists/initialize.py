@@ -16,8 +16,8 @@ import os
 from .constants import (
     CONFIG_YAMLFILE_NAME,
     CONFIG_YAMLFILE_STR,
-    NEWBIE_DATADIRA_RULES_YAMLSTR,
-    NEWBIE_DATADIRB_RULES_YAMLSTR,
+    EXAMPLE_DATADIRA_RULES_YAMLSTR,
+    EXAMPLE_DATADIRB_RULES_YAMLSTR,
     ROOTDIR_RULES_YAMLSTR,
     RULE_YAMLFILE_NAME,
 )
@@ -34,7 +34,7 @@ def write_config_yamlfile(
 
 def write_minimal_rule_yamlfiles():
     """
-    MINIMAL_ADIR_RULES_YAMLFILE_STR
+    MINIMAL_DATADIRA_RULES_YAMLFILE_STR
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_minimal_rule_yamlfiles
     """
@@ -47,8 +47,8 @@ def write_newbie_datafiles():
 def write_newbie_rule_yamlfiles(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _newbie_rootdir_rules_yamlstr=ROOTDIR_RULES_YAMLSTR,
-    _newbie_datadira_rules_yamlstr=NEWBIE_DATADIRA_RULES_YAMLSTR,
-    _newbie_datadirb_rules_yamlstr=NEWBIE_DATADIRB_RULES_YAMLSTR,
+    _newbie_datadira_rules_yamlstr=EXAMPLE_DATADIRA_RULES_YAMLSTR,
+    _newbie_datadirb_rules_yamlstr=EXAMPLE_DATADIRB_RULES_YAMLSTR,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
