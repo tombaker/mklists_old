@@ -1,5 +1,5 @@
 """return_pyobj_from_yamlfile():
-* is called by run:return_ruleobj_list_from_rule_yamlfiles()"""
+* is called by run:return_ruleobj_list_from_rule_yamlfile()"""
 
 import os
 import pytest

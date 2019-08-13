@@ -92,8 +92,8 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #         _backup_depth_int=None)            # something like config['backups']
     #
     #
-    #     @@REWRITE THE FOLLOWING TO TAKE rulefile_pathnames_chain
-    #     ruleobj_list       = return_ruleobj_list_from_rule_yamlfiles(
+    #     @@REWRITE THE FOLLOWING TO TAKE rule_yamlfile
+    #     ruleobj_list       = return_ruleobj_list_from_rule_yamlfile(
     #                              config_yamlfile=CONFIG_YAMLFILE_NAME, # needed??
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)

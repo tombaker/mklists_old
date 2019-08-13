@@ -99,7 +99,7 @@ def return_datalines_list_from_datafiles(_datafiles_names=None):
     return all_datalines
 
 
-def return_ruleobj_list_from_rule_yamlfiles(
+def return_ruleobj_list_from_rule_yamlfile(
     _config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
 ):
     """Return list of rule objects from rule files.
