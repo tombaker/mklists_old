@@ -17,13 +17,11 @@ from .utils import return_pyobj_from_yamlfile
 def return_configdict_from_config_yamlfile(_config_yamlfile_name=None, _verbose=None):
     """@@@Docstring"""
     try:
-        configdict = return_pyobj_from_yamlfile(_config_yamlfile_name)
+        return return_pyobj_from_yamlfile(_config_yamlfile_name)
     except FileNotFoundError:
         raise FileNotFoundError(
             f"Configuration file {repr(_config_yamlfile_name)} not found."
         )
-
-    return configdict
 
 
 def return_filename2datalines_dict_after_applying_rules(

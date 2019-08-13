@@ -7,7 +7,7 @@ import ruamel.yaml
 from .booleans import is_valid_as_filename
 from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME, URL_PATTERN_REGEX
 from .decorators import preserve_cwd
-from .exceptions import BadYamlError, ConfigFileNotFoundError
+from .exceptions import BadYamlError, ConfigFileNotFoundError, YamlFileNotFoundError
 
 
 def return_datadir_pathnames_under_somedir(
@@ -110,19 +110,29 @@ def return_visiblefiles_list(_datadir_pathname=None):
     return sorted(all_datafile_names)
 
 
-def return_pyobj_from_yamlfile(_generic_yamlfile_name=None):
+def return_pyobj_from_yamlfile(_yamlfile_name=None):
     """Returns Python object parsed from given YAML-format file."""
+    yamlstr = _return_yamlstr_from_yamlfile(_generic_yamlfile_name=_yamlfile_name)
+    pyobj = _return_pyobj_from_yamlstr(yamlstr)
+    return pyobj
+
+
+def _return_pyobj_from_yamlstr(_generic_yamlstr=None):
+    """Returns YAML object from given YAML-format file."""
     try:
-        yamlstr = open(_generic_yamlfile_name).read()
+        return ruamel.yaml.safe_load(_generic_yamlstr)
+    except ruamel.yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML content.")
+
+
+def _return_yamlstr_from_yamlfile(_generic_yamlfile_name=None):
+    """Returns YAML object from given YAML-format file."""
+    try:
+        return open(_generic_yamlfile_name).read()
     except FileNotFoundError:
-        raise ConfigFileNotFoundError(
+        raise YamlFileNotFoundError(
             f"YAML file {repr(_generic_yamlfile_name)} not found."
         )
-
-    try:
-        return ruamel.yaml.safe_load(yamlstr)
-    except ruamel.yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML in {repr(_generic_yamlfile_name)}.")
 
 
 def _return_htmlstr_from_textstr(text_string=None):

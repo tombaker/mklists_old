@@ -2,9 +2,13 @@
 
 import os
 import pytest
-from mklists.exceptions import ConfigFileNotFoundError
+from mklists.exceptions import ConfigFileNotFoundError, YamlFileNotFoundError
 from mklists.run import return_configdict_from_config_yamlfile
-from mklists.utils import return_pyobj_from_yamlfile
+from mklists.utils import (
+    return_pyobj_from_yamlfile,
+    _return_yamlstr_from_yamlfile,
+    _return_pyobj_from_yamlstr,
+)
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 
@@ -38,15 +42,6 @@ def test_run_return_configdict_from_config_yamlfile(tmpdir):
     )
 
 
-def test_run_return_configdict_from_config_yamlfile_notfound(tmpdir):
-    """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
-    os.chdir(tmpdir)
-    with pytest.raises(ConfigFileNotFoundError):
-        return_configdict_from_config_yamlfile(
-            _config_yamlfile_name=CONFIG_YAMLFILE_NAME
-        )
-
-
 def test_run_yamlstr_written_correctly_to_file(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)
@@ -54,18 +49,33 @@ def test_run_yamlstr_written_correctly_to_file(tmpdir):
     assert CONFIG_YAMLFILE_STR_COMMENTED_OUT == open(CONFIG_YAMLFILE_NAME).read()
 
 
+# @pytest.mark.skip
 def test_run_return_configdict_from_config_yamlfile_with_entries_commented_out(tmpdir):
     """In this example, many of the entries are commented out."""
     os.chdir(tmpdir)
     expected = {"verbose": False}
     tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR_COMMENTED_OUT)
-    assert (
-        return_pyobj_from_yamlfile(_generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
-        == expected
-    )
+    assert return_pyobj_from_yamlfile(_yamlfile_name=CONFIG_YAMLFILE_NAME) == expected
     assert (
         return_configdict_from_config_yamlfile(
             _config_yamlfile_name=CONFIG_YAMLFILE_NAME
         )
         == expected
     )
+
+
+def test_run_return_yamlstr_from_yamlfile(tmpdir):
+    """@@@Docstring"""
+    os.chdir(tmpdir)
+    with pytest.raises(YamlFileNotFoundError):
+        _return_yamlstr_from_yamlfile(_generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
+
+
+@pytest.mark.skip
+def test_run_return_configdict_from_config_yamlfile_notfound(tmpdir):
+    """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
+    os.chdir(tmpdir)
+    with pytest.raises(ConfigFileNotFoundError):
+        return_configdict_from_config_yamlfile(
+            _config_yamlfile_name=CONFIG_YAMLFILE_NAME
+        )

@@ -22,6 +22,10 @@ class RulefileNotFoundError(ConfigError):
     """Rule file was not found."""
 
 
+class YamlFileNotFoundError(ConfigError):
+    """Generic YAML file was not found."""
+
+
 # DataError
 class DataError(SystemExit):
     """Superclass for errors relating to data."""
