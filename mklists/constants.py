@@ -32,7 +32,7 @@ RULE_YAMLFILE_NAME = ".rules"
 MINIMAL_DATADIRA_RULES_YAMLFILE_STR = r"""\
 - [0, '.',       lines,      consolidated_lines,   0]"""
 
-ROOTDIR_RULES_YAMLFILE_STR = r"""# Global rules, applied before rules specific to a list folder.
+ROOTDIR_RULES_YAMLFILE_STR = r"""# Global rules applied before rules for specific folders.
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
 - [1, 'NOW',        lines,     alines,           1]

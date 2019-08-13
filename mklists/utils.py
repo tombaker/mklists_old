@@ -5,9 +5,8 @@ import glob
 import re
 import ruamel.yaml
 from .booleans import is_valid_as_filename
-from .constants import URL_PATTERN_REGEX
+from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME, URL_PATTERN_REGEX
 from .decorators import preserve_cwd
-from .initialize import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .exceptions import BadYamlError, ConfigFileNotFoundError
 
 

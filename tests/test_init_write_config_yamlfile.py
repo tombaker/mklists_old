@@ -4,11 +4,8 @@ Here: /Users/tbaker/github/tombaker/mklists/tests/test_init_write_initial_config
 
 import io
 import os
-from mklists.initialize import (
-    CONFIG_YAMLFILE_NAME,
-    CONFIG_YAMLFILE_STR,
-    write_config_yamlfile,
-)
+from mklists.constants import CONFIG_YAMLFILE_NAME, CONFIG_YAMLFILE_STR
+from mklists.initialize import write_config_yamlfile
 
 
 def test_init_write_config_yamlfile(tmpdir):
