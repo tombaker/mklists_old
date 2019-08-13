@@ -117,7 +117,7 @@ def return_ruleobj_list_from_rule_yamlfile(
     all_rules_list = []
 
     config_pydict = return_pyobj_from_yamlstr(
-        return_yamlstr_from_yamlfile(_config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+        return_yamlstr_from_yamlfile(_yamlfile_name=CONFIG_YAMLFILE_NAME)
     )
     try:
         all_rules_list.append(config_pydict["global_rules"])
@@ -129,7 +129,7 @@ def return_ruleobj_list_from_rule_yamlfile(
             print("No global rules found - skipping.")
 
     rules_pylist = return_pyobj_from_yamlstr(
-        return_yamlstr_from_yamlfile(_config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+        return_yamlstr_from_yamlfile(_yamlfile_name=CONFIG_YAMLFILE_NAME)
     )
     try:
         all_rules_list.append(rules_pylist)
