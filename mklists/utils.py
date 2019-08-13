@@ -110,29 +110,20 @@ def return_visiblefiles_list(_datadir_pathname=None):
     return sorted(all_datafile_names)
 
 
-def return_pyobj_from_yamlfile(_yamlfile_name=None):
-    """Returns Python object parsed from given YAML-format file."""
-    yamlstr = _return_yamlstr_from_yamlfile(_generic_yamlfile_name=_yamlfile_name)
-    pyobj = _return_pyobj_from_yamlstr(yamlstr)
-    return pyobj
-
-
-def _return_pyobj_from_yamlstr(_generic_yamlstr=None):
+def return_pyobj_from_yamlstr(_yamlstr=None):
     """Returns YAML object from given YAML-format file."""
     try:
-        return ruamel.yaml.safe_load(_generic_yamlstr)
+        return ruamel.yaml.safe_load(_yamlstr)
     except ruamel.yaml.YAMLError:
         raise BadYamlError(f"Badly formatted YAML content.")
 
 
-def _return_yamlstr_from_yamlfile(_generic_yamlfile_name=None):
+def return_yamlstr_from_yamlfile(_yamlfile_name=None):
     """Returns YAML object from given YAML-format file."""
     try:
-        return open(_generic_yamlfile_name).read()
+        return open(_yamlfile_name).read()
     except FileNotFoundError:
-        raise YamlFileNotFoundError(
-            f"YAML file {repr(_generic_yamlfile_name)} not found."
-        )
+        raise YamlFileNotFoundError(f"YAML file {repr(_yamlfile_name)} not found.")
 
 
 def _return_htmlstr_from_textstr(text_string=None):

@@ -17,6 +17,7 @@ TEST_RULES_YAMLFILE_STR = r"""# Test rules for this module only.
 - [0, '^2019|2020', lines,     blines,           1]"""
 
 
+@pytest.mark.skip
 def test_run_return_ruleobj_list_from_rule_yamlfile(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)

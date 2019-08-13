@@ -2,6 +2,7 @@
 
 from collections import defaultdict
 from .booleans import is_line_match_to_rule
+from .constants import CONFIG_YAMLFILE_NAME
 from .exceptions import (
     BadYamlRuleError,
     BlankLinesError,
@@ -11,13 +12,15 @@ from .exceptions import (
     RulefileNotFoundError,
 )
 from .rules import Rule
-from .utils import return_pyobj_from_yamlfile
+from .utils import return_pyobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 
 def return_configdict_from_config_yamlfile(_config_yamlfile_name=None, _verbose=None):
     """@@@Docstring"""
     try:
-        return return_pyobj_from_yamlfile(_config_yamlfile_name)
+        return return_pyobj_from_yamlstr(
+            return_yamlstr_from_yamlfile(_config_yamlfile_name)
+        )
     except FileNotFoundError:
         raise FileNotFoundError(
             f"Configuration file {repr(_config_yamlfile_name)} not found."
@@ -108,11 +111,14 @@ def return_ruleobj_list_from_rule_yamlfile(
     directory, stops looking.
 
     @@@ 2019-08-12: Change parameter _config_yamlfile to _config_pydict
+    @@@ 2019-08-13: REDO as return_ruleobj_list_from_rules_list
     """
 
     all_rules_list = []
 
-    config_pydict = return_pyobj_from_yamlfile(_config_yamlfile)
+    config_pydict = return_pyobj_from_yamlstr(
+        return_yamlstr_from_yamlfile(_config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    )
     try:
         all_rules_list.append(config_pydict["global_rules"])
     except KeyError:
@@ -122,7 +128,9 @@ def return_ruleobj_list_from_rule_yamlfile(
         if _verbose:
             print("No global rules found - skipping.")
 
-    rules_pylist = return_pyobj_from_yamlfile(_rule_yamlfile_name)
+    rules_pylist = return_pyobj_from_yamlstr(
+        return_yamlstr_from_yamlfile(_config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    )
     try:
         all_rules_list.append(rules_pylist)
     except FileNotFoundError:

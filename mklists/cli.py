@@ -41,8 +41,8 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     # rootdir_pathname       = return_rootdir_pathname(
     #                              _currentdir_pathname=currentdir_pathname
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
-    # ctx.obj               = return_pyobj_from_yamlfile(
-    #                              _generic_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    # ctx.obj               = return_configdict_from_config_yamlfile(
+    #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
