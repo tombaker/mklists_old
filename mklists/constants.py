@@ -13,6 +13,7 @@ VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 # Directory names
 BACKUPDIR_NAME = ".backups"
 HTMLDIR_NAME = ".html"
+DATADIRA_NAME = "a"
 
 # Configuration file
 CONFIG_YAMLFILE_NAME = "mklists.yml"

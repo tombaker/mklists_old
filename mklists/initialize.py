@@ -16,11 +16,14 @@ import os
 from .constants import (
     CONFIG_YAMLFILE_NAME,
     CONFIG_YAMLFILE_STR,
+    DATADIRA_NAME,
     EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
     EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
+    MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
     ROOTDIR_RULES_YAMLFILE_STR,
     RULE_YAMLFILE_NAME,
 )
+from .decorators import preserve_cwd
 
 
 def write_config_yamlfile(
@@ -32,12 +35,22 @@ def write_config_yamlfile(
     io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
 
 
-def write_minimal_rule_yamlfiles():
-    """
-    MINIMAL_DATADIRA_RULES_YAMLFILE_STR
-
-    See /Users/tbaker/github/tombaker/mklists/tests/test_todo_write_minimal_rule_yamlfiles
-    """
+@preserve_cwd
+def write_minimal_rule_yamlfiles(
+    _datadira_name=DATADIRA_NAME,
+    _file_tobewritten_name=RULE_YAMLFILE_NAME,
+    _rootdir_file_tobewritten_str=ROOTDIR_RULES_YAMLFILE_STR,
+    _datadira_file_tobewritten_str=MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
+):
+    """@@@Docstring"""
+    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(
+        _rootdir_file_tobewritten_str
+    )
+    os.mkdir(_datadira_name)
+    os.chdir(_datadira_name)
+    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(
+        _datadira_file_tobewritten_str
+    )
 
 
 def write_newbie_datafiles():
