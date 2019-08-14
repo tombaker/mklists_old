@@ -24,8 +24,8 @@ def init(config, newbie):
     # write_minimal_rule_yamlfiles()
     # if newbie:
     #     write_newbie_config_yamlfile()
-    #     write_newbie_datafiles()
-    #     write_newbie_rule_yamlfiles()
+    #     write_example_datafiles()
+    #     write_example_rule_yamlfiles()
 
 
 @cli.command()
@@ -98,14 +98,14 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
     #
-    #     datalines_dict     = return_filename2datalines_dict_after_applying_rules(
+    #     datalines_dict     = return_filename2datalines_dict_after_applying_rules_to_lines(
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #
     #     write_datafiles_from_datadict(_filename2datalines_dict=None)
     #
     #     if files2dirs_dict:
-    #         relocate_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])
+    #         move_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])
 
     # Writing out HTML versions
     # if html:

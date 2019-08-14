@@ -35,29 +35,11 @@ def write_config_yamlfile(
     io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
 
 
-@preserve_cwd
-def write_minimal_rule_yamlfiles(
-    _datadira_name=DATADIRA_NAME,
-    _file_tobewritten_name=RULE_YAMLFILE_NAME,
-    _rootdir_file_tobewritten_str=ROOTDIR_RULES_YAMLFILE_STR,
-    _datadira_file_tobewritten_str=MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
-):
-    """@@@Docstring"""
-    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(
-        _rootdir_file_tobewritten_str
-    )
-    os.mkdir(_datadira_name)
-    os.chdir(_datadira_name)
-    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(
-        _datadira_file_tobewritten_str
-    )
-
-
-def write_newbie_datafiles():
+def write_example_datafiles():
     """Write newbie data."""
 
 
-def write_newbie_rule_yamlfiles(
+def write_example_rule_yamlfiles(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _newbie_rootdir_rules_yamlfile_str=ROOTDIR_RULES_YAMLFILE_STR,
     _newbie_datadira_rules_yamlfile_str=EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
@@ -78,4 +60,22 @@ def write_newbie_rule_yamlfiles(
     )
     io.open(ruleb_file, "w", encoding="utf-8").write(
         _newbie_datadirb_rules_yamlfile_str
+    )
+
+
+@preserve_cwd
+def write_minimal_rule_yamlfiles(
+    _datadira_name=DATADIRA_NAME,
+    _file_tobewritten_name=RULE_YAMLFILE_NAME,
+    _rootdir_file_tobewritten_str=ROOTDIR_RULES_YAMLFILE_STR,
+    _datadira_file_tobewritten_str=MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
+):
+    """@@@Docstring"""
+    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(
+        _rootdir_file_tobewritten_str
+    )
+    os.mkdir(_datadira_name)
+    os.chdir(_datadira_name)
+    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(
+        _datadira_file_tobewritten_str
     )

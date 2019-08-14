@@ -15,6 +15,12 @@ from .rules import Rule
 from .utils import return_pyobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 
+def move_specified_datafiles_elsewhere(_filename2dirname_dict=None):
+    """Args: _filename2dirname_dict: filename (key) and destination directory (value)
+    See /Users/tbaker/github/tombaker/mklists/tests/test_run_move_specified_datafiles_elsewhere
+    """
+
+
 def return_configdict_from_config_yamlfile(_config_yamlfile_name=None, _verbose=None):
     """@@@Docstring"""
     try:
@@ -27,7 +33,26 @@ def return_configdict_from_config_yamlfile(_config_yamlfile_name=None, _verbose=
         )
 
 
-def return_filename2datalines_dict_after_applying_rules(
+def return_datalines_list_from_datafiles(_datafiles_names=None):
+    """Returns lines from files with valid names, UTF8, with no blank lines."""
+    all_datalines = []
+    for datafile in _datafiles_names:
+        try:
+            datafile_lines = open(datafile).readlines()
+        except UnicodeDecodeError:
+            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
+        for line in datafile_lines:
+            if not line.rstrip():
+                print("Files in data directory must contain no blank lines.")
+                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
+        all_datalines.extend(datafile_lines)
+
+    if not all_datalines:
+        raise NoDataError("No data to process!")
+    return all_datalines
+
+
+def return_filename2datalines_dict_after_applying_rules_to_lines(
     _ruleobjs_list=None, _datalines_list=None
 ):
     """Applies rules, one by one, to process aggregated datalines.
@@ -81,25 +106,6 @@ def return_filename2datalines_dict_after_applying_rules(
     return dict(datadict)
 
 
-def return_datalines_list_from_datafiles(_datafiles_names=None):
-    """Returns lines from files with valid names, UTF8, with no blank lines."""
-    all_datalines = []
-    for datafile in _datafiles_names:
-        try:
-            datafile_lines = open(datafile).readlines()
-        except UnicodeDecodeError:
-            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
-        for line in datafile_lines:
-            if not line.rstrip():
-                print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
-        all_datalines.extend(datafile_lines)
-
-    if not all_datalines:
-        raise NoDataError("No data to process!")
-    return all_datalines
-
-
 def return_ruleobj_list_from_rule_yamlfile(
     _config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
 ):
@@ -149,12 +155,6 @@ def return_ruleobj_list_from_rule_yamlfile(
 
     # If no rules, return None or empty list?
     return ruleobj_list
-
-
-def relocate_specified_datafiles_elsewhere(_filename2dirname_dict=None):
-    """Args: _filename2dirname_dict: filename (key) and destination directory (value)
-    See /Users/tbaker/github/tombaker/mklists/tests/test_run_relocate_specified_datafiles_elsewhere
-    """
 
 
 def write_datafiles_from_datadict(_filename2datalines_dict=None):
