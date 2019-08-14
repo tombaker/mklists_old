@@ -47,7 +47,7 @@ class Rule:
         for field in [self.source_matchfield, self.target_sortorder]:
             try:
                 field = int(field)
-            except TypeError:
+            except (TypeError, ValueError):
                 print(f"In rule: {self}")
                 raise NotIntegerError(f"{field} must be an integer.")
         return True

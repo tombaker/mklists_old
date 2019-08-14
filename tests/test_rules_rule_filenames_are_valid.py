@@ -1,4 +1,4 @@
-"""Some rule module tests use temporary directory fixture."""
+"""Tests whether filenames (third and fourth components of a rule) are valid is filenames."""
 
 import pytest
 from mklists.rules import Rule
