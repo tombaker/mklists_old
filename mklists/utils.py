@@ -41,6 +41,21 @@ def return_datadir_pathnames_under_somedir(
     return datadirs
 
 
+def return_htmlstr_from_textstr(text_string=None):
+    """Return string with URLs wrapped in A_HREF tags."""
+    if "<a href=" in text_string:
+        return text_string
+    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', text_string)
+
+
+def return_pyobj_from_yamlstr(_yamlstr=None):
+    """Returns YAML object from given YAML-format file."""
+    try:
+        return ruamel.yaml.safe_load(_yamlstr)
+    except ruamel.yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML content.")
+
+
 @preserve_cwd
 def return_rootdir_pathname(
     _currentdir_pathname=None, _config_yamlfile_name=CONFIG_YAMLFILE_NAME
@@ -110,24 +125,9 @@ def return_visiblefiles_list(_datadir_pathname=None):
     return sorted(all_datafile_names)
 
 
-def return_pyobj_from_yamlstr(_yamlstr=None):
-    """Returns YAML object from given YAML-format file."""
-    try:
-        return ruamel.yaml.safe_load(_yamlstr)
-    except ruamel.yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML content.")
-
-
 def return_yamlstr_from_yamlfile(_yamlfile_name=None):
     """Returns YAML object from given YAML-format file."""
     try:
         return open(_yamlfile_name).read()
     except FileNotFoundError:
         raise YamlFileNotFoundError(f"YAML file {repr(_yamlfile_name)} not found.")
-
-
-def return_htmlstr_from_textstr(text_string=None):
-    """Return string with URLs wrapped in A_HREF tags."""
-    if "<a href=" in text_string:
-        return text_string
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', text_string)
