@@ -177,5 +177,5 @@ def write_htmlfiles_from_datadict(_filename2datalines_dict=None, _verbose=False)
        -- _filename2datalines_dict keys are filenames.
           -- for each filename, add file extension '.html'
        -- _filename2datalines_dict values are contents of files.
-          -- filter each line through _return_htmlstr_from_textstr.
+          -- filter each line through return_htmlstr_from_textstr.
     """

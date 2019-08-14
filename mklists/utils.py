@@ -126,7 +126,7 @@ def return_yamlstr_from_yamlfile(_yamlfile_name=None):
         raise YamlFileNotFoundError(f"YAML file {repr(_yamlfile_name)} not found.")
 
 
-def _return_htmlstr_from_textstr(text_string=None):
+def return_htmlstr_from_textstr(text_string=None):
     """Return string with URLs wrapped in A_HREF tags."""
     if "<a href=" in text_string:
         return text_string
