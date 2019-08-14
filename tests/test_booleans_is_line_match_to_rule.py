@@ -4,35 +4,35 @@ Note that function seems to work regardless of whether values
 are passed as positional or keyword arguments.
 """
 
-from mklists.booleans import is_line_match_to_rule
+from mklists.booleans import is_match_to_rule_given_line
 from mklists.rules import Rule
 
 
-def test_apply_is_line_match_to_rule():
+def test_apply_is_match_to_rule_given_line():
     """@@@Docstring"""
     given_ruleobj = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    is_line_match_to_rule(given_ruleobj, "NOW Buy milk") is True
+    is_match_to_rule_given_line(given_ruleobj, "NOW Buy milk") is True
 
 
-def test_apply_is_line_match_to_rule_with_space():
+def test_apply_is_match_to_rule_given_line_with_space():
     """@@@Docstring"""
     given_ruleobj = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    is_line_match_to_rule(given_ruleobj, " NOW Buy milk") is True
+    is_match_to_rule_given_line(given_ruleobj, " NOW Buy milk") is True
 
 
-def test_apply_is_line_match_to_rule_no_match():
+def test_apply_is_match_to_rule_given_line_no_match():
     """@@@Docstring"""
     given_ruleobj = Rule(1, "NOW", "a.txt", "b.txt", 0)
-    is_line_match_to_rule(given_ruleobj, "LATER Buy milk") is False
+    is_match_to_rule_given_line(given_ruleobj, "LATER Buy milk") is False
 
 
-def test_apply_is_line_match_to_rule_gotcha():
+def test_apply_is_match_to_rule_given_line_gotcha():
     """True because ' NOW Buy milk'.split() => ['NOW', 'Buy', 'milk']"""
     given_ruleobj = Rule(1, "^NOW", "a.txt", "b.txt", 0)
-    is_line_match_to_rule(given_ruleobj, " NOW Buy milk") is True
+    is_match_to_rule_given_line(given_ruleobj, " NOW Buy milk") is True
 
 
-def test_apply_is_line_match_to_rule_entire_line():
+def test_apply_is_match_to_rule_given_line_entire_line():
     """@@@Docstring"""
     given_ruleobj = Rule(0, "^NOW", "a.txt", "b.txt", 0)
-    is_line_match_to_rule(given_ruleobj, "NOW Buy milk") is True
+    is_match_to_rule_given_line(given_ruleobj, "NOW Buy milk") is True

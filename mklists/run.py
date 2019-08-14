@@ -1,7 +1,7 @@
 """Apply rules to process datalines."""
 
 from collections import defaultdict
-from .booleans import is_line_match_to_rule
+from .booleans import is_match_to_rule_given_line
 from .constants import CONFIG_YAMLFILE_NAME
 from .exceptions import (
     BadYamlRuleError,
@@ -64,7 +64,7 @@ def return_filename2datalines_dict_after_applying_rules(
         #    append matching lines to value of 'ruleobj.target'
         #    remove matching lines from value of 'ruleobj.source'
         for line in datadict[ruleobj.source]:
-            if is_line_match_to_rule(ruleobj, line):
+            if is_match_to_rule_given_line(ruleobj, line):
                 datadict[ruleobj.target].extend([line])
                 datadict[ruleobj.source].remove(line)
 

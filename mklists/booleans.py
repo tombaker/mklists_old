@@ -38,7 +38,7 @@ def is_valid_as_filename(
     return True
 
 
-def is_line_match_to_rule(_given_rule_pyobj=None, _given_datafile_line_str=None):
+def is_match_to_rule_given_line(_given_rule_pyobj=None, _given_datafile_line_str=None):
     """Returns True if data line matches pattern specified in given rule."""
 
     # Line does not match if given field greater than number of fields in line.
