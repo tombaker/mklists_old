@@ -7,6 +7,29 @@ from .constants import INVALID_FILENAME_REGEXES, VALID_FILENAME_CHARACTERS_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError
 
 
+def is_match_to_rule_as_line(_given_rule_pyobj=None, _given_datafile_line_str=None):
+    """Returns True if data line matches pattern specified in given rule."""
+
+    # Line does not match if given field greater than number of fields in line.
+    if _given_rule_pyobj.source_matchfield > len(_given_datafile_line_str.split()):
+        return False
+
+    # Line matches if given field is zero and pattern found anywhere in line.
+    if _given_rule_pyobj.source_matchfield == 0:
+        if re.search(_given_rule_pyobj.source_matchpattern, _given_datafile_line_str):
+            return True
+
+    # Line matches if pattern is found in given field.
+    if _given_rule_pyobj.source_matchfield > 0:
+        eth = _given_rule_pyobj.source_matchfield - 1
+        if re.search(
+            _given_rule_pyobj.source_matchpattern, _given_datafile_line_str.split()[eth]
+        ):
+            return True
+
+    return False
+
+
 def is_valid_as_filename(
     _file_tobetested_name=None,
     _currentdir_pathname=None,
@@ -36,26 +59,3 @@ def is_valid_as_filename(
             f"Filename {repr(_file_tobetested_name)} is already used as a directory name."
         )
     return True
-
-
-def is_match_to_rule_given_line(_given_rule_pyobj=None, _given_datafile_line_str=None):
-    """Returns True if data line matches pattern specified in given rule."""
-
-    # Line does not match if given field greater than number of fields in line.
-    if _given_rule_pyobj.source_matchfield > len(_given_datafile_line_str.split()):
-        return False
-
-    # Line matches if given field is zero and pattern found anywhere in line.
-    if _given_rule_pyobj.source_matchfield == 0:
-        if re.search(_given_rule_pyobj.source_matchpattern, _given_datafile_line_str):
-            return True
-
-    # Line matches if pattern is found in given field.
-    if _given_rule_pyobj.source_matchfield > 0:
-        eth = _given_rule_pyobj.source_matchfield - 1
-        if re.search(
-            _given_rule_pyobj.source_matchpattern, _given_datafile_line_str.split()[eth]
-        ):
-            return True
-
-    return False
