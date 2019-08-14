@@ -93,7 +93,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rule_yamlfile
-    #     ruleobj_list       = return_ruleobj_list_from_rule_yamlfile(
+    #     ruleobj_list       = return_ruleobj_list_from_rulefile_pathnames_chain(
     #                              config_yamlfile=CONFIG_YAMLFILE_NAME, # needed??
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)

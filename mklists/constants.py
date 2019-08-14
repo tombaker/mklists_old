@@ -29,10 +29,21 @@ files2dirs_dict: {}
 # Rules files
 RULE_YAMLFILE_NAME = ".rules"
 
-MINIMAL_DATADIRA_RULES_YAMLFILE_STR = r"""\
-- [0, '.',       lines,      consolidated_lines,   0]"""
+ROOTDIR_RULES_YAMLFILE_STR = r"""# Here: Global rules, applied before folder-specific rules.
+# Each rule matches against part of a line of text.
+# Each rule is a list with five components:
+# 1. Which part of the text line will be tested for a match:
+#    '0' = entire line
+#    '1' = first column (whitespace-delimited field)
+# 2. Regular expression to be matched against (part of) the line (as per 1, above).
+# 3. Label and intended filename of source file of the text line (as per 1, above).
+# 4. Label and intended filename of target file to which the line should be moved
+#    if it matches the regular expression.
+# 5. Sort order of the target file.
+- [0, '.',       lines.tmp, lines,  0]
+- [0, '201.-..', lines,     blines, 1]"""
 
-ROOTDIR_RULES_YAMLFILE_STR = r"""# Global rules applied before rules for specific folders.
+MINIMAL_DATADIRA_RULES_YAMLFILE_STR = r"""\
 # Put here any rules that apply to multiple list folders.
 - [0, '.',          x,         lines,            0]
 - [1, 'NOW',        lines,     alines,           1]

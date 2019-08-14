@@ -106,7 +106,7 @@ def return_filename2datalines_dict_after_applying_rules_to_lines(
     return dict(datadict)
 
 
-def return_ruleobj_list_from_rule_yamlfile(
+def return_ruleobj_list_from_rulefile_pathnames_chain(
     _config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
 ):
     """Return list of rule objects from rule files.
