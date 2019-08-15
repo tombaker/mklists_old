@@ -63,8 +63,8 @@ EXAMPLE_DATADIRB_RULES_YAMLFILE_STR = r"""# Rules for folder B - appended to glo
 """
 
 EXAMPLE_DATADIRA_TEXTFILE_STR = r"""\
-TODO Examine configuration file mklists.yml (in root directory), tweak if needed.
-TODO Examine '.rules' file in root directory; tweak if needed.
+TODO Examine the configuration file 'mklists.yml' (in the root directory); tweak if needed.
+TODO Examine the '.rules' file (in the root directory); tweak if needed.
 TODO Examine 'a/.rules' file in subdirectory 'a' (under root directory; tweak if needed.
 TODO 2019-08-14 Installed mklists <= edit: remove "TODO", replace date - will end up in 'b/log.txt'.
 LATER According to default rules, this line will end up in 'etc.txt'.

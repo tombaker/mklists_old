@@ -13,17 +13,19 @@ def cli(ctx):
 
 
 @cli.command()
-@click.option("--newbie", is_flag=True, help="Initialize with example data and config")
+@click.option(
+    "--with-examples", is_flag=True, help="Initialize with example data and config"
+)
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(config, newbie):
+def init(config, with_examples):
     """Initialize list repo
     @@@TODO Add argument: optional directory name of mklists repository.
     """
     # write_config_yamlfile()
     # write_minimal_rule_yamlfiles()
-    # if newbie:
-    #     write_newbie_config_yamlfile()
+    # if with_examples:
+    #     write_example_config_yamlfile()
     #     write_example_datafiles()
     #     write_example_rule_yamlfiles()
 

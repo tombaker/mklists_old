@@ -1,6 +1,6 @@
 """Write initial configuration and rule files.
 
-$ mklists init --newbie
+$ mklists init --example-data
     These are installed as examples:
     * /mklists.yml
     * /.rules
@@ -36,14 +36,14 @@ def write_config_yamlfile(
 
 
 def write_example_datafiles():
-    """Write newbie data."""
+    """Write example data."""
 
 
 def write_example_rule_yamlfiles(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    _newbie_rootdir_rules_yamlfile_str=ROOTDIR_RULES_YAMLFILE_STR,
-    _newbie_datadira_rules_yamlfile_str=EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
-    _newbie_datadirb_rules_yamlfile_str=EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
+    _rootdir_rules_yamlfile_str=ROOTDIR_RULES_YAMLFILE_STR,
+    _example_datadira_rules_yamlfile_str=EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
+    _example_datadirb_rules_yamlfile_str=EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
@@ -54,12 +54,12 @@ def write_example_rule_yamlfiles(
     os.makedirs(os.path.join(config_path, "b"))
     rulea_file = os.path.join(config_path, "a", _rule_yamlfile_name)
     ruleb_file = os.path.join(config_path, "b", _rule_yamlfile_name)
-    io.open(grule_file, "w", encoding="utf-8").write(_newbie_rootdir_rules_yamlfile_str)
+    io.open(grule_file, "w", encoding="utf-8").write(_rootdir_rules_yamlfile_str)
     io.open(rulea_file, "w", encoding="utf-8").write(
-        _newbie_datadira_rules_yamlfile_str
+        _example_datadira_rules_yamlfile_str
     )
     io.open(ruleb_file, "w", encoding="utf-8").write(
-        _newbie_datadirb_rules_yamlfile_str
+        _example_datadirb_rules_yamlfile_str
     )
 
 
