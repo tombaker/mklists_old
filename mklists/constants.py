@@ -30,18 +30,30 @@ files2dirs_dict: {}
 # Rules files
 RULE_YAMLFILE_NAME = ".rules"
 
-ROOTDIR_RULES_YAMLFILE_STR = r"""# Here: Global rules, applied before folder-specific rules.
-# Put here any rules that apply to multiple list folders.
+ROOTDIR_RULES_YAMLFILE_STR = r"""# Global rules, applied before folder-specific rules.
+#
 # Each rule matches against part of a line of text.
+#
 # Each rule is a list with five components:
-# 1. Which part of the text line will be tested for a match:
-#    '0' = entire line
-#    '1' = first column (whitespace-delimited field)
-# 2. Regular expression to be matched against (part of) the line (as per 1, above).
-# 3. Label and intended filename of source file of the text line (as per 1, above).
-# 4. Label and intended filename of target file to which the line should be moved
-#    if it matches the regular expression.
-# 5. Sort order of the target file.
+# 1. Section of text line (integer) to be matched against regular expression:
+#    0 = entire line
+#    2 = second column (whitespace-delimited field)
+# 2. Regular expression against which the line will be matched.
+# 3. Filename of text line to be matched (see 1, above).
+# 4. Filename of target file where text line should be moved if it matches.
+# 5. Sort order (integer) of target file.
+#    0 = will sort on entire line
+#    2 = will sort on second column (whitespace-delimited field)
+#
+# Note:
+#   Integer values (1 and 5) must _not_ be quoted ("2"); this turns them into strings.
+#   If regular expressions contain backslashes, these must be escaped (e.g., "\\").
+#   Filenames (3 and 4) must be composed of valid characters.
+#   * In the YAML file, quotes may be omitted around filenames (unless the filenames
+#   * look like numbers).
+#   * By default, pathname slashes ('/'), spaces, and accented characters are illegal.
+#   * Set of valid filename characters can be configured in 'mklists.yml'.
+
 - [0, '.',       lines.tmp, alines,  0]
 - [0, '201.-..', alines,    blines,  1]
 """
