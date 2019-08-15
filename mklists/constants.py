@@ -14,6 +14,7 @@ VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 BACKUPDIR_NAME = ".backups"
 HTMLDIR_NAME = ".html"
 DATADIRA_NAME = "a"
+DATADIRB_NAME = "b"
 
 # Configuration file
 CONFIG_YAMLFILE_NAME = "mklists.yml"
@@ -68,4 +69,8 @@ TODO Examine the '.rules' file (in the root directory); tweak if needed.
 TODO Examine 'a/.rules' file in subdirectory 'a' (under root directory; tweak if needed.
 TODO 2019-08-14 Installed mklists <= edit: remove "TODO", replace date - will end up in 'b/log.txt'.
 LATER According to default rules, this line will end up in 'etc.txt'.
+"""
+
+EXAMPLE_DATADIRB_TEXTFILE_STR = r"""\
+TODO Note how the default rules will move this line to Folder A.
 """

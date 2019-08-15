@@ -17,8 +17,11 @@ from .constants import (
     CONFIG_YAMLFILE_NAME,
     CONFIG_YAMLFILE_STR,
     DATADIRA_NAME,
+    DATADIRB_NAME,
     EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
+    EXAMPLE_DATADIRA_TEXTFILE_STR,
     EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
+    EXAMPLE_DATADIRB_TEXTFILE_STR,
     MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
     ROOTDIR_RULES_YAMLFILE_STR,
     RULE_YAMLFILE_NAME,
@@ -35,8 +38,22 @@ def write_config_yamlfile(
     io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
 
 
-def write_example_datafiles():
-    """Write example data."""
+def write_example_datafiles(
+    _datadira_name=DATADIRA_NAME,
+    _datadirb_name=DATADIRB_NAME,
+    _example_datadira_textfile_str=EXAMPLE_DATADIRA_TEXTFILE_STR,
+    _example_datadirb_textfile_str=EXAMPLE_DATADIRB_TEXTFILE_STR,
+):
+    """Writes example data files (plain-text lists) to Folders A and B.
+
+    Creates folders A and B.
+
+    Args:
+        _datadira_name: Name of data file to be written in Folder A.
+        _datadirb_name: Name of data file to be written in Folder B.
+        _example_datadira_textfile_str: String to be written to data file in Folder A.
+        _example_datadira_textfile_str: String to be written to data file in Folder B.
+    """
 
 
 def write_example_rule_yamlfiles(

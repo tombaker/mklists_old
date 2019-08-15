@@ -15,8 +15,11 @@ from .rules import Rule
 from .utils import return_pyobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 
-def move_specified_datafiles_elsewhere(_filename2dirname_dict=None):
-    """Args: _filename2dirname_dict: filename (key) and destination directory (value)
+def move_specified_datafiles_elsewhere(_filenames2dirnames_dict=None):
+    """
+
+    Args:
+        _filenames2dirnames_dict: filename (key) and destination directory (value)
     See /Users/tbaker/github/tombaker/mklists/tests/test_run_move_specified_datafiles_elsewhere
     """
 
