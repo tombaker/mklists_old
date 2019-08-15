@@ -78,7 +78,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #     backupdir_pathname = return_backupdir_pathname(
     #                              _rootdir_pathname=rootdir_pathname,
-    #                              _backupdir_pathname=backups_dirname,
+    #                              _backupdir_subdir_name=backups_dirname,
     #                              _backupdir_shortname=backup_shortname,
     #                              _timestamp_str=TIMESTAMP_STR)
     #

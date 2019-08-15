@@ -1,4 +1,4 @@
-"""Tests for todo.py
+"""Deletes oldest backup directories, keeping only a specified (configurable) number.
 
 Edit /Users/tbaker/github/tombaker/mklists/mklists/backups.py
 """
@@ -8,7 +8,7 @@ from mklists.backups import delete_older_backups
 
 
 def test_backups_delete_older_backups(tmpdir):
-    """@@@Docstring"""
+    """Deletes all but the latest two backup directories, as configured."""
     backups = ".backups"
     tmpdir_backupdir = tmpdir.mkdir(backups)
     tmpdir_backupdir_agenda = tmpdir_backupdir.mkdir("agenda")
@@ -22,7 +22,7 @@ def test_backups_delete_older_backups(tmpdir):
     print(str(expected))
     delete_older_backups(
         _rootdir_pathname=tmpdir,
-        _backupdir_pathname=backups,
+        _backupdir_subdir_name=backups,
         _backupdir_shortname=shortname,
         _backup_depth_int=how_many_backups_to_keep,
     )
