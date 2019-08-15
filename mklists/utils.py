@@ -7,7 +7,30 @@ import ruamel.yaml
 from .booleans import is_valid_as_filename
 from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME, URL_PATTERN_REGEX
 from .decorators import preserve_cwd
-from .exceptions import BadYamlError, ConfigFileNotFoundError, YamlFileNotFoundError
+from .exceptions import (
+    BadRegexError,
+    BadYamlError,
+    ConfigFileNotFoundError,
+    YamlFileNotFoundError,
+)
+
+
+def return_compiled_regex(_regex=None):
+    """Return compiled regex from regular expression.
+
+    Args:
+        _regex: a regular expression
+
+    Raises:
+        BadRegexError: string does not compile as regular expression
+    """
+    try:
+        compiled_regex = re.compile(_regex)
+    except re.error:
+        raise BadRegexError(
+            f"{repr(_regex)} does not correctly compile as Python regex"
+        )
+    return compiled_regex
 
 
 def return_datadir_pathnames_under_somedir(

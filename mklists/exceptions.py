@@ -91,3 +91,8 @@ class NoRulesError(RulesError):
 
 class BadYamlError(RulesError):
     """File contains badly formatted YAML."""
+
+
+# General errors
+class BadRegexError(SystemExit):
+    """String does not compile as regular expression."""

@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from .booleans import is_valid_as_filename
+from .booleans import is_valid_as_filename, is_valid_as_regex
 from .exceptions import (
     BadFilenameError,
     NotIntegerError,
@@ -52,9 +52,7 @@ class Rule:
 
     def _source_matchpattern_is_valid(self):
         """Returns True if source_matchpattern is valid regular expression."""
-        try:
-            re.compile(self.source_matchpattern)
-        except re.error:
+        if not is_valid_as_regex(self.source_matchpattern):
             print(f"source_matchpattern in rule: {self}")
             raise SourceMatchpatternError("is not valid a valid regex.")
         return True
