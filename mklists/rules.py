@@ -45,11 +45,9 @@ class Rule:
     def _number_fields_are_integers(self):
         """Return True if source_matchfield, target_sortorder are integers."""
         for field in [self.source_matchfield, self.target_sortorder]:
-            try:
-                field = int(field)
-            except (TypeError, ValueError):
-                print(f"In rule: {self}")
-                raise NotIntegerError(f"{field} must be an integer.")
+            if not isinstance(field, int):
+                print(f"In {self}:")
+                raise NotIntegerError(f"{repr(field)} must be an integer.")
         return True
 
     def _source_matchpattern_is_valid(self):
