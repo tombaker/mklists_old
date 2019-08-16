@@ -67,3 +67,19 @@ def test_return_compiled_regex_with_blanks():
     regex = "^(\d{3}) (\d{3}) (\d{4})$"
     regex_compiled = return_compiled_regex(regex)
     assert re.search(regex_compiled, "216 321 1234")
+
+
+def test_return_compiled_regex_with_uppercase_letters_only():
+    """Returns compiled regex from regex with uppercase characters."""
+    regex = "^[A-Z]*$"
+    regex_compiled = return_compiled_regex(regex)
+    assert re.search(regex_compiled, "ASDF")
+
+
+def test_return_compiled_regex_with_wildcards_and_one_space():
+    """Returns compiled regex from regex with uppercase characters."""
+    regex = "^=* "
+    regex_compiled = return_compiled_regex(regex)
+    assert re.search(regex_compiled, "= ")
+    assert re.search(regex_compiled, "== ")
+    assert re.search(regex_compiled, "====== ")
