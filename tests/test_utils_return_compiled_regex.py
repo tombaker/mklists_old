@@ -1,15 +1,15 @@
 """Returns compiled regex from regular expression."""
 
 
-import pytest
 import re
+import pytest
 from mklists.utils import return_compiled_regex
 
 
 def test_return_compiled_regex():
     """Returns compiled regex from simple string."""
     regex = "NOW"
-    assert type(return_compiled_regex(regex)) == re.Pattern
+    assert isinstance(return_compiled_regex(regex), re.Pattern)
 
 
 def test_return_compiled_regex_unescaped_parenthesis():
@@ -51,7 +51,7 @@ def test_return_compiled_regex_uses_backslash_sequence():
     """Returns compiled regex from string with backslash sequence."""
     regex = "\d\d\d"
     regex_compiled = return_compiled_regex(regex)
-    assert type(return_compiled_regex(regex)) == re.Pattern
+    assert isinstance(return_compiled_regex(regex), re.Pattern)
     assert re.search(regex_compiled, "123")
 
 

@@ -2,18 +2,18 @@
 
 import pytest
 
-datadict_before = {
+DATADICT_BEFORE = {
     "dcmi.txt": [
-        "DC2019 " "http://dublincore.org/conferences/2019\n",
+        "DC2019 http://dublincore.org/conferences/2019\n",
         "DC2019 Sep 23-26\n",
     ],
     "shex.txt": [
-        "SHEX Primer: " "http://shex.io/shex-primer\n",
-        "SHEX Wikidata: " "http://bit.ly/shex_in_wikidata\n",
+        "SHEX Primer: http://shex.io/shex-primer\n",
+        "SHEX Wikidata: http://bit.ly/shex_in_wikidata\n",
     ],
 }
 
-datadict_after = {
+DATADICT_AFTER = {
     "dcmi.txt": [
         "DC2019 "
         '<a href="http://dublincore.org/conferences/2019">'
