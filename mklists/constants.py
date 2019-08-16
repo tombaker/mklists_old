@@ -75,6 +75,7 @@ EXAMPLE_DATADIRB_RULES_YAMLFILE_STR = r"""# Rules for folder B - appended to glo
 - [1, '^2020',   blines,     2020.txt,   0]
 """
 
+EXAMPLE_DATADIRA_TEXTFILE_NAME = "example_datalines_README.txt"
 EXAMPLE_DATADIRA_TEXTFILE_STR = r"""\
 TODO Examine the configuration file 'mklists.yml' (in the root directory); tweak if needed.
 TODO Examine the '.rules' file (in the root directory); tweak if needed.

@@ -58,11 +58,10 @@ def test_run_return_configdict_from_config_yamlfile_with_entries_commented_out(t
     )
 
 
-@pytest.mark.skip
-def test_run_return_configdict_from_config_yamlfile_notfound(tmpdir):
+def test_run_return_configdict_from_config_yamlfile_not_found(tmpdir):
     """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
     os.chdir(tmpdir)
-    with pytest.raises(ConfigFileNotFoundError):
+    with pytest.raises(SystemExit):
         return_configdict_from_config_yamlfile(
             _config_yamlfile_name=CONFIG_YAMLFILE_NAME
         )

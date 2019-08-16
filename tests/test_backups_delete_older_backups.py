@@ -27,7 +27,10 @@ def test_backups_delete_older_backups(tmpdir):
 
 
 def test_backups_delete_older_backups_when_backup_depth_is_none(tmpdir):
-    """Raises exception when argument for backup depth is None."""
+    """Raises exception when argument for backup depth is None.
+
+    @@@2019-08-16 TODO Default is None, and if argument is not specified,
+    delete_older_backups() should revert to default of 2."""
     backupdir_subdir_name = ".backups"
     tmpdir_backupdir = tmpdir.mkdir(backupdir_subdir_name)
     tmpdir_backupdir_agenda = tmpdir_backupdir.mkdir("agenda")

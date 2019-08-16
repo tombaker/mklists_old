@@ -20,8 +20,8 @@ from .constants import (
     DATADIRB_NAME,
     EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
     EXAMPLE_DATADIRA_TEXTFILE_STR,
+    EXAMPLE_DATADIRA_TEXTFILE_NAME,
     EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
-    EXAMPLE_DATADIRB_TEXTFILE_STR,
     MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
     ROOTDIR_RULES_YAMLFILE_STR,
     RULE_YAMLFILE_NAME,
@@ -41,8 +41,8 @@ def write_config_yamlfile(
 def write_example_datafiles(
     _datadira_name=DATADIRA_NAME,
     _datadirb_name=DATADIRB_NAME,
+    _example_datadira_textfile_name=EXAMPLE_DATADIRA_TEXTFILE_NAME,
     _example_datadira_textfile_str=EXAMPLE_DATADIRA_TEXTFILE_STR,
-    _example_datadirb_textfile_str=EXAMPLE_DATADIRB_TEXTFILE_STR,
 ):
     """Writes example data files (plain-text lists) to Folders A and B.
 
@@ -51,9 +51,18 @@ def write_example_datafiles(
     Args:
         _datadira_name: Name of data file to be written in Folder A.
         _datadirb_name: Name of data file to be written in Folder B.
-        _example_datadira_textfile_str: String to be written to data file in Folder A.
-        _example_datadira_textfile_str: String to be written to data file in Folder B.
+        _example_datadira_textfile_name: Name of file to be written in Folder A.
+        _example_datadira_textfile_str: Content to be written to data file in Folder A.
     """
+    cwd_pathname = os.path.join(os.getcwd())
+    os.makedirs(os.path.join(cwd_pathname, _datadira_name))
+    os.makedirs(os.path.join(cwd_pathname, _datadirb_name))
+    datadira_file_name = os.path.join(
+        cwd_pathname, _datadira_name, _example_datadira_textfile_name
+    )
+    io.open(datadira_file_name, "w", encoding="utf-8").write(
+        _example_datadira_textfile_str
+    )
 
 
 def write_example_rule_yamlfiles(

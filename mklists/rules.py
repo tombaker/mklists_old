@@ -1,6 +1,5 @@
 """Factory to create, self-test, and lightly correct a rule object."""
 
-import re
 from dataclasses import dataclass
 from .booleans import is_valid_as_filename, is_valid_as_regex
 from .exceptions import (
