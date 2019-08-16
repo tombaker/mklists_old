@@ -5,6 +5,7 @@ import shutil
 import pytest
 from .constants import TIMESTAMP_STR
 from .decorators import preserve_cwd
+from .exceptions import BackupDepthUnspecifiedError, NoBackupDirSpecifiedError
 
 
 @preserve_cwd
@@ -24,12 +25,13 @@ def delete_older_backups(
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backups_TODO.py
     """
+    if _backup_depth_int is None:
+        raise BackupDepthUnspecifiedError(f"Number of backups to keep is unspecified.")
     backupdir = os.path.join(
         _rootdir_pathname, _backupdir_subdir_name, _backupdir_shortname
     )
     os.chdir(backupdir)
     ls_backupdir = sorted(os.listdir())
-    print(ls_backupdir)
     while len(ls_backupdir) > _backup_depth_int:
         timestamped_dir_to_delete = ls_backupdir.pop(0)
         shutil.rmtree(timestamped_dir_to_delete)
@@ -54,6 +56,8 @@ def move_datafiles_to_backupdir(
     """
     if not _datadir_pathname:
         _datadir_pathname = os.getcwd()
+    if not _backupdir_pathname:
+        raise NoBackupDirSpecifiedError(f"No pathname for backup directory specified.")
     os.chdir(_datadir_pathname)
     try:
         for file in _datafiles_names:

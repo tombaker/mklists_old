@@ -1,9 +1,22 @@
 """Exception classes for mklists."""
 
 
+# General errors
+class BadRegexError(SystemExit):
+    """String does not compile as regular expression."""
+
+
+class NoBackupDirSpecifiedError(SystemExit):
+    """No pathname for backup directory was specified."""
+
+
 # ConfigError
 class ConfigError(SystemExit):
     """Category of errors related to configuration."""
+
+
+class BackupDepthUnspecifiedError(ConfigError):
+    """Number of backups to keep is unspecified."""
 
 
 class ConfigFileNotFoundError(ConfigError):
@@ -91,8 +104,3 @@ class NoRulesError(RulesError):
 
 class BadYamlError(RulesError):
     """File contains badly formatted YAML."""
-
-
-# General errors
-class BadRegexError(SystemExit):
-    """String does not compile as regular expression."""
