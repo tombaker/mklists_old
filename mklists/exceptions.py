@@ -6,6 +6,10 @@ class BadRegexError(SystemExit):
     """String does not compile as regular expression."""
 
 
+class MissingArgumentError(SystemExit):
+    """Function called with argument missing."""
+
+
 class NoBackupDirSpecifiedError(SystemExit):
     """No pathname for backup directory was specified."""
 

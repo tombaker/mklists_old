@@ -5,12 +5,18 @@ import glob
 import re
 import ruamel.yaml
 from .booleans import is_valid_as_filename
-from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME, URL_PATTERN_REGEX
+from .constants import (
+    CONFIG_YAMLFILE_NAME,
+    HTMLDIR_NAME,
+    RULE_YAMLFILE_NAME,
+    URL_PATTERN_REGEX,
+)
 from .decorators import preserve_cwd
 from .exceptions import (
     BadRegexError,
     BadYamlError,
     ConfigFileNotFoundError,
+    MissingArgumentError,
     YamlFileNotFoundError,
 )
 
@@ -159,7 +165,7 @@ def return_yamlstr_from_yamlfile(_yamlfile_name=None):
 
 
 def return_htmldir_pathname(
-    _rootdir_pathname=None, _htmldir_name=None, _currentdir_pathname=None
+    _rootdir_pathname=None, _htmldir_name=HTMLDIR_NAME, _currentdir_pathname=None
 ):
     """Return pathname for folder holding urlified data files.
 
@@ -173,4 +179,8 @@ def return_htmldir_pathname(
 
     Example output: '/Users/foobar/github/mylists/.html/a'
     """
+    if not _rootdir_pathname:
+        raise MissingArgumentError(f"Missing argument '_roodir_pathname'")
+    if not _currentdir_pathname:
+        _currentdir_pathname = os.getcwd()
     return os.path.join(_rootdir_pathname, _htmldir_name, _currentdir_pathname)
