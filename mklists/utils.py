@@ -64,11 +64,14 @@ def return_datadir_pathnames_under_somedir(
     return datadirs
 
 
-def return_htmlstr_from_textstr(text_string=None):
-    """Return string with URLs wrapped in A_HREF tags."""
-    if "<a href=" in text_string:
-        return text_string
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', text_string)
+def return_htmlstr_from_textstr(_textstr=None):
+    """Return string with URLs wrapped with <a href=></a> HTML tags.
+
+    Args:
+        _textstr: A text string (typically, one line of text)."""
+    if "<a href=" in _textstr:
+        return _textstr
+    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', _textstr)
 
 
 def return_pyobj_from_yamlstr(_yamlstr=None):
@@ -86,9 +89,8 @@ def return_rootdir_pathname(
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
-
-    See
-    /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_rootdir_pathname_DONE.py
+        _currentdir_pathname:
+        _config_yamlfile_name:
     """
     if not _currentdir_pathname:
         _currentdir_pathname = os.getcwd()
@@ -154,3 +156,21 @@ def return_yamlstr_from_yamlfile(_yamlfile_name=None):
         return open(_yamlfile_name).read()
     except FileNotFoundError:
         raise YamlFileNotFoundError(f"YAML file {repr(_yamlfile_name)} not found.")
+
+
+def return_htmldir_pathname(
+    _rootdir_pathname=None, _htmldir_name=None, _currentdir_pathname=None
+):
+    """Return pathname for folder holding urlified data files.
+
+    Args:
+        _rootdir_pathname: Full pathname of mklists repo root directory.
+        _htmldir_name:
+        _currentdir_pathname:
+
+    Note: uses output of:
+    * return_rootdir_pathname() => here: tmpdir
+
+    Example output: '/Users/foobar/github/mylists/.html/a'
+    """
+    return os.path.join(_rootdir_pathname, _htmldir_name, _currentdir_pathname)

@@ -243,18 +243,23 @@ def write_datafiles_from_datadict(_filename2datalines_dict=None):
             fout.writelines(value)
 
 
-def write_htmlfiles_from_datadict(_filename2datalines_dict=None, _verbose=False):
-    """Writes contents of filenames2datalines dictionary in which:
-    * keys are names of files that will be created in the
-      HTML directory
-    * values are contents of such files, where URLs will
-      be wrapped in HTML before being written
+def write_htmlfiles_from_datadict(
+    _filename2datalines_dict=None, _rootdir_pathname=None
+):
+    """Writes contents of in-memory dictionary, urlified, to disk.
+
+    Args:
+        _filenames2dirnames_dict: Python dictionary in which:
+            * keys are the names of files to be written
+            * values are lists of text lines.
+        _rootdir_pathname: Pathname of mklists repo root directory.
+        _htmldir_name: Name of HTML directory (relative to the root directory).
 
     Does the following:
     * creates HTML directory (if it does not already exist).
     * deletes files in htmldir (if files already exist there).
-    * for each item in the filenames2datalines dictionary:
-      * for the key (a filename):
+    * for each key in filenames2datalines dictionary:
+      * os.path.join(_rootdir_pathname, _htmldir_name, key, ".html")
         * prepends the pathname of the HTML directory
         * appends the file extension '.html'
       * for the value (a list of text lines):

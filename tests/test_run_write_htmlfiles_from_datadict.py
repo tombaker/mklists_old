@@ -13,29 +13,29 @@ DATADICT_BEFORE = {
     ],
 }
 
-DATADICT_AFTER = {
-    "dcmi.txt": [
-        "DC2019 "
-        '<a href="http://dublincore.org/conferences/2019">'
-        "http://dublincore.org/conferences/2019</a>\n",
-        "DC2019 Sep 23-26\n",
-    ],
-    "shex.txt": [
-        "SHEX Primer: "
-        '<a href="http://shex.io/shex-primer">'
-        "http://shex.io/shex-primer</a>\n",
-        "SHEX Wikidata: "
-        '<a href="http://bit.ly/shex_in_wikidata">'
-        "http://bit.ly/shex_in_wikidata</a>\n",
-    ],
-}
+# NOTUSE> DATADICT_AFTER = {
+# NOTUSE>     "dcmi.txt": [
+# NOTUSE>         "DC2019 "
+# NOTUSE>         '<a href="http://dublincore.org/conferences/2019">'
+# NOTUSE>         "http://dublincore.org/conferences/2019</a>\n",
+# NOTUSE>         "DC2019 Sep 23-26\n",
+# NOTUSE>     ],
+# NOTUSE>     "shex.txt": [
+# NOTUSE>         "SHEX Primer: "
+# NOTUSE>         '<a href="http://shex.io/shex-primer">'
+# NOTUSE>         "http://shex.io/shex-primer</a>\n",
+# NOTUSE>         "SHEX Wikidata: "
+# NOTUSE>         '<a href="http://bit.ly/shex_in_wikidata">'
+# NOTUSE>         "http://bit.ly/shex_in_wikidata</a>\n",
+# NOTUSE>     ],
+# NOTUSE> }
 
-DCMI_HTML_FILE_STR = """\
+TEST_FILEA_HTMLSTR = """\
 DC2019 <a href="http://dublincore.org/conferences/2019">http://dublincore.org/conferences/2019</a>
 DC2019 Sep 23-26
 """
 
-SHEX_HTML_FILE_STR = """\
+TEST_FILEB_HTMLSTR = """\
 SHEX Primer: <a href="http://shex.io/shex-primer">http://shex.io/shex-primer</a>
 SHEX Wikidata: <a href="http://bit.ly/shex_in_wikidata">http://bit.ly/shex_in_wikidata</a>
 """
