@@ -1,28 +1,30 @@
 """Tests for todo.py"""
 
+import io
 import os
 import pytest
+from mklists.run import write_htmlfiles_from_datadict
 from mklists.utils import return_htmlline_str_from_textstr
 
 DATADICT_BEFORE = {
-    "dcmi.txt": [
+    "filea.txt": [
         "DC2019 http://dublincore.org/conferences/2019\n",
         "DC2019 Sep 23-26\n",
     ],
-    "shex.txt": [
+    "fileb.txt": [
         "SHEX Primer: http://shex.io/shex-primer\n",
         "SHEX Wikidata: http://bit.ly/shex_in_wikidata\n",
     ],
 }
 
 # NOTUSE> DATADICT_AFTER = {
-# NOTUSE>     "dcmi.txt": [
+# NOTUSE>     "filea.txt": [
 # NOTUSE>         "DC2019 "
 # NOTUSE>         '<a href="http://dublincore.org/conferences/2019">'
 # NOTUSE>         "http://dublincore.org/conferences/2019</a>\n",
 # NOTUSE>         "DC2019 Sep 23-26\n",
 # NOTUSE>     ],
-# NOTUSE>     "shex.txt": [
+# NOTUSE>     "fileb.txt": [
 # NOTUSE>         "SHEX Primer: "
 # NOTUSE>         '<a href="http://shex.io/shex-primer">'
 # NOTUSE>         "http://shex.io/shex-primer</a>\n",
@@ -43,22 +45,15 @@ SHEX Wikidata: <a href="http://bit.ly/shex_in_wikidata">http://bit.ly/shex_in_wi
 """
 
 
-@pytest.mark.skip
 def test_write_htmlfiles_from_datadict(tmpdir):
     """@@@Docstring"""
-    tmpdira = tmpdir.mkdir("a")
-    os.chdir(tmpdira)
-    datadir_pathname = tmpdira
-    rootdir_pathname = tmpdir
-    htmldir_pathname = os.path.join(rootdir_pathname, ".html", "a")
-    filename2datalines_dict = DATADICT_BEFORE
-    files_to_be_created = []
-    lines_to_be_printed = []
-    for key in list(filename2datalines_dict.keys()):
-        files_to_be_created.append(os.path.join(htmldir_pathname, key))
-        for line in filename2datalines_dict[key]:
-            lines_to_be_printed.append(return_htmlline_str_from_textstr(line))
-    print(files_to_be_created)
-    print(lines_to_be_printed)
-    # 2019-08-17: Pick up here.
-    assert False
+    os.mkdir(os.path.join(tmpdir, ".html"))
+    os.mkdir(os.path.join(tmpdir, ".html", "a"))
+    os.chdir(os.path.join(tmpdir, ".html", "a"))
+    write_htmlfiles_from_datadict(
+        _filename2datalines_dict=DATADICT_BEFORE,
+        _htmldir_pathname=os.path.join(tmpdir, ".html"),
+        _backupdir_shortname="a",
+    )
+    assert io.open("filea.txt.html").read() == TEST_FILEA_HTMLSTR
+    assert io.open("fileb.txt.html").read() == TEST_FILEB_HTMLSTR

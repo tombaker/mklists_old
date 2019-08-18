@@ -1,6 +1,7 @@
 """Apply rules to process datalines."""
 
 
+import io
 import os
 import shutil
 from collections import defaultdict
@@ -19,7 +20,12 @@ from .exceptions import (
     RulefileNotFoundError,
 )
 from .rules import Rule
-from .utils import return_pyobj_from_yamlstr, return_yamlstr_from_yamlfile
+from .utils import (
+    return_pyobj_from_yamlstr,
+    return_yamlstr_from_yamlfile,
+    return_backupdir_shortname,
+    return_htmlline_str_from_textstr,
+)
 
 
 @preserve_cwd
@@ -308,31 +314,37 @@ def write_datafiles_from_datadict(_filename2datalines_dict=None):
             fout.writelines(value)
 
 
+@preserve_cwd
 def write_htmlfiles_from_datadict(
-    _filename2datalines_dict=None, _htmldir_pathname=None, _datadir_pathname=None
+    _filename2datalines_dict=None, _htmldir_pathname=None, _backupdir_shortname=None
 ):
     """Writes contents of in-memory dictionary, urlified, to disk.
 
     Args:
-        _filenames2dirnames_dict: Python dictionary in which:
+        _filename2datalines_dict: Python dictionary in which:
             * keys are the names of files to be written
             * values are lists of text lines.
         _htmldir_pathname: Name of HTML directory (relative to the root directory).
-
-    Does the following:
-    * creates HTML directory (if it does not already exist).
-    * deletes files in htmldir (if files already exist there).
-    * for each key in filenames2datalines dictionary:
-      * os.path.join(_htmldir_pathname, key)
-        * prepends the pathname of the HTML directory
-        * appends the file extension '.html'
-      * for the value (a list of text lines):
-        * filters each line through return_htmlline_str_from_textstr,
-          which wraps URLs in the lines with HTML angle
-          brackets
-
-    Refer to backup-related functions:
-    * /Users/tbaker/github/tombaker/mklists/mklists/backups.py
+        _backupdir_shortname:
     """
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
+    # https://www.tutorialspoint.com/How-can-I-create-a-directory-if-it-does-not-exist-using-Python
+    htmldir_subdir_pathname = os.path.join(_htmldir_pathname, _backupdir_shortname)
+    if not os.path.exists(htmldir_subdir_pathname):
+        os.makedirs(htmldir_subdir_pathname)
+    os.chdir(htmldir_subdir_pathname)
+    print(htmldir_subdir_pathname)
+    print(os.getcwd())
+    # next: delete files in htmldir_subdir_pathname
+
+    for key in list(_filename2datalines_dict.keys()):
+        lines_to_be_written = []
+        for line in _filename2datalines_dict[key]:
+            lines_to_be_written.append(return_htmlline_str_from_textstr(line))
+
+        file_to_write = key + ".html"
+        print("")
+        print(f"in directory {os.getcwd}:")
+        print(f"writing to {os.path.join(htmldir_subdir_pathname, file_to_write)}:")
+        print(f"writing to {file_to_write}:")
+        print(f"    lines: {lines_to_be_written}")
+        io.open(file_to_write, "w", encoding="utf-8").writelines(lines_to_be_written)
