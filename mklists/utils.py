@@ -9,6 +9,7 @@ from .constants import (
     CONFIG_YAMLFILE_NAME,
     HTMLDIR_NAME,
     RULE_YAMLFILE_NAME,
+    TIMESTAMP_STR,
     URL_PATTERN_REGEX,
 )
 from .decorators import preserve_cwd
@@ -19,6 +20,56 @@ from .exceptions import (
     MissingArgumentError,
     YamlFileNotFoundError,
 )
+
+
+def return_backupdir_pathname(
+    _rootdir_pathname=None,
+    _backupdir_subdir_name=None,
+    _backupdir_shortname=None,
+    _timestamp_str=TIMESTAMP_STR,
+):
+    """Generate a timestamped pathname for backups.
+
+    Note: uses output of:
+    * return_rootdir_pathname() => here: tmpdir
+
+    Example output:
+
+    Args:
+        _rootdir_pathname: Full pathname of mklists repo root directory.
+        _backupdir_subdir_name:
+        _backupdir_shortname:
+        _timestamp_str:
+    """
+    return os.path.join(
+        _rootdir_pathname, _backupdir_subdir_name, _backupdir_shortname, _timestamp_str
+    )
+
+
+def return_backupdir_shortname(_datadir_pathname=None, _rootdir_pathname=None):
+    """Creates shortname for backup directory:
+    * if directory is on top level, shortname is same as directory name
+    * if directory is nested, shortname is chain of directory names separated by underscores
+
+    Note: test for edge case where the following three subdirectories exist:
+        .
+        ├── a
+        │   └── b
+        └── a_b
+
+    Problem: "a_b" and "a/b" would both translate into shortname of "a_b" (clash)
+    Solutions?
+    * Use two underscores instead of one?
+    * for each dir in return_datadir_pathnames_under_somedir()
+        accumulate a list of shortnames using return_backupdir_shortname(dir) => list comprehension
+        accumulate a list of directory names in ".backups"
+        compare the two lists and delete unused directories
+
+    See /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_backupdir_shortname_REDO.py
+    """
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
+    return _datadir_pathname[len(_rootdir_pathname) :].strip("/").replace("/", "_")
 
 
 def return_compiled_regex(_regex=None):

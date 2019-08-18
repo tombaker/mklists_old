@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from mklists.backups import delete_older_backups
+from mklists.run import delete_older_backups
 
 
 def test_backups_delete_older_backups(tmpdir):

@@ -2,12 +2,17 @@
 
 
 import os
+import shutil
+import pytest
 from collections import defaultdict
 from .booleans import is_match_to_rule_as_line
-from .constants import CONFIG_YAMLFILE_NAME
+from .constants import CONFIG_YAMLFILE_NAME, TIMESTAMP_STR
+from .decorators import preserve_cwd
 from .exceptions import (
+    BackupDepthUnspecifiedError,
     BadYamlRuleError,
     BlankLinesError,
+    NoBackupDirSpecifiedError,
     NoDataError,
     NoRulesError,
     NotUTF8Error,
@@ -15,6 +20,64 @@ from .exceptions import (
 )
 from .rules import Rule
 from .utils import return_pyobj_from_yamlstr, return_yamlstr_from_yamlfile
+
+
+@preserve_cwd
+def delete_older_backups(
+    _rootdir_pathname=None,
+    _backupdir_subdir_name=None,
+    _backupdir_shortname=None,
+    _backup_depth_int=None,
+):
+    """Delete all but X number of backups of current working directory.
+
+    Args:
+        _rootdir_pathname:
+        _backupdir_subdir_name:
+        _backupdir_shortname:
+        _backup_depth_int: Number of backups to keep [default: 2]
+
+    See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backups_TODO.py
+    """
+    if _backup_depth_int is None:
+        raise BackupDepthUnspecifiedError(f"Number of backups to keep is unspecified.")
+    backupdir = os.path.join(
+        _rootdir_pathname, _backupdir_subdir_name, _backupdir_shortname
+    )
+    os.chdir(backupdir)
+    ls_backupdir = sorted(os.listdir())
+    while len(ls_backupdir) > _backup_depth_int:
+        timestamped_dir_to_delete = ls_backupdir.pop(0)
+        shutil.rmtree(timestamped_dir_to_delete)
+        print(f"rm {timestamped_dir_to_delete}")
+
+
+@pytest.mark.improve
+@preserve_cwd
+def move_datafiles_to_backupdir(
+    _datadir_pathname=None, _datafiles_names=None, _backupdir_pathname=None
+):
+    """Move data files to backup directory.
+
+    "Data files" are all visible files in the data directory.
+
+    Args:
+        _datadir_pathname: Pathname of the data directory,
+          (typically? always?) the current working directory.
+        _datafiles_names: Names of all visible files in the data
+          directory (pre-checked to ensure they are text files?).
+        _backupdir_pathname: Pathname of the backup directory.
+    """
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
+    if not _backupdir_pathname:
+        raise NoBackupDirSpecifiedError(f"No pathname for backup directory specified.")
+    os.chdir(_datadir_pathname)
+    try:
+        for file in _datafiles_names:
+            shutil.move(file, _backupdir_pathname)
+    except OSError:
+        print("Got an exception")
 
 
 def move_specified_datafiles_elsewhere(_filenames2dirnames_dict=None):

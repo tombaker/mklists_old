@@ -1,9 +1,9 @@
 """Returns pathname of backup directory, composed from info provided in arguments.
 
-Edit /Users/tbaker/github/tombaker/mklists/mklists/backups.py
+Edit /Users/tbaker/github/tombaker/mklists/mklists/utils.py
 """
 
-from mklists.backups import return_backupdir_pathname
+from mklists.utils import return_backupdir_pathname
 
 
 def test_backups_return_backupdir_pathname():
