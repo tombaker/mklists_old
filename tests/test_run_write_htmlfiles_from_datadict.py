@@ -4,7 +4,7 @@ import io
 import os
 import pytest
 from mklists.run import write_htmlfiles_from_datadict
-from mklists.utils import return_htmlline_str_from_textstr
+from mklists.utils import return_htmlline_str_from_textstr, return_visiblefiles_list
 
 DATADICT_BEFORE = {
     "filea.txt": [
@@ -16,23 +16,6 @@ DATADICT_BEFORE = {
         "SHEX Wikidata: http://bit.ly/shex_in_wikidata\n",
     ],
 }
-
-# NOTUSE> DATADICT_AFTER = {
-# NOTUSE>     "filea.txt": [
-# NOTUSE>         "DC2019 "
-# NOTUSE>         '<a href="http://dublincore.org/conferences/2019">'
-# NOTUSE>         "http://dublincore.org/conferences/2019</a>\n",
-# NOTUSE>         "DC2019 Sep 23-26\n",
-# NOTUSE>     ],
-# NOTUSE>     "fileb.txt": [
-# NOTUSE>         "SHEX Primer: "
-# NOTUSE>         '<a href="http://shex.io/shex-primer">'
-# NOTUSE>         "http://shex.io/shex-primer</a>\n",
-# NOTUSE>         "SHEX Wikidata: "
-# NOTUSE>         '<a href="http://bit.ly/shex_in_wikidata">'
-# NOTUSE>         "http://bit.ly/shex_in_wikidata</a>\n",
-# NOTUSE>     ],
-# NOTUSE> }
 
 TEST_FILEA_HTMLSTR = """\
 DC2019 <a href="http://dublincore.org/conferences/2019">http://dublincore.org/conferences/2019</a>
@@ -59,13 +42,13 @@ def test_write_htmlfiles_from_datadict(tmpdir):
     assert io.open("fileb.txt.html").read() == TEST_FILEB_HTMLSTR
 
 
-@pytest.mark.skip
 def test_write_htmlfiles_from_datadict_first_deletes_existing_files(tmpdir):
     """Deletes existing files in HTML directory before writing datalines."""
     htmldir_subdir_pathname = os.path.join(tmpdir, ".html", "a")
     os.makedirs(htmldir_subdir_pathname, exist_ok=True)
     os.chdir(htmldir_subdir_pathname)
-    htmldir_subdir_pathname.join("some_file.txt.html").write("some content")
+    io.open("some_file.txt.html", mode="w", encoding="utf-8").write("some content")
+    existing_files = return_visiblefiles_list()
     write_htmlfiles_from_datadict(
         _filename2datalines_dict=DATADICT_BEFORE,
         _htmldir_pathname=os.path.join(tmpdir, ".html"),
@@ -73,3 +56,4 @@ def test_write_htmlfiles_from_datadict_first_deletes_existing_files(tmpdir):
     )
     assert io.open("filea.txt.html").read() == TEST_FILEA_HTMLSTR
     assert io.open("fileb.txt.html").read() == TEST_FILEB_HTMLSTR
+    assert not os.path.exists("some_file.txt.html")

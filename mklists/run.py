@@ -25,6 +25,7 @@ from .utils import (
     return_yamlstr_from_yamlfile,
     return_backupdir_shortname,
     return_htmlline_str_from_textstr,
+    return_visiblefiles_list,
 )
 
 
@@ -331,9 +332,9 @@ def write_htmlfiles_from_datadict(
     if not os.path.exists(htmldir_subdir_pathname):
         os.makedirs(htmldir_subdir_pathname)
     os.chdir(htmldir_subdir_pathname)
-    print(htmldir_subdir_pathname)
-    print(os.getcwd())
-    # @@TODO next: delete files in htmldir_subdir_pathname
+
+    for file in return_visiblefiles_list():
+        os.remove(file)
 
     for key in list(_filename2datalines_dict.keys()):
         lines_to_be_written = []
