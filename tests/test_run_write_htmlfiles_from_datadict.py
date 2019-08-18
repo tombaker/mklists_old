@@ -59,12 +59,12 @@ def test_write_htmlfiles_from_datadict(tmpdir):
     assert io.open("fileb.txt.html").read() == TEST_FILEB_HTMLSTR
 
 
-@pytest.mark.skip
 def test_write_htmlfiles_from_datadict_first_deletes_existing_files(tmpdir):
-    """Writes datalines to HTML files in HTML directory."""
-    os.mkdir(os.path.join(tmpdir, ".html"))
-    os.mkdir(os.path.join(tmpdir, ".html", "a"))
-    os.chdir(os.path.join(tmpdir, ".html", "a"))
+    """Deletes existing files in HTML directory before writing datalines."""
+    htmldir_subdir_pathname = os.path.join(tmpdir, ".html", "a")
+    os.makedirs(htmldir_subdir_pathname, exist_ok=True)
+    os.chdir(htmldir_subdir_pathname)
+    htmldir_subdir_pathname.join("some_file.txt.html").write("some content")
     write_htmlfiles_from_datadict(
         _filename2datalines_dict=DATADICT_BEFORE,
         _htmldir_pathname=os.path.join(tmpdir, ".html"),
