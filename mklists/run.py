@@ -54,7 +54,7 @@ def delete_older_backups(
 
 @pytest.mark.improve
 @preserve_cwd
-def move_datafiles_to_backupdir(
+def move_datafiles_from_cwd_to_backupdir(
     _datadir_pathname=None, _datafiles_names=None, _backupdir_pathname=None
 ):
     """Move data files to backup directory.

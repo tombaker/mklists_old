@@ -82,7 +82,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _backupdir_shortname=backup_shortname,
     #                              _timestamp_str=TIMESTAMP_STR)
     #
-    #     move_datafiles_to_backupdir(
+    #     move_datafiles_from_cwd_to_backupdir(
     #         _datadir_pathname=datadir_pathname,
     #         _datafiles_names=visiblefiles_list,
     #         _backupdir_pathname=backupdir_pathname)
