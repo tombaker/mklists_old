@@ -327,14 +327,13 @@ def write_htmlfiles_from_datadict(
         _htmldir_pathname: Name of HTML directory (relative to the root directory).
         _backupdir_shortname:
     """
-    # https://www.tutorialspoint.com/How-can-I-create-a-directory-if-it-does-not-exist-using-Python
     htmldir_subdir_pathname = os.path.join(_htmldir_pathname, _backupdir_shortname)
     if not os.path.exists(htmldir_subdir_pathname):
         os.makedirs(htmldir_subdir_pathname)
     os.chdir(htmldir_subdir_pathname)
     print(htmldir_subdir_pathname)
     print(os.getcwd())
-    # next: delete files in htmldir_subdir_pathname
+    # @@TODO next: delete files in htmldir_subdir_pathname
 
     for key in list(_filename2datalines_dict.keys()):
         lines_to_be_written = []
@@ -342,9 +341,4 @@ def write_htmlfiles_from_datadict(
             lines_to_be_written.append(return_htmlline_str_from_textstr(line))
 
         file_to_write = key + ".html"
-        print("")
-        print(f"in directory {os.getcwd}:")
-        print(f"writing to {os.path.join(htmldir_subdir_pathname, file_to_write)}:")
-        print(f"writing to {file_to_write}:")
-        print(f"    lines: {lines_to_be_written}")
         io.open(file_to_write, "w", encoding="utf-8").writelines(lines_to_be_written)

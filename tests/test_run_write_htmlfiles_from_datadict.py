@@ -46,7 +46,7 @@ SHEX Wikidata: <a href="http://bit.ly/shex_in_wikidata">http://bit.ly/shex_in_wi
 
 
 def test_write_htmlfiles_from_datadict(tmpdir):
-    """@@@Docstring"""
+    """Writes datalines to HTML files in HTML directory."""
     os.mkdir(os.path.join(tmpdir, ".html"))
     os.mkdir(os.path.join(tmpdir, ".html", "a"))
     os.chdir(os.path.join(tmpdir, ".html", "a"))
