@@ -47,6 +47,21 @@ SHEX Wikidata: <a href="http://bit.ly/shex_in_wikidata">http://bit.ly/shex_in_wi
 
 def test_write_htmlfiles_from_datadict(tmpdir):
     """Writes datalines to HTML files in HTML directory."""
+    htmldir_subdir_pathname = os.path.join(tmpdir, ".html", "a")
+    os.makedirs(htmldir_subdir_pathname, exist_ok=True)
+    os.chdir(htmldir_subdir_pathname)
+    write_htmlfiles_from_datadict(
+        _filename2datalines_dict=DATADICT_BEFORE,
+        _htmldir_pathname=os.path.join(tmpdir, ".html"),
+        _backupdir_shortname="a",
+    )
+    assert io.open("filea.txt.html").read() == TEST_FILEA_HTMLSTR
+    assert io.open("fileb.txt.html").read() == TEST_FILEB_HTMLSTR
+
+
+@pytest.mark.skip
+def test_write_htmlfiles_from_datadict_first_deletes_existing_files(tmpdir):
+    """Writes datalines to HTML files in HTML directory."""
     os.mkdir(os.path.join(tmpdir, ".html"))
     os.mkdir(os.path.join(tmpdir, ".html", "a"))
     os.chdir(os.path.join(tmpdir, ".html", "a"))
