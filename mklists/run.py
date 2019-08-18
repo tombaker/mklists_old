@@ -3,8 +3,8 @@
 
 import os
 import shutil
-import pytest
 from collections import defaultdict
+import pytest
 from .booleans import is_match_to_rule_as_line
 from .constants import CONFIG_YAMLFILE_NAME, TIMESTAMP_STR
 from .decorators import preserve_cwd
