@@ -39,9 +39,9 @@ def init(config, with_examples):
 def run(ctx, debug, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 
-    # currentdir_pathname    = os.getcwd()
+    # datadir_pathname    = os.getcwd()
     # rootdir_pathname       = return_rootdir_pathname(
-    #                              _currentdir_pathname=currentdir_pathname
+    #                              _datadir_pathname=datadir_pathname
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     # ctx.obj               = return_configdict_from_config_yamlfile(
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
@@ -49,7 +49,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     # if here_only:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              _rootdir_pathname=rootdir_pathname,
-    #                              _somedir_pathname=currentdir_pathname,
+    #                              _somedir_pathname=datadir_pathname,
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
     # else:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(

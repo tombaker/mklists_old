@@ -1,5 +1,7 @@
 """Apply rules to process datalines."""
 
+
+import os
 from collections import defaultdict
 from .booleans import is_match_to_rule_as_line
 from .constants import CONFIG_YAMLFILE_NAME
@@ -244,7 +246,7 @@ def write_datafiles_from_datadict(_filename2datalines_dict=None):
 
 
 def write_htmlfiles_from_datadict(
-    _filename2datalines_dict=None, _rootdir_pathname=None
+    _filename2datalines_dict=None, _htmldir_pathname=None, _datadir_pathname=None
 ):
     """Writes contents of in-memory dictionary, urlified, to disk.
 
@@ -252,21 +254,22 @@ def write_htmlfiles_from_datadict(
         _filenames2dirnames_dict: Python dictionary in which:
             * keys are the names of files to be written
             * values are lists of text lines.
-        _rootdir_pathname: Pathname of mklists repo root directory.
-        _htmldir_name: Name of HTML directory (relative to the root directory).
+        _htmldir_pathname: Name of HTML directory (relative to the root directory).
 
     Does the following:
     * creates HTML directory (if it does not already exist).
     * deletes files in htmldir (if files already exist there).
     * for each key in filenames2datalines dictionary:
-      * os.path.join(_rootdir_pathname, _htmldir_name, key, ".html")
+      * os.path.join(_htmldir_pathname, key)
         * prepends the pathname of the HTML directory
         * appends the file extension '.html'
       * for the value (a list of text lines):
-        * filters each line through return_htmlstr_from_textstr,
+        * filters each line through return_htmlline_str_from_textstr,
           which wraps URLs in the lines with HTML angle
           brackets
 
     Refer to backup-related functions:
     * /Users/tbaker/github/tombaker/mklists/mklists/backups.py
     """
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()

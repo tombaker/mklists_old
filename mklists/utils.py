@@ -70,14 +70,17 @@ def return_datadir_pathnames_under_somedir(
     return datadirs
 
 
-def return_htmlstr_from_textstr(_textstr=None):
-    """Return string with URLs wrapped with <a href=></a> HTML tags.
+def return_htmlline_str_from_textstr(_textstr=None):
+    """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 
     Args:
         _textstr: A text string (typically, one line of text)."""
     if "<a href=" in _textstr:
         return _textstr
-    return re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', _textstr)
+    return (
+        re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', _textstr.rstrip())
+        + "\n"
+    )
 
 
 def return_pyobj_from_yamlstr(_yamlstr=None):
@@ -90,16 +93,16 @@ def return_pyobj_from_yamlstr(_yamlstr=None):
 
 @preserve_cwd
 def return_rootdir_pathname(
-    _currentdir_pathname=None, _config_yamlfile_name=CONFIG_YAMLFILE_NAME
+    _datadir_pathname=None, _config_yamlfile_name=CONFIG_YAMLFILE_NAME
 ):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
-        _currentdir_pathname:
+        _datadir_pathname:
         _config_yamlfile_name:
     """
-    if not _currentdir_pathname:
-        _currentdir_pathname = os.getcwd()
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
     while _config_yamlfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
@@ -165,14 +168,14 @@ def return_yamlstr_from_yamlfile(_yamlfile_name=None):
 
 
 def return_htmldir_pathname(
-    _rootdir_pathname=None, _htmldir_name=HTMLDIR_NAME, _currentdir_pathname=None
+    _rootdir_pathname=None, _htmldir_name=HTMLDIR_NAME, _datadir_pathname=None
 ):
     """Return pathname for folder holding urlified data files.
 
     Args:
         _rootdir_pathname: Full pathname of mklists repo root directory.
         _htmldir_name:
-        _currentdir_pathname:
+        _datadir_pathname:
 
     Note: uses output of:
     * return_rootdir_pathname() => here: tmpdir
@@ -181,6 +184,6 @@ def return_htmldir_pathname(
     """
     if not _rootdir_pathname:
         raise MissingArgumentError(f"Missing argument '_roodir_pathname'")
-    if not _currentdir_pathname:
-        _currentdir_pathname = os.getcwd()
-    return os.path.join(_rootdir_pathname, _htmldir_name, _currentdir_pathname)
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
+    return os.path.join(_rootdir_pathname, _htmldir_name, _datadir_pathname)

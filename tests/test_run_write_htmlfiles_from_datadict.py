@@ -1,6 +1,8 @@
 """Tests for todo.py"""
 
+import os
 import pytest
+from mklists.utils import return_htmlline_str_from_textstr
 
 DATADICT_BEFORE = {
     "dcmi.txt": [
@@ -41,7 +43,22 @@ SHEX Wikidata: <a href="http://bit.ly/shex_in_wikidata">http://bit.ly/shex_in_wi
 """
 
 
-@pytest.mark.skip(reason="todo")
-def test_write_htmlfiles_from_datadict():
+@pytest.mark.skip
+def test_write_htmlfiles_from_datadict(tmpdir):
     """@@@Docstring"""
+    tmpdira = tmpdir.mkdir("a")
+    os.chdir(tmpdira)
+    datadir_pathname = tmpdira
+    rootdir_pathname = tmpdir
+    htmldir_pathname = os.path.join(rootdir_pathname, ".html", "a")
+    filename2datalines_dict = DATADICT_BEFORE
+    files_to_be_created = []
+    lines_to_be_printed = []
+    for key in list(filename2datalines_dict.keys()):
+        files_to_be_created.append(os.path.join(htmldir_pathname, key))
+        for line in filename2datalines_dict[key]:
+            lines_to_be_printed.append(return_htmlline_str_from_textstr(line))
+    print(files_to_be_created)
+    print(lines_to_be_printed)
+    # 2019-08-17: Pick up here.
     assert False

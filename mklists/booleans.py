@@ -37,7 +37,7 @@ def is_match_to_rule_as_line(_given_ruleobj=None, _given_dataline_str=None):
 
 def is_valid_as_filename(
     _file_tobetested_name=None,
-    _currentdir_pathname=None,
+    _datadir_pathname=None,
     _invalid_filename_regexes_list=INVALID_FILENAME_REGEXES,
     _valid_filename_characters_regex_str=VALID_FILENAME_CHARACTERS_REGEX,
 ):
@@ -51,8 +51,8 @@ def is_valid_as_filename(
     _valid_filename_characters_regex_str as arguments but should read
     them from the context object.
     """
-    if not _currentdir_pathname:
-        _currentdir_pathname = os.getcwd()
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
     for badpat in _invalid_filename_regexes_list:
         if re.search(badpat, _file_tobetested_name):
             return False
