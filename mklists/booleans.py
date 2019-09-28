@@ -9,7 +9,7 @@ from .exceptions import FilenameIsAlreadyDirnameError
 
 
 @pytest.mark.improve
-def is_match_to_rule_as_line(_given_ruleobj=None, _given_dataline_str=None):
+def line_is_match_to_rule(_given_ruleobj=None, _given_dataline_str=None):
     """Returns True if data line matches pattern specified in given rule."""
 
     # if is_valid_as_regex(_given_ruleobj

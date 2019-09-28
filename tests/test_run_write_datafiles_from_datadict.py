@@ -22,8 +22,11 @@ def test_write_datafiles_from_datadict_contents(tmpdir):
     assert io.open("a.txt").read() == "Line 1\nLine 2\n"
 
 
+@pytest.mark.improve
 def test_write_datafiles_from_datadict_contents_unless_zero_length(tmpdir):
-    """Does not write file if value is empty list."""
+    """Does not write file if value is empty list.
+
+    2019-09-28: Unclear if this is needed."""
     os.chdir(tmpdir)
     data_dict = {"a.txt": ["Line 1\n", "Line 2\n"], "b.txt": []}
     write_datafiles_from_datadict(data_dict)

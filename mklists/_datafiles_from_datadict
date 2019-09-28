@@ -6,7 +6,7 @@ import os
 import shutil
 from collections import defaultdict
 import pytest
-from .booleans import is_match_to_rule_as_line
+from .booleans import line_is_match_to_rule
 from .constants import CONFIG_YAMLFILE_NAME, TIMESTAMP_STR
 from .decorators import preserve_cwd
 from .exceptions import (
@@ -176,7 +176,7 @@ def return_filename2datalines_dict_after_applying_rules_to_lines(
         #    append matching lines to value of 'ruleobj.target'
         #    remove matching lines from value of 'ruleobj.source'
         for line in datadict[ruleobj.source]:
-            if is_match_to_rule_as_line(ruleobj, line):
+            if line_is_match_to_rule(ruleobj, line):
                 datadict[ruleobj.target].extend([line])
                 datadict[ruleobj.source].remove(line)
 
