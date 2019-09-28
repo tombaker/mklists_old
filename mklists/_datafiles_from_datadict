@@ -302,7 +302,7 @@ def return_ruleobj_list_from_rulefile_pathnames_chain_old(
 def write_datafiles_from_datadict(_filename2datalines_dict=None):
     """Writes contents of filenames2datalines dictionary in which:
     * keys are names of files that will be created
-    * values are (non-empty) contents of such files (lists of text lines)
+    * values are contents of such files (lists of text lines)
 
     Note: assumes that filenames2datalines dictionary is correct:
     * filenames are valid (e.g., no pathname slashes '/')
@@ -311,9 +311,8 @@ def write_datafiles_from_datadict(_filename2datalines_dict=None):
         _filename2datalines_dict: dictionary relating strings to lists
     """
     for (key, value) in _filename2datalines_dict.items():
-        if value:
-            with open(key, "w", encoding="utf-8") as fout:
-                fout.writelines(value)
+        with open(key, "w", encoding="utf-8") as fout:
+            fout.writelines(value)
 
 
 @preserve_cwd
