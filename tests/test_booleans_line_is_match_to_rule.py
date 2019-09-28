@@ -52,20 +52,6 @@ def test_line_is_match_to_rule_entire_line():
     )
 
 
-@pytest.mark.improve
-@pytest.mark.skip
-def test_line_is_match_to_rule_does_not_match_if_regex_is_bad():
-    """Raises exception because regex is bad.
-    The function line_is_match_to_rule() does not test validity of the
-    regex - this is done by the Rule method _source_matchpattern_is_valid()."""
-    given_ruleobj = Rule(0, "^N(OW", "a.txt", "b.txt", 0)
-    given_dataline_str = "N(OW Buy milk"
-    with pytest.raises(SystemExit):
-        line_is_match_to_rule(
-            _given_ruleobj=given_ruleobj, _given_dataline_str=given_dataline_str
-        )
-
-
 def test_line_is_match_to_rule_entire_line_escaping_parenthesis():
     """Returns True because regex matches the start of the entire line."""
     given_ruleobj = Rule(0, "^N\(OW", "a.txt", "b.txt", 0)
