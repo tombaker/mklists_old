@@ -87,7 +87,9 @@ def move_datafiles_from_cwd_to_backupdir(
         print("Got an exception")
 
 
-def move_specified_datafiles_elsewhere(_filenames2dirnames_dict=None):
+def move_specified_datafiles_elsewhere(
+    _filenames2dirnames_dict=None, _rootdir_pathname=None
+):
     """Moves data files to specified destination directories.
 
     Uses a dictionary, configurable in 'mklists.yml', in which:
