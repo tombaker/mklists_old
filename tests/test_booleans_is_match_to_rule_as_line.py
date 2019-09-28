@@ -43,11 +43,10 @@ def test_is_match_to_rule_as_line_gotcha():
 
 
 @pytest.mark.improve
-@pytest.mark.skip
 def test_is_match_to_rule_as_line_entire_line():
     """Returns True because regex matches the start of the entire line."""
     given_ruleobj = Rule(0, "^NOW", "a.txt", "b.txt", 0)
-    given_dataline_str = ("NOW Buy milk",)
+    given_dataline_str = "NOW Buy milk"
     assert is_match_to_rule_as_line(
         _given_ruleobj=given_ruleobj, _given_dataline_str=given_dataline_str
     )
