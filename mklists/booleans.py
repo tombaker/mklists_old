@@ -12,7 +12,7 @@ from .exceptions import FilenameIsAlreadyDirnameError
 def line_is_match_to_rule(_given_ruleobj=None, _given_dataline_str=None):
     """Returns True if data line matches pattern specified in given rule."""
 
-    # if is_valid_as_regex(_given_ruleobj
+    # if regex_is_valid_as_regex(_given_ruleobj
     # @@@TODO
 
     # Line does not match if given field greater than number of fields in line.
@@ -66,7 +66,7 @@ def filename_is_valid_as_filename(
     return True
 
 
-def is_valid_as_regex(_regex=None):
+def regex_is_valid_as_regex(_regex=None):
     """@@@Docstring"""
     try:
         re.compile(_regex)

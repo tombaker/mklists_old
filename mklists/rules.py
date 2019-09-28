@@ -1,7 +1,7 @@
 """Factory to create, self-test, and lightly correct a rule object."""
 
 from dataclasses import dataclass
-from .booleans import filename_is_valid_as_filename, is_valid_as_regex
+from .booleans import filename_is_valid_as_filename, regex_is_valid_as_regex
 from .exceptions import (
     BadFilenameError,
     NotIntegerError,
@@ -51,7 +51,7 @@ class Rule:
 
     def _source_matchpattern_is_valid(self):
         """Returns True if source_matchpattern is valid regular expression."""
-        if not is_valid_as_regex(self.source_matchpattern):
+        if not regex_is_valid_as_regex(self.source_matchpattern):
             print(f"source_matchpattern in rule: {self}")
             raise SourceMatchpatternError("is not valid a valid regex.")
         return True
