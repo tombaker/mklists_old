@@ -1,7 +1,7 @@
 """Factory to create, self-test, and lightly correct a rule object."""
 
 from dataclasses import dataclass
-from .booleans import is_valid_as_filename, is_valid_as_regex
+from .booleans import filename_is_valid_as_filename, is_valid_as_regex
 from .exceptions import (
     BadFilenameError,
     NotIntegerError,
@@ -59,7 +59,7 @@ class Rule:
     def _filenames_are_valid(self):
         """Returns True if filenames use only valid characters."""
         for filename in [self.source, self.target]:
-            if not is_valid_as_filename(filename):
+            if not filename_is_valid_as_filename(filename):
                 print(f"{repr(filename)} in rule: {self}")
                 raise BadFilenameError("is not a valid filename.")
         return True

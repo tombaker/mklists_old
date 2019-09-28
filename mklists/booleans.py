@@ -35,7 +35,7 @@ def line_is_match_to_rule(_given_ruleobj=None, _given_dataline_str=None):
     return False
 
 
-def is_valid_as_filename(
+def filename_is_valid_as_filename(
     _file_tobetested_name=None,
     _datadir_pathname=None,
     _invalid_filename_regexes_list=INVALID_FILENAME_REGEXES,

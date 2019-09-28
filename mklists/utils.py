@@ -4,7 +4,7 @@ import os
 import glob
 import re
 import ruamel.yaml
-from .booleans import is_valid_as_filename
+from .booleans import filename_is_valid_as_filename
 from .constants import (
     CONFIG_YAMLFILE_NAME,
     HTMLDIR_NAME,
@@ -204,7 +204,7 @@ def return_visiblefiles_list(_datadir_pathname=None):
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:
-            is_valid_as_filename(filename)
+            filename_is_valid_as_filename(filename)
         finally:
             all_datafile_names.append(filename)
     return sorted(all_datafile_names)
