@@ -14,7 +14,7 @@ def line_is_match_to_rule(_given_ruleobj=None, _given_dataline_str=None):
 
     2019-09-28: This function assumes that the rule object received
     is valid, its validity having been tested by
-    run/return_ruleobj_list_from_rulefile_pathname_sequence()."""
+    run/return_ruleobj_list_from_rulefile_pathname_chain()."""
 
     # if regex_is_valid_as_regex(_given_ruleobj
     # @@@TODO

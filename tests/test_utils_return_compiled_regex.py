@@ -47,8 +47,8 @@ def test_return_compiled_regex_with_double_escaped_backslash():
     assert re.search(regex_compiled, "N\OW")
 
 
-def test_return_compiled_regex_uses_backslash_sequence():
-    """Returns compiled regex from string with backslash sequence."""
+def test_return_compiled_regex_uses_backslash_chain():
+    """Returns compiled regex from string with backslash chain."""
     regex = "\d\d\d"
     regex_compiled = return_compiled_regex(regex)
     assert isinstance(return_compiled_regex(regex), re.Pattern)

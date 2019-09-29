@@ -200,10 +200,10 @@ def return_filename2datalines_dict_after_applying_rules_to_lines(
     return dict(datadict)
 
 
-def return_ruleobj_list_from_rulefile_pathnames_sequence(
+def return_ruleobj_list_from_rulefile_pathnames_chain(
     _config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
 ):
-    """Return list of rule objects from sequence (list) of rulefile pathnames.
+    """Return list of rule objects from chain (list) of rulefile pathnames.
 
     @@@ 2019-08-15: Must be completely rewritten.
     Currently starts by recursively looking in parent

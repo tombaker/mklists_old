@@ -45,7 +45,7 @@ from mklists.utils import return_rulefile_pathnames_chain_as_list
 
 
 def test_return_rulefile_pathnames_chain_as_list_basic(tmpdir):
-    """Here: the normal case: sequence of directories with '.rules'
+    """Here: the normal case: chain of directories with '.rules'
     ends in rootdir (which also has 'mklists.yml' file)."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -67,7 +67,7 @@ def test_return_rulefile_pathnames_chain_as_list_basic(tmpdir):
 
 
 def test_return_rulefile_pathnames_chain_as_list_ends_before_repo_rootdir(tmpdir):
-    """Here: sequence of directories with ".rules" ends
+    """Here: chain of directories with ".rules" ends
     before reaching root directory of repo (i.e., the
     root directory does not itself have a ".rules" file."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")

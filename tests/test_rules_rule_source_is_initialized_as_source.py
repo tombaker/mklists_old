@@ -1,4 +1,4 @@
-"""Rules are listed in a sequence where:
+"""Rules are listed in a chain where:
 * the first rule initializes the 'source' field
 * in every subsequent rule, the 'source' must have been
   initialized by a previous rule, either in the initial
