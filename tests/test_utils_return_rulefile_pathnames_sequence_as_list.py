@@ -39,12 +39,14 @@ $ mklists run --here
 """
 
 import os
+import pytest
 from mklists.initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from mklists.utils import return_rulefile_pathnames_sequence_as_list
 
 
 def test_return_rulefile_pathnames_sequence_as_list_basic(tmpdir):
-    """Normal case: happens to end in rootdir (with 'mklists.yml' file)."""
+    """Here: the normal case: sequence of directories with '.rules'
+    ends in rootdir (which also has 'mklists.yml' file)."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdira = tmpdir.mkdir("a")
@@ -66,7 +68,9 @@ def test_return_rulefile_pathnames_sequence_as_list_basic(tmpdir):
 
 
 def test_return_rulefile_pathnames_sequence_as_list_ends_before_repo_rootdir(tmpdir):
-    """sequence of directories with '.rules' ends before repo rootdir."""
+    """Here: sequence of directories with ".rules" ends
+    before reaching root directory of repo (i.e., the
+    root directory does not itself have a ".rules" file."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
@@ -86,8 +90,9 @@ def test_return_rulefile_pathnames_sequence_as_list_ends_before_repo_rootdir(tmp
 
 
 def test_return_rulefile_pathnames_sequence_as_list_even_without_repo_rootdir(tmpdir):
-    """Here: return_rulefile_pathnames_sequence_as_list() is called
-    specifying _startdir_pathname as an argument."""
+    """Here: return_rulefile_pathnames_sequence_as_list()
+    called with _startdir_pathname as an argument."""
+    tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")
@@ -108,9 +113,10 @@ def test_return_rulefile_pathnames_sequence_as_list_even_without_repo_rootdir(tm
 def test_return_rulefile_pathnames_sequence_as_list_without_specifying_startdir_pathname(
     tmpdir
 ):
-    """Here: return_rulefile_pathnames_sequence_as_list() is called
-    * without specifying _startdir_pathname as an argument
+    """Here: return_rulefile_pathnames_sequence_as_list()
+    * called without specifying _startdir_pathname as an argument
     * therefore defaults to current working directory as _startdir_pathname"""
+    tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
     tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")

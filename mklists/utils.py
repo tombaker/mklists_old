@@ -168,9 +168,11 @@ def return_rulefile_pathnames_sequence_as_list(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
 ):
-    """Return list of rule files from parent directories and current directory.
+    """Return sequence of rule files leading from parent directories
+    to starting directory (by default the current directory).
 
-    Looks no higher than root directory of mklists repo.
+    Looks no higher than the root directory of a mklists repo, i.e., the
+    directory with a YAML configuration file (by default "mklists.yml").
 
     Args:
         _startdir_pathname:
