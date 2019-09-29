@@ -200,58 +200,6 @@ def return_filename2datalines_dict_after_applying_rules_to_lines(
     return dict(datadict)
 
 
-def return_ruleobj_list_from_rulefile_pathnames_chain(
-    _config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
-):
-    """Return list of rule objects from chain (list) of rulefile pathnames.
-
-    @@@ 2019-08-15: Must be completely rewritten.
-    Currently starts by recursively looking in parent
-    directories for '.rules' and prepending them to list
-    of rule files. If '.rules' not found in parent
-    directory, stops looking.
-
-    @@@ 2019-08-12: Change parameter _config_yamlfile to _config_pydict
-    @@@ 2019-08-13: REDO as return_ruleobj_list_from_rules_list
-    """
-
-    all_rules_list = []
-
-    config_pydict = return_pyobj_from_yamlstr(
-        return_yamlstr_from_yamlfile(_yamlfile_name=CONFIG_YAMLFILE_NAME)
-    )
-    try:
-        all_rules_list.append(config_pydict["global_rules"])
-    except KeyError:
-        if _verbose:
-            print("No global rules found - skipping.")
-    except TypeError:
-        if _verbose:
-            print("No global rules found - skipping.")
-
-    rules_pylist = return_pyobj_from_yamlstr(
-        return_yamlstr_from_yamlfile(_yamlfile_name=CONFIG_YAMLFILE_NAME)
-    )
-    try:
-        all_rules_list.append(rules_pylist)
-    except FileNotFoundError:
-        raise RulefileNotFoundError(f"Rule file {repr(_rule_yamlfile_name)} not found.")
-
-    if not all_rules_list:
-        raise NoRulesError("No rules were found.")
-
-    ruleobj_list = []
-    for item in all_rules_list:
-        try:
-            Rule(*item).is_valid
-        except TypeError:
-            raise BadYamlRuleError(f"Rule {repr(item)} is badly formed.")
-        ruleobj_list.append(Rule(*item))
-
-    # If no rules, return None or empty list?
-    return ruleobj_list
-
-
 def write_datafiles_from_datadict(_filename2datalines_dict=None):
     """Writes contents of filenames2datalines dictionary in which:
     * keys are names of files that will be created
