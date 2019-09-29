@@ -103,6 +103,11 @@ def move_specified_datafiles_elsewhere(
     Args:
         _filenames2dirnames_dict: keys are filenames, values are destination directories
     """
+    for key in _filenames2dirnames_dict:
+        destination_dir = os.path.join(_rootdir_pathname, _filenames2dirnames_dict[key])
+        if os.path.exists(key):
+            if os.path.exists(destination_dir):
+                shutil.move(key, destination_dir)
 
 
 def return_configdict_from_config_yamlfile(_config_yamlfile_name=None):
