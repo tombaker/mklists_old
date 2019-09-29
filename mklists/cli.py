@@ -58,7 +58,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
-    #     rulefile_pathnames_sequence     = return_rulefile_pathnames_sequence_as_list(
+    #     rulefile_pathnames_sequence     = return_rulefile_pathnames_chain_as_list(
     #                                    _startdir_pathname=datadir,
     #                                    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
