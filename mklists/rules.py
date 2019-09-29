@@ -1,7 +1,10 @@
 """Factory to create, self-test, and lightly correct a rule object."""
 
+import os
 from dataclasses import dataclass
 from .booleans import filename_is_valid_as_filename, regex_is_valid_as_regex
+from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
     NotIntegerError,
@@ -82,3 +85,35 @@ class Rule:
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
+
+
+@preserve_cwd
+def return_rulefile_pathnames_chain_as_list(
+    _startdir_pathname=None,
+    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
+    _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+):
+    """Return chain of rule files leading from parent directories
+    to starting directory (by default the current directory).
+
+    Looks no higher than the root directory of a mklists repo, i.e., the
+    directory with a YAML configuration file (by default "mklists.yml").
+
+    Args:
+        _startdir_pathname:
+        _rule_yamlfile_name:
+        _config_yamlfile_name:
+    """
+    if not _startdir_pathname:
+        _startdir_pathname = os.getcwd()
+    os.chdir(_startdir_pathname)
+    rulefile_pathnames_chain = []
+    while _rule_yamlfile_name in os.listdir():
+        rulefile_pathnames_chain.insert(
+            0, os.path.join(os.getcwd(), _rule_yamlfile_name)
+        )
+        if _config_yamlfile_name in os.listdir():
+            break
+        os.chdir(os.pardir)
+
+    return rulefile_pathnames_chain

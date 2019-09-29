@@ -163,38 +163,6 @@ def return_rootdir_pathname(
 
 
 @preserve_cwd
-def return_rulefile_pathnames_chain_as_list(
-    _startdir_pathname=None,
-    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
-):
-    """Return chain of rule files leading from parent directories
-    to starting directory (by default the current directory).
-
-    Looks no higher than the root directory of a mklists repo, i.e., the
-    directory with a YAML configuration file (by default "mklists.yml").
-
-    Args:
-        _startdir_pathname:
-        _rule_yamlfile_name:
-        _config_yamlfile_name:
-    """
-    if not _startdir_pathname:
-        _startdir_pathname = os.getcwd()
-    os.chdir(_startdir_pathname)
-    rulefile_pathnames_chain = []
-    while _rule_yamlfile_name in os.listdir():
-        rulefile_pathnames_chain.insert(
-            0, os.path.join(os.getcwd(), _rule_yamlfile_name)
-        )
-        if _config_yamlfile_name in os.listdir():
-            break
-        os.chdir(os.pardir)
-
-    return rulefile_pathnames_chain
-
-
-@preserve_cwd
 def return_visiblefiles_list(_datadir_pathname=None):
     """Return list of names of visible files with valid names.
 
