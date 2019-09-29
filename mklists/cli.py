@@ -58,7 +58,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
-    #     rulefile_pathnames_chain     = return_rulefile_pathnames_chain_as_list(
+    #     rulefile_pathnames_sequence     = return_rulefile_pathnames_sequence_as_list(
     #                                    _startdir_pathname=datadir,
     #                                    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
@@ -95,7 +95,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rule_yamlfile
-    #     ruleobj_list       = return_ruleobj_list_from_rulefile_pathnames_chain(
+    #     ruleobj_list       = return_ruleobj_list_from_rulefile_pathnames_sequence(
     #                              config_yamlfile=CONFIG_YAMLFILE_NAME, # needed??
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)

@@ -1,5 +1,5 @@
 """
-run.py: return_ruleobj_list_from_rulefile_pathnames_chain
+run.py: return_ruleobj_list_from_rulefile_pathnames_sequence
     Return list of rule objects from configuration and rule files.
 """
 
@@ -7,7 +7,7 @@ import io
 import os
 import pytest
 from mklists.rules import Rule
-from mklists.run import return_ruleobj_list_from_rulefile_pathnames_chain
+from mklists.run import return_ruleobj_list_from_rulefile_pathnames_sequence
 from mklists.constants import RULE_YAMLFILE_NAME
 
 TEST_RULES_YAMLFILE_STR = r"""# Test rules for this module only.
@@ -18,11 +18,12 @@ TEST_RULES_YAMLFILE_STR = r"""# Test rules for this module only.
 
 
 @pytest.mark.skip
-def test_run_return_ruleobj_list_from_rulefile_pathnames_chain(tmpdir):
+def test_run_return_ruleobj_list_from_rulefile_pathnames_sequence(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)
     rule_yamlfile_pathname = os.path.join(tmpdir, RULE_YAMLFILE_NAME)
     io.open(rule_yamlfile_pathname, mode="w").write(TEST_RULES_YAMLFILE_STR)
-    # ruleobj_list = return_ruleobj_list_from_rulefile_pathnames_chain(
-    #                   _rule_yamlfile_pathname=rule_yamlfile_pathname)
+    ruleobj_list = return_ruleobj_list_from_rulefile_pathnames_sequence(
+        _config_yamlfile=None, _rule_yamlfile_name=None, _verbose=None
+    )
     assert io.open(rule_yamlfile_pathname).read() == TEST_RULES_YAMLFILE_STR

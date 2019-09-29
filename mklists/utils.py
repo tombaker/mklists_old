@@ -49,7 +49,7 @@ def return_backupdir_pathname(
 def return_backupdir_shortname(_datadir_pathname=None, _rootdir_pathname=None):
     """Creates shortname for backup directory:
     * if directory is on top level, shortname is same as directory name
-    * if directory is nested, shortname is chain of directory names separated by underscores
+    * if directory is nested, shortname is sequence of directory names separated by underscores
 
     Note: test for edge case where the following three subdirectories exist:
         .
@@ -163,7 +163,7 @@ def return_rootdir_pathname(
 
 
 @preserve_cwd
-def return_rulefile_pathnames_chain_as_list(
+def return_rulefile_pathnames_sequence_as_list(
     _startdir_pathname=None,
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
@@ -180,16 +180,16 @@ def return_rulefile_pathnames_chain_as_list(
     if not _startdir_pathname:
         _startdir_pathname = os.getcwd()
     os.chdir(_startdir_pathname)
-    rulefile_pathnames_chain = []
+    rulefile_pathnames_sequence = []
     while _rule_yamlfile_name in os.listdir():
-        rulefile_pathnames_chain.insert(
+        rulefile_pathnames_sequence.insert(
             0, os.path.join(os.getcwd(), _rule_yamlfile_name)
         )
         if _config_yamlfile_name in os.listdir():
             break
         os.chdir(os.pardir)
 
-    return rulefile_pathnames_chain
+    return rulefile_pathnames_sequence
 
 
 @preserve_cwd
