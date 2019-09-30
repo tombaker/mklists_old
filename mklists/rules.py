@@ -166,7 +166,7 @@ def return_ruleobj_list_from_yamlstr(_yamlstr=None):
         try:
             if Rule(*item).is_valid():
                 ruleobj_list.append(Rule(*item))
-        except MissingValueError as err:
+        except MissingValueError:
             print(f"Skipping badly formed rule: {item}")
         except TypeError:
             raise BadRuleError(f"Rule {repr(item)} is badly formed.")
