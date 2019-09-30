@@ -5,37 +5,30 @@ import os
 import re
 import pytest
 from .constants import INVALID_FILENAME_REGEXES, VALID_FILENAME_CHARACTERS_REGEX
-from .exceptions import FilenameIsAlreadyDirnameError
+from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
 
 def filename_is_valid_as_filename(
-    _file_tobetested_name=None,
-    _datadir_pathname=None,
+    _filename=None,
     _invalid_filename_regexes_list=INVALID_FILENAME_REGEXES,
     _valid_filename_characters_regex_str=VALID_FILENAME_CHARACTERS_REGEX,
 ):
     """Return True if filename:
+    * is not None
     * has no invalid characters (override defaults in mklists.yml)
     * string patterns (override defaults in mklists.yml)
     * does not match name of an existing directory in current directory
-
-    @@@ 2018-08-12
-    Maybe this should _not_ take _invalid_filename_regexes_list and
-    _valid_filename_characters_regex_str as arguments but should read
-    them from the context object.
     """
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
+    if _filename is None:
+        raise MissingValueError(f"Missing filename.")
     for badpat in _invalid_filename_regexes_list:
-        if re.search(badpat, _file_tobetested_name):
+        if re.search(badpat, _filename):
             return False
-    for char in _file_tobetested_name:
+    for char in _filename:
         if not bool(re.search(_valid_filename_characters_regex_str, char)):
             return False
-    if _file_tobetested_name in [d for d in os.listdir() if os.path.isdir(d)]:
-        raise FilenameIsAlreadyDirnameError(
-            f"Filename {repr(_file_tobetested_name)} is already used as a directory name."
-        )
+    if _filename in [d for d in os.listdir() if os.path.isdir(d)]:
+        raise FilenameIsAlreadyDirnameError(f"{repr(_filename)} is a directory.")
     return True
 
 

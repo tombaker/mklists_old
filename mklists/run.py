@@ -11,7 +11,7 @@ from .constants import CONFIG_YAMLFILE_NAME, TIMESTAMP_STR
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
-    BadYamlRuleError,
+    BadRuleError,
     BlankLinesError,
     NoBackupDirSpecifiedError,
     NoDataError,

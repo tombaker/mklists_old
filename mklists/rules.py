@@ -7,7 +7,8 @@ from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
-    BadYamlRuleError,
+    BadRuleError,
+    MissingValueError,
     NoRulesError,
     NotIntegerError,
     RulefileNotFoundError,
@@ -20,7 +21,7 @@ from .utils import return_pyobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 @dataclass
 class Rule:
-    """Holds state and self-validation methods for a single rule.
+    """Holds state and self-validation methods for a single rule object.
 
     Fields:
         source_matchfield: data line field to be matched to source_matchpattern.
@@ -51,21 +52,37 @@ class Rule:
     def _number_fields_are_integers(self):
         """Return True if source_matchfield, target_sortorder are integers."""
         for field in [self.source_matchfield, self.target_sortorder]:
+            if field is None:
+                raise MissingValueError(
+                    f"'None' is not a valid value for 'source_matchfield' or 'target_sortorder'."
+                )
             if not isinstance(field, int):
                 print(f"In {self}:")
-                raise NotIntegerError(f"{repr(field)} must be an integer.")
+                raise NotIntegerError(
+                    f"Values for 'source_matchfield' and 'target_sortorder' must be integers."
+                )
         return True
 
     def _source_matchpattern_is_valid(self):
         """Returns True if source_matchpattern is valid regular expression."""
+        if self.source_matchpattern is None:
+            raise MissingValueError(
+                f"'None' is not a valid value for 'source_matchpattern'."
+            )
         if not regex_is_valid_as_regex(self.source_matchpattern):
             print(f"source_matchpattern in rule: {self}")
-            raise SourceMatchpatternError("is not valid a valid regex.")
+            raise SourceMatchpatternError(
+                "Value for 'source_matchpattern' must be a valid regex."
+            )
         return True
 
     def _filenames_are_valid(self):
         """Returns True if filenames use only valid characters."""
         for filename in [self.source, self.target]:
+            if filename is None:
+                raise MissingValueError(
+                    f"'None' is not a valid value for 'source' or 'target'."
+                )
             if not filename_is_valid_as_filename(filename):
                 print(f"{repr(filename)} in rule: {self}")
                 raise BadFilenameError("is not a valid filename.")
@@ -125,26 +142,26 @@ def return_rulefile_pathnames_chain_as_list(
 
 def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=None):
     """Return list of rule strings from chain of rulefile pathnames."""
-
-    rulestring_list = []
+    consolidated_yamlstr = ""
     for pathname in _rulefile_pathnames_chain:
-        for line in open(pathname).splitlines():
-            rulestring_list.extend(line)
-    if not rulestring_list:
-        raise NoRulesError("No rules were found.")
-
-    return rulestring_list
-
-
-def return_ruleobj_list_from_yamlstr(_split_rulestring_list=None):
-    """Return list of rule objects from list of rule strings."""
-    ruleobj_list = []
-    for line in _split_rulestring_list:
         try:
-            Rule(*line).is_valid
+            consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
+        except KeyError:
+            print("exception encountered")
+
+    return consolidated_yamlstr
+
+
+def return_ruleobj_list_from_yamlstr(_yamlstr=None):
+    """Return list of Rule objects from YAML string."""
+    splitrules_list = return_pyobj_from_yamlstr(_yamlstr)
+    ruleobj_list = []
+    for item in splitrules_list:
+        try:
+            if Rule(*item).is_valid:
+                ruleobj_list.append(Rule(*item))
         except TypeError:
-            raise BadYamlRuleError(f"Rule {repr(line)} is badly formed.")
-        ruleobj_list.append(Rule(*line))
+            raise BadRuleError(f"Rule {repr(item)} is badly formed.")
 
     if not ruleobj_list:
         raise NoRulesError(f"No rules found.")

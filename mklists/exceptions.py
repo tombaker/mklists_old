@@ -7,7 +7,11 @@ class BadRegexError(SystemExit):
 
 
 class MissingArgumentError(SystemExit):
-    """Function called with argument missing."""
+    """Function or argument is missing an argument."""
+
+
+class MissingValueError(SystemExit):
+    """Function or argument is missing a value."""
 
 
 class NoBackupDirSpecifiedError(SystemExit):
@@ -94,7 +98,7 @@ class RulesError(SystemExit):
     """Category of exceptions related to sets or rules."""
 
 
-class BadYamlRuleError(RulesError):
+class BadRuleError(RulesError):
     """Rule is badly formed in YAML source."""
 
 

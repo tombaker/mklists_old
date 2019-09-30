@@ -7,7 +7,7 @@ from mklists.booleans import filename_is_valid_as_filename
 
 def test_utils_filename_is_valid_as_filename_exits_filename_uses_illegal_character():
     """Semicolon is illegal in filename."""
-    assert filename_is_valid_as_filename(_file_tobetested_name="foo;bar.txt") is False
+    assert filename_is_valid_as_filename(_filename="foo;bar.txt") is False
 
 
 def test_utils_filename_is_valid_as_filename_exits_already_used_as_directory_name(
@@ -18,7 +18,7 @@ def test_utils_filename_is_valid_as_filename_exits_already_used_as_directory_nam
     tmpdir.mkdir("foobar")
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
-        filename_is_valid_as_filename(_file_tobetested_name=fname)
+        filename_is_valid_as_filename(_filename=fname)
 
 
 def test_utils_filename_is_valid_as_filename():
@@ -32,7 +32,7 @@ def test_utils_filename_is_valid_as_filename():
     fname = "foobar.txt"
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert filename_is_valid_as_filename(
-        _file_tobetested_name=fname, _invalid_filename_regexes_list=bad_patterns
+        _filename=fname, _invalid_filename_regexes_list=bad_patterns
     )
 
 
@@ -42,7 +42,7 @@ def test_utils_filename_is_valid_as_filename_dotfile():
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
         filename_is_valid_as_filename(
-            _file_tobetested_name=fname, _invalid_filename_regexes_list=bad_patterns
+            _filename=fname, _invalid_filename_regexes_list=bad_patterns
         )
         is False
     )
@@ -54,7 +54,7 @@ def test_utils_filename_is_valid_as_filename_dotfile_emacs_backup_file():
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
         filename_is_valid_as_filename(
-            _file_tobetested_name=fname, _invalid_filename_regexes_list=bad_patterns
+            _filename=fname, _invalid_filename_regexes_list=bad_patterns
         )
         is False
     )
@@ -66,7 +66,7 @@ def test_utils_filename_is_valid_as_filename_bad_filename_extension():
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
         filename_is_valid_as_filename(
-            _file_tobetested_name=fname, _invalid_filename_regexes_list=bad_patterns
+            _filename=fname, _invalid_filename_regexes_list=bad_patterns
         )
         is False
     )
