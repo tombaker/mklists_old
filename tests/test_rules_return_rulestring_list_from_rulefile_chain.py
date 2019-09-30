@@ -3,7 +3,7 @@
 import io
 import pytest
 from mklists.constants import RULE_YAMLFILE_NAME
-from mklists.rules import return_rulestring_list_from_rulefile_chain
+from mklists.rules import return_consolidated_yamlstr_from_rulefile_chain
 
 #    io.open(rule_yamlfile_pathname, mode="w").write(TEST_RULES_YAMLFILE_STR)
 #    rule_yamlfile_pathname = os.path.join(tmpdir, RULE_YAMLFILE_NAME)
@@ -25,9 +25,9 @@ TEST_RULES_YAMLFILE_SPLIT = [
 ]
 
 
-@pytest.mark.now
-def test_return_rulestring_list_from_rulefile_chain(tmpdir):
-    """Here: return_rulestring_list_from_rulefile_chain()
+@pytest.mark.skip
+def test_return_consolidated_yamlstr_from_rulefile_chain(tmpdir):
+    """Here: return_consolidated_yamlstr_from_rulefile_chain()
     called with _startdir_pathname as an argument."""
     tmpdira = tmpdir.mkdir("a")
     rulefilea = tmpdira.join(RULE_YAMLFILE_NAME)
@@ -40,5 +40,7 @@ def test_return_rulestring_list_from_rulefile_chain(tmpdir):
     rulefilec.write(TEST_RULES_YAMLFILE_STR_C)
     expected = TEST_RULES_YAMLFILE_SPLIT
     assert (
-        return_rulestring_list_from_rulefile_chain([rulefilea, rulefileb, rulefilec])
+        return_consolidated_yamlstr_from_rulefile_chain(
+            [rulefilea, rulefileb, rulefilec]
+        )
     ) == expected

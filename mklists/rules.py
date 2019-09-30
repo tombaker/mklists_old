@@ -123,7 +123,7 @@ def return_rulefile_pathnames_chain_as_list(
     return rulefile_pathnames_chain
 
 
-def return_rulestring_list_from_rulefile_chain(_rulefile_pathnames_chain=None):
+def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=None):
     """Return list of rule strings from chain of rulefile pathnames."""
 
     rulestring_list = []
