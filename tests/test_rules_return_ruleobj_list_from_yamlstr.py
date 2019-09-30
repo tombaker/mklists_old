@@ -6,7 +6,7 @@ import io
 import os
 import pytest
 from mklists.exceptions import NoRulesError
-from mklists.rules import Rule, return_ruleobj_list_from_consolidate_yamlstr
+from mklists.rules import Rule, return_ruleobj_list_from_yamlstr
 from mklists.constants import RULE_YAMLFILE_NAME
 
 TEST_RULES_YAMLFILE_STR = r"""# Test rules for this module only.
@@ -55,17 +55,17 @@ TEST_RULEOBJ_LIST = [
 
 
 @pytest.mark.now
-def test_run_return_ruleobj_list_from_consolidate_yamlstr(tmpdir):
+def test_run_return_ruleobj_list_from_yamlstr(tmpdir):
     """@@@Docstring"""
     expected = TEST_RULEOBJ_LIST
-    real = return_ruleobj_list_from_consolidate_yamlstr(
+    real = return_ruleobj_list_from_yamlstr(
         _split_rulestring_list=TEST_RULES_YAMLFILE_SPLIT
     )
     assert real == expected
 
 
 @pytest.mark.now
-def test_run_return_ruleobj_list_from_consolidate_yamlstr_no_rules(tmpdir):
+def test_run_return_ruleobj_list_from_yamlstr_no_rules(tmpdir):
     """@@@Docstring"""
     with pytest.raises(NoRulesError):
-        return_ruleobj_list_from_consolidate_yamlstr(_split_rulestring_list=[])
+        return_ruleobj_list_from_yamlstr(_split_rulestring_list=[])
