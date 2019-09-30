@@ -127,8 +127,9 @@ def return_rulestring_list_from_rulefile_chain(_rulefile_pathnames_chain=None):
     """Return list of rule strings from chain of rulefile pathnames."""
 
     rulestring_list = []
-    for file in _rulefile_pathnames_chain:
-        rulestring_list.extend(open(file).readlines())
+    for pathname in _rulefile_pathnames_chain:
+        for line in open(pathname).splitlines():
+            rulestring_list.extend(line)
     if not rulestring_list:
         raise NoRulesError("No rules were found.")
 

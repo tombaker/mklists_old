@@ -1,5 +1,4 @@
-"""
-run.py: return_ruleobj_list_from_rulefile_chain
+"""run.py: return_ruleobj_list_from_rulefile_chain
     Return list of rule objects from configuration and rule files.
 """
 
