@@ -62,7 +62,7 @@ def test_run_return_ruleobj_list_from_yamlstr(tmpdir):
     assert real == expected
 
 
-@pytest.mark.skip
+@pytest.mark.now
 def test_run_return_ruleobj_list_from_yamlstr_no_rules(tmpdir):
     """@@@Docstring"""
     # 2019-09-30: Problem has something to do with testing for

@@ -70,7 +70,7 @@ class Rule:
                 f"'None' is not a valid value for 'source_matchpattern'."
             )
         if not regex_is_valid_as_regex(self.source_matchpattern):
-            print(f"source_matchpattern in rule: {self}")
+            print(f"{self}")
             raise SourceMatchpatternError(
                 "Value for 'source_matchpattern' must be a valid regex."
             )
@@ -80,17 +80,21 @@ class Rule:
         """Returns True if filenames use only valid characters."""
         for filename in [self.source, self.target]:
             if filename is None:
+                print(f"{self}")
                 raise MissingValueError(
                     f"'None' is not a valid value for 'source' or 'target'."
                 )
             if not filename_is_valid_as_filename(filename):
-                print(f"{repr(filename)} in rule: {self}")
-                raise BadFilenameError("is not a valid filename.")
+                print(f"{self}")
+                raise BadFilenameError(
+                    f"'source' and 'target' must be valid filenames."
+                )
         return True
 
     def _source_is_not_equal_target(self):
         """Returns True if source is not equal to target."""
         if self.source == self.target:
+            print(f"{self}")
             raise SourceEqualsTargetError("source must not equal target.")
         return True
 
@@ -154,6 +158,8 @@ def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=No
 
 def return_ruleobj_list_from_yamlstr(_yamlstr=None):
     """Return list of Rule objects from YAML string."""
+    if not _yamlstr:
+        raise NoRulesError(f"No rules provided.")
     yamlobj = return_yamlobj_from_yamlstr(_yamlstr)
     ruleobj_list = []
     for item in yamlobj:
