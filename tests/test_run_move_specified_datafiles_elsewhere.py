@@ -6,7 +6,6 @@ import pytest
 from mklists.run import move_specified_datafiles_elsewhere
 
 
-@pytest.mark.now
 def test_move_specified_datafiles_elsewhere(tmpdir):
     """Basic test of move_specified_datafiles_elsewhere plus:
     * extra test of filenames2dirnames_dict
@@ -28,7 +27,6 @@ def test_move_specified_datafiles_elsewhere(tmpdir):
     assert "agendab.txt" in os.listdir(tmpdir_agendabdir)
 
 
-@pytest.mark.now
 def test_move_specified_datafiles_elsewhere_as_subdir(tmpdir):
     """Test of move_specified_datafiles_elsewhere where:
     * file moved to specific subdirectory under repo root directory
@@ -53,7 +51,6 @@ def test_move_specified_datafiles_elsewhere_as_subdir(tmpdir):
     assert "agendab.txt" in os.listdir(tmpdir_agendabdir)
 
 
-@pytest.mark.now
 def test_move_specified_datafiles_elsewhere_as_external_dir(tmpdir):
     """Test of move_specified_datafiles_elsewhere where:
     * file moved to directory outside of the repo

@@ -154,12 +154,14 @@ def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=No
 
 def return_ruleobj_list_from_yamlstr(_yamlstr=None):
     """Return list of Rule objects from YAML string."""
-    splitrules_list = return_yamlobj_from_yamlstr(_yamlstr)
+    yamlobj = return_yamlobj_from_yamlstr(_yamlstr)
     ruleobj_list = []
-    for item in splitrules_list:
+    for item in yamlobj:
         try:
-            if Rule(*item).is_valid:
+            if Rule(*item).is_valid():
                 ruleobj_list.append(Rule(*item))
+        except MissingValueError as err:
+            print(f"Skipping badly formed rule: {item}")
         except TypeError:
             raise BadRuleError(f"Rule {repr(item)} is badly formed.")
 
