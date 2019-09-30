@@ -6,7 +6,7 @@ import pytest
 from mklists.constants import RULE_YAMLFILE_NAME
 from mklists.exceptions import NoRulesError
 from mklists.rules import Rule, return_ruleobj_list_from_yamlstr
-from mklists.utils import return_pyobj_from_yamlstr
+from mklists.utils import return_yamlobj_from_yamlstr
 
 
 TEST_RULES_YAMLSTR = r"""# Test rules for this module only.

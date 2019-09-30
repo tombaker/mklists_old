@@ -21,7 +21,7 @@ from .exceptions import (
 )
 from .rules import Rule
 from .utils import (
-    return_pyobj_from_yamlstr,
+    return_yamlobj_from_yamlstr,
     return_yamlstr_from_yamlfile,
     return_backupdir_shortname,
     return_htmlline_str_from_textstr,
@@ -118,7 +118,7 @@ def return_configdict_from_config_yamlfile(_config_yamlfile_name=None):
         _config_yamlfile_name: YAML file with dictionary of configuration settings.
     """
     try:
-        return return_pyobj_from_yamlstr(
+        return return_yamlobj_from_yamlstr(
             return_yamlstr_from_yamlfile(_config_yamlfile_name)
         )
     except FileNotFoundError:

@@ -134,8 +134,8 @@ def return_htmlline_str_from_textstr(_textstr=None):
     )
 
 
-def return_pyobj_from_yamlstr(_yamlstr=None):
-    """Returns YAML object from given YAML-format file."""
+def return_yamlobj_from_yamlstr(_yamlstr=None):
+    """Returns YAML object from given YAML string."""
     try:
         return ruamel.yaml.safe_load(_yamlstr)
     except ruamel.yaml.YAMLError:

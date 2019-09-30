@@ -16,7 +16,7 @@ from .exceptions import (
     SourceMatchpatternError,
     UninitializedSourceError,
 )
-from .utils import return_pyobj_from_yamlstr, return_yamlstr_from_yamlfile
+from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 
 @dataclass
@@ -146,15 +146,15 @@ def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=No
     for pathname in _rulefile_pathnames_chain:
         try:
             consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
-        except KeyError:
-            print("exception encountered")
+        except FileNotFoundError:
+            raise RulefileNotFoundError(f"Rule file not found.")
 
     return consolidated_yamlstr
 
 
 def return_ruleobj_list_from_yamlstr(_yamlstr=None):
     """Return list of Rule objects from YAML string."""
-    splitrules_list = return_pyobj_from_yamlstr(_yamlstr)
+    splitrules_list = return_yamlobj_from_yamlstr(_yamlstr)
     ruleobj_list = []
     for item in splitrules_list:
         try:

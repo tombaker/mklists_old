@@ -3,6 +3,7 @@
 import io
 import pytest
 from mklists.constants import RULE_YAMLFILE_NAME
+from mklists.exceptions import RulefileNotFoundError
 from mklists.rules import return_consolidated_yamlstr_from_rulefile_chain
 
 #    io.open(rule_yamlfile_pathname, mode="w").write(TEST_RULES_YAMLSTR)
@@ -48,3 +49,22 @@ def test_return_consolidated_yamlstr_from_rulefile_chain(tmpdir):
             [rulefilea, rulefileb, rulefilec]
         )
     ) == expected
+
+
+@pytest.mark.now
+def test_return_consolidated_yamlstr_from_rulefile_chain_file_not_exist(tmpdir):
+    """Here: return_consolidated_yamlstr_from_rulefile_chain()
+    called with _startdir_pathname as an argument."""
+    tmpdira = tmpdir.mkdir("a")
+    rulefilea = tmpdira.join(RULE_YAMLFILE_NAME)
+    rulefilea.write(TEST_RULES_YAMLSTR_A)
+    tmpdirb = tmpdira.mkdir("b")
+    rulefileb = tmpdirb.join(RULE_YAMLFILE_NAME)
+    rulefileb.write(TEST_RULES_YAMLSTR_B)
+    tmpdirc = tmpdirb.mkdir("c")
+    rulefilec = tmpdirc.join(RULE_YAMLFILE_NAME)
+    rulefilec.write(TEST_RULES_YAMLSTR_C)
+    with pytest.raises(RulefileNotFoundError):
+        return_consolidated_yamlstr_from_rulefile_chain(
+            [rulefilea, rulefileb, rulefilec, "rulefiled"]
+        )
