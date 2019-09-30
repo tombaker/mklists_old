@@ -136,7 +136,7 @@ def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=No
     return rulestring_list
 
 
-def return_ruleobj_list_from_split_rulestring_list(_split_rulestring_list=None):
+def return_ruleobj_list_from_consolidate_yamlstr(_split_rulestring_list=None):
     """Return list of rule objects from list of rule strings."""
     ruleobj_list = []
     for line in _split_rulestring_list:
