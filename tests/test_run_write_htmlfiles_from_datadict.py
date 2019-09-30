@@ -34,7 +34,7 @@ def test_write_htmlfiles_from_datadict(tmpdir):
     os.makedirs(htmldir_subdir_pathname, exist_ok=True)
     os.chdir(htmldir_subdir_pathname)
     write_htmlfiles_from_datadict(
-        _filename2datalines_dict=DATADICT_BEFORE,
+        _name2lines_dict=DATADICT_BEFORE,
         _htmldir_pathname=os.path.join(tmpdir, ".html"),
         _backupdir_shortname="a",
     )
@@ -50,7 +50,7 @@ def test_write_htmlfiles_from_datadict_first_deletes_existing_files(tmpdir):
     io.open("some_file.txt.html", mode="w", encoding="utf-8").write("some content")
     existing_files = return_visiblefiles_list()
     write_htmlfiles_from_datadict(
-        _filename2datalines_dict=DATADICT_BEFORE,
+        _name2lines_dict=DATADICT_BEFORE,
         _htmldir_pathname=os.path.join(tmpdir, ".html"),
         _backupdir_shortname="a",
     )

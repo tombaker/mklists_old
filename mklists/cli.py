@@ -100,11 +100,11 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
     #
-    #     datalines_dict     = return_filename2datalines_dict_after_applying_rules_to_lines(
+    #     datalines_dict     = return_name2lines_dict_given_rules_and_lines(
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #
-    #     write_datafiles_from_datadict(_filename2datalines_dict=None)
+    #     write_datafiles_from_datadict(_name2lines_dict=None)
     #
     #     if files2dirs_dict:
     #         move_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])

@@ -146,7 +146,7 @@ def return_datalines_list_from_datafiles(_datafiles_names=None):
     return all_datalines
 
 
-def return_filename2datalines_dict_after_applying_rules_to_lines(
+def return_name2lines_dict_given_rules_and_lines(
     _ruleobjs_list=None, _datalines_list=None
 ):
     """Applies rules, one by one, to process aggregated datalines.
@@ -200,7 +200,7 @@ def return_filename2datalines_dict_after_applying_rules_to_lines(
     return dict(datadict)
 
 
-def write_datafiles_from_datadict(_filename2datalines_dict=None):
+def write_datafiles_from_datadict(_name2lines_dict=None):
     """Writes contents of filenames2datalines dictionary in which:
     * keys are names of files that will be created
     * values are (non-empty) contents of such files (lists of text lines)
@@ -209,9 +209,9 @@ def write_datafiles_from_datadict(_filename2datalines_dict=None):
     * filenames are valid (e.g., no pathname slashes '/')
 
     Args:
-        _filename2datalines_dict: dictionary relating strings to lists
+        _name2lines_dict: dictionary relating strings to lists
     """
-    for (key, value) in _filename2datalines_dict.items():
+    for (key, value) in _name2lines_dict.items():
         if value:
             with open(key, "w", encoding="utf-8") as fout:
                 fout.writelines(value)
@@ -219,12 +219,12 @@ def write_datafiles_from_datadict(_filename2datalines_dict=None):
 
 @preserve_cwd
 def write_htmlfiles_from_datadict(
-    _filename2datalines_dict=None, _htmldir_pathname=None, _backupdir_shortname=None
+    _name2lines_dict=None, _htmldir_pathname=None, _backupdir_shortname=None
 ):
     """Writes contents of in-memory dictionary, urlified, to disk.
 
     Args:
-        _filename2datalines_dict: Python dictionary in which:
+        _name2lines_dict: Python dictionary in which:
             * keys are the names of files to be written
             * values are lists of text lines.
         _htmldir_pathname: Name of HTML directory (relative to the root directory).
@@ -238,9 +238,9 @@ def write_htmlfiles_from_datadict(
     for file in return_visiblefiles_list():
         os.remove(file)
 
-    for key in list(_filename2datalines_dict.keys()):
+    for key in list(_name2lines_dict.keys()):
         lines_to_be_written = []
-        for line in _filename2datalines_dict[key]:
+        for line in _name2lines_dict[key]:
             lines_to_be_written.append(return_htmlline_str_from_textstr(line))
 
         file_to_write = key + ".html"

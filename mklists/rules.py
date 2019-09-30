@@ -19,6 +19,71 @@ from .exceptions import (
 from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 
+@preserve_cwd
+def return_rulefile_pathnames_chain_as_list(
+    _startdir_pathname=None,
+    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
+    _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+):
+    """Return chain of rule files leading from parent directories
+    to starting directory (by default the current directory).
+
+    Looks no higher than the root directory of a mklists repo, i.e., the
+    directory with a YAML configuration file (by default "mklists.yml").
+
+    Args:
+        _startdir_pathname:
+        _rule_yamlfile_name:
+        _config_yamlfile_name:
+    """
+    if not _startdir_pathname:
+        _startdir_pathname = os.getcwd()
+    os.chdir(_startdir_pathname)
+    rulefile_pathnames_chain = []
+    while _rule_yamlfile_name in os.listdir():
+        rulefile_pathnames_chain.insert(
+            0, os.path.join(os.getcwd(), _rule_yamlfile_name)
+        )
+        if _config_yamlfile_name in os.listdir():
+            break
+        os.chdir(os.pardir)
+
+    return rulefile_pathnames_chain
+
+
+def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=None):
+    """Return list of rule strings from chain of rulefile pathnames."""
+    consolidated_yamlstr = ""
+    for pathname in _rulefile_pathnames_chain:
+        try:
+            consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
+        except FileNotFoundError:
+            raise RulefileNotFoundError(f"Rule file not found.")
+
+    return consolidated_yamlstr
+
+
+def return_ruleobj_list_from_yamlstr(_yamlstr=None):
+    """Return list of Rule objects from YAML string."""
+    if not _yamlstr:
+        raise NoRulesError(f"No rules provided.")
+    yamlobj = return_yamlobj_from_yamlstr(_yamlstr)
+    ruleobj_list = []
+    for item in yamlobj:
+        try:
+            if Rule(*item).is_valid():
+                ruleobj_list.append(Rule(*item))
+        except MissingValueError:
+            print(f"Skipping badly formed rule: {item}")
+        except TypeError:
+            raise BadRuleError(f"Rule {repr(item)} is badly formed.")
+
+    if not ruleobj_list:
+        raise NoRulesError(f"No rules found.")
+
+    return ruleobj_list
+
+
 @dataclass
 class Rule:
     """Holds state and self-validation methods for a single rule object.
@@ -110,68 +175,3 @@ class Rule:
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
         return True
-
-
-@preserve_cwd
-def return_rulefile_pathnames_chain_as_list(
-    _startdir_pathname=None,
-    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
-):
-    """Return chain of rule files leading from parent directories
-    to starting directory (by default the current directory).
-
-    Looks no higher than the root directory of a mklists repo, i.e., the
-    directory with a YAML configuration file (by default "mklists.yml").
-
-    Args:
-        _startdir_pathname:
-        _rule_yamlfile_name:
-        _config_yamlfile_name:
-    """
-    if not _startdir_pathname:
-        _startdir_pathname = os.getcwd()
-    os.chdir(_startdir_pathname)
-    rulefile_pathnames_chain = []
-    while _rule_yamlfile_name in os.listdir():
-        rulefile_pathnames_chain.insert(
-            0, os.path.join(os.getcwd(), _rule_yamlfile_name)
-        )
-        if _config_yamlfile_name in os.listdir():
-            break
-        os.chdir(os.pardir)
-
-    return rulefile_pathnames_chain
-
-
-def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=None):
-    """Return list of rule strings from chain of rulefile pathnames."""
-    consolidated_yamlstr = ""
-    for pathname in _rulefile_pathnames_chain:
-        try:
-            consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
-        except FileNotFoundError:
-            raise RulefileNotFoundError(f"Rule file not found.")
-
-    return consolidated_yamlstr
-
-
-def return_ruleobj_list_from_yamlstr(_yamlstr=None):
-    """Return list of Rule objects from YAML string."""
-    if not _yamlstr:
-        raise NoRulesError(f"No rules provided.")
-    yamlobj = return_yamlobj_from_yamlstr(_yamlstr)
-    ruleobj_list = []
-    for item in yamlobj:
-        try:
-            if Rule(*item).is_valid():
-                ruleobj_list.append(Rule(*item))
-        except MissingValueError:
-            print(f"Skipping badly formed rule: {item}")
-        except TypeError:
-            raise BadRuleError(f"Rule {repr(item)} is badly formed.")
-
-    if not ruleobj_list:
-        raise NoRulesError(f"No rules found.")
-
-    return ruleobj_list

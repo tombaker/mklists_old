@@ -121,6 +121,28 @@ def return_datadir_pathnames_under_somedir(
     return datadirs
 
 
+def return_htmldir_pathname(
+    _rootdir_pathname=None, _htmldir_name=HTMLDIR_NAME, _datadir_pathname=None
+):
+    """Return pathname for folder holding urlified data files.
+
+    Args:
+        _rootdir_pathname: Full pathname of mklists repo root directory.
+        _htmldir_name:
+        _datadir_pathname:
+
+    Note: uses output of:
+    * return_rootdir_pathname() => here: tmpdir
+
+    Example output: '/Users/foobar/github/mylists/.html/a'
+    """
+    if not _rootdir_pathname:
+        raise MissingArgumentError(f"Missing argument '_roodir_pathname'")
+    if not _datadir_pathname:
+        _datadir_pathname = os.getcwd()
+    return os.path.join(_rootdir_pathname, _htmldir_name, _datadir_pathname)
+
+
 def return_htmlline_str_from_textstr(_textstr=None):
     """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 
@@ -132,14 +154,6 @@ def return_htmlline_str_from_textstr(_textstr=None):
         re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', _textstr.rstrip())
         + "\n"
     )
-
-
-def return_yamlobj_from_yamlstr(_yamlstr=None):
-    """Returns YAML object from given YAML string."""
-    try:
-        return ruamel.yaml.safe_load(_yamlstr)
-    except ruamel.yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML content.")
 
 
 @preserve_cwd
@@ -180,31 +194,17 @@ def return_visiblefiles_list(_datadir_pathname=None):
     return sorted(all_datafile_names)
 
 
+def return_yamlobj_from_yamlstr(_yamlstr=None):
+    """Returns YAML object from given YAML string."""
+    try:
+        return ruamel.yaml.safe_load(_yamlstr)
+    except ruamel.yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML content.")
+
+
 def return_yamlstr_from_yamlfile(_yamlfile_name=None):
     """Returns YAML object from given YAML-format file."""
     try:
         return open(_yamlfile_name).read()
     except FileNotFoundError:
         raise YamlFileNotFoundError(f"YAML file {repr(_yamlfile_name)} not found.")
-
-
-def return_htmldir_pathname(
-    _rootdir_pathname=None, _htmldir_name=HTMLDIR_NAME, _datadir_pathname=None
-):
-    """Return pathname for folder holding urlified data files.
-
-    Args:
-        _rootdir_pathname: Full pathname of mklists repo root directory.
-        _htmldir_name:
-        _datadir_pathname:
-
-    Note: uses output of:
-    * return_rootdir_pathname() => here: tmpdir
-
-    Example output: '/Users/foobar/github/mylists/.html/a'
-    """
-    if not _rootdir_pathname:
-        raise MissingArgumentError(f"Missing argument '_roodir_pathname'")
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
-    return os.path.join(_rootdir_pathname, _htmldir_name, _datadir_pathname)
