@@ -82,7 +82,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _backupdir_shortname=backup_shortname,
     #                              _timestamp_str=TIMESTAMP_STR)
     #
-    #     move_datafiles_from_cwd_to_backupdir(
+    #     move_all_datafiles_to_backupdir(
     #         _datadir_pathname=datadir_pathname,
     #         _datafiles_names=visiblefiles_list,
     #         _backupdir_pathname=backupdir_pathname)
@@ -100,7 +100,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
     #
-    #     datalines_dict     = return_name2lines_dict_given_rules_and_lines(
+    #     datalines_dict     = return_name2lines_dict_from_applying_rules(
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #

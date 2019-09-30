@@ -19,6 +19,18 @@ from .exceptions import (
 from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 
+def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=None):
+    """Return list of rule strings from chain of rulefile pathnames."""
+    consolidated_yamlstr = ""
+    for pathname in _rulefile_pathnames_chain:
+        try:
+            consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
+        except FileNotFoundError:
+            raise RulefileNotFoundError(f"Rule file not found.")
+
+    return consolidated_yamlstr
+
+
 @preserve_cwd
 def return_rulefile_pathnames_chain_as_list(
     _startdir_pathname=None,
@@ -49,18 +61,6 @@ def return_rulefile_pathnames_chain_as_list(
         os.chdir(os.pardir)
 
     return rulefile_pathnames_chain
-
-
-def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=None):
-    """Return list of rule strings from chain of rulefile pathnames."""
-    consolidated_yamlstr = ""
-    for pathname in _rulefile_pathnames_chain:
-        try:
-            consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
-        except FileNotFoundError:
-            raise RulefileNotFoundError(f"Rule file not found.")
-
-    return consolidated_yamlstr
 
 
 def return_ruleobj_list_from_yamlstr(_yamlstr=None):
@@ -114,33 +114,6 @@ class Rule:
         self._source_is_initialized_as_source()
         return True
 
-    def _number_fields_are_integers(self):
-        """Return True if source_matchfield, target_sortorder are integers."""
-        for field in [self.source_matchfield, self.target_sortorder]:
-            if field is None:
-                raise MissingValueError(
-                    f"'None' is not a valid value for 'source_matchfield' or 'target_sortorder'."
-                )
-            if not isinstance(field, int):
-                print(f"In {self}:")
-                raise NotIntegerError(
-                    f"Values for 'source_matchfield' and 'target_sortorder' must be integers."
-                )
-        return True
-
-    def _source_matchpattern_is_valid(self):
-        """Returns True if source_matchpattern is valid regular expression."""
-        if self.source_matchpattern is None:
-            raise MissingValueError(
-                f"'None' is not a valid value for 'source_matchpattern'."
-            )
-        if not regex_is_valid_as_regex(self.source_matchpattern):
-            print(f"{self}")
-            raise SourceMatchpatternError(
-                "Value for 'source_matchpattern' must be a valid regex."
-            )
-        return True
-
     def _filenames_are_valid(self):
         """Returns True if filenames use only valid characters."""
         for filename in [self.source, self.target]:
@@ -156,11 +129,18 @@ class Rule:
                 )
         return True
 
-    def _source_is_not_equal_target(self):
-        """Returns True if source is not equal to target."""
-        if self.source == self.target:
-            print(f"{self}")
-            raise SourceEqualsTargetError("source must not equal target.")
+    def _number_fields_are_integers(self):
+        """Return True if source_matchfield, target_sortorder are integers."""
+        for field in [self.source_matchfield, self.target_sortorder]:
+            if field is None:
+                raise MissingValueError(
+                    f"'None' is not a valid value for 'source_matchfield' or 'target_sortorder'."
+                )
+            if not isinstance(field, int):
+                print(f"In {self}:")
+                raise NotIntegerError(
+                    f"Values for 'source_matchfield' and 'target_sortorder' must be integers."
+                )
         return True
 
     def _source_is_initialized_as_source(self):
@@ -174,4 +154,24 @@ class Rule:
             raise UninitializedSourceError(f"{repr(self.source)} not initialized.")
         if self.target not in Rule.sources_list:
             Rule.sources_list.append(self.target)
+        return True
+
+    def _source_is_not_equal_target(self):
+        """Returns True if source is not equal to target."""
+        if self.source == self.target:
+            print(f"{self}")
+            raise SourceEqualsTargetError("source must not equal target.")
+        return True
+
+    def _source_matchpattern_is_valid(self):
+        """Returns True if source_matchpattern is valid regular expression."""
+        if self.source_matchpattern is None:
+            raise MissingValueError(
+                f"'None' is not a valid value for 'source_matchpattern'."
+            )
+        if not regex_is_valid_as_regex(self.source_matchpattern):
+            print(f"{self}")
+            raise SourceMatchpatternError(
+                "Value for 'source_matchpattern' must be a valid regex."
+            )
         return True

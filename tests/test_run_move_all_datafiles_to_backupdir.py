@@ -13,10 +13,10 @@ components:
 
 import os
 import pytest
-from mklists.run import move_datafiles_from_cwd_to_backupdir
+from mklists.run import move_all_datafiles_to_backupdir
 
 
-def test_move_datafiles_from_cwd_to_backupdir(tmpdir):
+def test_move_all_datafiles_to_backupdir(tmpdir):
     """Moves data files to backup directory."""
     backupdir_name = ".backups"
     backup_subdir_shortname = "agenda"
@@ -28,7 +28,7 @@ def test_move_datafiles_from_cwd_to_backupdir(tmpdir):
     datadir_pathname.join("file_a").write("some content")
     datadir_pathname.join("file_b").write("some content")
     datafile_names = sorted(os.listdir(datadir_pathname))
-    move_datafiles_from_cwd_to_backupdir(
+    move_all_datafiles_to_backupdir(
         _datadir_pathname=datadir_pathname,
         _datafiles_names=datafile_names,
         _backupdir_pathname=backupdir_pathname,
@@ -38,7 +38,7 @@ def test_move_datafiles_from_cwd_to_backupdir(tmpdir):
     assert sorted(os.listdir(datadir_pathname)) == []
 
 
-def test_move_datafiles_from_cwd_to_backupdir_no_backupdir_specified(tmpdir):
+def test_move_all_datafiles_to_backupdir_no_backupdir_specified(tmpdir):
     """Raises exception if no backup directory is specified."""
     datadir_pathname = tmpdir.mkdir("a")
     os.chdir(datadir_pathname)
@@ -46,7 +46,7 @@ def test_move_datafiles_from_cwd_to_backupdir_no_backupdir_specified(tmpdir):
     datadir_pathname.join("file_b").write("some content")
     datafile_names = sorted(os.listdir(datadir_pathname))
     with pytest.raises(SystemExit):
-        move_datafiles_from_cwd_to_backupdir(
+        move_all_datafiles_to_backupdir(
             _datadir_pathname=datadir_pathname,
             _datafiles_names=datafile_names,
             _backupdir_pathname=None,

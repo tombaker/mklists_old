@@ -61,7 +61,7 @@ def delete_older_backups(
 
 @pytest.mark.improve
 @preserve_cwd
-def move_datafiles_from_cwd_to_backupdir(
+def move_all_datafiles_to_backupdir(
     _datadir_pathname=None, _datafiles_names=None, _backupdir_pathname=None
 ):
     """Move data files to backup directory.
@@ -146,7 +146,7 @@ def return_datalines_list_from_datafiles(_datafiles_names=None):
     return all_datalines
 
 
-def return_name2lines_dict_given_rules_and_lines(
+def return_name2lines_dict_from_applying_rules(
     _ruleobjs_list=None, _datalines_list=None
 ):
     """Applies rules, one by one, to process aggregated datalines.
