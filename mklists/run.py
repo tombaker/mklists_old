@@ -30,7 +30,7 @@ from .utils import (
 
 
 @preserve_cwd
-def delete_older_backups(
+def delete_older_backupdirs(
     _rootdir_pathname=None,
     _backupdir_subdir_name=None,
     _backupdir_shortname=None,
@@ -44,7 +44,7 @@ def delete_older_backups(
         _backupdir_shortname:
         _backup_depth_int: Number of backups to keep [default: 2]
 
-    See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backups_TODO.py
+    See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backupdirs_TODO.py
     """
     if _backup_depth_int is None:
         raise BackupDepthUnspecifiedError(f"Number of backups to keep is unspecified.")
@@ -110,7 +110,7 @@ def move_specified_datafiles_elsewhere(
                 shutil.move(key, destination_dir)
 
 
-def return_configdict_from_config_yamlfile(_config_yamlfile_name=None):
+def return_config_dict_from_config_yamlfile(_config_yamlfile_name=None):
     """Returns configuration settings as a Python dictionary
     after parsing a configuration file in YAML.
 

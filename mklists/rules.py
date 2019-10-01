@@ -111,7 +111,7 @@ class Rule:
         self._source_matchpattern_is_valid()
         self._filenames_are_valid()
         self._source_is_not_equal_target()
-        self._source_is_initialized_as_source()
+        self._source_filename_field_was_properly_initialized()
         return True
 
     def _filenames_are_valid(self):
@@ -143,7 +143,7 @@ class Rule:
                 )
         return True
 
-    def _source_is_initialized_as_source(self):
+    def _source_filename_field_was_properly_initialized(self):
         """Returns True if 'source' filename was initialized as a source."""
         if not Rule.sources_list_is_initialized:
             Rule.sources_list.append(self.source)

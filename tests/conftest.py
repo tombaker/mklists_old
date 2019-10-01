@@ -9,7 +9,7 @@ from mklists.rules import Rule
 def reinitialize_ruleclass_variables():
     """Class variables must be re-initialized:
         for each test of Rule.isrule
-        for each test of x._source_is_initialized_as_source
+        for each test of x._source_filename_field_was_properly_initialized
         for each test of Rule.sources_list"""
     Rule.sources_list = []
     Rule.sources_list_is_initialized = False
