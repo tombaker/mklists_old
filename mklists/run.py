@@ -200,7 +200,7 @@ def return_name2lines_dict_from_applying_rules(
     return dict(datadict)
 
 
-def write_datafiles_from_datadict(_name2lines_dict=None):
+def write_datafiles_from_name2lines_dict(_name2lines_dict=None):
     """Writes contents of filenames2datalines dictionary in which:
     * keys are names of files that will be created
     * values are (non-empty) contents of such files (lists of text lines)
@@ -218,7 +218,7 @@ def write_datafiles_from_datadict(_name2lines_dict=None):
 
 
 @preserve_cwd
-def write_htmlfiles_from_datadict(
+def write_htmlfiles_from_name2lines_dict(
     _name2lines_dict=None, _htmldir_pathname=None, _backupdir_shortname=None
 ):
     """Writes contents of in-memory dictionary, urlified, to disk.

@@ -104,7 +104,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #
-    #     write_datafiles_from_datadict(_name2lines_dict=None)
+    #     write_datafiles_from_name2lines_dict(_name2lines_dict=None)
     #
     #     if files2dirs_dict:
     #         move_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])
@@ -112,4 +112,4 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     # Writing out HTML versions
     # if html:
     #     [create html directory]
-    #     write_htmlfiles_from_datadict(lines)     - todo.py
+    #     write_htmlfiles_from_name2lines_dict(lines)     - todo.py
