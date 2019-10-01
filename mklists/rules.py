@@ -19,7 +19,9 @@ from .exceptions import (
 from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
 
 
-def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=None):
+def return_consolidated_yamlstr_from_rulefile_pathnames_list(
+    _rulefile_pathnames_chain=None
+):
     """Return list of rule strings from chain of rulefile pathnames."""
     consolidated_yamlstr = ""
     for pathname in _rulefile_pathnames_chain:
@@ -32,7 +34,7 @@ def return_consolidated_yamlstr_from_rulefile_chain(_rulefile_pathnames_chain=No
 
 
 @preserve_cwd
-def return_rulefile_pathnames_chain_as_list(
+def return_rulefile_pathnames_list(
     _startdir_pathname=None,
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
@@ -109,12 +111,12 @@ class Rule:
         """Return True if Rule object passes all tests."""
         self._number_fields_are_integers()
         self._source_matchpattern_field_is_valid_as_regex()
-        self._source_target_filename_fields_are_valid()
+        self._filename_fields_are_valid()
         self._source_filename_field_is_not_equal_target()
         self._source_filename_field_was_properly_initialized()
         return True
 
-    def _source_target_filename_fields_are_valid(self):
+    def _filename_fields_are_valid(self):
         """Returns True if filenames use only valid characters."""
         for filename in [self.source, self.target]:
             if filename is None:

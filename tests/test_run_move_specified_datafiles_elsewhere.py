@@ -3,13 +3,13 @@
 import os
 import shutil
 import pytest
-from mklists.run import move_specified_datafiles_elsewhere
+from mklists.run import move_specified_datafiles_to_somedirs
 
 
-def test_move_specified_datafiles_elsewhere(tmpdir):
-    """Basic test of move_specified_datafiles_elsewhere plus:
+def test_move_specified_datafiles_to_somedirs(tmpdir):
+    """Basic test of move_specified_datafiles_to_somedirs plus:
     * extra test of filenames2dirnames_dict
-    * extra test of file system before move_specified_datafiles_elsewhere run"""
+    * extra test of file system before move_specified_datafiles_to_somedirs run"""
     tmpdir_agendaadir = tmpdir.mkdir("agendaa")
     tmpdir_agendaadir.join("agendab.txt").write("some content")
     tmpdir_agendabdir = tmpdir.mkdir("agendab")
@@ -19,7 +19,7 @@ def test_move_specified_datafiles_elsewhere(tmpdir):
     assert filenames2dirnames_dict["agendaa.txt"] == "agendaa"
     assert "agendab.txt" in os.listdir(tmpdir_agendaadir)
     os.chdir(tmpdir_agendaadir)
-    move_specified_datafiles_elsewhere(
+    move_specified_datafiles_to_somedirs(
         _filenames2dirnames_dict=filenames2dirnames_dict,
         _rootdir_pathname=rootdir_pathname,
     )
@@ -27,8 +27,8 @@ def test_move_specified_datafiles_elsewhere(tmpdir):
     assert "agendab.txt" in os.listdir(tmpdir_agendabdir)
 
 
-def test_move_specified_datafiles_elsewhere_as_subdir(tmpdir):
-    """Test of move_specified_datafiles_elsewhere where:
+def test_move_specified_datafiles_to_somedirs_as_subdir(tmpdir):
+    """Test of move_specified_datafiles_to_somedirs where:
     * file moved to specific subdirectory under repo root directory
 
     Note that destination directory is defined relative to repo root directory"""
@@ -43,7 +43,7 @@ def test_move_specified_datafiles_elsewhere_as_subdir(tmpdir):
     }
     rootdir_pathname = tmpdir
     os.chdir(tmpdir_agendaadir)
-    move_specified_datafiles_elsewhere(
+    move_specified_datafiles_to_somedirs(
         _filenames2dirnames_dict=filenames2dirnames_dict,
         _rootdir_pathname=rootdir_pathname,
     )
@@ -51,8 +51,8 @@ def test_move_specified_datafiles_elsewhere_as_subdir(tmpdir):
     assert "agendab.txt" in os.listdir(tmpdir_agendabdir)
 
 
-def test_move_specified_datafiles_elsewhere_as_external_dir(tmpdir):
-    """Test of move_specified_datafiles_elsewhere where:
+def test_move_specified_datafiles_to_somedirs_as_external_dir(tmpdir):
+    """Test of move_specified_datafiles_to_somedirs where:
     * file moved to directory outside of the repo
     * assumes existence of a /tmp directory in filesystem
 
@@ -67,7 +67,7 @@ def test_move_specified_datafiles_elsewhere_as_external_dir(tmpdir):
     if os.path.exists("/tmp/agendab.txt"):  # clean-up, sometimes needed
         os.remove("/tmp/agendab.txt")
     os.chdir(tmpdir_agendaadir)
-    move_specified_datafiles_elsewhere(
+    move_specified_datafiles_to_somedirs(
         _filenames2dirnames_dict=filenames2dirnames_dict,
         _rootdir_pathname=rootdir_pathname,
     )

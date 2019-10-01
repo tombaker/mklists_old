@@ -58,7 +58,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME)
 
     # for datadir in datadirs_pathnames:
-    #     rulefile_pathnames_chain     = return_rulefile_pathnames_chain_as_list(
+    #     rulefile_pathnames_chain     = return_rulefile_pathnames_list(
     #                                    _startdir_pathname=datadir,
     #                                    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
@@ -100,14 +100,14 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
     #
-    #     datalines_dict     = return_name2lines_dict_from_applying_rules(
+    #     datalines_dict     = return_name2lines_dict_from_applying_ruleobjs(
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #
     #     write_datafiles_from_name2lines_dict(_name2lines_dict=None)
     #
     #     if files2dirs_dict:
-    #         move_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])
+    #         move_specified_datafiles_to_somedirs(ctx.obj["files2dirs_dict"])
 
     # Writing out HTML versions
     # if html:

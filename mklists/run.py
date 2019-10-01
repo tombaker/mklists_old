@@ -87,7 +87,7 @@ def move_all_datafiles_to_backupdir(
         print("Got an exception")
 
 
-def move_specified_datafiles_elsewhere(
+def move_specified_datafiles_to_somedirs(
     _filenames2dirnames_dict=None, _rootdir_pathname=None
 ):
     """Moves data files to specified destination directories.
@@ -146,7 +146,7 @@ def return_datalines_list_from_datafiles(_datafiles_names=None):
     return all_datalines
 
 
-def return_name2lines_dict_from_applying_rules(
+def return_name2lines_dict_from_applying_ruleobjs(
     _ruleobjs_list=None, _datalines_list=None
 ):
     """Applies rules, one by one, to process aggregated datalines.

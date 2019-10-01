@@ -4,7 +4,7 @@ import io
 import pytest
 from mklists.constants import RULE_YAMLFILE_NAME
 from mklists.exceptions import RulefileNotFoundError
-from mklists.rules import return_consolidated_yamlstr_from_rulefile_chain
+from mklists.rules import return_consolidated_yamlstr_from_rulefile_pathnames_list
 
 #    io.open(rule_yamlfile_pathname, mode="w").write(TEST_RULES_YAMLSTR)
 #    rule_yamlfile_pathname = os.path.join(tmpdir, RULE_YAMLFILE_NAME)
@@ -30,8 +30,8 @@ TEST_CONSOLIDATED_YAMLSTR = r"""# Test rules for this module only.
 """  # Ensures that string ends with a '\n'.
 
 
-def test_return_consolidated_yamlstr_from_rulefile_chain(tmpdir):
-    """Here: return_consolidated_yamlstr_from_rulefile_chain()
+def test_return_consolidated_yamlstr_from_rulefile_pathnames_list(tmpdir):
+    """Here: return_consolidated_yamlstr_from_rulefile_pathnames_list()
     called with _startdir_pathname as an argument."""
     tmpdira = tmpdir.mkdir("a")
     rulefilea = tmpdira.join(RULE_YAMLFILE_NAME)
@@ -44,14 +44,16 @@ def test_return_consolidated_yamlstr_from_rulefile_chain(tmpdir):
     rulefilec.write(TEST_RULES_YAMLSTR_C)
     expected = TEST_CONSOLIDATED_YAMLSTR
     assert (
-        return_consolidated_yamlstr_from_rulefile_chain(
+        return_consolidated_yamlstr_from_rulefile_pathnames_list(
             [rulefilea, rulefileb, rulefilec]
         )
     ) == expected
 
 
-def test_return_consolidated_yamlstr_from_rulefile_chain_file_not_exist(tmpdir):
-    """Here: return_consolidated_yamlstr_from_rulefile_chain()
+def test_return_consolidated_yamlstr_from_rulefile_pathnames_list_file_not_exist(
+    tmpdir
+):
+    """Here: return_consolidated_yamlstr_from_rulefile_pathnames_list()
     called with _startdir_pathname as an argument."""
     tmpdira = tmpdir.mkdir("a")
     rulefilea = tmpdira.join(RULE_YAMLFILE_NAME)
@@ -63,6 +65,6 @@ def test_return_consolidated_yamlstr_from_rulefile_chain_file_not_exist(tmpdir):
     rulefilec = tmpdirc.join(RULE_YAMLFILE_NAME)
     rulefilec.write(TEST_RULES_YAMLSTR_C)
     with pytest.raises(RulefileNotFoundError):
-        return_consolidated_yamlstr_from_rulefile_chain(
+        return_consolidated_yamlstr_from_rulefile_pathnames_list(
             [rulefilea, rulefileb, rulefilec, "rulefiled"]
         )
