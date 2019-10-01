@@ -90,7 +90,7 @@ def write_example_rule_yamlfiles_to_somedirs(
 
 
 @preserve_cwd
-def write_minimal_rule_yamlfiles(
+def write_minimal_rule_yamlfiles_to_somedirs(
     _datadira_name=DATADIRA_NAME,
     _file_tobewritten_name=RULE_YAMLFILE_NAME,
     _rootdir_file_tobewritten_str=ROOTDIR_RULES_YAMLFILE_STR,
