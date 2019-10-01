@@ -4,7 +4,7 @@ import io
 import os
 import pytest
 from mklists.run import write_htmlfiles_from_datadict
-from mklists.utils import return_htmlline_str_from_textstr, return_visiblefiles_list
+from mklists.utils import return_htmlline_from_textline, return_visiblefiles_list
 
 DATADICT_BEFORE = {
     "filea.txt": [

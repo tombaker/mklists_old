@@ -143,7 +143,7 @@ def return_htmldir_pathname(
     return os.path.join(_rootdir_pathname, _htmldir_name, _datadir_pathname)
 
 
-def return_htmlline_str_from_textstr(_textstr=None):
+def return_htmlline_from_textline(_textstr=None):
     """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 
     Args:

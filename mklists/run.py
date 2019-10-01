@@ -24,7 +24,7 @@ from .utils import (
     return_yamlobj_from_yamlstr,
     return_yamlstr_from_yamlfile,
     return_backupdir_shortname,
-    return_htmlline_str_from_textstr,
+    return_htmlline_from_textline,
     return_visiblefiles_list,
 )
 
@@ -241,7 +241,7 @@ def write_htmlfiles_from_datadict(
     for key in list(_name2lines_dict.keys()):
         lines_to_be_written = []
         for line in _name2lines_dict[key]:
-            lines_to_be_written.append(return_htmlline_str_from_textstr(line))
+            lines_to_be_written.append(return_htmlline_from_textline(line))
 
         file_to_write = key + ".html"
         io.open(file_to_write, "w", encoding="utf-8").writelines(lines_to_be_written)
