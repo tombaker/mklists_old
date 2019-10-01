@@ -29,11 +29,11 @@ from .constants import (
 from .decorators import preserve_cwd
 
 
-def write_config_yamlfile(
+def write_config_yamlfile_to_rootdir(
     _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
     _file_tobewritten_str=CONFIG_YAMLFILE_STR,
 ):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_config_yamlfile
+    """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_config_yamlfile_to_rootdir
     Write initial YAML config file ('/mklists.yml')."""
     io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
 

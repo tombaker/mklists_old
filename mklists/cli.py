@@ -22,7 +22,7 @@ def init(config, with_examples):
     """Initialize list repo
     @@@TODO Add argument: optional directory name of mklists repository.
     """
-    # write_config_yamlfile()
+    # write_config_yamlfile_to_rootdir()
     # write_minimal_rule_yamlfiles()
     # if with_examples:
     #     write_example_config_yamlfile()

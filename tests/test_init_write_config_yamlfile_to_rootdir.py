@@ -5,13 +5,13 @@ Here: /Users/tbaker/github/tombaker/mklists/tests/test_init_write_initial_config
 import io
 import os
 from mklists.constants import CONFIG_YAMLFILE_NAME, CONFIG_YAMLFILE_STR
-from mklists.initialize import write_config_yamlfile
+from mklists.initialize import write_config_yamlfile_to_rootdir
 
 
-def test_init_write_config_yamlfile(tmpdir):
+def test_init_write_config_yamlfile_to_rootdir(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)
-    write_config_yamlfile(
+    write_config_yamlfile_to_rootdir(
         _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
         _file_tobewritten_str=CONFIG_YAMLFILE_STR,
     )
