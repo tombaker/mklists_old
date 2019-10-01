@@ -9,13 +9,13 @@ from mklists.constants import (
     DATADIRA_NAME,
     DATADIRB_NAME,
 )
-from mklists.initialize import write_example_datafiles
+from mklists.initialize import write_example_datafiles_to_somedirs
 
 
-def test_write_example_datafiles(tmpdir):
+def test_write_example_datafiles_to_somedirs(tmpdir):
     """Writes default data files in Folders A and B."""
     os.chdir(tmpdir)
-    write_example_datafiles(
+    write_example_datafiles_to_somedirs(
         _example_datadira_textfile_str=EXAMPLE_DATADIRA_TEXTFILE_STR,
         _example_datadira_textfile_name=EXAMPLE_DATADIRA_TEXTFILE_NAME,
         _datadira_name=DATADIRA_NAME,

@@ -38,7 +38,7 @@ def write_config_yamlfile_to_rootdir(
     io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
 
 
-def write_example_datafiles(
+def write_example_datafiles_to_somedirs(
     _datadira_name=DATADIRA_NAME,
     _datadirb_name=DATADIRB_NAME,
     _example_datadira_textfile_name=EXAMPLE_DATADIRA_TEXTFILE_NAME,

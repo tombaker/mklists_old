@@ -26,7 +26,7 @@ def init(config, with_examples):
     # write_minimal_rule_yamlfiles()
     # if with_examples:
     #     write_example_config_yamlfile()
-    #     write_example_datafiles()
+    #     write_example_datafiles_to_somedirs()
     #     write_example_rule_yamlfiles()
 
 
