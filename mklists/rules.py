@@ -109,12 +109,12 @@ class Rule:
         """Return True if Rule object passes all tests."""
         self._number_fields_are_integers()
         self._source_matchpattern_is_valid()
-        self._filenames_are_valid()
+        self._source_target_filename_fields_are_valid()
         self._source_filename_field_is_not_equal_target()
         self._source_filename_field_was_properly_initialized()
         return True
 
-    def _filenames_are_valid(self):
+    def _source_target_filename_fields_are_valid(self):
         """Returns True if filenames use only valid characters."""
         for filename in [self.source, self.target]:
             if filename is None:
