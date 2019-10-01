@@ -1,0 +1,18 @@
+BACKUPDIR_NAME                        - constants.py
+CONFIG_YAMLFILE_NAME                  - constants.py initialize.py cli.py rules.py run.py utils.py
+CONFIG_YAMLFILE_STR                   - constants.py initialize.py
+DATADIRA_NAME                         - constants.py initialize.py
+DATADIRB_NAME                         - constants.py initialize.py
+EXAMPLE_DATADIRA_RULES_YAMLFILE_STR   - constants.py initialize.py
+EXAMPLE_DATADIRA_TEXTFILE_NAME        - constants.py initialize.py
+EXAMPLE_DATADIRA_TEXTFILE_STR         - constants.py initialize.py
+EXAMPLE_DATADIRB_RULES_YAMLFILE_STR   - constants.py initialize.py
+EXAMPLE_DATADIRB_TEXTFILE_STR         - constants.py initialize.py
+HTMLDIR_NAME                          - constants.py                                       utils.py
+INVALID_FILENAME_REGEXES              - constants.py               booleans.py
+MINIMAL_DATADIRA_RULES_YAMLFILE_STR   - constants.py initialize.py
+ROOTDIR_RULES_YAMLFILE_STR            - constants.py initialize.py
+RULE_YAMLFILE_NAME                    - constants.py initialize.py cli.py rules.py         utils.py
+TIMESTAMP_STR                         - constants.py               cli.py          run.py  utils.py
+URL_PATTERN_REGEX                     - constants.py                                       utils.py
+VALID_FILENAME_CHARACTERS_REGEX       - constants.py               booleans.py
