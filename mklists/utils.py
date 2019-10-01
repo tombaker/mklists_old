@@ -72,7 +72,7 @@ def return_backupdir_shortname(_datadir_pathname=None, _rootdir_pathname=None):
     return _datadir_pathname[len(_rootdir_pathname) :].strip("/").replace("/", "_")
 
 
-def return_compiled_regex(_regex=None):
+def return_compiled_regex_from_regexstr(_regex=None):
     """Return compiled regex from regular expression.
 
     Args:
