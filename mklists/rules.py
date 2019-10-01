@@ -108,7 +108,7 @@ class Rule:
     def is_valid(self):
         """Return True if Rule object passes all tests."""
         self._number_fields_are_integers()
-        self._source_matchpattern_is_valid()
+        self._source_matchpattern_field_is_valid_as_regex()
         self._source_target_filename_fields_are_valid()
         self._source_filename_field_is_not_equal_target()
         self._source_filename_field_was_properly_initialized()
@@ -163,7 +163,7 @@ class Rule:
             raise SourceEqualsTargetError("source must not equal target.")
         return True
 
-    def _source_matchpattern_is_valid(self):
+    def _source_matchpattern_field_is_valid_as_regex(self):
         """Returns True if source_matchpattern is valid regular expression."""
         if self.source_matchpattern is None:
             raise MissingValueError(
