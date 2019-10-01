@@ -65,7 +65,7 @@ def write_example_datafiles_to_somedirs(
     )
 
 
-def write_example_rule_yamlfiles(
+def write_example_rule_yamlfiles_to_somedirs(
     _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     _rootdir_rules_yamlfile_str=ROOTDIR_RULES_YAMLFILE_STR,
     _example_datadira_rules_yamlfile_str=EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
