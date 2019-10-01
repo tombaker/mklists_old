@@ -110,7 +110,7 @@ class Rule:
         self._number_fields_are_integers()
         self._source_matchpattern_is_valid()
         self._filenames_are_valid()
-        self._source_is_not_equal_target()
+        self._source_filename_field_is_not_equal_target()
         self._source_filename_field_was_properly_initialized()
         return True
 
@@ -156,7 +156,7 @@ class Rule:
             Rule.sources_list.append(self.target)
         return True
 
-    def _source_is_not_equal_target(self):
+    def _source_filename_field_is_not_equal_target(self):
         """Returns True if source is not equal to target."""
         if self.source == self.target:
             print(f"{self}")
