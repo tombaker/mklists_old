@@ -59,6 +59,7 @@ Adjectives:
     minimal
     number (used as adjective)
     old (actually: older)
+    proper (actually: properly)
     rule (used as adjective)
     source (used as adjective)
     specified
@@ -69,9 +70,9 @@ Other:
     as
     from
     not
-    properly
     to
     under
+    by
 
 Objects:
     ruleobj

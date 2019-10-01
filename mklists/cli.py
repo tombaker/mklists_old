@@ -9,13 +9,11 @@ import click
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(ctx):
-    """Recompose plain text lists by tweaking rules"""
+    """Reorder plaintext lists by tweaking rules"""
 
 
 @cli.command()
-@click.option(
-    "--with-examples", is_flag=True, help="Initialize with example data and config"
-)
+@click.option("--with-examples", is_flag=True, help="Initialize with example data")
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(config, with_examples):
@@ -39,11 +37,11 @@ def init(config, with_examples):
 def run(ctx, debug, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 
-    # datadir_pathname    = os.getcwd()
+    # datadir_pathname       = os.getcwd()
     # rootdir_pathname       = return_rootdir_pathname(
     #                              _datadir_pathname=datadir_pathname
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
-    # ctx.obj               = return_config_dict_from_config_yamlfile(
+    # ctx.obj                = return_config_dict_from_config_yamlfile(
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
@@ -100,7 +98,7 @@ def run(ctx, debug, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
     #
-    #     datalines_dict     = return_name2lines_dict_from_applying_ruleobjs(
+    #     datalines_dict     = return_name2lines_dict_by_applying_ruleobjs(
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #

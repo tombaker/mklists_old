@@ -146,7 +146,7 @@ def return_datalines_list_from_datafiles(_datafiles_names=None):
     return all_datalines
 
 
-def return_name2lines_dict_from_applying_ruleobjs(
+def return_name2lines_dict_by_applying_ruleobjs(
     _ruleobjs_list=None, _datalines_list=None
 ):
     """Applies rules, one by one, to process aggregated datalines.
