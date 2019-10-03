@@ -37,7 +37,9 @@ def return_consolidated_yamlstr_from_rulefile_pathnames_list(
 
 @preserve_cwd
 def return_rulefile_pathnames_list(
-    _startdir_pathname=None, _rule_yamlfile_name=None, _config_yamlfile_name=None
+    startdir_pathname=None,
+    rule_yamlfile_name=ooo.rule_yamlfile_name,
+    config_yamlfile_name=ooo.config_yamlfile_name,
 ):
     """Return chain of rule files leading from parent directories
     to starting directory (by default the current directory).
@@ -46,19 +48,19 @@ def return_rulefile_pathnames_list(
     directory with a YAML configuration file (by default "mklists.yml").
 
     Args:
-        _startdir_pathname:
-        _rule_yamlfile_name:
-        _config_yamlfile_name:
+        startdir_pathname:
+        rule_yamlfile_name:
+        config_yamlfile_name:
     """
-    if not _startdir_pathname:
-        _startdir_pathname = os.getcwd()
-    os.chdir(_startdir_pathname)
+    if not startdir_pathname:
+        startdir_pathname = os.getcwd()
+    os.chdir(startdir_pathname)
     rulefile_pathnames_chain = []
-    while _rule_yamlfile_name in os.listdir():
+    while rule_yamlfile_name in os.listdir():
         rulefile_pathnames_chain.insert(
-            0, os.path.join(os.getcwd(), _rule_yamlfile_name)
+            0, os.path.join(os.getcwd(), rule_yamlfile_name)
         )
-        if _config_yamlfile_name in os.listdir():
+        if config_yamlfile_name in os.listdir():
             break
         os.chdir(os.pardir)
 
