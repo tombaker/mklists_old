@@ -223,18 +223,18 @@ def write_datafiles_from_name2lines_dict(_name2lines_dict=None):
 
 @preserve_cwd
 def write_htmlfiles_from_name2lines_dict(
-    _name2lines_dict=None, _htmldir_pathname=None, _backupdir_shortname=None
+    name2lines_dict=None, htmldir_pathname=None, backupdir_shortname=None
 ):
     """Writes contents of in-memory dictionary, urlified, to disk.
 
     Args:
-        _name2lines_dict: Python dictionary in which:
+        name2lines_dict: Python dictionary in which:
             * keys are the names of files to be written
             * values are lists of text lines.
-        _htmldir_pathname: Name of HTML directory (relative to the root directory).
-        _backupdir_shortname:
+        htmldir_pathname: Name of HTML directory (relative to the root directory).
+        backupdir_shortname:
     """
-    htmldir_subdir_pathname = os.path.join(_htmldir_pathname, _backupdir_shortname)
+    htmldir_subdir_pathname = os.path.join(htmldir_pathname, backupdir_shortname)
     if not os.path.exists(htmldir_subdir_pathname):
         os.makedirs(htmldir_subdir_pathname)
     os.chdir(htmldir_subdir_pathname)
@@ -242,9 +242,9 @@ def write_htmlfiles_from_name2lines_dict(
     for file in return_visiblefiles_list():
         os.remove(file)
 
-    for key in list(_name2lines_dict.keys()):
+    for key in list(name2lines_dict.keys()):
         lines_to_be_written = []
-        for line in _name2lines_dict[key]:
+        for line in name2lines_dict[key]:
             lines_to_be_written.append(return_htmlline_from_textline(line))
 
         file_to_write = key + ".html"

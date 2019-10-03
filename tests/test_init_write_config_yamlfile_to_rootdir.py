@@ -12,9 +12,10 @@ from mklists.initialize import write_config_yamlfile_to_rootdir
 
 @pytest.mark.skip
 def test_init_write_config_yamlfile_to_rootdir(tmpdir):
-    """2019-10-03: Will no longer get configuration from file, but Python dataclass."""
+    """2019-10-03: Will no longer get configuration from file, but Python dataclass.
+    * Write initial YAML config file 'mklists.yml'."""
     os.chdir(tmpdir)
     write_config_yamlfile_to_rootdir(
-        _file_tobewritten_name=None, _file_tobewritten_str=None
+        file_tobewritten_name=None, file_tobewritten_str=None
     )
     # assert io.open(CONFIG_YAMLFILE_NAME).read() == CONFIG_YAMLFILE_STR

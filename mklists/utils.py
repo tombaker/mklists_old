@@ -175,14 +175,14 @@ def return_rootdir_pathname(
 
 
 @preserve_cwd
-def return_visiblefiles_list(_datadir_pathname=None):
+def return_visiblefiles_list(datadir_pathname=None):
     """Return list of names of visible files with valid names.
 
     See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
     """
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
-    os.chdir(_datadir_pathname)
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
+    os.chdir(datadir_pathname)
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:

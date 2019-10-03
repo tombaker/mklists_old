@@ -21,11 +21,10 @@ xxx = ConfigExamples()
 
 
 def write_config_yamlfile_to_rootdir(
-    _file_tobewritten_name=None, _file_tobewritten_str=None
+    file_tobewritten_name=None, file_tobewritten_str=None
 ):
-    """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_config_yamlfile_to_rootdir
-    Write initial YAML config file ('/mklists.yml')."""
-    io.open(_file_tobewritten_name, "w", encoding="utf-8").write(_file_tobewritten_str)
+    """Write initial YAML config file ('/mklists.yml')."""
+    io.open(file_tobewritten_name, "w", encoding="utf-8").write(file_tobewritten_str)
 
 
 def write_example_datafiles_to_somedirs(
