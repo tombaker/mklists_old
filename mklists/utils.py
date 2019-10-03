@@ -155,16 +155,18 @@ def return_htmlline_from_textline(
 
 
 @preserve_cwd
-def return_rootdir_pathname(_datadir_pathname=None, _config_yamlfile_name=None):
+def return_rootdir_pathname(
+    _datadir_pathname=None, config_yamlfile_name=ooo.config_yamlfile_name
+):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:
         _datadir_pathname:
-        _config_yamlfile_name:
+        config_yamlfile_name:
     """
     if not _datadir_pathname:
         _datadir_pathname = os.getcwd()
-    while _config_yamlfile_name not in os.listdir():
+    while config_yamlfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
         if os.getcwd() == cwd_before_changing:
