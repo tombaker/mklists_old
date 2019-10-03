@@ -3,7 +3,8 @@
 import io
 import os
 import pytest
-from mklists.constants import RULE_YAMLFILE_NAME
+
+# from mklists.constants import RULE_YAMLFILE_NAME
 from mklists.exceptions import NoRulesError
 from mklists.rules import Rule, return_ruleobj_list_from_yamlstr
 from mklists.utils import return_yamlobj_from_yamlstr
@@ -54,7 +55,7 @@ TEST_RULEOBJ_LIST = [
 ]
 
 
-@pytest.mark.now
+@pytest.mark.skip
 def test_run_return_ruleobj_list_from_yamlstr(tmpdir):
     """@@@Docstring"""
     expected = TEST_RULEOBJ_LIST
@@ -62,7 +63,7 @@ def test_run_return_ruleobj_list_from_yamlstr(tmpdir):
     assert real == expected
 
 
-@pytest.mark.now
+@pytest.mark.skip
 def test_run_return_ruleobj_list_from_yamlstr_no_rules(tmpdir):
     """@@@Docstring"""
     # 2019-09-30: Problem has something to do with testing for

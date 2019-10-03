@@ -1,5 +1,6 @@
 """Test utils.py - return_htmlline_from_textline"""
 
+import pytest
 from mklists.utils import return_htmlline_from_textline
 
 
@@ -10,6 +11,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_already_linkified():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line():
     """@@@Docstring"""
     putin = """http://example.org"""
@@ -17,6 +19,7 @@ def test_utils_return_htmlline_from_textline_linkified_line():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_non_url():
     """Shows that function does not test for non-sensical URLs."""
     putin = """http://..."""
@@ -24,6 +27,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_non_url():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_question_mark():
     """@@@Docstring"""
     putin = """http://192.168.2.1/x.html?lang=en"""
@@ -31,6 +35,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_question_ma
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_ip_address():
     """@@@Docstring"""
     putin = """http://192.168.56.100:8888/"""
@@ -40,6 +45,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_ip_address(
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_3d():
     """@@@Docstring"""
     putin = """http://foo.eu/?fa=3D64063="""
@@ -47,6 +53,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_3d():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_hashsign():
     """@@@Docstring"""
     putin = """http://bar.github.io/#inst"""
@@ -54,6 +61,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_hashsign():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon():
     """@@@Docstring"""
     putin = """http://foobar.org/Talk:Xyz"""
@@ -61,6 +69,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_escaped_characters():
     """@@@Docstring"""
     putin = """http://ex.org/Rizzi_%28DE-537%29"""
@@ -68,6 +77,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_escaped_cha
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon2():
     """@@@Docstring"""
     putin = """http://ex.net/rdf/lrmi/#/res"""
@@ -77,6 +87,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon2():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_bang():
     """@@@Docstring"""
     putin = """http://ex.com/#!/search/%23dcmi11"""
@@ -84,6 +95,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_bang():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_comma():
     """This application will not accept commas as valid URL characters."""
     putin = """http://standorte.deutschepost.de,"""
@@ -91,6 +103,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_comma():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_https():
     """@@@Docstring"""
     putin = """https://www.w3.org/wiki"""
@@ -98,6 +111,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_https():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_surrounded_by_brackets():
     """Note the single apostrophone."""
     putin = """see info (https://www.w3.org/wiki)'"""
@@ -105,6 +119,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_surrounded_by_bracke
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_linkified_line_with_two_urls():
     """@@@Docstring"""
     putin = """(https://1) http://2"""
@@ -112,6 +127,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_with_two_urls():
     assert return_htmlline_from_textline(putin) == putout
 
 
+@pytest.mark.skip
 def test_utils_return_htmlline_from_textline_not_including_linefeed():
     """@@@Docstring"""
     putin = """http://www.gmd.de\n"""

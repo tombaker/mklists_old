@@ -1,40 +1,54 @@
 """CLI - command-line interface module"""
 
 # import os
+from dataclasses import dataclass
 import click
+
+
+@dataclass
+class Config:
+    """Class for holding configuration state."""
+
+
+pass_config = click.make_pass_decorator(Config, ensure=True)
 
 
 @click.group()
 @click.version_option("0.1.5", help="Show version and exit")
 @click.help_option(help="Show help and exit")
-@click.pass_context
-def cli(ctx):
+@pass_config
+def cli(config):
     """Reorder plaintext lists by tweaking rules"""
 
 
 @cli.command()
 @click.option("--with-examples", is_flag=True, help="Initialize with example data")
 @click.help_option(help="Show help and exit")
-@click.pass_context
+@pass_config
 def init(config, with_examples):
     """Initialize list repo
     @@@TODO Add argument: optional directory name of mklists repository.
+    @click.argument('dest', required=False) - something like this?
+    Then rename init => new?
     """
+    config.with_examples = with_examples
+    print(config.with_examples)
+    if with_examples:
+        print("with_examples works too")
     # write_config_yamlfile_to_rootdir()
     # write_minimal_rule_yamlfiles_to_somedirs()
-    # if with_examples:
+    # if config.with_examples:
     #     write_example_config_yamlfile()
     #     write_example_datafiles_to_somedirs()
     #     write_example_rule_yamlfiles_to_somedirs()
 
 
 @cli.command()
-@click.option("--debug", is_flag=True, help="Run verbosely")
 @click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode")
 @click.option("--here-only", is_flag=True, help="Run only in current data directory")
 @click.help_option(help="Show help and exit")
-@click.pass_context
-def run(ctx, debug, dryrun, here_only):  # should be config
+@pass_config
+def run(config, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 
     # datadir_pathname       = os.getcwd()

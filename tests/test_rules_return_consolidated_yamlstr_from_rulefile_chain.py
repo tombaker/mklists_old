@@ -2,12 +2,14 @@
 
 import io
 import pytest
-from mklists.constants import RULE_YAMLFILE_NAME
+
 from mklists.exceptions import RulefileNotFoundError
 from mklists.rules import return_consolidated_yamlstr_from_rulefile_pathnames_list
 
 #    io.open(rule_yamlfile_pathname, mode="w").write(TEST_RULES_YAMLSTR)
 #    rule_yamlfile_pathname = os.path.join(tmpdir, RULE_YAMLFILE_NAME)
+
+RULE_YAMLFILE_NAME = "mklists.yml"
 
 TEST_RULES_YAMLSTR_A = r"""# Test rules for this module only.
 - [1, 'NOW',        lines,     alines,           1]
@@ -30,6 +32,7 @@ TEST_CONSOLIDATED_YAMLSTR = r"""# Test rules for this module only.
 """  # Ensures that string ends with a '\n'.
 
 
+@pytest.mark.skip
 def test_return_consolidated_yamlstr_from_rulefile_pathnames_list(tmpdir):
     """Here: return_consolidated_yamlstr_from_rulefile_pathnames_list()
     called with _startdir_pathname as an argument."""
@@ -50,6 +53,7 @@ def test_return_consolidated_yamlstr_from_rulefile_pathnames_list(tmpdir):
     ) == expected
 
 
+@pytest.mark.skip
 def test_return_consolidated_yamlstr_from_rulefile_pathnames_list_file_not_exist(
     tmpdir
 ):

@@ -7,7 +7,8 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-from .constants import CONFIG_YAMLFILE_NAME, TIMESTAMP_STR
+
+# from .constants import CONFIG_YAMLFILE_NAME, TIMESTAMP_STR
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,

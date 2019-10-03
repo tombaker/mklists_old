@@ -13,25 +13,25 @@ $ mklists init --example-data
 
 import io
 import os
-from .constants import (
-    CONFIG_YAMLFILE_NAME,
-    CONFIG_YAMLFILE_STR,
-    DATADIRA_NAME,
-    DATADIRB_NAME,
-    EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
-    EXAMPLE_DATADIRA_TEXTFILE_STR,
-    EXAMPLE_DATADIRA_TEXTFILE_NAME,
-    EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
-    MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
-    ROOTDIR_RULES_YAMLFILE_STR,
-    RULE_YAMLFILE_NAME,
-)
+
+# from .constants import (
+#     CONFIG_YAMLFILE_NAME,
+#     CONFIG_YAMLFILE_STR,
+#     DATADIRA_NAME,
+#     DATADIRB_NAME,
+#     EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
+#     EXAMPLE_DATADIRA_TEXTFILE_STR,
+#     EXAMPLE_DATADIRA_TEXTFILE_NAME,
+#     EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
+#     MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
+#     ROOTDIR_RULES_YAMLFILE_STR,
+#     RULE_YAMLFILE_NAME,
+# )
 from .decorators import preserve_cwd
 
 
 def write_config_yamlfile_to_rootdir(
-    _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
-    _file_tobewritten_str=CONFIG_YAMLFILE_STR,
+    _file_tobewritten_name=None, _file_tobewritten_str=None
 ):
     """See /Users/tbaker/github/tombaker/mklists/tests/test_init_write_config_yamlfile_to_rootdir
     Write initial YAML config file ('/mklists.yml')."""
@@ -39,10 +39,10 @@ def write_config_yamlfile_to_rootdir(
 
 
 def write_example_datafiles_to_somedirs(
-    _datadira_name=DATADIRA_NAME,
-    _datadirb_name=DATADIRB_NAME,
-    _example_datadira_textfile_name=EXAMPLE_DATADIRA_TEXTFILE_NAME,
-    _example_datadira_textfile_str=EXAMPLE_DATADIRA_TEXTFILE_STR,
+    _datadira_name=None,
+    _datadirb_name=None,
+    _example_datadira_textfile_name=None,
+    _example_datadira_textfile_str=None,
 ):
     """Writes example data files (plain-text lists) to Folders A and B.
 
@@ -66,10 +66,10 @@ def write_example_datafiles_to_somedirs(
 
 
 def write_example_rule_yamlfiles_to_somedirs(
-    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    _rootdir_rules_yamlfile_str=ROOTDIR_RULES_YAMLFILE_STR,
-    _example_datadira_rules_yamlfile_str=EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
-    _example_datadirb_rules_yamlfile_str=EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
+    _rule_yamlfile_name=None,
+    _rootdir_rules_yamlfile_str=None,
+    _example_datadira_rules_yamlfile_str=None,
+    _example_datadirb_rules_yamlfile_str=None,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
@@ -91,10 +91,10 @@ def write_example_rule_yamlfiles_to_somedirs(
 
 @preserve_cwd
 def write_minimal_rule_yamlfiles_to_somedirs(
-    _datadira_name=DATADIRA_NAME,
-    _file_tobewritten_name=RULE_YAMLFILE_NAME,
-    _rootdir_file_tobewritten_str=ROOTDIR_RULES_YAMLFILE_STR,
-    _datadira_file_tobewritten_str=MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
+    _datadira_name=None,
+    _file_tobewritten_name=None,
+    _rootdir_file_tobewritten_str=None,
+    _datadira_file_tobewritten_str=None,
 ):
     """@@@Docstring"""
     io.open(_file_tobewritten_name, "w", encoding="utf-8").write(

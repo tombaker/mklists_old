@@ -40,10 +40,16 @@ $ mklists run --here
 
 import os
 import pytest
-from mklists.initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
+
+# from mklists.initialize import RULE_YAMLFILE_NAME, CONFIG_YAMLFILE_NAME
 from mklists.rules import Rule, return_rulefile_pathnames_list
 
+RULE_YAMLFILE_NAME = ".rules"
 
+CONFIG_YAMLFILE_NAME = "mklists.yml"
+
+
+@pytest.mark.skip
 def test_return_rulefile_pathnames_list_basic(tmpdir):
     """Here: the normal case: chain of directories with '.rules'
     ends in rootdir (which also has 'mklists.yml' file)."""
@@ -64,6 +70,7 @@ def test_return_rulefile_pathnames_list_basic(tmpdir):
     assert return_rulefile_pathnames_list(_startdir_pathname=tmpdirc) == expected
 
 
+@pytest.mark.skip
 def test_return_rulefile_pathnames_list_ends_before_repo_rootdir(tmpdir):
     """Here: chain of directories with ".rules" ends
     before reaching root directory of repo (i.e., the
@@ -83,6 +90,7 @@ def test_return_rulefile_pathnames_list_ends_before_repo_rootdir(tmpdir):
     assert return_rulefile_pathnames_list(_startdir_pathname=tmpdirc) == expected
 
 
+@pytest.mark.skip
 def test_return_rulefile_pathnames_list_even_without_repo_rootdir(tmpdir):
     """Here: return_rulefile_pathnames_list()
     called with _startdir_pathname as an argument."""
@@ -101,6 +109,7 @@ def test_return_rulefile_pathnames_list_even_without_repo_rootdir(tmpdir):
     assert return_rulefile_pathnames_list(_startdir_pathname=tmpdirc) == expected
 
 
+@pytest.mark.skip
 def test_return_rulefile_pathnames_list_without_specifying_startdir_pathname(tmpdir):
     """Here: return_rulefile_pathnames_list()
     * called without specifying _startdir_pathname as an argument

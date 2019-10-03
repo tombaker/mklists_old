@@ -1,9 +1,11 @@
 """@@@Docstring"""
 
 import os
+import pytest
 from mklists.utils import return_visiblefiles_list
 
 
+@pytest.mark.skip
 def test_return_visiblefiles_list(tmpdir):
     """Ignores directory 'baz'."""
     os.chdir(tmpdir)
@@ -13,6 +15,7 @@ def test_return_visiblefiles_list(tmpdir):
     assert return_visiblefiles_list(tmpdir) == ["bar", "foo"]
 
 
+@pytest.mark.skip
 def test_return_visiblefiles_list_does_not_show_directories(tmpdir):
     """Ignores dot file '.bar'."""
     os.chdir(tmpdir)

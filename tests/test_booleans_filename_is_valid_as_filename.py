@@ -5,11 +5,13 @@ import pytest
 from mklists.booleans import filename_is_valid_as_filename
 
 
+@pytest.mark.skip
 def test_utils_filename_is_valid_as_filename_exits_filename_uses_illegal_character():
     """Semicolon is illegal in filename."""
     assert filename_is_valid_as_filename(_filename="foo;bar.txt") is False
 
 
+@pytest.mark.skip
 def test_utils_filename_is_valid_as_filename_exits_already_used_as_directory_name(
     tmpdir
 ):
@@ -21,6 +23,7 @@ def test_utils_filename_is_valid_as_filename_exits_already_used_as_directory_nam
         filename_is_valid_as_filename(_filename=fname)
 
 
+@pytest.mark.skip
 def test_utils_filename_is_valid_as_filename():
     r"""Note: previously assigned bad patterns as follows:
     bad_patterns = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
@@ -36,6 +39,7 @@ def test_utils_filename_is_valid_as_filename():
     )
 
 
+@pytest.mark.skip
 def test_utils_filename_is_valid_as_filename_dotfile():
     """@@@Docstring"""
     fname = ".foobar.txt"
@@ -48,6 +52,7 @@ def test_utils_filename_is_valid_as_filename_dotfile():
     )
 
 
+@pytest.mark.skip
 def test_utils_filename_is_valid_as_filename_dotfile_emacs_backup_file():
     """@@@Docstring"""
     fname = "foobar.txt~"
@@ -60,6 +65,7 @@ def test_utils_filename_is_valid_as_filename_dotfile_emacs_backup_file():
     )
 
 
+@pytest.mark.skip
 def test_utils_filename_is_valid_as_filename_bad_filename_extension():
     """@@@Docstring"""
     fname = "foobar.swp"

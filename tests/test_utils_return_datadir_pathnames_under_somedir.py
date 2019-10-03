@@ -1,8 +1,12 @@
 """@@@Docstring"""
 
 import os
-from mklists.constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+import pytest
 from mklists.utils import return_datadir_pathnames_under_somedir
+
+CONFIG_YAMLFILE_NAME = "mklists.yml"
+
+RULE_YAMLFILE_NAME = ".rules"
 
 
 def test_return_datadir_pathnames_under_somedir_excluding_rootdir(tmpdir):

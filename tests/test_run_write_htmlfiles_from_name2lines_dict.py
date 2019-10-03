@@ -28,6 +28,7 @@ SHEX Wikidata: <a href="http://bit.ly/shex_in_wikidata">http://bit.ly/shex_in_wi
 """
 
 
+@pytest.mark.skip
 def test_write_htmlfiles_from_name2lines_dict(tmpdir):
     """Writes datalines to HTML files in HTML directory."""
     htmldir_subdir_pathname = os.path.join(tmpdir, ".html", "a")
@@ -42,6 +43,7 @@ def test_write_htmlfiles_from_name2lines_dict(tmpdir):
     assert io.open("fileb.txt.html").read() == TEST_FILEB_HTMLSTR
 
 
+@pytest.mark.skip
 def test_write_htmlfiles_from_name2lines_dict_first_deletes_existing_files(tmpdir):
     """Deletes existing files in HTML directory before writing datalines."""
     htmldir_subdir_pathname = os.path.join(tmpdir, ".html", "a")

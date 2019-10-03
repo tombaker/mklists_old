@@ -4,15 +4,17 @@ Here: /Users/tbaker/github/tombaker/mklists/tests/test_init_write_initial_config
 
 import io
 import os
-from mklists.constants import CONFIG_YAMLFILE_NAME, CONFIG_YAMLFILE_STR
+import pytest
+
+# from mklists.constants import CONFIG_YAMLFILE_NAME, CONFIG_YAMLFILE_STR
 from mklists.initialize import write_config_yamlfile_to_rootdir
 
 
+@pytest.mark.skip
 def test_init_write_config_yamlfile_to_rootdir(tmpdir):
-    """@@@Docstring"""
+    """2019-10-03: Will no longer get configuration from file, but Python dataclass."""
     os.chdir(tmpdir)
     write_config_yamlfile_to_rootdir(
-        _file_tobewritten_name=CONFIG_YAMLFILE_NAME,
-        _file_tobewritten_str=CONFIG_YAMLFILE_STR,
+        _file_tobewritten_name=None, _file_tobewritten_str=None
     )
-    assert io.open(CONFIG_YAMLFILE_NAME).read() == CONFIG_YAMLFILE_STR
+    # assert io.open(CONFIG_YAMLFILE_NAME).read() == CONFIG_YAMLFILE_STR

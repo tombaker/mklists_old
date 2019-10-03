@@ -4,14 +4,15 @@
 import os
 import re
 import pytest
-from .constants import INVALID_FILENAME_REGEXES, VALID_FILENAME_CHARACTERS_REGEX
+
+# from .constants import INVALID_FILENAME_REGEXES, VALID_FILENAME_CHARACTERS_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
 
 def filename_is_valid_as_filename(
     _filename=None,
-    _invalid_filename_regexes_list=INVALID_FILENAME_REGEXES,
-    _valid_filename_characters_regex_str=VALID_FILENAME_CHARACTERS_REGEX,
+    _invalid_filename_regexes_list=None,
+    _valid_filename_characters_regex_str=None,
 ):
     """Return True if filename:
     * is not None

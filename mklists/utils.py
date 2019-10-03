@@ -5,13 +5,14 @@ import glob
 import re
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
-from .constants import (
-    CONFIG_YAMLFILE_NAME,
-    HTMLDIR_NAME,
-    RULE_YAMLFILE_NAME,
-    TIMESTAMP_STR,
-    URL_PATTERN_REGEX,
-)
+
+# from .constants import (
+#     CONFIG_YAMLFILE_NAME,
+#     HTMLDIR_NAME,
+#     RULE_YAMLFILE_NAME,
+#     TIMESTAMP_STR,
+#     URL_PATTERN_REGEX,
+# )
 from .decorators import preserve_cwd
 from .exceptions import (
     BadRegexError,
@@ -26,7 +27,7 @@ def return_backupdir_pathname(
     _rootdir_pathname=None,
     _backupdir_subdir_name=None,
     _backupdir_shortname=None,
-    _timestamp_str=TIMESTAMP_STR,
+    _timestamp_str=None,
 ):
     """Generate a timestamped pathname for backups.
 
@@ -122,7 +123,7 @@ def return_datadir_pathnames_under_somedir(
 
 
 def return_htmldir_pathname(
-    _rootdir_pathname=None, _htmldir_name=HTMLDIR_NAME, _datadir_pathname=None
+    _rootdir_pathname=None, _htmldir_name=None, _datadir_pathname=None
 ):
     """Return pathname for folder holding urlified data files.
 
@@ -143,7 +144,7 @@ def return_htmldir_pathname(
     return os.path.join(_rootdir_pathname, _htmldir_name, _datadir_pathname)
 
 
-def return_htmlline_from_textline(_textstr=None):
+def return_htmlline_from_textline(_textstr=None, _url_pattern_regex=None):
     """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 
     Args:
@@ -151,15 +152,13 @@ def return_htmlline_from_textline(_textstr=None):
     if "<a href=" in _textstr:
         return _textstr
     return (
-        re.compile(URL_PATTERN_REGEX).sub(r'<a href="\1">\1</a>', _textstr.rstrip())
+        re.compile(_url_pattern_regex).sub(r'<a href="\1">\1</a>', _textstr.rstrip())
         + "\n"
     )
 
 
 @preserve_cwd
-def return_rootdir_pathname(
-    _datadir_pathname=None, _config_yamlfile_name=CONFIG_YAMLFILE_NAME
-):
+def return_rootdir_pathname(_datadir_pathname=None, _config_yamlfile_name=None):
     """Return repo root pathname when executed anywhere within repo.
 
     Args:

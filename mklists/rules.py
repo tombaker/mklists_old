@@ -3,7 +3,8 @@
 import os
 from dataclasses import dataclass
 from .booleans import filename_is_valid_as_filename, regex_is_valid_as_regex
-from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+
+# from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
@@ -35,9 +36,7 @@ def return_consolidated_yamlstr_from_rulefile_pathnames_list(
 
 @preserve_cwd
 def return_rulefile_pathnames_list(
-    _startdir_pathname=None,
-    _rule_yamlfile_name=RULE_YAMLFILE_NAME,
-    _config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+    _startdir_pathname=None, _rule_yamlfile_name=None, _config_yamlfile_name=None
 ):
     """Return chain of rule files leading from parent directories
     to starting directory (by default the current directory).
