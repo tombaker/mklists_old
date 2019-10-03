@@ -67,11 +67,11 @@ def return_rulefile_pathnames_list(
     return rulefile_pathnames_chain
 
 
-def return_ruleobj_list_from_yamlstr(_yamlstr=None):
+def return_ruleobj_list_from_yamlstr(yamlstr):
     """Return list of Rule objects from YAML string."""
-    if not _yamlstr:
+    if not yamlstr:
         raise NoRulesError(f"No rules provided.")
-    yamlobj = return_yamlobj_from_yamlstr(_yamlstr)
+    yamlobj = return_yamlobj_from_yamlstr(yamlstr)
     ruleobj_list = []
     for item in yamlobj:
         try:

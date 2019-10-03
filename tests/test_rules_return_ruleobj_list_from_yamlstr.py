@@ -55,18 +55,16 @@ TEST_RULEOBJ_LIST = [
 ]
 
 
-@pytest.mark.skip
 def test_run_return_ruleobj_list_from_yamlstr(tmpdir):
     """@@@Docstring"""
     expected = TEST_RULEOBJ_LIST
-    real = return_ruleobj_list_from_yamlstr(_yamlstr=TEST_RULES_YAMLSTR)
+    real = return_ruleobj_list_from_yamlstr(yamlstr=TEST_RULES_YAMLSTR)
     assert real == expected
 
 
-@pytest.mark.skip
 def test_run_return_ruleobj_list_from_yamlstr_no_rules(tmpdir):
     """@@@Docstring"""
     # 2019-09-30: Problem has something to do with testing for
     # wrong exception raised
     with pytest.raises(NoRulesError):
-        return_ruleobj_list_from_yamlstr(_yamlstr=None)
+        return_ruleobj_list_from_yamlstr(yamlstr=None)
