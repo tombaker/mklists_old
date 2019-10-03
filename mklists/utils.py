@@ -117,26 +117,26 @@ def return_datadir_pathnames_under_somedir(
     return datadirs
 
 
-def return_htmldir_pathname(
-    _rootdir_pathname=None, _htmldir_name=None, _datadir_pathname=None
-):
-    """Return pathname for folder holding urlified data files.
+def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
+    """Return pathname for folder holding htmlified data files.
 
     Args:
-        _rootdir_pathname: Full pathname of mklists repo root directory.
-        _htmldir_name:
-        _datadir_pathname:
+        rootdir_pathname: Full pathname of mklists repo root directory.
+        htmldir_name:
+        datadir_name:
 
     Note: uses output of:
     * return_rootdir_pathname() => here: tmpdir
 
     Example output: '/Users/foobar/github/mylists/.html/a'
     """
-    if not _rootdir_pathname:
-        raise MissingArgumentError(f"Missing argument '_roodir_pathname'")
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
-    return os.path.join(_rootdir_pathname, _htmldir_name, _datadir_pathname)
+    if not rootdir_pathname:
+        raise MissingArgumentError(f"Missing argument 'rootdir_pathname'")
+    if not htmldir_name:
+        raise MissingArgumentError(f"Missing argument 'htmldir_name'")
+    if not htmldir_name:
+        raise MissingArgumentError(f"Missing argument 'datadir_name'")
+    return os.path.join(rootdir_pathname, htmldir_name, datadir_name)
 
 
 def return_htmlline_from_textline(
