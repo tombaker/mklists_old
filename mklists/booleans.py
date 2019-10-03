@@ -4,15 +4,16 @@
 import os
 import re
 import pytest
-
-# from .constants import INVALID_FILENAME_REGEXES, VALID_FILENAME_CHARACTERS_REGEX
+from .config import Config
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
+
+zzz = Config()
 
 
 def filename_is_valid_as_filename(
-    _filename=None,
-    _invalid_filename_regexes_list=None,
-    _valid_filename_characters_regex_str=None,
+    filename,
+    invalid_filename_regexes_list=zzz.invalid_filename_regexes,
+    valid_filename_characters_regex=zzz.valid_filename_characters_regex,
 ):
     """Return True if filename:
     * is not None
@@ -20,16 +21,16 @@ def filename_is_valid_as_filename(
     * string patterns (override defaults in mklists.yml)
     * does not match name of an existing directory in current directory
     """
-    if _filename is None:
+    if filename is None:
         raise MissingValueError(f"Missing filename.")
-    for badpat in _invalid_filename_regexes_list:
-        if re.search(badpat, _filename):
+    for badpat in invalid_filename_regexes_list:
+        if re.search(badpat, filename):
             return False
-    for char in _filename:
-        if not bool(re.search(_valid_filename_characters_regex_str, char)):
+    for char in filename:
+        if not bool(re.search(valid_filename_characters_regex, char)):
             return False
-    if _filename in [d for d in os.listdir() if os.path.isdir(d)]:
-        raise FilenameIsAlreadyDirnameError(f"{repr(_filename)} is a directory.")
+    if filename in [d for d in os.listdir() if os.path.isdir(d)]:
+        raise FilenameIsAlreadyDirnameError(f"{repr(filename)} is a directory.")
     return True
 
 

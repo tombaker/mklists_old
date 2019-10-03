@@ -3,8 +3,7 @@
 import os
 from dataclasses import dataclass
 from .booleans import filename_is_valid_as_filename, regex_is_valid_as_regex
-
-# from .constants import CONFIG_YAMLFILE_NAME, RULE_YAMLFILE_NAME
+from .config import Constants
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
@@ -18,6 +17,8 @@ from .exceptions import (
     UninitializedSourceError,
 )
 from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
+
+ooo = Constants()
 
 
 def return_consolidated_yamlstr_from_rulefile_pathnames_list(
