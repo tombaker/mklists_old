@@ -5,14 +5,7 @@ import glob
 import re
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
-
-# from .constants import (
-#     CONFIG_YAMLFILE_NAME,
-#     HTMLDIR_NAME,
-#     RULE_YAMLFILE_NAME,
-#     TIMESTAMP_STR,
-#     URL_PATTERN_REGEX,
-# )
+from .config import Constants
 from .decorators import preserve_cwd
 from .exceptions import (
     BadRegexError,
@@ -21,6 +14,8 @@ from .exceptions import (
     MissingArgumentError,
     YamlFileNotFoundError,
 )
+
+ooo = Constants()
 
 
 def return_backupdir_pathname(
@@ -144,15 +139,17 @@ def return_htmldir_pathname(
     return os.path.join(_rootdir_pathname, _htmldir_name, _datadir_pathname)
 
 
-def return_htmlline_from_textline(_textstr=None, _url_pattern_regex=None):
+def return_htmlline_from_textline(
+    textline=None, url_pattern_regex=ooo.url_pattern_regex
+):
     """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 
     Args:
-        _textstr: A text string (typically, one line of text)."""
-    if "<a href=" in _textstr:
-        return _textstr
+        textline: A line of text (a string)."""
+    if "<a href=" in textline:
+        return textline
     return (
-        re.compile(_url_pattern_regex).sub(r'<a href="\1">\1</a>', _textstr.rstrip())
+        re.compile(url_pattern_regex).sub(r'<a href="\1">\1</a>', textline.rstrip())
         + "\n"
     )
 
