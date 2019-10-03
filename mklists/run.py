@@ -7,8 +7,7 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-
-# from .constants import CONFIG_YAMLFILE_NAME, TIMESTAMP_STR
+from .config import Constants
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
@@ -28,6 +27,8 @@ from .utils import (
     return_htmlline_from_textline,
     return_visiblefiles_list,
 )
+
+ooo = Constants()
 
 
 @preserve_cwd
@@ -111,20 +112,22 @@ def move_specified_datafiles_to_somedirs(
                 shutil.move(key, destination_dir)
 
 
-def return_config_dict_from_config_yamlfile(_config_yamlfile_name=None):
+def return_config_dict_from_config_yamlfile(
+    config_yamlfile_name=ooo.config_yamlfile_name
+):
     """Returns configuration settings as a Python dictionary
     after parsing a configuration file in YAML.
 
     Args:
-        _config_yamlfile_name: YAML file with dictionary of configuration settings.
+        config_yamlfile_name: YAML file with dictionary of configuration settings.
     """
     try:
         return return_yamlobj_from_yamlstr(
-            return_yamlstr_from_yamlfile(_config_yamlfile_name)
+            return_yamlstr_from_yamlfile(config_yamlfile_name)
         )
     except FileNotFoundError:
         raise FileNotFoundError(
-            f"Configuration file {repr(_config_yamlfile_name)} not found."
+            f"Configuration file {repr(config_yamlfile_name)} not found."
         )
 
 
