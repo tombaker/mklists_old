@@ -32,7 +32,6 @@ TEST_CONSOLIDATED_YAMLSTR = r"""# Test rules for this module only.
 """  # Ensures that string ends with a '\n'.
 
 
-@pytest.mark.skip
 def test_return_consolidated_yamlstr_from_rulefile_pathnames_list(tmpdir):
     """Here: return_consolidated_yamlstr_from_rulefile_pathnames_list()
     called with _startdir_pathname as an argument."""
@@ -53,7 +52,6 @@ def test_return_consolidated_yamlstr_from_rulefile_pathnames_list(tmpdir):
     ) == expected
 
 
-@pytest.mark.skip
 def test_return_consolidated_yamlstr_from_rulefile_pathnames_list_file_not_exist(
     tmpdir
 ):

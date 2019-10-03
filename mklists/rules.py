@@ -21,12 +21,10 @@ from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
 ooo = Constants()
 
 
-def return_consolidated_yamlstr_from_rulefile_pathnames_list(
-    _rulefile_pathnames_chain=None
-):
+def return_consolidated_yamlstr_from_rulefile_pathnames_list(rulefile_pathnames_chain):
     """Return list of rule strings from chain of rulefile pathnames."""
     consolidated_yamlstr = ""
-    for pathname in _rulefile_pathnames_chain:
+    for pathname in rulefile_pathnames_chain:
         try:
             consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
         except FileNotFoundError:
