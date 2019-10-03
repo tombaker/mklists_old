@@ -13,21 +13,11 @@ $ mklists init --example-data
 
 import io
 import os
-
-# from .constants import (
-#     CONFIG_YAMLFILE_NAME,
-#     CONFIG_YAMLFILE_STR,
-#     DATADIRA_NAME,
-#     DATADIRB_NAME,
-#     EXAMPLE_DATADIRA_RULES_YAMLFILE_STR,
-#     EXAMPLE_DATADIRA_TEXTFILE_STR,
-#     EXAMPLE_DATADIRA_TEXTFILE_NAME,
-#     EXAMPLE_DATADIRB_RULES_YAMLFILE_STR,
-#     MINIMAL_DATADIRA_RULES_YAMLFILE_STR,
-#     ROOTDIR_RULES_YAMLFILE_STR,
-#     RULE_YAMLFILE_NAME,
-# )
+from .config import Constants, ConfigExamples
 from .decorators import preserve_cwd
+
+ooo = Constants()
+xxx = ConfigExamples()
 
 
 def write_config_yamlfile_to_rootdir(
@@ -66,26 +56,26 @@ def write_example_datafiles_to_somedirs(
 
 
 def write_example_rule_yamlfiles_to_somedirs(
-    _rule_yamlfile_name=None,
-    _rootdir_rules_yamlfile_str=None,
-    _example_datadira_rules_yamlfile_str=None,
-    _example_datadirb_rules_yamlfile_str=None,
+    rule_yamlfile_name=ooo.rule_yamlfile_name,
+    rootdir_rules_yamlfile_str=xxx.rootdir_rules_yamlfile_str,
+    example_datadira_rules_yamlfile_str=xxx.example_datadira_rules_yamlfile_str,
+    example_datadirb_rules_yamlfile_str=xxx.example_datadirb_rules_yamlfile_str,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
     * folder rule file (/a/.rules)"""
     config_path = os.path.join(os.getcwd())
-    grule_file = os.path.join(config_path, _rule_yamlfile_name)
+    grule_file = os.path.join(config_path, rule_yamlfile_name)
     os.makedirs(os.path.join(config_path, "a"))
     os.makedirs(os.path.join(config_path, "b"))
-    rulea_file = os.path.join(config_path, "a", _rule_yamlfile_name)
-    ruleb_file = os.path.join(config_path, "b", _rule_yamlfile_name)
-    io.open(grule_file, "w", encoding="utf-8").write(_rootdir_rules_yamlfile_str)
+    rulea_file = os.path.join(config_path, "a", rule_yamlfile_name)
+    ruleb_file = os.path.join(config_path, "b", rule_yamlfile_name)
+    io.open(grule_file, "w", encoding="utf-8").write(rootdir_rules_yamlfile_str)
     io.open(rulea_file, "w", encoding="utf-8").write(
-        _example_datadira_rules_yamlfile_str
+        example_datadira_rules_yamlfile_str
     )
     io.open(ruleb_file, "w", encoding="utf-8").write(
-        _example_datadirb_rules_yamlfile_str
+        example_datadirb_rules_yamlfile_str
     )
 
 

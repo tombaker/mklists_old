@@ -10,7 +10,6 @@ ooo = Constants()
 xxx = ConfigExamples()
 
 
-@pytest.mark.skip
 def test_init_write_example_rule_yamlfiles_to_somedirs(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)
@@ -19,7 +18,6 @@ def test_init_write_example_rule_yamlfiles_to_somedirs(tmpdir):
     assert io.open(rulefile).read() == xxx.rootdir_rules_yamlfile_str
 
 
-@pytest.mark.skip
 def test_initialize_config_yamlfiles_rulea(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)
@@ -28,7 +26,6 @@ def test_initialize_config_yamlfiles_rulea(tmpdir):
     assert io.open(rulefile).read() == xxx.example_datadira_rules_yamlfile_str
 
 
-@pytest.mark.skip
 def test_initialize_config_yamlfiles_ruleb(tmpdir):
     """@@@Docstring"""
     os.chdir(tmpdir)
