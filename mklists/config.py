@@ -16,18 +16,18 @@ class Constants:
     not intended to be configurable."""
 
     # Filenames
-    config_yamlfile_name = "mklists.yml"
-    rule_yamlfile_name = ".rules"
+    config_yamlfile_name: str = "mklists.yml"
+    rule_yamlfile_name: str = ".rules"
 
     # Directory names
-    backupdir_name = ".backups"
-    htmldir_name = ".html"
+    backupdir_name: str = ".backups"
+    htmldir_name: str = ".html"
 
     # Timestamp
-    timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    timestamp_str: str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 
     # Regexes
-    url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+    url_pattern_regex: str = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 
 @dataclass
@@ -36,15 +36,15 @@ class Config:
     these are written to mklists.yml."""
 
     # Regexes
-    invalid_filename_regexes = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-    valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
+    invalid_filename_regexes: tuple = (r"\.swp$", r"\.tmp$", r"~$", r"^\.")
+    valid_filename_characters_regex: str = r"[\-_=.,@:A-Za-z0-9]+$"
 
     # Flags
-    verbose = True
-    htmlify = True
+    verbose: bool = True
+    htmlify: bool = True
 
     # Other
-    backup_depth_int = 3
+    backup_depth_int: int = 3
     files2dirs_dict = {}
 
 
@@ -52,10 +52,10 @@ class Config:
 class ConfigExamples:
     """Holds state and self-validation methods for examples."""
 
-    datadira_name = "a"
-    datadirb_name = "b"
+    datadira_name: str = "a"
+    datadirb_name: str = "b"
 
-    rootdir_rules_yamlfile_str = dedent(
+    rootdir_rules_yamlfile_str: str = dedent(
         r"""\
         # Each rule matches against part of a line of text.
         #
@@ -84,14 +84,14 @@ class ConfigExamples:
         """
     )
 
-    minimal_datadira_rules_yamlfile_str = dedent(
+    minimal_datadira_rules_yamlfile_str: str = dedent(
         r"""# Rules for Folder A.
         - [0, '.',          alines,    etc.txt,  0]
         - [1, 'TODO',       etc.txt,   todo.txt, 1]
         """
     )
 
-    example_datadira_rules_yamlfile_str = dedent(
+    example_datadira_rules_yamlfile_str: str = dedent(
         r"""
         - [0, '.',       alines,     todo.txt,   1]
         - [1, 'NOW',     todo.txt,   now.txt,    1]
@@ -99,7 +99,7 @@ class ConfigExamples:
         """
     )
 
-    example_datadirb_rules_yamlfile_str = dedent(
+    example_datadirb_rules_yamlfile_str: str = dedent(
         r"""# Rules for folder B.
         - [0, '.',       lines,      blines,     0]
         - [1, '^2019',   blines,     2019.txt,   1]
@@ -107,8 +107,9 @@ class ConfigExamples:
         """
     )
 
-    example_datadira_textfile_name = "example_datalines_README.txt"
-    example_datadira_textfile_str = dedent(
+    example_datadira_textfile_name: str = "example_datalines_README.txt"
+
+    example_datadira_textfile_str: str = dedent(
         r"""\
         TODO Examine config file 'mklists.yml' (in the root directory); tweak if needed.
         TODO Examine '.rules' file (in root directory); tweak if needed.
@@ -118,7 +119,7 @@ class ConfigExamples:
         """
     )
 
-    example_datadirb_textfile_str = dedent(
+    example_datadirb_textfile_str: str = dedent(
         r"""\
         TODO Note how the default rules will move this line to Folder A.
         """
