@@ -18,8 +18,6 @@ from .exceptions import (
 )
 from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
 
-ooo = Constants()
-
 
 def return_consolidated_yamlstr_from_rulefile_pathnames_list(rulefile_pathnames_chain):
     """Return list of rule strings from chain of rulefile pathnames."""
@@ -36,8 +34,8 @@ def return_consolidated_yamlstr_from_rulefile_pathnames_list(rulefile_pathnames_
 @preserve_cwd
 def return_rulefile_pathnames_list(
     startdir_pathname=None,
-    rule_yamlfile_name=ooo.rule_yamlfile_name,
-    config_yamlfile_name=ooo.config_yamlfile_name,
+    rule_yamlfile_name=Constants.rule_yamlfile_name,
+    config_yamlfile_name=Constants.config_yamlfile_name,
 ):
     """Return chain of rule files leading from parent directories
     to starting directory (by default the current directory).

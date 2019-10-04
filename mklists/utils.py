@@ -15,8 +15,6 @@ from .exceptions import (
     YamlFileNotFoundError,
 )
 
-ooo = Constants()
-
 
 def return_backupdir_pathname(
     _rootdir_pathname=None,
@@ -140,7 +138,7 @@ def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
 
 
 def return_htmlline_from_textline(
-    textline=None, url_pattern_regex=ooo.url_pattern_regex
+    textline=None, url_pattern_regex=Constants.url_pattern_regex
 ):
     """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 
@@ -156,7 +154,7 @@ def return_htmlline_from_textline(
 
 @preserve_cwd
 def return_rootdir_pathname(
-    _datadir_pathname=None, config_yamlfile_name=ooo.config_yamlfile_name
+    _datadir_pathname=None, config_yamlfile_name=Constants.config_yamlfile_name
 ):
     """Return repo root pathname when executed anywhere within repo.
 

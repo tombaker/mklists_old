@@ -16,9 +16,6 @@ import os
 from .config import Constants, ConfigExamples
 from .decorators import preserve_cwd
 
-ooo = Constants()
-xxx = ConfigExamples()
-
 
 def write_config_yamlfile_to_rootdir(
     file_tobewritten_name=None, file_tobewritten_str=None
@@ -55,10 +52,10 @@ def write_example_datafiles_to_somedirs(
 
 
 def write_example_rule_yamlfiles_to_somedirs(
-    rule_yamlfile_name=ooo.rule_yamlfile_name,
-    rootdir_rules_yamlfile_str=xxx.rootdir_rules_yamlfile_str,
-    example_datadira_rules_yamlfile_str=xxx.example_datadira_rules_yamlfile_str,
-    example_datadirb_rules_yamlfile_str=xxx.example_datadirb_rules_yamlfile_str,
+    rule_yamlfile_name=Constants.rule_yamlfile_name,
+    rootdir_rules_yamlfile_str=ConfigExamples.rootdir_rules_yamlfile_str,
+    example_datadira_rules_yamlfile_str=ConfigExamples.example_datadira_rules_yamlfile_str,
+    example_datadirb_rules_yamlfile_str=ConfigExamples.example_datadirb_rules_yamlfile_str,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)

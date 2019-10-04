@@ -28,8 +28,6 @@ from .utils import (
     return_visiblefiles_list,
 )
 
-ooo = Constants()
-
 
 @preserve_cwd
 def delete_older_backupdirs(
@@ -113,7 +111,7 @@ def move_specified_datafiles_to_somedirs(
 
 
 def return_config_dict_from_config_yamlfile(
-    config_yamlfile_name=ooo.config_yamlfile_name
+    config_yamlfile_name=Constants.config_yamlfile_name
 ):
     """Returns configuration settings as a Python dictionary
     after parsing a configuration file in YAML.
