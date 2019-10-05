@@ -4,16 +4,14 @@
 import os
 import re
 import pytest
-from .config import Config
+from .config import settable
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
-
-zzz = Config()
 
 
 def filename_is_valid_as_filename(
     filename,
-    invalid_filename_regexes_list=zzz.invalid_filename_regexes,
-    valid_filename_characters_regex=zzz.valid_filename_characters_regex,
+    invalid_filename_regexes_list=settable.invalid_filename_regexes,
+    valid_filename_characters_regex=settable.valid_filename_characters_regex,
 ):
     """Return True if filename:
     * is not None

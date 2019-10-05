@@ -1,14 +1,8 @@
 """CLI - command-line interface module"""
 
-# import os
 from dataclasses import dataclass
 import click
-
-
-@dataclass
-class Config:
-    """Class for holding configuration state."""
-
+from .config import Config
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
 
