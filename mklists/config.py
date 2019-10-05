@@ -1,6 +1,6 @@
 """@@@Docstring"""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from textwrap import dedent
 import datetime
 
@@ -30,13 +30,15 @@ class Constants:
     url_pattern_regex: str = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 
-@dataclass
+@dataclass(frozen=True)
 class Config:
     """Holds state and self-validation methods for configuration -
     these are written to mklists.yml."""
 
-    # Regexes
-    invalid_filename_regexes: tuple = (r"\.swp$", r"\.tmp$", r"~$", r"^\.")
+    # Regexes - https://stackoverflow.com/questions/52063759/passing-default-list-argument-to-dataclasses
+    invalid_filename_regexes: list = field(
+        default_factory=lambda: [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
+    )
     valid_filename_characters_regex: str = r"[\-_=.,@:A-Za-z0-9]+$"
 
     # Flags
@@ -45,7 +47,7 @@ class Config:
 
     # Other
     backup_depth_int: int = 3
-    files2dirs_dict = {}
+    files2dirs_dict: dict = field(default_factory=lambda: {})
 
 
 @dataclass
