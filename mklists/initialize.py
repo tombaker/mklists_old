@@ -13,7 +13,7 @@ $ mklists init --example-data
 
 import io
 import os
-from .config import Constants, ConfigExamples
+from .config import fixed, ConfigExamples
 from .decorators import preserve_cwd
 
 
@@ -52,7 +52,7 @@ def write_example_datafiles_to_somedirs(
 
 
 def write_example_rule_yamlfiles_to_somedirs(
-    rule_yamlfile_name=Constants.rule_yamlfile_name,
+    rule_yamlfile_name=fixed.rule_yamlfile_name,
     rootdir_rules_yamlfile_str=ConfigExamples.rootdir_rules_yamlfile_str,
     example_datadira_rules_yamlfile_str=ConfigExamples.example_datadira_rules_yamlfile_str,
     example_datadirb_rules_yamlfile_str=ConfigExamples.example_datadirb_rules_yamlfile_str,

@@ -1,5 +1,6 @@
 """@@@Docstring"""
 
+from attr import attrs, attrib
 from dataclasses import dataclass, field
 from textwrap import dedent
 import datetime
@@ -10,16 +11,19 @@ import datetime
 #     run:  [config] dryrun here_only
 
 
+@attrs()
 class Constants:
     """Holds variables 'hard-coded' into mklists -
     variables not intended to be changed."""
 
-    config_yamlfile_name = "mklists.yml"
-    rule_yamlfile_name = ".rules"
-    backupdir_name = ".backups"
-    htmldir_name = ".html"
+    config_yamlfile_name = attrib(default="mklists.yml")
+    rule_yamlfile_name = attrib(default=".rules")
+    backupdir_name = attrib(default=".backups")
+    htmldir_name = attrib(default=".html")
+    url_pattern_regex = attrib(
+        default=r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+    )
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
-    url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 
 @dataclass(frozen=True)
@@ -117,3 +121,8 @@ class ConfigExamples:
         TODO Note how the default rules will move this line to Folder A.
         """
     )
+
+
+fixed = Constants()
+settable = Config()
+example = ConfigExamples()
