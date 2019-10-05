@@ -128,4 +128,4 @@ class ConfigExamples:
 
 fixed = Constants()
 settable = Config()
-example = ConfigExamples()
+ex = ConfigExamples()
