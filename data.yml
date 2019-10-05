@@ -1,0 +1,10 @@
+backup_depth_int: 3
+files2dirs_dict: {}
+htmlify: true
+invalid_filename_regexes:
+- \.swp$
+- \.tmp$
+- ~$
+- ^\.
+valid_filename_characters_regex: '[\-_=.,@:A-Za-z0-9]+$'
+verbose: true

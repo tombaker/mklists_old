@@ -1,21 +1,23 @@
-"""
-Here: /Users/tbaker/github/tombaker/mklists/tests/test_init_write_initial_config_yamlfile.py
-"""
+"""Tests write_config_yamlfile_to_rootdir"""
 
 import io
 import os
 import pytest
+import ruamel.yaml
+from mklists.config import Defaults, Settings
+from mklists.initialize import write_config_yamlfile_from_default_pyobj_to_rootdir
 
-# from mklists.constants import CONFIG_YAMLFILE_NAME, CONFIG_YAMLFILE_STR
-from mklists.initialize import write_config_yamlfile_to_rootdir
+set = Settings()
 
 
 @pytest.mark.skip
-def test_init_write_config_yamlfile_to_rootdir(tmpdir):
-    """2019-10-03: Will no longer get configuration from file, but Python dataclass.
-    * Write initial YAML config file 'mklists.yml'."""
+def test_init_write_config_yamlfile_from_default_pyobj_to_rootdir(tmpdir):
+    """Write contents of Settings() instance to YAML config file 'mklists.yml'."""
     os.chdir(tmpdir)
-    write_config_yamlfile_to_rootdir(
-        file_tobewritten_name=None, file_tobewritten_str=None
+    write_config_yamlfile_from_default_pyobj_to_rootdir(
+        rootdir_pathname=tmpdir,
+        config_yamlfile_name=Defaults.config_yamlfile_name,
+        pyobj=set,
     )
-    # assert io.open(CONFIG_YAMLFILE_NAME).read() == CONFIG_YAMLFILE_STR
+    expected = ""
+    assert io.open(Defaults.config_yamlfile_name).read() == expected

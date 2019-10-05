@@ -5,7 +5,7 @@ import glob
 import re
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
-from .config import fixed
+from .config import Defaults
 from .decorators import preserve_cwd
 from .exceptions import (
     BadRegexError,
@@ -138,7 +138,7 @@ def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
 
 
 def return_htmlline_from_textline(
-    textline=None, url_pattern_regex=fixed.url_pattern_regex
+    textline=None, url_pattern_regex=Defaults.url_pattern_regex
 ):
     """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 
@@ -154,7 +154,7 @@ def return_htmlline_from_textline(
 
 @preserve_cwd
 def return_rootdir_pathname(
-    _datadir_pathname=None, config_yamlfile_name=fixed.config_yamlfile_name
+    _datadir_pathname=None, config_yamlfile_name=Defaults.config_yamlfile_name
 ):
     """Return repo root pathname when executed anywhere within repo.
 

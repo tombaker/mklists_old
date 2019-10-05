@@ -3,7 +3,9 @@
 from dataclasses import dataclass, field
 from textwrap import dedent
 import datetime
-from attr import attrs, attrib
+import attr
+
+# from .utils import return_rootdir_pathname
 
 # Note: variables set only at command line:
 #     cli:  [config]
@@ -11,45 +13,39 @@ from attr import attrs, attrib
 #     run:  [config] dryrun here_only
 
 
-@attrs()
-class Constants:
+class Defaults:
     """Holds variables 'hard-coded' into mklists -
     variables not intended to be changed.
-
     Could add validation methods here, then re-allow
     R0903 in pylintrc."""
 
-    config_yamlfile_name = attrib(default="mklists.yml")
-    rule_yamlfile_name = attrib(default=".rules")
-    backupdir_name = attrib(default=".backups")
-    htmldir_name = attrib(default=".html")
-    url_pattern_regex = attrib(
-        default=r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-    )
-    timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    config_yamlfile_name = "mklists.yml"
+    rule_yamlfile_name = ".rules"
+    backupdir_name = ".backups"
+    htmldir_name = ".html"
+    url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+    timestamp_str = "dummy-timestamp"
+    # timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    # rootdir_pathname = return_rootdir_pathname()
 
 
-@dataclass(frozen=True)
-class Config:
+@attr.s()
+class Settings:
     """Holds state and self-validation methods for configuration.
     these are written to mklists.yml."""
 
-    invalid_filename_regexes: list = field(
-        default_factory=lambda: [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
+    invalid_filename_regexes_list = attr.ib(
+        default=[r"\.swp$", r"\.tmp$", r"~$", r"^\."]
     )
-    valid_filename_characters_regex: str = r"[\-_=.,@:A-Za-z0-9]+$"
-
-    # Flags
-    verbose: bool = True
-    htmlify: bool = True
-
-    # Other
-    backup_depth_int: int = 3
-    files2dirs_dict: dict = field(default_factory=lambda: {})
+    valid_filename_characters_regex = attr.ib(default=r"[\-_=.,@:A-Za-z0-9]+$")
+    verbose = attr.ib(default=True)
+    htmlify = attr.ib(default=True)
+    backup_depth_int = attr.ib(default=3)
+    files2dirs_dict = attr.ib(default=attr.Factory(dict))
 
 
 @dataclass
-class ConfigExamples:
+class Examples:
     """Holds state and self-validation methods for examples."""
 
     datadira_name: str = "a"
@@ -124,8 +120,3 @@ class ConfigExamples:
         TODO Note how the default rules will move this line to Folder A.
         """
     )
-
-
-fixed = Constants()
-settable = Config()
-ex = ConfigExamples()

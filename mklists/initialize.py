@@ -13,15 +13,24 @@ $ mklists init --example-data
 
 import io
 import os
-from .config import fixed, ex
+import attr
+import ruamel.yaml
+from .config import Defaults, Settings, Examples
 from .decorators import preserve_cwd
 
+set = Settings()
 
-def write_config_yamlfile_to_rootdir(
-    file_tobewritten_name=None, file_tobewritten_str=None
+
+def write_config_yamlfile_from_default_pyobj_to_rootdir(
+    rootdir_pathname=None, config_yamlfile_name=Defaults.config_yamlfile_name, pyobj=set
 ):
     """Write initial YAML config file ('/mklists.yml')."""
-    io.open(file_tobewritten_name, "w", encoding="utf-8").write(file_tobewritten_str)
+    contents_tobewritten_dict = attr.asdict(pyobj)
+    file_tobewritten_name = "mklists.yml"
+    with open(file_tobewritten_name, "w", encoding="utf-8") as outfile:
+        ruamel.yaml.safe_dump(
+            contents_tobewritten_dict, outfile, default_flow_style=False
+        )
 
 
 def write_example_datafiles_to_somedirs(
@@ -52,10 +61,10 @@ def write_example_datafiles_to_somedirs(
 
 
 def write_example_rule_yamlfiles_to_somedirs(
-    rule_yamlfile_name=fixed.rule_yamlfile_name,
-    rootdir_rules_yamlfile_str=ex.rootdir_rules_yamlfile_str,
-    example_datadira_rules_yamlfile_str=ex.example_datadira_rules_yamlfile_str,
-    example_datadirb_rules_yamlfile_str=ex.example_datadirb_rules_yamlfile_str,
+    rule_yamlfile_name=Defaults.rule_yamlfile_name,
+    rootdir_rules_yamlfile_str=Examples.rootdir_rules_yamlfile_str,
+    example_datadira_rules_yamlfile_str=Examples.example_datadira_rules_yamlfile_str,
+    example_datadirb_rules_yamlfile_str=Examples.example_datadirb_rules_yamlfile_str,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)

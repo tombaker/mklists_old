@@ -2,9 +2,9 @@
 
 from dataclasses import dataclass
 import click
-from .config import Config
+from .config import Settings
 
-pass_config = click.make_pass_decorator(Config, ensure=True)
+pass_config = click.make_pass_decorator(Settings, ensure=True)
 
 
 @click.group()

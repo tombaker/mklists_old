@@ -7,7 +7,7 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-from .config import fixed
+from .config import Defaults
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
@@ -111,7 +111,7 @@ def move_specified_datafiles_to_somedirs(
 
 
 def return_config_dict_from_config_yamlfile(
-    config_yamlfile_name=fixed.config_yamlfile_name
+    config_yamlfile_name=Defaults.config_yamlfile_name
 ):
     """Returns configuration settings as a Python dictionary
     after parsing a configuration file in YAML.
