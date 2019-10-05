@@ -18,11 +18,13 @@ import ruamel.yaml
 from .config import Defaults, Settings, Examples
 from .decorators import preserve_cwd
 
-set = Settings()
+sets = Settings()
 
 
 def write_config_yamlfile_from_default_pyobj_to_rootdir(
-    rootdir_pathname=None, config_yamlfile_name=Defaults.config_yamlfile_name, pyobj=set
+    rootdir_pathname=None,
+    config_yamlfile_name=Defaults.config_yamlfile_name,
+    pyobj=sets,
 ):
     """Write initial YAML config file ('/mklists.yml')."""
     contents_tobewritten_dict = attr.asdict(pyobj)

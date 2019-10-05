@@ -7,13 +7,13 @@ import pytest
 from .config import Settings
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
-set = Settings()
+sets = Settings()
 
 
 def filename_is_valid_as_filename(
     filename,
-    invalid_filename_regexes_list=set.invalid_filename_regexes_list,
-    valid_filename_characters_regex=set.valid_filename_characters_regex,
+    invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
+    valid_filename_characters_regex=sets.valid_filename_characters_regex,
 ):
     """Return True if filename:
     * is not None
@@ -21,7 +21,7 @@ def filename_is_valid_as_filename(
     * string patterns (override defaults in mklists.yml)
     * does not match name of an existing directory in current directory
     """
-    # valid_filename_characters_regex=set.valid_filename_characters_regex,
+    # valid_filename_characters_regex=sets.valid_filename_characters_regex,
     if filename is None:
         raise MissingValueError(f"Missing filename.")
     for badpat in invalid_filename_regexes_list:
