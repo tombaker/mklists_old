@@ -10,24 +10,17 @@ import datetime
 #     run:  [config] dryrun here_only
 
 
-@dataclass
 class Constants:
     """Holds variables 'hard-coded' into mklists -
-    not intended to be configurable."""
+    variables not intended to be changed."""
 
-    # Filenames
-    config_yamlfile_name: str = "mklists.yml"
-    rule_yamlfile_name: str = ".rules"
 
-    # Directory names
-    backupdir_name: str = ".backups"
-    htmldir_name: str = ".html"
-
-    # Timestamp
-    timestamp_str: str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
-
-    # Regexes
-    url_pattern_regex: str = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+Constants.config_yamlfile_name = "mklists.yml"
+Constants.rule_yamlfile_name = ".rules"
+Constants.backupdir_name = ".backups"
+Constants.htmldir_name = ".html"
+Constants.timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+Constants.url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 
 @dataclass(frozen=True)
@@ -35,7 +28,6 @@ class Config:
     """Holds state and self-validation methods for configuration -
     these are written to mklists.yml."""
 
-    # Regexes - https://stackoverflow.com/questions/52063759/passing-default-list-argument-to-dataclasses
     invalid_filename_regexes: list = field(
         default_factory=lambda: [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
     )
