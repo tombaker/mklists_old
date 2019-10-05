@@ -14,7 +14,10 @@ from attr import attrs, attrib
 @attrs()
 class Constants:
     """Holds variables 'hard-coded' into mklists -
-    variables not intended to be changed."""
+    variables not intended to be changed.
+
+    Could add validation methods here, then re-allow
+    R0903 in pylintrc."""
 
     config_yamlfile_name = attrib(default="mklists.yml")
     rule_yamlfile_name = attrib(default=".rules")
@@ -28,7 +31,7 @@ class Constants:
 
 @dataclass(frozen=True)
 class Config:
-    """Holds state and self-validation methods for configuration -
+    """Holds state and self-validation methods for configuration.
     these are written to mklists.yml."""
 
     invalid_filename_regexes: list = field(
