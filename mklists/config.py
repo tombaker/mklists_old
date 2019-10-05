@@ -14,13 +14,12 @@ class Constants:
     """Holds variables 'hard-coded' into mklists -
     variables not intended to be changed."""
 
-
-Constants.config_yamlfile_name = "mklists.yml"
-Constants.rule_yamlfile_name = ".rules"
-Constants.backupdir_name = ".backups"
-Constants.htmldir_name = ".html"
-Constants.timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
-Constants.url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+    config_yamlfile_name = "mklists.yml"
+    rule_yamlfile_name = ".rules"
+    backupdir_name = ".backups"
+    htmldir_name = ".html"
+    timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 
 @dataclass(frozen=True)
