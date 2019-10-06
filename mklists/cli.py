@@ -105,7 +105,7 @@ def run(config, dryrun, here_only):  # should be config
     #                              _rule_yamlfile_name=RULE_YAMLFILE_NAME,
     #                              verbose=True)
     #
-    #     datalines_dict     = return_name2lines_dict_by_applying_ruleobjs(
+    #     datalines_dict     = return_names2lines_dict_from_rules_and_lines(
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #
