@@ -187,9 +187,10 @@ def return_htmlline_from_textline(
     )
 
 
-def return_rootdir_pathname():
+def return_rootdir_pathname(starting_pathname=None):
     """Return repo root pathname when executed anywhere within repo."""
-    starting_pathname = os.getcwd()
+    if not starting_pathname:
+        starting_pathname = os.getcwd()
     config_yamlfile_name = Defaults.config_yamlfile_name
     while config_yamlfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
