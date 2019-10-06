@@ -50,14 +50,14 @@ def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
     assert return_rootdir_pathname() == str(myrepo)
 
 
-def test_return_rootdir_pathname_while_in_rootdir(tmpdir):
+def test_return_rootdir_pathname_while_in_rootdir_using_tmpdir(tmpdir):
     """Find root directory while in root directory."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     os.chdir(tmpdir)
     assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
 
 
-def test_return_rootdir_pathname_while_in_subdir_one_deep(myrepo):
+def test_return_rootdir_pathname_while_in_rootdir_using_fixture(myrepo):
     """Find root directory from subdirectory of root."""
     os.chdir(myrepo)
     assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
@@ -94,3 +94,14 @@ def test_not_return_rootdir_pathname_when_one_subdir_up(myrepo):
     os.chdir(os.pardir)
     with pytest.raises(SystemExit):
         return_rootdir_pathname()
+
+
+def test_return_rootdir_pathname_when_passed_starting_pathname(myrepo):
+    """Find root directory when passed non-default subdir name as starting pathname."""
+    starting_pathname = os.path.join(myrepo, "a", "b")
+    assert return_rootdir_pathname(starting_pathname) == str(myrepo)
+
+
+def test_return_rootdir_pathname_when_passed_starting_pathname_myrepo(myrepo):
+    """Find root directory when passed non-default subdir name as starting pathname."""
+    assert return_rootdir_pathname(str(myrepo)) == str(myrepo)

@@ -191,6 +191,7 @@ def return_rootdir_pathname(starting_pathname=None):
     """Return repo root pathname when executed anywhere within repo."""
     if not starting_pathname:
         starting_pathname = os.getcwd()
+    os.chdir(starting_pathname)
     config_yamlfile_name = Defaults.config_yamlfile_name
     while config_yamlfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
