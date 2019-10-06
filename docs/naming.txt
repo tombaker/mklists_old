@@ -78,6 +78,7 @@ Objects:
     ruleobj
     yamlobj
     dataobj
+    settingsobj   - Settings()
 
 Also:
     name2lines

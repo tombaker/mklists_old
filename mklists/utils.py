@@ -84,6 +84,23 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
+def return_config_dict_from_config_yamlfile():
+    """Returns configuration settings as a Python dictionary
+    after parsing a configuration file in YAML.
+    """
+    rootdir_pathname = return_rootdir_pathname()
+    config_yamlfile_name = Defaults.config_yamlfile_name
+    config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
+    try:
+        return return_yamlobj_from_yamlstr(
+            return_yamlstr_from_yamlfile(config_yamlfile_pathname)
+        )
+    except FileNotFoundError:
+        raise FileNotFoundError(
+            f"Configuration file {repr(config_yamlfile_pathname)} not found."
+        )
+
+
 def return_datadir_pathnames_under_somedir(
     _rootdir_pathname=None, _somedir_pathname=None, _rule_yamlfile_name=None
 ):
@@ -207,7 +224,7 @@ def return_yamlstr_from_yamlfile(yamlfile_name):
 
 
 def return_yamlstr_from_dataobj(dataobj):
-    """Returns YAML string from given YAML object."""
+    """Returns YAML string from given Python object."""
     try:
         return ruamel.yaml.safe_dump(dataobj)
     except ruamel.yaml.YAMLError:

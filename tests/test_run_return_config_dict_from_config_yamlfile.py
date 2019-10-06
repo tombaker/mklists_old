@@ -3,8 +3,11 @@
 import os
 import pytest
 from mklists.exceptions import ConfigFileNotFoundError, YamlFileNotFoundError
-from mklists.run import return_config_dict_from_config_yamlfile
-from mklists.utils import return_yamlstr_from_yamlfile, return_yamlobj_from_yamlstr
+from mklists.utils import (
+    return_config_dict_from_config_yamlfile,
+    return_yamlstr_from_yamlfile,
+    return_yamlobj_from_yamlstr,
+)
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 
@@ -30,12 +33,7 @@ def test_run_return_config_dict_from_config_yamlfile(tmpdir):
         "files2dirs_dict": {},
     }
     tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR)
-    assert (
-        return_config_dict_from_config_yamlfile(
-            config_yamlfile_name=CONFIG_YAMLFILE_NAME
-        )
-        == expected
-    )
+    assert return_config_dict_from_config_yamlfile() == expected
 
 
 def test_run_yamlstr_written_correctly_to_file(tmpdir):
@@ -50,18 +48,11 @@ def test_run_return_config_dict_from_config_yamlfile_with_entries_commented_out(
     os.chdir(tmpdir)
     expected = {"verbose": False}
     tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR_COMMENTED_OUT)
-    assert (
-        return_config_dict_from_config_yamlfile(
-            config_yamlfile_name=CONFIG_YAMLFILE_NAME
-        )
-        == expected
-    )
+    assert return_config_dict_from_config_yamlfile() == expected
 
 
 def test_run_return_config_dict_from_config_yamlfile_not_found(tmpdir):
     """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
-        return_config_dict_from_config_yamlfile(
-            config_yamlfile_name=CONFIG_YAMLFILE_NAME
-        )
+        return_config_dict_from_config_yamlfile()

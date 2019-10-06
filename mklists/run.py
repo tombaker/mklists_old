@@ -110,25 +110,6 @@ def move_specified_datafiles_to_somedirs(
                 shutil.move(key, destination_dir)
 
 
-def return_config_dict_from_config_yamlfile(
-    config_yamlfile_name=Defaults.config_yamlfile_name
-):
-    """Returns configuration settings as a Python dictionary
-    after parsing a configuration file in YAML.
-
-    Args:
-        config_yamlfile_name: YAML file with dictionary of configuration settings.
-    """
-    try:
-        return return_yamlobj_from_yamlstr(
-            return_yamlstr_from_yamlfile(config_yamlfile_name)
-        )
-    except FileNotFoundError:
-        raise FileNotFoundError(
-            f"Configuration file {repr(config_yamlfile_name)} not found."
-        )
-
-
 def return_datalines_list_from_datafiles(_datafiles_names=None):
     """Returns lines from files with valid names, UTF8, with no blank lines."""
     all_datalines = []
