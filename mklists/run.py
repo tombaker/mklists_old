@@ -110,25 +110,6 @@ def move_specified_datafiles_to_somedirs(
                 shutil.move(key, destination_dir)
 
 
-def return_datalines_list_from_datafiles(_datafiles_names=None):
-    """Returns lines from files with valid names, UTF8, with no blank lines."""
-    all_datalines = []
-    for datafile in _datafiles_names:
-        try:
-            datafile_lines = open(datafile).readlines()
-        except UnicodeDecodeError:
-            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
-        for line in datafile_lines:
-            if not line.rstrip():
-                print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
-        all_datalines.extend(datafile_lines)
-
-    if not all_datalines:
-        raise NoDataError("No data to process!")
-    return all_datalines
-
-
 def return_name2lines_dict_by_applying_ruleobjs(
     _ruleobjs_list=None, _datalines_list=None
 ):

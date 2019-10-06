@@ -10,8 +10,11 @@ from .decorators import preserve_cwd
 from .exceptions import (
     BadRegexError,
     BadYamlError,
+    BlankLinesError,
     ConfigFileNotFoundError,
     MissingArgumentError,
+    NoDataError,
+    NotUTF8Error,
     YamlFileNotFoundError,
 )
 
@@ -132,6 +135,31 @@ def return_datadir_pathnames_under_somedir(
     return datadirs
 
 
+def return_datalines_list_from_datafiles():
+    """Returns lines from files in current directory.
+
+    Exits with error message if it encounters:
+    * file that has an invalid name
+    * file that is not UTF8-encoded
+    * file that has blank lines."""
+    visiblefiles_list = return_visiblefiles_list()
+    all_datalines = []
+    for datafile in visiblefiles_list:
+        try:
+            datafile_lines = open(datafile).readlines()
+        except UnicodeDecodeError:
+            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
+        for line in datafile_lines:
+            if not line.rstrip():
+                print("Files in data directory must contain no blank lines.")
+                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
+        all_datalines.extend(datafile_lines)
+
+    if not all_datalines:
+        raise NoDataError("No data to process!")
+    return all_datalines
+
+
 def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
     """Return pathname for folder holding htmlified data files.
 
@@ -189,15 +217,11 @@ def return_rootdir_pathname(
     return os.getcwd()
 
 
-@preserve_cwd
-def return_visiblefiles_list(datadir_pathname=None):
+def return_visiblefiles_list():
     """Return list of names of visible files with valid names.
 
     See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
     """
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    os.chdir(datadir_pathname)
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:
