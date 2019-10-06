@@ -27,11 +27,6 @@ def return_backupdir_pathname(
 ):
     """Generate a timestamped pathname for backups.
 
-    Note: uses output of:
-    * return_rootdir_pathname() => here: tmpdir
-
-    Example output:
-
     Args:
         _rootdir_pathname: Full pathname of mklists repo root directory.
         _backupdir_subdir_name:
@@ -167,11 +162,6 @@ def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
         rootdir_pathname: Full pathname of mklists repo root directory.
         htmldir_name:
         datadir_name:
-
-    Note: uses output of:
-    * return_rootdir_pathname() => here: tmpdir
-
-    Example output: '/Users/foobar/github/mylists/.html/a'
     """
     if not rootdir_pathname:
         raise MissingArgumentError(f"Missing argument 'rootdir_pathname'")
@@ -197,24 +187,21 @@ def return_htmlline_from_textline(
     )
 
 
-@preserve_cwd
-def return_rootdir_pathname(
-    _datadir_pathname=None, config_yamlfile_name=Defaults.config_yamlfile_name
-):
-    """Return repo root pathname when executed anywhere within repo.
-
-    Args:
-        _datadir_pathname:
-        config_yamlfile_name:
-    """
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
+def return_rootdir_pathname():
+    """Return repo root pathname when executed anywhere within repo."""
+    starting_pathname = os.getcwd()
+    config_yamlfile_name = Defaults.config_yamlfile_name
     while config_yamlfile_name not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
         if os.getcwd() == cwd_before_changing:
-            raise ConfigFileNotFoundError("No config file found - not a mklists repo.")
-    return os.getcwd()
+            os.chdir(starting_pathname)
+            raise ConfigFileNotFoundError(
+                f"File {repr(config_yamlfile_name)} not found - not a mklists repo."
+            )
+    rootdir_pathname = os.getcwd()
+    os.chdir(starting_pathname)
+    return rootdir_pathname
 
 
 def return_visiblefiles_list():

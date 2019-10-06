@@ -9,11 +9,12 @@ See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
 
 import os
 import pytest
+from mklists.config import Defaults
 from mklists.utils import return_rootdir_pathname
 
-CONFIG_YAMLFILE_NAME = "mklists.yml"
+CONFIG_YAMLFILE_NAME = Defaults.config_yamlfile_name
 
-RULE_YAMLFILE_NAME = ".rules"
+RULE_YAMLFILE_NAME = Defaults.rule_yamlfile_name
 
 TEST_CONFIG_YAMLFILE_STR = r"""\
 invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
@@ -43,20 +44,14 @@ def fixture_myrepo(tmpdir_factory):
 def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
     """Find root pathname for fixture "myrepo"."""
     os.chdir(os.path.join(myrepo, "a"))
-    curdir = os.getcwd()
-    assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_datadir_pathname=curdir)
-    )
+    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
 
 
 def test_return_rootdir_pathname_while_in_rootdir(tmpdir):
     """Find root directory while in root directory."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     os.chdir(tmpdir)
-    curdir = os.getcwd()
-    assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_datadir_pathname=curdir)
-    )
+    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
 
 
 def test_return_rootdir_pathname_while_in_subdir_one_deep(tmpdir):
@@ -64,10 +59,7 @@ def test_return_rootdir_pathname_while_in_subdir_one_deep(tmpdir):
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
     os.chdir(tmpdira)
-    curdir = os.getcwd()
-    assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_datadir_pathname=curdir)
-    )
+    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
 
 
 def test_return_rootdir_pathname_while_in_subdir_two_deep(tmpdir):
@@ -76,10 +68,7 @@ def test_return_rootdir_pathname_while_in_subdir_two_deep(tmpdir):
     tmpdira = tmpdir.mkdir("a")
     tmpdirb = tmpdira.mkdir("b")
     os.chdir(tmpdirb)
-    curdir = os.getcwd()
-    assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_datadir_pathname=curdir)
-    )
+    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
 
 
 def test_return_rootdir_pathname_while_in_subdir_three_deep(tmpdir):
@@ -89,10 +78,7 @@ def test_return_rootdir_pathname_while_in_subdir_three_deep(tmpdir):
     tmpdirb = tmpdira.mkdir("b")
     tmpdirc = tmpdirb.mkdir("c")
     os.chdir(tmpdirc)
-    curdir = os.getcwd()
-    assert CONFIG_YAMLFILE_NAME in os.listdir(
-        return_rootdir_pathname(_datadir_pathname=curdir)
-    )
+    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
 
 
 def test_not_return_rootdir_pathname_when_configfile_not_found(tmpdir):
@@ -101,6 +87,6 @@ def test_not_return_rootdir_pathname_when_configfile_not_found(tmpdir):
     tmpdirb = tmpdira.mkdir("b")
     tmpdirc = tmpdirb.mkdir("c")
     os.chdir(tmpdirc)
-    curdir = os.getcwd()
+    assert os.getcwd() == str(tmpdirc)
     with pytest.raises(SystemExit):
-        return_rootdir_pathname(_datadir_pathname=curdir)
+        return_rootdir_pathname()

@@ -24,8 +24,8 @@ class Defaults:
     backupdir_name = ".backups"
     htmldir_name = ".html"
     url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-    timestamp_str = "dummy-timestamp"
-    # timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    # timestamp_str = "dummy-timestamp"
+    timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
     # rootdir_pathname = return_rootdir_pathname()
 
 
