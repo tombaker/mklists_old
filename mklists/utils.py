@@ -85,7 +85,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_config_dict_from_config_yamlfile(
+def read_config_yamlfile_return_config_dict(
     rootdir_pathname=Defaults.rootdir_pathname,
     config_yamlfile_name=Defaults.config_yamlfile_name,
 ):
@@ -134,7 +134,7 @@ def return_datadir_pathnames_under_somedir(
     return datadirs
 
 
-def return_datalines_list_from_datafiles():
+def read_datafiles_return_datalines_list():
     """Returns lines from files in current directory.
 
     Exits with error message if it encounters:

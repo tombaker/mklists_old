@@ -4,7 +4,7 @@ import os
 import pytest
 from mklists.exceptions import ConfigFileNotFoundError, YamlFileNotFoundError
 from mklists.utils import (
-    return_config_dict_from_config_yamlfile,
+    read_config_yamlfile_return_config_dict,
     return_yamlstr_from_yamlfile,
     return_yamlobj_from_yamlstr,
 )
@@ -23,7 +23,7 @@ CONFIG_YAMLFILE_STR_COMMENTED_OUT = r"""verbose: false
 
 
 @pytest.mark.skip
-def test_run_return_config_dict_from_config_yamlfile(tmpdir):
+def test_run_read_config_yamlfile_return_config_dict(tmpdir):
     """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
     os.chdir(tmpdir)
     expected = {
@@ -34,7 +34,7 @@ def test_run_return_config_dict_from_config_yamlfile(tmpdir):
         "files2dirs_dict": {},
     }
     tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR)
-    assert return_config_dict_from_config_yamlfile() == expected
+    assert read_config_yamlfile_return_config_dict() == expected
 
 
 def test_run_yamlstr_written_correctly_to_file(tmpdir):
@@ -45,17 +45,17 @@ def test_run_yamlstr_written_correctly_to_file(tmpdir):
 
 
 @pytest.mark.skip
-def test_run_return_config_dict_from_config_yamlfile_with_entries_commented_out(tmpdir):
+def test_run_read_config_yamlfile_return_config_dict_with_entries_commented_out(tmpdir):
     """In this example, many of the entries are commented out."""
     os.chdir(tmpdir)
     expected = {"verbose": False}
     tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_STR_COMMENTED_OUT)
-    assert return_config_dict_from_config_yamlfile() == expected
+    assert read_config_yamlfile_return_config_dict() == expected
 
 
 @pytest.mark.skip
-def test_run_return_config_dict_from_config_yamlfile_not_found(tmpdir):
+def test_run_read_config_yamlfile_return_config_dict_not_found(tmpdir):
     """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
-        return_config_dict_from_config_yamlfile()
+        read_config_yamlfile_return_config_dict()

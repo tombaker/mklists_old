@@ -1,10 +1,10 @@
-"""return_datalines_list_from_datafiles()
+"""read_datafiles_return_datalines_list()
 * takes a list of files
 * returns a list of datalines"""
 
 import os
 import pytest
-from mklists.utils import return_datalines_list_from_datafiles
+from mklists.utils import read_datafiles_return_datalines_list
 
 
 def test_get_lines(tmpdir):
@@ -18,7 +18,7 @@ def test_get_lines(tmpdir):
         "foo stuff\n",
         "more foo stuff\n",
     ]
-    assert return_datalines_list_from_datafiles() == expected_result
+    assert read_datafiles_return_datalines_list() == expected_result
 
 
 def test_get_lines_blank_lines_found(tmpdir):
@@ -27,7 +27,7 @@ def test_get_lines_blank_lines_found(tmpdir):
     tmpdir.join("foo").write("foo stuff\nmore foo stuff\n\n")
     tmpdir.join("bar").write("bar stuff\nmore bar stuff\n")
     with pytest.raises(SystemExit):
-        return_datalines_list_from_datafiles()
+        read_datafiles_return_datalines_list()
 
 
 def test_get_lines_non_utf8_found(tmpdir):
@@ -42,7 +42,7 @@ def test_get_lines_non_utf8_found(tmpdir):
     with open(barfile, "wb") as fout:
         pickle.dump(some_data, fout)
     with pytest.raises(SystemExit):
-        return_datalines_list_from_datafiles()
+        read_datafiles_return_datalines_list()
 
 
 def test_get_lines_no_data_error(tmpdir):
@@ -51,4 +51,4 @@ def test_get_lines_no_data_error(tmpdir):
     tmpdir.join("foo").write("")
     tmpdir.join("bar").write("")
     with pytest.raises(SystemExit):
-        return_datalines_list_from_datafiles()
+        read_datafiles_return_datalines_list()

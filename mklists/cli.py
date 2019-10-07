@@ -49,7 +49,7 @@ def run(config, dryrun, here_only):  # should be config
     # rootdir_pathname       = return_rootdir_pathname(
     #                              _datadir_pathname=datadir_pathname
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
-    # ctx.obj                = return_config_dict_from_config_yamlfile(
+    # ctx.obj                = read_config_yamlfile_return_config_dict(
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only:
@@ -73,7 +73,7 @@ def run(config, dryrun, here_only):  # should be config
     #
     #     visiblefiles_list  = return_visiblefiles_list(_datadir_pathname=datadir_pathname)
     #
-    #     datalines_list     = return_datalines_list_from_datafiles()
+    #     datalines_list     = read_datafiles_return_datalines_list()
     #
     #     backup_shortname   = return_backupdir_shortname(
     #                              _datadir_pathname=datadir_pathname,
