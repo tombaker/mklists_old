@@ -12,68 +12,6 @@ import attr
 #     run:  [config] dryrun here_only
 
 
-def return_backupdir_pathname(
-    rootdir_pathname=None,
-    backupdir_name=None,
-    backupdir_shortname=None,
-    timestamp_str=None,
-):
-    """Generate a timestamped pathname for backups.
-
-    Args:
-        rootdir_pathname: Full pathname of mklists repo root directory.
-        backupdir_name:
-        backupdir_shortname:
-        timestamp_str:
-    """
-    return os.path.join(
-        rootdir_pathname, backupdir_name, backupdir_shortname, timestamp_str
-    )
-
-
-def return_backupdir_shortname(datadir_pathname=None, rootdir_pathname=None):
-    """Creates shortname for backup directory:
-    * if directory is on top level, shortname is same as directory name
-    * if directory is nested, shortname is chain of directory names separated by underscores
-
-    Note: test for edge case where the following three subdirectories exist:
-        .
-        ├── a
-        │   └── b
-        └── a_b
-
-    Problem: "a_b" and "a/b" would both translate into shortname of "a_b" (clash)
-    Solutions?
-    * Use two underscores instead of one?
-    * for each dir in return_datadir_pathnames_under_somedir()
-        accumulate a list of shortnames using return_backupdir_shortname(dir) => list comprehension
-        accumulate a list of directory names in ".backups"
-        compare the two lists and delete unused directories
-
-    See /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_backupdir_shortname_REDO.py
-    """
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
-
-
-def return_rootdir_pathname(config_yamlfile_name=None):
-    """Return repo root pathname when executed anywhere within repo."""
-    starting_pathname = os.getcwd()
-    while config_yamlfile_name not in os.listdir():
-        cwd_before_changing = os.getcwd()
-        os.chdir(os.pardir)
-        if os.getcwd() == cwd_before_changing:
-            os.chdir(starting_pathname)
-            return None
-            # raise ConfigFileNotFoundError(
-            #    f"File {repr(config_yamlfile_name)} not found - not a mklists repo."
-            # )
-    rootdir_pathname = os.getcwd()
-    os.chdir(starting_pathname)
-    return rootdir_pathname
-
-
 class Defaults:
     """Holds variables 'hard-coded' into mklists -
     variables not intended to be changed.
@@ -87,35 +25,41 @@ class Defaults:
     url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
     datadir_pathname = os.getcwd()
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+    valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
+
+    def return_rootdir_pathname(config_yamlfile_name=None):
+        """Return repo root pathname when executed anywhere within repo."""
+        starting_pathname = os.getcwd()
+        while config_yamlfile_name not in os.listdir():
+            cwd_before_changing = os.getcwd()
+            os.chdir(os.pardir)
+            if os.getcwd() == cwd_before_changing:
+                os.chdir(starting_pathname)
+                return None
+        rootdir_pathname = os.getcwd()
+        os.chdir(starting_pathname)
+        return rootdir_pathname
+
     rootdir_pathname = return_rootdir_pathname(
         config_yamlfile_name=config_yamlfile_name
     )
-    backupdir_shortname = return_backupdir_shortname(
-        datadir_pathname=datadir_pathname, rootdir_pathname=rootdir_pathname
+    backupdir_shortname = (
+        datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
     )
-    backupdir_pathname = return_backupdir_pathname(
-        rootdir_pathname=rootdir_pathname,
-        backupdir_name=backupdir_name,
-        backupdir_shortname=backupdir_shortname,
-        timestamp_str=timestamp_str,
+    backupdir_pathname = os.path.join(
+        rootdir_pathname, backupdir_name, backupdir_shortname, timestamp_str
     )
 
 
-@attr.s()
 class Settings:
-    """
-    Holds default state and self-validation methods for configuration,
-    to be written to mklists.yml and subject to customization.
-    """
+    """Holds settable settings."""
 
-    invalid_filename_regexes_list = attr.ib(
-        default=[r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-    )
-    valid_filename_characters_regex = attr.ib(default=r"[\-_=.,@:A-Za-z0-9]+$")
-    verbose = attr.ib(default=True)
-    htmlify = attr.ib(default=True)
-    backup_depth_int = attr.ib(default=3)
-    files2dirs_dict = attr.ib(default=attr.Factory(dict))
+    def __init__(self):
+        self.invalid_filename_regexes_list = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
+        self.verbose = True
+        self.htmlify = True
+        self.backup_depth_int = 3
+        self.files2dirs_dict = {}
 
 
 @dataclass

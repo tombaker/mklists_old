@@ -4,7 +4,7 @@
 import os
 import re
 import pytest
-from .config import Settings
+from .config import Settings, Defaults
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
 sets = Settings()
@@ -13,7 +13,7 @@ sets = Settings()
 def filename_is_valid_as_filename(
     filename,
     invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
-    valid_filename_characters_regex=sets.valid_filename_characters_regex,
+    valid_filename_characters_regex=Defaults.valid_filename_characters_regex,
 ):
     """Return True if filename:
     * is not None

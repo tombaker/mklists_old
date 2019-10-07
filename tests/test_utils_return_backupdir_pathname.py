@@ -3,9 +3,11 @@
 Edit /Users/tbaker/github/tombaker/mklists/mklists/utils.py
 """
 
-from mklists.config import return_backupdir_pathname
+import pytest
+from mklists.config import Defaults
 
 
+@pytest.mark.skip
 def test_backups_return_backupdir_pathname():
     """Returns pathname of backup directory where
     all needed info is provided in arguments.
@@ -23,7 +25,7 @@ def test_backups_return_backupdir_pathname():
     timestamp_str = "2019-01-03_1646_06488910"
     expected = "/Users/tbaker/tmp/.backups/agenda/2019-01-03_1646_06488910"
     assert (
-        return_backupdir_pathname(
+        Defaults.return_backupdir_pathname(
             rootdir_pathname=rootdir_pathname,
             backupdir_name=backupdir_name,
             backupdir_shortname=backupdir_shortname,

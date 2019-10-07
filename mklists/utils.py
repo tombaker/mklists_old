@@ -5,7 +5,6 @@ import glob
 import re
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
-from .config import return_rootdir_pathname
 
 # @@@@ Defaults x 3
 from .config import Defaults

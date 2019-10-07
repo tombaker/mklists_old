@@ -17,12 +17,12 @@ import attr
 import ruamel.yaml
 
 # @@@@ Settings x 1, Defaults x 2, Samples x 3
-from .config import Defaults, Settings, Samples, return_rootdir_pathname
+from .config import Defaults, Settings, Samples
 from .decorators import preserve_cwd
 
 
 def write_config_yamlfile_from_settingsobj_to_rootdir(
-    rootdir_pathname=return_rootdir_pathname
+    rootdir_pathname=Defaults.return_rootdir_pathname("mklists.yml")
 ):
     """Write initial YAML config file, 'mklists.yml', to root directory."""
     config_yamlfile_name = Defaults.config_yamlfile_name
