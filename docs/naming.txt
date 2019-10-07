@@ -39,9 +39,9 @@ Verbs:
 
     For fruitful functions
         return
+        read (they also return)
 
     For void functions
-        apply (actually: applying)
         delete
         move
         write

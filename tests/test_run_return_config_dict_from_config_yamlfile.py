@@ -3,11 +3,11 @@
 import os
 import pytest
 from mklists.exceptions import ConfigFileNotFoundError, YamlFileNotFoundError
-from mklists.utils import (
+from mklists.run import (
     read_config_yamlfile_return_config_dict,
-    return_yamlstr_from_yamlfile,
-    return_yamlobj_from_yamlstr,
+    read_yamlfile_return_yamlstr,
 )
+from mklists.utils import return_yamlobj_from_yamlstr
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 

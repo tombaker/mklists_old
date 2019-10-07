@@ -1,6 +1,6 @@
 """@@@Docstring"""
 
-from mklists.utils import return_backupdir_shortname
+from mklists.config import return_backupdir_shortname
 
 
 def test_backups_return_backupdir_shortname():

@@ -3,7 +3,7 @@
 Edit /Users/tbaker/github/tombaker/mklists/mklists/utils.py
 """
 
-from mklists.utils import return_backupdir_pathname
+from mklists.config import return_backupdir_pathname
 
 
 def test_backups_return_backupdir_pathname():
