@@ -13,25 +13,25 @@ import attr
 
 
 def return_backupdir_pathname(
-    _rootdir_pathname=None,
-    _backupdir_subdir_name=None,
-    _backupdir_shortname=None,
-    _timestamp_str=None,
+    rootdir_pathname=None,
+    backupdir_name=None,
+    backupdir_shortname=None,
+    timestamp_str=None,
 ):
     """Generate a timestamped pathname for backups.
 
     Args:
-        _rootdir_pathname: Full pathname of mklists repo root directory.
-        _backupdir_subdir_name:
-        _backupdir_shortname:
-        _timestamp_str:
+        rootdir_pathname: Full pathname of mklists repo root directory.
+        backupdir_name:
+        backupdir_shortname:
+        timestamp_str:
     """
     return os.path.join(
-        _rootdir_pathname, _backupdir_subdir_name, _backupdir_shortname, _timestamp_str
+        rootdir_pathname, backupdir_name, backupdir_shortname, timestamp_str
     )
 
 
-def return_backupdir_shortname(_datadir_pathname=None, _rootdir_pathname=None):
+def return_backupdir_shortname(datadir_pathname=None, rootdir_pathname=None):
     """Creates shortname for backup directory:
     * if directory is on top level, shortname is same as directory name
     * if directory is nested, shortname is chain of directory names separated by underscores
@@ -52,9 +52,9 @@ def return_backupdir_shortname(_datadir_pathname=None, _rootdir_pathname=None):
 
     See /Users/tbaker/github/tombaker/mklists/tests/test_utils_return_backupdir_shortname_REDO.py
     """
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
-    return _datadir_pathname[len(_rootdir_pathname) :].strip("/").replace("/", "_")
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
+    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
 
 
 def return_rootdir_pathname(config_yamlfile_name=None):
@@ -85,9 +85,19 @@ class Defaults:
     backupdir_name = ".backups"
     htmldir_name = ".html"
     url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+    datadir_pathname = os.getcwd()
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
     rootdir_pathname = return_rootdir_pathname(
         config_yamlfile_name=config_yamlfile_name
+    )
+    backupdir_shortname = return_backupdir_shortname(
+        datadir_pathname=datadir_pathname, rootdir_pathname=rootdir_pathname
+    )
+    backupdir_pathname = return_backupdir_pathname(
+        rootdir_pathname=rootdir_pathname,
+        backupdir_name=backupdir_name,
+        backupdir_shortname=backupdir_shortname,
+        timestamp_str=timestamp_str,
     )
 
 

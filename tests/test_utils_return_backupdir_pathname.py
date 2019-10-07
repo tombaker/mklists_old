@@ -12,22 +12,22 @@ def test_backups_return_backupdir_pathname():
 
     Args:
         _rootdir_pathname:
-        _backupdir_subdir_name:
+        _backupdir_name:
         _backupdir_shortname:
         _timestamp_str:
 
     """
     rootdir_pathname = "/Users/tbaker/tmp"
     backupdir_name = ".backups"
-    backupdir_subdir_name = "agenda"
+    backupdir_shortname = "agenda"
     timestamp_str = "2019-01-03_1646_06488910"
     expected = "/Users/tbaker/tmp/.backups/agenda/2019-01-03_1646_06488910"
     assert (
         return_backupdir_pathname(
-            _rootdir_pathname=rootdir_pathname,
-            _backupdir_subdir_name=backupdir_name,
-            _backupdir_shortname=backupdir_subdir_name,
-            _timestamp_str=timestamp_str,
+            rootdir_pathname=rootdir_pathname,
+            backupdir_name=backupdir_name,
+            backupdir_shortname=backupdir_shortname,
+            timestamp_str=timestamp_str,
         )
         == expected
     )

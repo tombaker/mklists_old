@@ -9,9 +9,7 @@ def test_backups_return_backupdir_shortname():
     list_dir = "/Users/tbaker/foobar/agenda"
     expected = "agenda"
     assert (
-        return_backupdir_shortname(
-            _rootdir_pathname=root_dir, _datadir_pathname=list_dir
-        )
+        return_backupdir_shortname(rootdir_pathname=root_dir, datadir_pathname=list_dir)
         == expected
     )
 
@@ -22,8 +20,6 @@ def test_backups_return_backupdir_shortname_two_deep():
     list_dir = "/Users/tbaker/foobar/a/b"
     expected = "a_b"
     assert (
-        return_backupdir_shortname(
-            _rootdir_pathname=root_dir, _datadir_pathname=list_dir
-        )
+        return_backupdir_shortname(rootdir_pathname=root_dir, datadir_pathname=list_dir)
         == expected
     )
