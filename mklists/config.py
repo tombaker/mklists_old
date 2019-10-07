@@ -34,8 +34,8 @@ class Defaults:
 
     config_yamlfile_name = "mklists.yml"
     rule_yamlfile_name = ".rules"
-    backupdir_name = ".backups"
-    htmldir_name = ".html"
+    backupdir_name = "backups"
+    htmldir_name = "html"
     url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
     datadir_pathname = os.getcwd()
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
@@ -58,6 +58,9 @@ class Settings:
         self.htmlify = True
         self.backup_depth_int = 3
         self.files2dirs_dict = {}
+
+
+settings_dict = vars(Settings())
 
 
 @dataclass
