@@ -18,7 +18,8 @@ from .exceptions import (
     SourceMatchpatternError,
     UninitializedSourceError,
 )
-from .utils import return_yamlobj_from_yamlstr, return_yamlstr_from_yamlfile
+from .run import read_yamlfile_return_yamlstr
+from .utils import return_yamlobj_from_yamlstr
 
 
 def return_consolidated_yamlstr_from_rulefile_pathnames_list(rulefile_pathnames_chain):

@@ -85,24 +85,6 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def read_config_yamlfile_return_config_dict(
-    rootdir_pathname=Defaults.rootdir_pathname,
-    config_yamlfile_name=Defaults.config_yamlfile_name,
-):
-    """Returns configuration settings as a Python dictionary
-    after parsing a configuration file in YAML.
-    """
-    config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
-    try:
-        return return_yamlobj_from_yamlstr(
-            return_yamlstr_from_yamlfile(config_yamlfile_pathname)
-        )
-    except FileNotFoundError:
-        raise FileNotFoundError(
-            f"Configuration file {repr(config_yamlfile_pathname)} not found."
-        )
-
-
 def return_datadir_pathnames_under_somedir(
     _rootdir_pathname=None, _somedir_pathname=None, _rule_yamlfile_name=None
 ):
@@ -132,31 +114,6 @@ def return_datadir_pathnames_under_somedir(
         datadirs.remove(_rootdir_pathname)
 
     return datadirs
-
-
-def read_datafiles_return_datalines_list():
-    """Returns lines from files in current directory.
-
-    Exits with error message if it encounters:
-    * file that has an invalid name
-    * file that is not UTF8-encoded
-    * file that has blank lines."""
-    visiblefiles_list = return_visiblefiles_list()
-    all_datalines = []
-    for datafile in visiblefiles_list:
-        try:
-            datafile_lines = open(datafile).readlines()
-        except UnicodeDecodeError:
-            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
-        for line in datafile_lines:
-            if not line.rstrip():
-                print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
-        all_datalines.extend(datafile_lines)
-
-    if not all_datalines:
-        raise NoDataError("No data to process!")
-    return all_datalines
 
 
 def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
@@ -211,14 +168,6 @@ def return_yamlobj_from_yamlstr(yamlstr):
         return ruamel.yaml.safe_load(yamlstr)
     except ruamel.yaml.YAMLError:
         raise BadYamlError(f"Badly formatted YAML content.")
-
-
-def return_yamlstr_from_yamlfile(yamlfile_name):
-    """Returns YAML object from given YAML-format file."""
-    try:
-        return open(yamlfile_name).read()
-    except FileNotFoundError:
-        raise YamlFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
 
 
 def return_yamlstr_from_dataobj(dataobj):

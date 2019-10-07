@@ -7,6 +7,7 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
+from .config import Defaults
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
@@ -17,15 +18,67 @@ from .exceptions import (
     NoRulesError,
     NotUTF8Error,
     RulefileNotFoundError,
+    YamlFileNotFoundError,
 )
-from .rules import Rule
+
+# from .rules import Rule
 from .utils import (
     return_yamlobj_from_yamlstr,
-    return_yamlstr_from_yamlfile,
     return_backupdir_shortname,
     return_htmlline_from_textline,
     return_visiblefiles_list,
 )
+
+
+def read_config_yamlfile_return_config_dict(
+    rootdir_pathname=Defaults.rootdir_pathname,
+    config_yamlfile_name=Defaults.config_yamlfile_name,
+):
+    """Returns configuration settings as a Python dictionary
+    after parsing a configuration file in YAML.
+    """
+    config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
+    try:
+        return return_yamlobj_from_yamlstr(
+            read_yamlfile_return_yamlstr(config_yamlfile_pathname)
+        )
+    except FileNotFoundError:
+        raise FileNotFoundError(
+            f"Configuration file {repr(config_yamlfile_pathname)} not found."
+        )
+
+
+def read_datafiles_return_datalines_list():
+    """Returns lines from files in current directory.
+
+    Exits with error message if it encounters:
+    * file that has an invalid name
+    * file that is not UTF8-encoded
+    * file that has blank lines."""
+    visiblefiles_list = return_visiblefiles_list()
+    all_datalines = []
+    for datafile in visiblefiles_list:
+        try:
+            datafile_lines = open(datafile).readlines()
+        except UnicodeDecodeError:
+            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
+        for line in datafile_lines:
+            if not line.rstrip():
+                print("Files in data directory must contain no blank lines.")
+                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
+        all_datalines.extend(datafile_lines)
+
+    if not all_datalines:
+        raise NoDataError("No data to process!")
+    return all_datalines
+
+
+def read_yamlfile_return_yamlstr(yamlfile_name):
+    """Returns YAML object from given YAML-format file."""
+    try:
+        return open(yamlfile_name).read()
+    except FileNotFoundError:
+        raise YamlFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
 
 
 @preserve_cwd
