@@ -1,16 +1,32 @@
 """@@@Docstring"""
 
+import os
+import datetime
 from dataclasses import dataclass, field
 from textwrap import dedent
-import datetime
 import attr
-
-# from mklists import utils
 
 # Note: variables set only at command line:
 #     cli:  [config]
 #     init: [config] with_examples [directory - add this]
 #     run:  [config] dryrun here_only
+
+
+def return_rootdir_pathname(config_yamlfile_name=None):
+    """Return repo root pathname when executed anywhere within repo."""
+    starting_pathname = os.getcwd()
+    while config_yamlfile_name not in os.listdir():
+        cwd_before_changing = os.getcwd()
+        os.chdir(os.pardir)
+        if os.getcwd() == cwd_before_changing:
+            os.chdir(starting_pathname)
+            return None
+            # raise ConfigFileNotFoundError(
+            #    f"File {repr(config_yamlfile_name)} not found - not a mklists repo."
+            # )
+    rootdir_pathname = os.getcwd()
+    os.chdir(starting_pathname)
+    return rootdir_pathname
 
 
 class Defaults:
@@ -24,15 +40,18 @@ class Defaults:
     backupdir_name = ".backups"
     htmldir_name = ".html"
     url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-    # timestamp_str = "dummy-timestamp"
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
-    # rootdir_pathname = return_rootdir_pathname()
+    rootdir_pathname = return_rootdir_pathname(
+        config_yamlfile_name=config_yamlfile_name
+    )
 
 
 @attr.s()
 class Settings:
-    """Holds state and self-validation methods for configuration.
-    these are written to mklists.yml."""
+    """
+    Holds default state and self-validation methods for configuration,
+    to be written to mklists.yml and subject to customization.
+    """
 
     invalid_filename_regexes_list = attr.ib(
         default=[r"\.swp$", r"\.tmp$", r"~$", r"^\."]

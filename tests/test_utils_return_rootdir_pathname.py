@@ -9,12 +9,11 @@ See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
 
 import os
 import pytest
-from mklists.config import Defaults
-from mklists.utils import return_rootdir_pathname
+from mklists.config import Defaults, return_rootdir_pathname
 
-CONFIG_YAMLFILE_NAME = Defaults.config_yamlfile_name
+CONFIG_YAMLFILE_NAME = "mklists.yml"
 
-RULE_YAMLFILE_NAME = Defaults.rule_yamlfile_name
+RULE_YAMLFILE_NAME = ".rules"
 
 TEST_CONFIG_YAMLFILE_STR = r"""\
 invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
@@ -36,7 +35,7 @@ def fixture_myrepo(tmpdir_factory):
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
     root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_STR)
-    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_ROOTDIR_YAMLFILE_STR)
+    root_dir.join(RULE_YAMLFILE_NAME).write(TEST_ROOTDIR_YAMLFILE_STR)
     subdir_a.join(RULE_YAMLFILE_NAME).write(TEST_DATADIRA_YAMLFILE_STR)
     subdir_b = subdir_a.mkdir("b")
     subdir_c = subdir_b.mkdir("c")
@@ -46,36 +45,50 @@ def fixture_myrepo(tmpdir_factory):
 def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
     """Find root pathname for fixture "myrepo"."""
     os.chdir(os.path.join(myrepo, "a"))
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
-    assert return_rootdir_pathname() == str(myrepo)
+    assert CONFIG_YAMLFILE_NAME in os.listdir(
+        return_rootdir_pathname(CONFIG_YAMLFILE_NAME)
+    )
+    assert return_rootdir_pathname(CONFIG_YAMLFILE_NAME) == str(myrepo)
 
 
 def test_return_rootdir_pathname_while_in_rootdir_using_tmpdir(tmpdir):
     """Find root directory while in root directory."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     os.chdir(tmpdir)
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
+    assert CONFIG_YAMLFILE_NAME in os.listdir(
+        return_rootdir_pathname(CONFIG_YAMLFILE_NAME)
+    )
+    assert return_rootdir_pathname(CONFIG_YAMLFILE_NAME) == str(tmpdir)
 
 
 def test_return_rootdir_pathname_while_in_rootdir_using_fixture(myrepo):
     """Find root directory from subdirectory of root."""
     os.chdir(myrepo)
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
-    assert return_rootdir_pathname() == str(myrepo)
+    assert CONFIG_YAMLFILE_NAME in os.listdir(
+        return_rootdir_pathname(CONFIG_YAMLFILE_NAME)
+    )
+    assert RULE_YAMLFILE_NAME in os.listdir(
+        return_rootdir_pathname(CONFIG_YAMLFILE_NAME)
+    )
+    assert return_rootdir_pathname(CONFIG_YAMLFILE_NAME) == str(myrepo)
 
 
 def test_return_rootdir_pathname_while_in_subdir_two_deep(myrepo):
     """Find root directory while in subdir two deep."""
     os.chdir(os.path.join(myrepo, "a/b"))
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
-    assert return_rootdir_pathname() == str(myrepo)
+    assert CONFIG_YAMLFILE_NAME in os.listdir(
+        return_rootdir_pathname(CONFIG_YAMLFILE_NAME)
+    )
+    assert return_rootdir_pathname(CONFIG_YAMLFILE_NAME) == str(myrepo)
 
 
 def test_return_rootdir_pathname_while_in_subdir_three_deep(myrepo):
     """Find root directory while in subdir three deep."""
     os.chdir(os.path.join(myrepo, "a/b/c"))
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
-    assert return_rootdir_pathname() == str(myrepo)
+    assert CONFIG_YAMLFILE_NAME in os.listdir(
+        return_rootdir_pathname(CONFIG_YAMLFILE_NAME)
+    )
+    assert return_rootdir_pathname(CONFIG_YAMLFILE_NAME) == str(myrepo)
 
 
 def test_not_return_rootdir_pathname_when_configfile_not_found(tmpdir):
@@ -85,23 +98,10 @@ def test_not_return_rootdir_pathname_when_configfile_not_found(tmpdir):
     tmpdirc = tmpdirb.mkdir("c")
     os.chdir(tmpdirc)
     assert os.getcwd() == str(tmpdirc)
-    with pytest.raises(SystemExit):
-        return_rootdir_pathname()
+    assert return_rootdir_pathname(config_yamlfile_name=CONFIG_YAMLFILE_NAME) is None
 
 
 def test_not_return_rootdir_pathname_when_one_subdir_up(myrepo):
     """Do not find root directory when config file is is one subdir down."""
     os.chdir(os.pardir)
-    with pytest.raises(SystemExit):
-        return_rootdir_pathname()
-
-
-def test_return_rootdir_pathname_when_passed_starting_pathname(myrepo):
-    """Find root directory when passed non-default subdir name as starting pathname."""
-    starting_pathname = os.path.join(myrepo, "a", "b")
-    assert return_rootdir_pathname(starting_pathname) == str(myrepo)
-
-
-def test_return_rootdir_pathname_when_passed_starting_pathname_myrepo(myrepo):
-    """Find root directory when passed non-default subdir name as starting pathname."""
-    assert return_rootdir_pathname(str(myrepo)) == str(myrepo)
+    assert return_rootdir_pathname(CONFIG_YAMLFILE_NAME) is None

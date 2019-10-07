@@ -5,6 +5,7 @@ import glob
 import re
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
+from .config import return_rootdir_pathname
 
 # @@@@ Defaults x 3
 from .config import Defaults
@@ -84,12 +85,13 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_config_dict_from_config_yamlfile():
+def return_config_dict_from_config_yamlfile(
+    rootdir_pathname=Defaults.rootdir_pathname,
+    config_yamlfile_name=Defaults.config_yamlfile_name,
+):
     """Returns configuration settings as a Python dictionary
     after parsing a configuration file in YAML.
     """
-    rootdir_pathname = return_rootdir_pathname()
-    config_yamlfile_name = Defaults.config_yamlfile_name
     config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
     try:
         return return_yamlobj_from_yamlstr(
@@ -187,25 +189,6 @@ def return_htmlline_from_textline(
         re.compile(url_pattern_regex).sub(r'<a href="\1">\1</a>', textline.rstrip())
         + "\n"
     )
-
-
-def return_rootdir_pathname(starting_pathname=None):
-    """Return repo root pathname when executed anywhere within repo."""
-    if not starting_pathname:
-        starting_pathname = os.getcwd()
-    os.chdir(starting_pathname)
-    config_yamlfile_name = Defaults.config_yamlfile_name
-    while config_yamlfile_name not in os.listdir():
-        cwd_before_changing = os.getcwd()
-        os.chdir(os.pardir)
-        if os.getcwd() == cwd_before_changing:
-            os.chdir(starting_pathname)
-            raise ConfigFileNotFoundError(
-                f"File {repr(config_yamlfile_name)} not found - not a mklists repo."
-            )
-    rootdir_pathname = os.getcwd()
-    os.chdir(starting_pathname)
-    return rootdir_pathname
 
 
 def return_visiblefiles_list():

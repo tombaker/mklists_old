@@ -22,6 +22,7 @@ CONFIG_YAMLFILE_STR_COMMENTED_OUT = r"""verbose: false
 """
 
 
+@pytest.mark.skip
 def test_run_return_config_dict_from_config_yamlfile(tmpdir):
     """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
     os.chdir(tmpdir)
@@ -43,6 +44,7 @@ def test_run_yamlstr_written_correctly_to_file(tmpdir):
     assert CONFIG_YAMLFILE_STR_COMMENTED_OUT == open(CONFIG_YAMLFILE_NAME).read()
 
 
+@pytest.mark.skip
 def test_run_return_config_dict_from_config_yamlfile_with_entries_commented_out(tmpdir):
     """In this example, many of the entries are commented out."""
     os.chdir(tmpdir)
@@ -51,6 +53,7 @@ def test_run_return_config_dict_from_config_yamlfile_with_entries_commented_out(
     assert return_config_dict_from_config_yamlfile() == expected
 
 
+@pytest.mark.skip
 def test_run_return_config_dict_from_config_yamlfile_not_found(tmpdir):
     """ See /Users/tbaker/github/tombaker/mklists/mklists/run.py """
     os.chdir(tmpdir)
