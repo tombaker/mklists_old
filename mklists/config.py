@@ -12,6 +12,20 @@ import attr
 #     run:  [config] dryrun here_only
 
 
+def return_rootdir_pathname():
+    """Return repo root pathname when executed anywhere within repo."""
+    starting_pathname = os.getcwd()
+    while "mklists.yml" not in os.listdir():
+        cwd_before_changing = os.getcwd()
+        os.chdir(os.pardir)
+        if os.getcwd() == cwd_before_changing:
+            os.chdir(starting_pathname)
+            return None
+    rootdir_pathname = os.getcwd()
+    os.chdir(starting_pathname)
+    return rootdir_pathname
+
+
 class Defaults:
     """Holds variables 'hard-coded' into mklists -
     variables not intended to be changed.
@@ -26,23 +40,7 @@ class Defaults:
     datadir_pathname = os.getcwd()
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
     valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
-
-    def return_rootdir_pathname(config_yamlfile_name=None):
-        """Return repo root pathname when executed anywhere within repo."""
-        starting_pathname = os.getcwd()
-        while config_yamlfile_name not in os.listdir():
-            cwd_before_changing = os.getcwd()
-            os.chdir(os.pardir)
-            if os.getcwd() == cwd_before_changing:
-                os.chdir(starting_pathname)
-                return None
-        rootdir_pathname = os.getcwd()
-        os.chdir(starting_pathname)
-        return rootdir_pathname
-
-    rootdir_pathname = return_rootdir_pathname(
-        config_yamlfile_name=config_yamlfile_name
-    )
+    rootdir_pathname = return_rootdir_pathname()
     backupdir_shortname = (
         datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
     )

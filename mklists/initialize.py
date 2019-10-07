@@ -17,15 +17,15 @@ import attr
 import ruamel.yaml
 
 # @@@@ Settings x 1, Defaults x 2, Samples x 3
-from .config import Defaults, Settings, Samples
+from .config import Defaults, Settings, Samples, return_rootdir_pathname
 from .decorators import preserve_cwd
 
 
 def write_config_yamlfile_from_settingsobj_to_rootdir(
-    rootdir_pathname=Defaults.return_rootdir_pathname("mklists.yml")
+    rootdir_pathname=return_rootdir_pathname()
 ):
     """Write initial YAML config file, 'mklists.yml', to root directory."""
-    config_yamlfile_name = Defaults.config_yamlfile_name
+    config_yamlfile_name = "mklists.yml"
     contents_tobewritten_dict = attr.asdict(Settings())
     file_tobewritten_name = os.path.join(rootdir_pathname, config_yamlfile_name)
     with open(file_tobewritten_name, "w", encoding="utf-8") as outfile:
@@ -62,7 +62,7 @@ def write_example_datafiles_to_somedirs(
 
 
 def write_example_rule_yamlfiles_to_somedirs(
-    rule_yamlfile_name=Defaults.rule_yamlfile_name,
+    rule_yamlfile_name=".rules",
     rootdir_rules_yamlfile_str=Samples.rootdir_rules_yamlfile_str,
     example_datadira_rules_yamlfile_str=Samples.example_datadira_rules_yamlfile_str,
     example_datadirb_rules_yamlfile_str=Samples.example_datadirb_rules_yamlfile_str,
