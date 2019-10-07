@@ -4,13 +4,13 @@ from dataclasses import dataclass
 import click
 from .config import Settings
 
-pass_config = click.make_pass_decorator(Settings, ensure=True)
+# pass_config = click.make_pass_decorator(Settings, ensure=True)
 
 
 @click.group()
 @click.version_option("0.1.5", help="Show version and exit")
 @click.help_option(help="Show help and exit")
-@pass_config
+@click.pass_context
 def cli(config):
     """Reorder plaintext lists by tweaking rules"""
 
@@ -18,7 +18,7 @@ def cli(config):
 @cli.command()
 @click.option("--with-examples", is_flag=True, help="Initialize with example data")
 @click.help_option(help="Show help and exit")
-@pass_config
+@click.pass_context
 def init(config, with_examples):
     """Initialize list repo
     @@@TODO Add argument: optional directory name of mklists repository.
@@ -41,7 +41,7 @@ def init(config, with_examples):
 @click.option("--dryrun", is_flag=True, help="Run verbosely in read-only mode")
 @click.option("--here-only", is_flag=True, help="Run only in current data directory")
 @click.help_option(help="Show help and exit")
-@pass_config
+@click.pass_context
 def run(config, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 

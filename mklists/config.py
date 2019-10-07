@@ -5,7 +5,7 @@ from textwrap import dedent
 import datetime
 import attr
 
-# from .utils import return_rootdir_pathname
+# from mklists import utils
 
 # Note: variables set only at command line:
 #     cli:  [config]
@@ -45,7 +45,7 @@ class Settings:
 
 
 @dataclass
-class Examples:
+class Samples:
     """Holds state and self-validation methods for examples."""
 
     datadira_name: str = "a"

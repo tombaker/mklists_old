@@ -7,7 +7,6 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-from .config import Defaults
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,

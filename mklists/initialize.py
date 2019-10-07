@@ -15,7 +15,9 @@ import io
 import os
 import attr
 import ruamel.yaml
-from .config import Defaults, Settings, Examples
+
+# @@@@ Settings x 1, Defaults x 2, Samples x 3
+from .config import Defaults, Settings, Samples
 from .decorators import preserve_cwd
 from .utils import return_rootdir_pathname
 
@@ -60,9 +62,9 @@ def write_example_datafiles_to_somedirs(
 
 def write_example_rule_yamlfiles_to_somedirs(
     rule_yamlfile_name=Defaults.rule_yamlfile_name,
-    rootdir_rules_yamlfile_str=Examples.rootdir_rules_yamlfile_str,
-    example_datadira_rules_yamlfile_str=Examples.example_datadira_rules_yamlfile_str,
-    example_datadirb_rules_yamlfile_str=Examples.example_datadirb_rules_yamlfile_str,
+    rootdir_rules_yamlfile_str=Samples.rootdir_rules_yamlfile_str,
+    example_datadira_rules_yamlfile_str=Samples.example_datadira_rules_yamlfile_str,
+    example_datadirb_rules_yamlfile_str=Samples.example_datadirb_rules_yamlfile_str,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
