@@ -7,7 +7,7 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-from .config import Defaults
+from .config import Defaults, return_backupdir_shortname
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
@@ -24,7 +24,6 @@ from .exceptions import (
 # from .rules import Rule
 from .utils import (
     return_yamlobj_from_yamlstr,
-    return_backupdir_shortname,
     return_htmlline_from_textline,
     return_visiblefiles_list,
 )
