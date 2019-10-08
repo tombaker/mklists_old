@@ -12,10 +12,6 @@ import attr
 #     run:  [config] dryrun here_only
 
 
-def return_backupdir_shortname(rootdir_pathname=None, datadir_pathname=None):
-    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
-
-
 def return_rootdir_pathname(datadir_pathname=None):
     """Return repo root pathname when executed anywhere within repo.
     @@@TODO Should exit with error if datadir_pathname == rootdir_pathname."""
@@ -48,8 +44,8 @@ class Defaults:
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
     valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
     rootdir_pathname = return_rootdir_pathname(datadir_pathname)
-    backupdir_shortname = return_backupdir_shortname(
-        rootdir_pathname=rootdir_pathname, datadir_pathname=datadir_pathname
+    backupdir_shortname = (
+        datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
     )
     backupdir_pathname = os.path.join(
         rootdir_pathname, backupdir_name, backupdir_shortname, timestamp_str
