@@ -10,6 +10,9 @@ from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 sets = Settings()
 fixed = Defaults()
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def filename_is_valid_as_filename(
     filename,

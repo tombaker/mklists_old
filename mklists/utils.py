@@ -22,6 +22,9 @@ from .exceptions import (
 
 fixed = Defaults()
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def return_compiled_regex_from_regexstr(_regex=None):
     """Return compiled regex from regular expression.

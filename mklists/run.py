@@ -30,6 +30,9 @@ from .utils import (
 
 fixed = Defaults()
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def read_config_yamlfile_return_config_dict(
     rootdir_pathname=fixed.rootdir_pathname,

@@ -22,6 +22,9 @@ from .decorators import preserve_cwd
 
 fixed = Defaults()
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def write_config_yamlfile_from_settingsobj_to_rootdir(
     rootdir_pathname=fixed.rootdir_pathname

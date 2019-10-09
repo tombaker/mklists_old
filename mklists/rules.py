@@ -23,6 +23,9 @@ from .utils import return_yamlobj_from_yamlstr
 
 fixed = Defaults()
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def return_consolidated_yamlstr_from_rulefile_pathnames_list(rulefile_pathnames_chain):
     """Return list of rule strings from chain of rulefile pathnames."""
