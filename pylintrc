@@ -1,2 +1,2 @@
 [MESSAGES CONTROL]
-disable=W0106,W0212,W0613,W1401,no-else-return,W0611,C0103
+disable=no-else-return,W0611,C0103

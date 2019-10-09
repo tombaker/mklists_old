@@ -4,6 +4,9 @@ from dataclasses import dataclass
 import click
 from .config import Settings
 
+# pylint: disable=unused-argument
+#         During development, unused arguments here.
+
 # pass_config = click.make_pass_decorator(Settings, ensure=True)
 
 
