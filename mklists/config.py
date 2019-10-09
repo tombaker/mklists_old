@@ -18,6 +18,12 @@ class Defaults:
     Could add validation methods here, then re-allow
     R0903 in pylintrc."""
 
+    # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-few-public-methods
+    # Not unreasonable to use a class instance as a namespace.
+    # pylint: disable=no-self-use
+    # Perfectly fine to take function out of module namespace and encapsulate in class.
+
     def __init__(self):
         self.config_yamlfile_name = "mklists.yml"
         self.rule_yamlfile_name = ".rules"
@@ -61,6 +67,9 @@ class Defaults:
 
 class Settings:
     """Holds settable settings."""
+
+    # pylint: disable=too-few-public-methods
+    # Not unreasonable to use a class instance as a namespace.
 
     def __init__(self):
         self.invalid_filename_regexes_list = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
