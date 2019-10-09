@@ -11,7 +11,9 @@ sets = Settings()
 fixed = Defaults()
 
 # pylint: disable=bad-continuation
-# Black disagrees.
+#         Black disagrees.
+# pylint: disable=dangerous-default-value
+#         W0102: Dangerous default value sets.invalid_filename_regexes_list (builtins.list)
 
 
 def filename_is_valid_as_filename(
