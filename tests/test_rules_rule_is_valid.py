@@ -5,6 +5,9 @@ other methods are indirectly tested here."""
 import pytest
 from mklists.rules import Rule
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def test_rule_is_valid(reinitialize_ruleclass_variables):
     """A well-formed rule object is valid."""

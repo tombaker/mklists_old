@@ -34,6 +34,8 @@ TEST_DATADIRA_YAMLFILE_STR = """\
 @pytest.fixture(name="myrepo")
 def fixture_myrepo(tmpdir_factory):
     """Return temporary mklists repo 'myrepo'."""
+    # pylint: disable=unused-variable
+    # Not a problem; this is just a fixture.
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
     root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_STR)

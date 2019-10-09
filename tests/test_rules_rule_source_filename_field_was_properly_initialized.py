@@ -7,6 +7,9 @@
 import pytest
 from mklists.rules import Rule
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def test_rule_source_filename_field_was_properly_initialized_initial_source(
     reinitialize_ruleclass_variables

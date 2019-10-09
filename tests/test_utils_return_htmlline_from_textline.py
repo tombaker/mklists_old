@@ -27,6 +27,8 @@ def test_utils_return_htmlline_from_textline_linkified_line_non_url():
 
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_question_mark():
     """@@@Docstring"""
+    # pylint: disable=line-too-long
+    # Regrettably, yes.
     textline = """http://192.168.2.1/x.html?lang=en"""
     htmlline = """<a href="http://192.168.2.1/x.html?lang=en">http://192.168.2.1/x.html?lang=en</a>\n"""
     assert return_htmlline_from_textline(textline) == htmlline
@@ -70,6 +72,8 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon():
 
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_escaped_characters():
     """@@@Docstring"""
+    # pylint: disable=line-too-long
+    # Regrettably, yes.
     textline = """http://ex.org/Rizzi_%28DE-537%29"""
     htmlline = """<a href="http://ex.org/Rizzi_%28DE-537%29">http://ex.org/Rizzi_%28DE-537%29</a>\n"""
     assert return_htmlline_from_textline(textline) == htmlline
@@ -86,6 +90,8 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon2():
 
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_bang():
     """@@@Docstring"""
+    # pylint: disable=line-too-long
+    # Regrettably, yes.
     textline = """http://ex.com/#!/search/%23dcmi11"""
     htmlline = """<a href="http://ex.com/#!/search/%23dcmi11">http://ex.com/#!/search/%23dcmi11</a>\n"""
     assert return_htmlline_from_textline(textline) == htmlline
@@ -93,6 +99,8 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_bang():
 
 def test_utils_return_htmlline_from_textline_linkified_line_url_with_comma():
     """This application will not accept commas as valid URL characters."""
+    # pylint: disable=line-too-long
+    # Regrettably, yes.
     textline = """http://standorte.deutschepost.de,"""
     htmlline = """<a href="http://standorte.deutschepost.de">http://standorte.deutschepost.de</a>,\n"""
     assert return_htmlline_from_textline(textline) == htmlline

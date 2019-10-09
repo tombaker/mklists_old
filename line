@@ -1,2 +1,2 @@
-    # pylint: disable=bad-continuation
-    # Black disagrees.
+    # pylint: disable=duplicate-code
+    # These are just tests...

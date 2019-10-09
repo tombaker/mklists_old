@@ -48,7 +48,6 @@ def test_write_htmlfiles_from_name2lines_dict_first_deletes_existing_files(tmpdi
     os.makedirs(htmldir_subdir_pathname, exist_ok=True)
     os.chdir(htmldir_subdir_pathname)
     io.open("some_file.txt.html", mode="w", encoding="utf-8").write("some content")
-    existing_files = return_visiblefiles_list()
     write_htmlfiles_from_name2lines_dict(
         name2lines_dict=DATADICT_BEFORE,
         htmldir_pathname=os.path.join(tmpdir, ".html"),

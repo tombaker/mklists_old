@@ -6,6 +6,9 @@ import pytest
 from mklists.exceptions import RulefileNotFoundError
 from mklists.rules import return_consolidated_yamlstr_from_rulefile_pathnames_list
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 #    io.open(rule_yamlfile_pathname, mode="w").write(TEST_RULES_YAMLSTR)
 #    rule_yamlfile_pathname = os.path.join(tmpdir, RULE_YAMLFILE_NAME)
 

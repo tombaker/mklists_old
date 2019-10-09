@@ -5,8 +5,11 @@ import pytest
 from mklists.booleans import filename_is_valid_as_filename
 from mklists.config import Settings, Defaults
 
-set = Settings()
+sets = Settings()
 fixed = Defaults()
+
+# pylint: disable=bad-continuation
+# Black disagrees.
 
 
 def test_utils_filename_is_valid_as_filename():
@@ -30,7 +33,7 @@ def test_utils_filename_is_valid_as_filename_exits_filename_uses_illegal_charact
     assert (
         filename_is_valid_as_filename(
             "foo;bar.txt",
-            invalid_filename_regexes_list=set.invalid_filename_regexes_list,
+            invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
             valid_filename_characters_regex=fixed.valid_filename_characters_regex,
         )
         is False
@@ -41,13 +44,12 @@ def test_utils_filename_is_valid_as_filename_exits_already_used_as_directory_nam
     tmpdir
 ):
     """@@@Docstring"""
-    fname = "foobar"
     tmpdir.mkdir("foobar")
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
         filename_is_valid_as_filename(
             "foobar",
-            invalid_filename_regexes_list=set.invalid_filename_regexes_list,
+            invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
             valid_filename_characters_regex=fixed.valid_filename_characters_regex,
         )
 

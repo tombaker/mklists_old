@@ -11,6 +11,9 @@ Names of fields:
 import pytest
 from mklists.rules import Rule
 
+# pylint: disable=bad-continuation
+# Black disagrees.
+
 
 def test_rule_number_fields_are_integers(reinitialize_ruleclass_variables):
     """Fields 1 and 5 are both integers."""

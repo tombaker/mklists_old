@@ -50,10 +50,12 @@ def test_utils_return_htmldir_pathname_htmldir_name_not_given():
 
 def test_utils_return_htmldir_pathname_datadir_name_not_given(tmpdir):
     """Returns pathname of HTML directory."""
+    # pylint: disable=unused-variable
+    # Yes, by design.
+    dirname, datadir_name = os.path.split(os.getcwd())
     os.chdir(tmpdir)
     rootdir_pathname = "/Users/tbaker/tmp"
     htmldir_name = ".html"
-    dirname, datadir_name = os.path.split(os.getcwd())
     expected = "/Users/tbaker/tmp/.html/" + datadir_name
     assert (
         return_htmldir_pathname(
