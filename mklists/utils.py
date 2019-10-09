@@ -20,6 +20,8 @@ from .exceptions import (
     YamlFileNotFoundError,
 )
 
+fixed = Defaults()
+
 
 def return_compiled_regex_from_regexstr(_regex=None):
     """Return compiled regex from regular expression.
@@ -88,7 +90,7 @@ def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
 
 
 def return_htmlline_from_textline(
-    textline=None, url_pattern_regex=Defaults.url_pattern_regex
+    textline=None, url_pattern_regex=fixed.url_pattern_regex
 ):
     """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
 

@@ -3,6 +3,7 @@
 import pytest
 from mklists.config import Defaults
 
+fixed = Defaults()
 
 # @pytest.mark.skip
 # def test_backups_return_backupdir_shortname():

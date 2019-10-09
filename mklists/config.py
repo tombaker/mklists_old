@@ -12,44 +12,51 @@ import attr
 #     run:  [config] dryrun here_only
 
 
-def return_rootdir_pathname(datadir_pathname=None):
-    """Return repo root pathname when executed anywhere within repo.
-    @@@TODO Should exit with error if datadir_pathname == rootdir_pathname."""
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    starting_pathname = datadir_pathname
-    while "mklists.yml" not in os.listdir():
-        cwd_before_changing = os.getcwd()
-        os.chdir(os.pardir)
-        if os.getcwd() == cwd_before_changing:
-            os.chdir(starting_pathname)
-            return None
-    rootdir_pathname = os.getcwd()
-    os.chdir(starting_pathname)
-    return rootdir_pathname
-
-
 class Defaults:
     """Holds variables 'hard-coded' into mklists -
     variables not intended to be changed.
     Could add validation methods here, then re-allow
     R0903 in pylintrc."""
 
-    config_yamlfile_name = "mklists.yml"
-    rule_yamlfile_name = ".rules"
-    backupdir_name = "backups"
-    htmldir_name = "html"
-    url_pattern_regex = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-    datadir_pathname = os.getcwd()
-    timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
-    valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
-    rootdir_pathname = return_rootdir_pathname(datadir_pathname)
-    backupdir_shortname = (
-        datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
-    )
-    backupdir_pathname = os.path.join(
-        rootdir_pathname, backupdir_name, backupdir_shortname, timestamp_str
-    )
+    def __init__(self):
+        self.config_yamlfile_name = "mklists.yml"
+        self.rule_yamlfile_name = ".rules"
+        self.backupdir_name = "backups"
+        self.htmldir_name = "html"
+        self.url_pattern_regex = (
+            r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+        )
+        self.datadir_pathname = os.getcwd()
+        self.timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+        self.valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
+        self.rootdir_pathname = self.return_rootdir_pathname(self.datadir_pathname)
+        self.backupdir_shortname = (
+            self.datadir_pathname[len(self.rootdir_pathname) :]
+            .strip("/")
+            .replace("/", "_")
+        )
+        self.backupdir_pathname = os.path.join(
+            self.rootdir_pathname,
+            self.backupdir_name,
+            self.backupdir_shortname,
+            self.timestamp_str,
+        )
+
+    def return_rootdir_pathname(self, datadir_pathname=None):
+        """Return repo root pathname when executed anywhere within repo.
+        @@@TODO Should exit with error if datadir_pathname == rootdir_pathname."""
+        if not datadir_pathname:
+            datadir_pathname = os.getcwd()
+        starting_pathname = datadir_pathname
+        while "mklists.yml" not in os.listdir():
+            cwd_before_changing = os.getcwd()
+            os.chdir(os.pardir)
+            if os.getcwd() == cwd_before_changing:
+                os.chdir(starting_pathname)
+                return None
+        rootdir_pathname = os.getcwd()
+        os.chdir(starting_pathname)
+        return rootdir_pathname
 
 
 class Settings:

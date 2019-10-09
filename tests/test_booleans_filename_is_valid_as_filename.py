@@ -6,6 +6,7 @@ from mklists.booleans import filename_is_valid_as_filename
 from mklists.config import Settings, Defaults
 
 set = Settings()
+fixed = Defaults()
 
 
 def test_utils_filename_is_valid_as_filename():
@@ -20,7 +21,7 @@ def test_utils_filename_is_valid_as_filename():
     assert filename_is_valid_as_filename(
         "foobar.txt",
         invalid_filename_regexes_list=bad_patterns,
-        valid_filename_characters_regex=Defaults.valid_filename_characters_regex,
+        valid_filename_characters_regex=fixed.valid_filename_characters_regex,
     )
 
 
@@ -30,7 +31,7 @@ def test_utils_filename_is_valid_as_filename_exits_filename_uses_illegal_charact
         filename_is_valid_as_filename(
             "foo;bar.txt",
             invalid_filename_regexes_list=set.invalid_filename_regexes_list,
-            valid_filename_characters_regex=Defaults.valid_filename_characters_regex,
+            valid_filename_characters_regex=fixed.valid_filename_characters_regex,
         )
         is False
     )
@@ -47,7 +48,7 @@ def test_utils_filename_is_valid_as_filename_exits_already_used_as_directory_nam
         filename_is_valid_as_filename(
             "foobar",
             invalid_filename_regexes_list=set.invalid_filename_regexes_list,
-            valid_filename_characters_regex=Defaults.valid_filename_characters_regex,
+            valid_filename_characters_regex=fixed.valid_filename_characters_regex,
         )
 
 
