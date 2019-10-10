@@ -13,6 +13,8 @@ from mklists.rules import Rule
 
 # pylint: disable=bad-continuation
 # Black disagrees.
+# pylint: disable=unused-argument
+# In tests, fixture arguments may look like they are unused.
 
 
 def test_rule_number_fields_are_integers(reinitialize_ruleclass_variables):

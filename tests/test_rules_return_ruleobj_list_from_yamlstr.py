@@ -9,6 +9,8 @@ from mklists.exceptions import NoRulesError
 from mklists.rules import Rule, return_ruleobj_list_from_yamlstr
 from mklists.utils import return_yamlobj_from_yamlstr
 
+# pylint: disable=unused-argument
+# In tests, fixture arguments may look like they are unused.
 
 TEST_RULES_YAMLSTR = r"""# Test rules for this module only.
 - [0, '.',          x,         lines,            0]

@@ -35,11 +35,12 @@ class Defaults:
         self.datadir_pathname = os.getcwd()
         self.timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
         self.valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
-        self.rootdir_pathname = self.return_rootdir_pathname(self.datadir_pathname)
-        self.backupdir_shortname = (
-            self.datadir_pathname[len(self.rootdir_pathname) :]
-            .strip("/")
-            .replace("/", "_")
+        self.rootdir_pathname = self.return_rootdir_pathname(
+            datadir_pathname=self.datadir_pathname
+        )
+        self.backupdir_shortname = self.return_backupdir_shortname(
+            datadir_pathname=self.datadir_pathname,
+            rootdir_pathname=self.rootdir_pathname,
         )
         self.backupdir_pathname = os.path.join(
             self.rootdir_pathname,
@@ -49,8 +50,7 @@ class Defaults:
         )
 
     def return_rootdir_pathname(self, datadir_pathname=None):
-        """Return repo root pathname when executed anywhere within repo.
-        @@@TODO Should exit with error if datadir_pathname == rootdir_pathname."""
+        """Return repo root pathname when executed anywhere within repo."""
         if not datadir_pathname:
             datadir_pathname = os.getcwd()
         starting_pathname = datadir_pathname
@@ -63,6 +63,18 @@ class Defaults:
         rootdir_pathname = os.getcwd()
         os.chdir(starting_pathname)
         return rootdir_pathname
+
+    def return_backupdir_shortname(self, datadir_pathname=None, rootdir_pathname=None):
+        """@@@Docstring"""
+        if datadir_pathname == rootdir_pathname:
+            return "rootdir"
+        # pylint: disable=bad-continuation
+        # But this makes it more readable!
+        return (
+            self.datadir_pathname[len(self.rootdir_pathname) :]
+            .strip("/")
+            .replace("/", "_")
+        )
 
 
 class Settings:

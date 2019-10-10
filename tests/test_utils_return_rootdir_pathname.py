@@ -11,6 +11,9 @@ import os
 import pytest
 from mklists.config import Defaults
 
+# pylint: disable=unused-argument
+# These are just tests...
+
 fixed = Defaults()
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"

@@ -5,6 +5,9 @@ import re
 import pytest
 from mklists.utils import return_compiled_regex_from_regexstr
 
+# pylint: disable=anomalous-backslash-in-string
+# These are just tests...
+
 
 def test_return_compiled_regex_from_regexstr():
     """Returns compiled regex from simple string."""

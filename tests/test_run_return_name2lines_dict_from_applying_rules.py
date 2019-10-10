@@ -5,6 +5,9 @@ import pytest
 from mklists.run import return_names2lines_dict_from_rules_and_lines
 from mklists.rules import Rule
 
+# pylint: disable=expression-not-assigned
+# Right, because these are tests...
+
 
 def test_return_names2lines_dict_from_rules_and_lines_correct_result():
     """Returns correct dictionary from good inputs."""

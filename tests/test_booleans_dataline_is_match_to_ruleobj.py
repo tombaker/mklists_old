@@ -54,6 +54,8 @@ def test_dataline_is_match_to_ruleobj_entire_line():
 
 def test_dataline_is_match_to_ruleobj_entire_line_escaping_parenthesis():
     """Returns True because regex matches the start of the entire line."""
+    # pylint: disable=anomalous-backslash-in-string
+    # Thank you for catching this, Pylint, but the mistake is intentional...
     given_ruleobj = Rule(0, "^N\(OW", "a.txt", "b.txt", 0)
     assert dataline_is_match_to_ruleobj(
         _given_ruleobj=given_ruleobj, _given_dataline_str="N(OW Buy milk"

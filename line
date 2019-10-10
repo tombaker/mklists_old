@@ -1,2 +1,2 @@
-# pylint: disable=unused-argument
-# These are just tests...
+# pylint: disable=bad-continuation
+# But this makes it more readable!
