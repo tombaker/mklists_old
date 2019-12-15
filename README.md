@@ -2,6 +2,9 @@ mklists
 
 Recompose plain text lists by tweaking rules
 
+Or:
+Update plain text lists by tweaking rules
+
 Next steps:
 * Update pip distribution
 
