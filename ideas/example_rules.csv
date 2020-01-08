@@ -1,0 +1,5 @@
+﻿source_matchfield,source_matchpattern,source,target,target_sortorder
+0,.,x,lines,0
+1,NOW,lines,alines,1
+1,LATER,lines,alines,1
+0,^2019|^2020,lines,blines,1
