@@ -11,6 +11,7 @@ from .exceptions import (
     BadFilenameError,
     BadRuleError,
     MissingValueError,
+    NoRulefileError,
     NoRulesError,
     NotIntegerError,
     RulefileNotFoundError,
@@ -19,7 +20,9 @@ from .exceptions import (
     UninitializedSourceError,
 )
 from .run import read_yamlfile_return_yamlstr
-from .utils import return_yamlobj_from_yamlstr
+
+# from .run import read_csvfile_return_csvstr
+from .utils import return_pyobj_from_yamlstr
 
 fixed = Defaults()
 
@@ -71,13 +74,44 @@ def return_rulefile_pathnames_list(
     return rulefile_pathnames_chain
 
 
+def return_ruleobj_list_from_csvfile(filename=None):
+    """Return list of Rule objects given CSV string."""
+    try:
+        csvfile = open(filename, newline="", encoding="utf-8-sig")
+    except TypeError:
+        raise NoRulefileError(f"No rule file specified.")
+    except FileNotFoundError:
+        raise NoRulefileError(f"No rule file specified.")
+
+    ruleobj_list = []
+    from csv import DictReader
+
+    csv_obj = DictReader(csvfile)
+    csv_ll = [list(dictrow.values()) for dictrow in [dict(row) for row in csv_obj]]
+    for row in csv_ll:
+        single_rule_obj = Rule(*row)
+        single_rule_obj.coerce_field_types()
+        try:
+            if single_rule_obj.is_valid():
+                ruleobj_list.append(single_rule_obj)
+        except MissingValueError:
+            print(f"Skipping badly formed rule: {row}")
+        except TypeError:
+            raise BadRuleError(f"Rule {repr(row)} is badly formed.")
+
+    if not ruleobj_list:
+        raise NoRulesError(f"No rules found.")
+
+    return ruleobj_list
+
+
 def return_ruleobj_list_from_yamlstr(yamlstr):
     """Return list of Rule objects from YAML string."""
     if not yamlstr:
         raise NoRulesError(f"No rules provided.")
-    yamlobj = return_yamlobj_from_yamlstr(yamlstr)
+    ruleobj = return_pyobj_from_yamlstr(yamlstr)
     ruleobj_list = []
-    for item in yamlobj:
+    for item in ruleobj:
         try:
             if Rule(*item).is_valid():
                 ruleobj_list.append(Rule(*item))
@@ -113,10 +147,17 @@ class Rule:
     sources_list_is_initialized = False
     sources_list = []
 
+    def coerce_field_types(self):
+        self.source_matchfield = int(self.source_matchfield)
+        self.source_matchpattern = str(self.source_matchpattern)
+        self.source = str(self.source)
+        self.target = str(self.target)
+        self.target_sortorder = int(self.target_sortorder)
+
     def is_valid(self):
         """Return True if Rule object passes all tests."""
         self._number_fields_are_integers()
-        self._source_matchpattern_field_is_valid_as_regex()
+        self._source_matchpattern_field_string_is_valid_as_regex()
         self._filename_fields_are_valid()
         self._source_filename_field_is_not_equal_target()
         self._source_filename_field_was_properly_initialized()
@@ -171,7 +212,7 @@ class Rule:
             raise SourceEqualsTargetError("source must not equal target.")
         return True
 
-    def _source_matchpattern_field_is_valid_as_regex(self):
+    def _source_matchpattern_field_string_is_valid_as_regex(self):
         """Returns True if source_matchpattern is valid regular expression."""
         if self.source_matchpattern is None:
             raise MissingValueError(

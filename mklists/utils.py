@@ -1,5 +1,6 @@
 """Utilities used by other modules."""
 
+import csv
 import os
 import glob
 import re
@@ -121,7 +122,7 @@ def return_visiblefiles_list():
     return sorted(all_datafile_names)
 
 
-def return_yamlobj_from_yamlstr(yamlstr):
+def return_pyobj_from_yamlstr(yamlstr):
     """Returns YAML object from given YAML string."""
     try:
         return ruamel.yaml.safe_load(yamlstr)
@@ -129,9 +130,9 @@ def return_yamlobj_from_yamlstr(yamlstr):
         raise BadYamlError(f"Badly formatted YAML content.")
 
 
-def return_yamlstr_from_dataobj(dataobj):
+def return_yamlstr_from_pyobj(pyobj):
     """Returns YAML string from given Python object."""
     try:
-        return ruamel.yaml.safe_dump(dataobj)
+        return ruamel.yaml.safe_dump(pyobj)
     except ruamel.yaml.YAMLError:
         raise BadYamlError(f"Badly formatted YAML content.")

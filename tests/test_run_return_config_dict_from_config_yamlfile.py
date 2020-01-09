@@ -7,7 +7,7 @@ from mklists.run import (
     read_config_yamlfile_return_config_dict,
     read_yamlfile_return_yamlstr,
 )
-from mklists.utils import return_yamlobj_from_yamlstr
+from mklists.utils import return_pyobj_from_yamlstr
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 

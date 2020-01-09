@@ -44,7 +44,11 @@ class RulefileNotFoundError(ConfigError):
 
 
 class YamlFileNotFoundError(ConfigError):
-    """Generic YAML file was not found."""
+    """An expected YAML file was not found."""
+
+
+# class CsvFileNotFoundError(ConfigError):
+#     """An expected CSV file was not found."""
 
 
 # DataError
@@ -66,7 +70,7 @@ class NotUTF8Error(DataError):
 
 # RuleError
 class RuleError(SystemExit):
-    """Super-category for exceptions related to rules."""
+    """Super-category for exceptions related to individual rules."""
 
 
 class NotIntegerError(RuleError):
@@ -95,7 +99,7 @@ class FilenameIsAlreadyDirnameError(RuleError):
 
 # RulesError
 class RulesError(SystemExit):
-    """Category of exceptions related to sets or rules."""
+    """Super-category for exceptions related to sets of rules."""
 
 
 class BadRuleError(RulesError):

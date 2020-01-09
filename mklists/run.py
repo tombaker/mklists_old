@@ -21,9 +21,11 @@ from .exceptions import (
     YamlFileNotFoundError,
 )
 
+#    CsvFileNotFoundError,
+
 # from .rules import Rule
 from .utils import (
-    return_yamlobj_from_yamlstr,
+    return_pyobj_from_yamlstr,
     return_htmlline_from_textline,
     return_visiblefiles_list,
 )
@@ -43,7 +45,7 @@ def read_config_yamlfile_return_config_dict(
     """
     config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
     try:
-        return return_yamlobj_from_yamlstr(
+        return return_pyobj_from_yamlstr(
             read_yamlfile_return_yamlstr(config_yamlfile_pathname)
         )
     except FileNotFoundError:
@@ -75,6 +77,14 @@ def read_datafiles_return_datalines_list():
     if not all_datalines:
         raise NoDataError("No data to process!")
     return all_datalines
+
+
+# def read_csvfile_return_csvstr(csvfile_name):
+#     """Returns Python object from given CSV-format file."""
+#     try:
+#         return open(csvfile_name).read()
+#     except FileNotFoundError:
+#         raise CsvFileNotFoundError(f"CSV file {repr(yamlfile_name)} not found.")
 
 
 def read_yamlfile_return_yamlstr(yamlfile_name):

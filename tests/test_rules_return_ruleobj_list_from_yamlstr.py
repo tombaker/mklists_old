@@ -7,7 +7,7 @@ import pytest
 # from mklists.constants import RULE_YAMLFILE_NAME
 from mklists.exceptions import NoRulesError
 from mklists.rules import Rule, return_ruleobj_list_from_yamlstr
-from mklists.utils import return_yamlobj_from_yamlstr
+from mklists.utils import return_pyobj_from_yamlstr
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
@@ -16,13 +16,13 @@ TEST_RULES_YAMLSTR = r"""# Test rules for this module only.
 - [0, '.',          x,         lines,            0]
 - [1, 'NOW',        lines,     alines,           1]
 - [1, 'LATER',      lines,     alines,           1]
-- [0, '^2019|2020', lines,     blines,           1]"""
+- [0, '^2019|^2020', lines,     blines,           1]"""
 
 TEST_RULES_YAMLSTR_PARSED = [
     [0, ".", "x", "lines", 0],
     [1, "NOW", "lines", "alines", 1],
     [1, "LATER", "lines", "alines", 1],
-    [0, "^2019|2020", "lines", "blines", 1],
+    [0, "^2019|^2020", "lines", "blines", 1],
 ]
 
 TEST_RULEOBJ_LIST = [
@@ -49,7 +49,7 @@ TEST_RULEOBJ_LIST = [
     ),
     Rule(
         source_matchfield=0,
-        source_matchpattern="^2019|2020",
+        source_matchpattern="^2019|^2020",
         source="lines",
         target="blines",
         target_sortorder=1,
