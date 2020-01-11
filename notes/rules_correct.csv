@@ -1,0 +1,5 @@
+﻿source_matchfield,source_matchpattern,source,target,target_sortorder,comments
+0,.,x,lines,0,A comment
+1,NOW,lines,alines,1,Another comment
+1,LATER,lines,alines,1,
+0,^2019-...,lines,blines,1,
