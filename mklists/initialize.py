@@ -66,32 +66,28 @@ def write_example_datafiles_to_somedirs(
     )
 
 
-def write_example_rule_yamlfiles_to_somedirs(
-    rule_yamlfile_name=".rules",
-    rootdir_rules_yamlfile_str=Samples.rootdir_rules_yamlfile_str,
-    example_datadira_rules_yamlfile_str=Samples.example_datadira_rules_yamlfile_str,
-    example_datadirb_rules_yamlfile_str=Samples.example_datadirb_rules_yamlfile_str,
+def write_example_rule_csvfiles_to_somedirs(
+    rule_csvfile_name=".rules",
+    rootdir_rules_csvstr=Samples.rootdir_rules_csvstr,
+    example_datadira_rules_csvstr=Samples.example_datadira_rules_csvstr,
+    example_datadirb_rules_csvstr=Samples.example_datadirb_rules_csvstr,
 ):
     """Write initial YAML rule files:
     * global rule file (/.rules)
     * folder rule file (/a/.rules)"""
     config_path = os.path.join(os.getcwd())
-    grule_file = os.path.join(config_path, rule_yamlfile_name)
+    grule_file = os.path.join(config_path, rule_csvfile_name)
     os.makedirs(os.path.join(config_path, "a"))
     os.makedirs(os.path.join(config_path, "b"))
-    rulea_file = os.path.join(config_path, "a", rule_yamlfile_name)
-    ruleb_file = os.path.join(config_path, "b", rule_yamlfile_name)
-    io.open(grule_file, "w", encoding="utf-8").write(rootdir_rules_yamlfile_str)
-    io.open(rulea_file, "w", encoding="utf-8").write(
-        example_datadira_rules_yamlfile_str
-    )
-    io.open(ruleb_file, "w", encoding="utf-8").write(
-        example_datadirb_rules_yamlfile_str
-    )
+    rulea_file = os.path.join(config_path, "a", rule_csvfile_name)
+    ruleb_file = os.path.join(config_path, "b", rule_csvfile_name)
+    io.open(grule_file, "w", encoding="utf-8").write(rootdir_rules_csvstr)
+    io.open(rulea_file, "w", encoding="utf-8").write(example_datadira_rules_csvstr)
+    io.open(ruleb_file, "w", encoding="utf-8").write(example_datadirb_rules_csvstr)
 
 
 @preserve_cwd
-def write_minimal_rule_yamlfiles_to_somedirs(
+def write_minimal_rule_csvfiles_to_somedirs(
     _datadira_name=None,
     _file_tobewritten_name=None,
     _rootdir_file_tobewritten_str=None,

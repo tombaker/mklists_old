@@ -46,7 +46,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
 
 
 def return_datadir_pathnames_under_somedir(
-    _rootdir_pathname=None, _somedir_pathname=None, _rule_yamlfile_name=None
+    _rootdir_pathname=None, _somedir_pathname=None, _rule_csvfile_name=None
 ):
     """Return list of data directories under a given directory.
 
@@ -55,7 +55,7 @@ def return_datadir_pathnames_under_somedir(
     Args:
         _rootdir_pathname: Root of mklists repository.
         _somedir_pathname: Root of data subdirectories.
-        _rule_yamlfile_name: Name of rule file.
+        _rule_csvfile_name: Name of rule file.
 
     2019-07-22: Two scenarios?
     * mklists run         - runs in all data directories in repo
@@ -67,7 +67,7 @@ def return_datadir_pathnames_under_somedir(
     datadirs = []
     for dirpath, dirs, files in os.walk(_somedir_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
-        if _rule_yamlfile_name in files:
+        if _rule_csvfile_name in files:
             datadirs.append(dirpath)
 
     if _rootdir_pathname in datadirs:

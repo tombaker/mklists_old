@@ -4,14 +4,8 @@ import io
 import os
 import pytest
 
-# from mklists.constants import RULE_YAMLFILE_NAME
 from mklists.exceptions import NoRulefileError
-from mklists.rules import (
-    Rule,
-    return_ruleobj_list_from_yamlstr,
-    return_ruleobj_list_from_csvfile,
-)
-from mklists.utils import return_pyobj_from_yamlstr
+from mklists.rules import Rule, return_ruleobj_list_from_csvfile
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.

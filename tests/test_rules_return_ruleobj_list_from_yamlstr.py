@@ -4,7 +4,7 @@ import io
 import os
 import pytest
 
-# from mklists.constants import RULE_YAMLFILE_NAME
+# from mklists.constants import RULE_CSVFILE_NAME
 from mklists.exceptions import NoRulesError
 from mklists.rules import Rule, return_ruleobj_list_from_yamlstr
 from mklists.utils import return_pyobj_from_yamlstr

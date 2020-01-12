@@ -30,22 +30,10 @@ fixed = Defaults()
 # Black disagrees.
 
 
-def return_consolidated_yamlstr_from_rulefile_pathnames_list(rulefile_pathnames_chain):
-    """Return list of rule strings from chain of rulefile pathnames."""
-    consolidated_yamlstr = ""
-    for pathname in rulefile_pathnames_chain:
-        try:
-            consolidated_yamlstr = consolidated_yamlstr + open(pathname).read()
-        except FileNotFoundError:
-            raise RulefileNotFoundError(f"Rule file not found.")
-
-    return consolidated_yamlstr
-
-
 @preserve_cwd
 def return_rulefile_pathnames_list(
     startdir_pathname=None,
-    rule_yamlfile_name=fixed.rule_yamlfile_name,
+    rule_csvfile_name=fixed.rule_csvfile_name,
     config_yamlfile_name=fixed.config_yamlfile_name,
 ):
     """Return chain of rule files leading from parent directories
@@ -56,22 +44,25 @@ def return_rulefile_pathnames_list(
 
     Args:
         startdir_pathname:
-        rule_yamlfile_name:
+        rule_csvfile_name:
         config_yamlfile_name:
     """
     if not startdir_pathname:
         startdir_pathname = os.getcwd()
     os.chdir(startdir_pathname)
     rulefile_pathnames_chain = []
-    while rule_yamlfile_name in os.listdir():
-        rulefile_pathnames_chain.insert(
-            0, os.path.join(os.getcwd(), rule_yamlfile_name)
-        )
+    while rule_csvfile_name in os.listdir():
+        rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rule_csvfile_name))
         if config_yamlfile_name in os.listdir():
             break
         os.chdir(os.pardir)
 
     return rulefile_pathnames_chain
+
+
+def return_ruleobj_list_from_pyobj(list_of_lists):
+    """Refactor return_ruleobj_list_from_csvfile"""
+    pass
 
 
 def return_ruleobj_list_from_csvfile(filename=None):
@@ -81,13 +72,14 @@ def return_ruleobj_list_from_csvfile(filename=None):
     except TypeError:
         raise NoRulefileError(f"No rule file specified.")
     except FileNotFoundError:
-        raise NoRulefileError(f"No rule file specified.")
+        raise NoRulefileError(f"Rule file not found.")
 
-    ruleobj_list = []
     from csv import DictReader
 
     csv_obj = DictReader(csvfile)
     csv_ll = [list(dictrow.values()) for dictrow in [dict(row) for row in csv_obj]]
+
+    ruleobj_list = []
     for row in csv_ll:
         single_rule_obj = Rule(*row)
         single_rule_obj.coerce_field_types()
@@ -98,27 +90,6 @@ def return_ruleobj_list_from_csvfile(filename=None):
             print(f"Skipping badly formed rule: {row}")
         except TypeError:
             raise BadRuleError(f"Rule {repr(row)} is badly formed.")
-
-    if not ruleobj_list:
-        raise NoRulesError(f"No rules found.")
-
-    return ruleobj_list
-
-
-def return_ruleobj_list_from_yamlstr(yamlstr):
-    """Return list of Rule objects from YAML string."""
-    if not yamlstr:
-        raise NoRulesError(f"No rules provided.")
-    ruleobj = return_pyobj_from_yamlstr(yamlstr)
-    ruleobj_list = []
-    for item in ruleobj:
-        try:
-            if Rule(*item).is_valid():
-                ruleobj_list.append(Rule(*item))
-        except MissingValueError:
-            print(f"Skipping badly formed rule: {item}")
-        except TypeError:
-            raise BadRuleError(f"Rule {repr(item)} is badly formed.")
 
     if not ruleobj_list:
         raise NoRulesError(f"No rules found.")

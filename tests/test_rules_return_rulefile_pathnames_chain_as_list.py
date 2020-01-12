@@ -42,7 +42,7 @@ import os
 import pytest
 from mklists.rules import Rule, return_rulefile_pathnames_list
 
-RULE_YAMLFILE_NAME = ".rules"
+RULE_CSVFILE_NAME = ".rules"
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 
@@ -51,13 +51,13 @@ def test_return_rulefile_pathnames_list_basic(tmpdir):
     """Here: the normal case: chain of directories with '.rules'
     ends in rootdir (which also has 'mklists.yml' file)."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
-    tmpdir.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdir.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdira.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirb.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirc.join(RULE_CSVFILE_NAME).write("some rules")
     expected = [
         os.path.join(tmpdir, ".rules"),
         os.path.join(tmpdir, "a/.rules"),
@@ -73,11 +73,11 @@ def test_return_rulefile_pathnames_list_ends_before_repo_rootdir(tmpdir):
     root directory does not itself have a ".rules" file."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdira.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirb.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirc.join(RULE_CSVFILE_NAME).write("some rules")
     expected = [
         os.path.join(tmpdir, "a/.rules"),
         os.path.join(tmpdir, "a/b/.rules"),
@@ -91,11 +91,11 @@ def test_return_rulefile_pathnames_list_even_without_repo_rootdir(tmpdir):
     called with startdir_pathname as an argument."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdira.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirb.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirc.join(RULE_CSVFILE_NAME).write("some rules")
     expected = [
         os.path.join(tmpdir, "a/.rules"),
         os.path.join(tmpdir, "a/b/.rules"),
@@ -110,11 +110,11 @@ def test_return_rulefile_pathnames_list_without_specifying_startdir_pathname(tmp
     * therefore defaults to current working directory as startdir_pathname"""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdira.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirb.join(RULE_CSVFILE_NAME).write("some rules")
     tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULE_YAMLFILE_NAME).write("some rules")
+    tmpdirc.join(RULE_CSVFILE_NAME).write("some rules")
     os.chdir(tmpdirc)
     expected = [
         os.path.join(tmpdir, "a/.rules"),

@@ -18,7 +18,7 @@ fixed = Defaults()
 
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 
-RULE_YAMLFILE_NAME = ".rules"
+RULE_CSVFILE_NAME = ".rules"
 
 TEST_CONFIG_YAMLFILE_STR = r"""\
 invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
@@ -42,8 +42,8 @@ def fixture_myrepo(tmpdir_factory):
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
     root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_STR)
-    root_dir.join(RULE_YAMLFILE_NAME).write(TEST_ROOTDIR_YAMLFILE_STR)
-    subdir_a.join(RULE_YAMLFILE_NAME).write(TEST_DATADIRA_YAMLFILE_STR)
+    root_dir.join(RULE_CSVFILE_NAME).write(TEST_ROOTDIR_YAMLFILE_STR)
+    subdir_a.join(RULE_CSVFILE_NAME).write(TEST_DATADIRA_YAMLFILE_STR)
     subdir_b = subdir_a.mkdir("b")
     subdir_c = subdir_b.mkdir("c")
     return root_dir
@@ -68,7 +68,7 @@ def test_return_rootdir_pathname_while_in_rootdir_using_fixture(myrepo):
     """Find root directory from subdirectory of root."""
     os.chdir(myrepo)
     assert CONFIG_YAMLFILE_NAME in os.listdir(fixed.return_rootdir_pathname())
-    assert RULE_YAMLFILE_NAME in os.listdir(fixed.return_rootdir_pathname())
+    assert RULE_CSVFILE_NAME in os.listdir(fixed.return_rootdir_pathname())
     assert fixed.return_rootdir_pathname() == str(myrepo)
 
 

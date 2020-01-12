@@ -26,7 +26,7 @@ class Defaults:
 
     def __init__(self):
         self.config_yamlfile_name = "mklists.yml"
-        self.rule_yamlfile_name = ".rules"
+        self.rule_csvfile_name = ".rules"
         self.backupdir_name = "backups"
         self.htmldir_name = "html"
         self.url_pattern_regex = (
@@ -101,7 +101,7 @@ class Samples:
     datadira_name: str = "a"
     datadirb_name: str = "b"
 
-    rootdir_rules_yamlfile_str: str = dedent(
+    rootdir_rules_csvstr: str = dedent(
         r"""\
         # Each rule matches against part of a line of text.
         #
@@ -130,14 +130,14 @@ class Samples:
         """
     )
 
-    minimal_datadira_rules_yamlfile_str: str = dedent(
+    minimal_datadira_rules_csvstr: str = dedent(
         r"""# Rules for Folder A.
         - [0, '.',          alines,    etc.txt,  0]
         - [1, 'TODO',       etc.txt,   todo.txt, 1]
         """
     )
 
-    example_datadira_rules_yamlfile_str: str = dedent(
+    example_datadira_rules_csvstr: str = dedent(
         r"""
         - [0, '.',       alines,     todo.txt,   1]
         - [1, 'NOW',     todo.txt,   now.txt,    1]
@@ -145,7 +145,7 @@ class Samples:
         """
     )
 
-    example_datadirb_rules_yamlfile_str: str = dedent(
+    example_datadirb_rules_csvstr: str = dedent(
         r"""# Rules for folder B.
         - [0, '.',       lines,      blines,     0]
         - [1, '^2019',   blines,     2019.txt,   1]
