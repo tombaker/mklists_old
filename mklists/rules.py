@@ -1,11 +1,12 @@
 """Factory to create, self-test, and lightly correct a rule object."""
 
+import csv
 import os
+import re
 from dataclasses import dataclass
 from .booleans import filename_is_valid_as_filename, regex_is_valid_as_regex
 
-# @@@@ Defaults x 2
-from .config import Defaults
+from .config import RULES_CSVFILE_NAME, CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
@@ -21,80 +22,93 @@ from .exceptions import (
 )
 from .run import read_yamlfile_return_yamlstr
 
-# from .run import read_csvfile_return_csvstr
-from .utils import return_pyobj_from_yamlstr
-
-fixed = Defaults()
-
 # pylint: disable=bad-continuation
 # Black disagrees.
 
 
 @preserve_cwd
-def return_rulefile_pathnames_list(
-    startdir_pathname=None,
-    rule_csvfile_name=fixed.rule_csvfile_name,
-    config_yamlfile_name=fixed.config_yamlfile_name,
+def _return_rulefile_pathnames_list(
+    startdir_pathname=os.getcwd(),
+    rules_csvfile_name=RULES_CSVFILE_NAME,
+    config_yamlfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return chain of rule files leading from parent directories
-    to starting directory (by default the current directory).
+    to starting directory (default: the current directory).
 
     Looks no higher than the root directory of a mklists repo, i.e., the
     directory with a YAML configuration file (by default "mklists.yml").
 
     Args:
         startdir_pathname:
-        rule_csvfile_name:
+        rules_csvfile_name:
         config_yamlfile_name:
     """
-    if not startdir_pathname:
-        startdir_pathname = os.getcwd()
     os.chdir(startdir_pathname)
-    rulefile_pathnames_chain = []
-    while rule_csvfile_name in os.listdir():
-        rulefile_pathnames_chain.insert(0, os.path.join(os.getcwd(), rule_csvfile_name))
+    rulefile_pathnames_list = []
+    while rules_csvfile_name in os.listdir():
+        rulefile_pathnames_list.insert(0, os.path.join(os.getcwd(), rules_csvfile_name))
         if config_yamlfile_name in os.listdir():
             break
         os.chdir(os.pardir)
-
-    return rulefile_pathnames_chain
-
-
-def return_ruleobj_list_from_pyobj(list_of_lists):
-    """Refactor return_ruleobj_list_from_csvfile"""
-    pass
+    return rulefile_pathnames_list
 
 
-def return_ruleobj_list_from_csvfile(filename=None):
-    """Return list of Rule objects given CSV string."""
+def _return_rules_csvstr_from_rules_csvfile(filename=None):
+    """Return string from given pipe-delimited CSV file."""
     try:
-        csvfile = open(filename, newline="", encoding="utf-8-sig")
+        return open(filename, newline="", encoding="utf-8-sig").read()
     except TypeError:
         raise NoRulefileError(f"No rule file specified.")
     except FileNotFoundError:
         raise NoRulefileError(f"Rule file not found.")
 
-    from csv import DictReader
 
-    csv_obj = DictReader(csvfile)
-    csv_ll = [list(dictrow.values()) for dictrow in [dict(row) for row in csv_obj]]
+def _return_pyobj_from_rules_csvstr(csvstr=None):
+    """Return list of lists, each with whitespace-stripped strings,
+    given pipe-delimited CSV string."""
+    field_names = [
+        "source_matchfield",
+        "source_matchregex",
+        "source",
+        "target",
+        "target_sortfield",
+        "comments",
+    ]
+    csv_reader = csv.DictReader(
+        csvstr, fieldnames=field_names, delimiter="|", quoting=csv.QUOTE_NONE
+    )
+    pyobj = [list(dictrow.values()) for dictrow in [dict(row) for row in csv_reader]]
+    pyobj_stripped = [[item.strip() for item in blist] for blist in pyobj]
+    return pyobj_stripped
 
+
+def _return_ruleobj_list_from_pyobj(pyobj=None):
+    """Return list of Rule objects from CSV string."""
+    if not pyobj:
+        raise NoRulesError(f"No rules list specified.")
     ruleobj_list = []
-    for row in csv_ll:
-        single_rule_obj = Rule(*row)
-        single_rule_obj.coerce_field_types()
+    pyobj_filtered = [x for x in pyobj if re.match("[0-9]", x[0])]
+    for item in pyobj_filtered:
         try:
-            if single_rule_obj.is_valid():
-                ruleobj_list.append(single_rule_obj)
+            if Rule(*item).is_valid():
+                ruleobj_list.append(Rule(*item))
         except MissingValueError:
-            print(f"Skipping badly formed rule: {row}")
+            print(f"Skipping badly formed rule: {item}")
         except TypeError:
-            raise BadRuleError(f"Rule {repr(row)} is badly formed.")
-
+            raise BadRuleError(f"Rule {repr(item)} is badly formed.")
     if not ruleobj_list:
         raise NoRulesError(f"No rules found.")
-
     return ruleobj_list
+
+
+def return_one_ruleobj_list_from_rulefile_pathnames_list(rulefile_pathnames_list=None):
+    """Return list of Rule objects from pipe-delimited CSV file."""
+    one_ruleobj_list = []
+    for rulefile_pathname in rulefile_pathnames_list:
+        csvstring = _return_rules_csvstr_from_rules_csvfile(rulefile_pathname)
+        pyobject = _return_pyobj_from_rules_csvstr(csvstring)
+        one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobject))
+    return one_ruleobj_list
 
 
 @dataclass
@@ -107,14 +121,14 @@ class Rule:
         source: filename of source of data lines to be matched to source_matchpattern.
         target: filename of destination of data lines that match source_matchpattern.
         target_sortorder: field on which target data lines are sorted.
-    """
+        sources_list_is_initialized: when first instantiated, rule object...
+        sources_list: for collecting list of declared sources."""
 
     source_matchfield: int = None
     source_matchpattern: str = None
     source: str = None
     target: str = None
     target_sortorder: int = 0
-
     sources_list_is_initialized = False
     sources_list = []
 
