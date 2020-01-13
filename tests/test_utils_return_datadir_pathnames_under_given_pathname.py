@@ -2,11 +2,11 @@
 
 import os
 import pytest
-from mklists.utils import return_datadir_pathnames_under_somedir
+from mklists.utils import return_datadir_pathnames_under_given_pathname
 from mklists.config import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME, ROOTDIR_PATHNAME
 
 
-def test_return_datadir_pathnames_under_somedir_excluding_rootdir(tmpdir):
+def test_return_datadir_pathnames_under_given_pathname_excluding_rootdir(tmpdir):
     """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULES_CSVFILE_NAME).write("some rules")
@@ -23,7 +23,7 @@ def test_return_datadir_pathnames_under_somedir_excluding_rootdir(tmpdir):
         os.path.join(tmpdir, "c"),
     ]
     assert (
-        return_datadir_pathnames_under_somedir(
+        return_datadir_pathnames_under_given_pathname(
             _rootdir_pathname=ROOTDIR_PATHNAME,
             _somedir_pathname=tmpdir,
             _rules_csvfile_name=RULES_CSVFILE_NAME,
@@ -32,7 +32,7 @@ def test_return_datadir_pathnames_under_somedir_excluding_rootdir(tmpdir):
     )
 
 
-def test_return_datadir_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
+def test_return_datadir_pathnames_under_given_pathname_excluding_hiddendirs(tmpdir):
     """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULES_CSVFILE_NAME).write("some rules")
@@ -51,7 +51,7 @@ def test_return_datadir_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
         os.path.join(tmpdir, "c"),
     ]
     assert (
-        return_datadir_pathnames_under_somedir(
+        return_datadir_pathnames_under_given_pathname(
             _rootdir_pathname=ROOTDIR_PATHNAME,
             _somedir_pathname=tmpdir,
             _rules_csvfile_name=RULES_CSVFILE_NAME,
@@ -60,7 +60,7 @@ def test_return_datadir_pathnames_under_somedir_excluding_hiddendirs(tmpdir):
     )
 
 
-def test_return_datadir_pathnames_under_somedir_just_one(tmpdir):
+def test_return_datadir_pathnames_under_given_pathname_just_one(tmpdir):
     """List rulefile pathnames found under project root."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdir.join(RULES_CSVFILE_NAME).write("some rules")
@@ -69,7 +69,7 @@ def test_return_datadir_pathnames_under_somedir_just_one(tmpdir):
     os.chdir(tmpdir)
     expected = [os.path.join(tmpdir, "a")]
     assert (
-        return_datadir_pathnames_under_somedir(
+        return_datadir_pathnames_under_given_pathname(
             _rootdir_pathname=ROOTDIR_PATHNAME,
             _somedir_pathname=tmpdir,
             _rules_csvfile_name=RULES_CSVFILE_NAME,
@@ -78,7 +78,7 @@ def test_return_datadir_pathnames_under_somedir_just_one(tmpdir):
     )
 
 
-def test_return_datadir_pathnames_under_somedir_rootdir_has_no_rulefile(tmpdir):
+def test_return_datadir_pathnames_under_given_pathname_rootdir_has_no_rulefile(tmpdir):
     """List rulefile pathnames found under project root where
     there is no rulefile in the root directory itself."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
@@ -87,7 +87,7 @@ def test_return_datadir_pathnames_under_somedir_rootdir_has_no_rulefile(tmpdir):
     os.chdir(tmpdir)
     expected = [os.path.join(tmpdir, "a")]
     assert (
-        return_datadir_pathnames_under_somedir(
+        return_datadir_pathnames_under_given_pathname(
             _rootdir_pathname=ROOTDIR_PATHNAME,
             _somedir_pathname=tmpdir,
             _rules_csvfile_name=RULES_CSVFILE_NAME,

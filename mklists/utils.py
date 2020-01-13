@@ -42,7 +42,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_datadir_pathnames_under_somedir(
+def return_datadir_pathnames_under_given_pathname(
     _rootdir_pathname=None, _somedir_pathname=None, _rules_csvfile_name=None
 ):
     """Return list of data directories under a given directory.

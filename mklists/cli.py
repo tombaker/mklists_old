@@ -55,13 +55,13 @@ def run(config, dryrun, here_only):  # should be config
     # ctx.obj                = read_config_yamlfile_return_config_dict(
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
-    # if here_only:
-    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
+    # if here_only: # will operate only on data directories below current directory
+    #     datadir_pathnames  = return_datadir_pathnames_under_given_pathname(
     #                              _rootdir_pathname=rootdir_pathname,
     #                              _somedir_pathname=datadir_pathname,
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
-    # else:
-    #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
+    # else: # will operate on all data directories under repo rootdir
+    #     datadir_pathnames  = return_datadir_pathnames_under_given_pathname(
     #                              _rootdir_pathname=rootdir_pathname,
     #                              _somedir_pathname=rootdir_pathname,
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
