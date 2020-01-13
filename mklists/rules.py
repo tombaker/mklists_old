@@ -133,6 +133,7 @@ class Rule:
     sources_list = []
 
     def coerce_field_types(self):
+        """@@@Docstring"""
         self.source_matchfield = int(self.source_matchfield)
         self.source_matchpattern = str(self.source_matchpattern)
         self.source = str(self.source)
