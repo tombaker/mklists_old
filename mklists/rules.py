@@ -53,10 +53,10 @@ def _return_rulefile_pathnames_list(
     return rulefile_pathnames_list
 
 
-def _return_rules_csvstr_from_rules_csvfile(filename=None):
+def _return_rules_csvstr_from_rules_csvfile(csvfile=None):
     """Return string from given pipe-delimited CSV file."""
     try:
-        return open(filename, newline="", encoding="utf-8-sig").read()
+        return open(csvfile, newline="", encoding="utf-8-sig").read()
     except TypeError:
         raise NoRulefileError(f"No rule file specified.")
     except FileNotFoundError:
