@@ -16,18 +16,15 @@ import os
 import attr
 import ruamel.yaml
 
-# @@@@ Settings x 1, Defaults x 2, Samples x 3
-from .config import Defaults, Settings, Samples
+from .config import Settings, Samples, ROOTDIR_PATHNAME
 from .decorators import preserve_cwd
-
-fixed = Defaults()
 
 # pylint: disable=bad-continuation
 # Black disagrees.
 
 
 def write_config_yamlfile_from_settingsobj_to_rootdir(
-    rootdir_pathname=fixed.rootdir_pathname
+    rootdir_pathname=ROOTDIR_PATHNAME
 ):
     """Write initial YAML config file, 'mklists.yml', to root directory."""
     config_yamlfile_name = "mklists.yml"
@@ -66,8 +63,8 @@ def write_example_datafiles_to_somedirs(
     )
 
 
-def write_example_rule_csvfiles_to_somedirs(
-    rule_csvfile_name=".rules",
+def write_example_rules_csvfiles_to_somedirs(
+    rules_csvfile_name=".rules",
     rootdir_rules_csvstr=Samples.rootdir_rules_csvstr,
     example_datadira_rules_csvstr=Samples.example_datadira_rules_csvstr,
     example_datadirb_rules_csvstr=Samples.example_datadirb_rules_csvstr,
@@ -76,18 +73,18 @@ def write_example_rule_csvfiles_to_somedirs(
     * global rule file (/.rules)
     * folder rule file (/a/.rules)"""
     config_path = os.path.join(os.getcwd())
-    grule_file = os.path.join(config_path, rule_csvfile_name)
+    grule_file = os.path.join(config_path, rules_csvfile_name)
     os.makedirs(os.path.join(config_path, "a"))
     os.makedirs(os.path.join(config_path, "b"))
-    rulea_file = os.path.join(config_path, "a", rule_csvfile_name)
-    ruleb_file = os.path.join(config_path, "b", rule_csvfile_name)
+    rulea_file = os.path.join(config_path, "a", rules_csvfile_name)
+    ruleb_file = os.path.join(config_path, "b", rules_csvfile_name)
     io.open(grule_file, "w", encoding="utf-8").write(rootdir_rules_csvstr)
     io.open(rulea_file, "w", encoding="utf-8").write(example_datadira_rules_csvstr)
     io.open(ruleb_file, "w", encoding="utf-8").write(example_datadirb_rules_csvstr)
 
 
 @preserve_cwd
-def write_minimal_rule_csvfiles_to_somedirs(
+def write_minimal_rules_csvfiles_to_somedirs(
     _datadira_name=None,
     _file_tobewritten_name=None,
     _rootdir_file_tobewritten_str=None,

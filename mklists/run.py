@@ -7,7 +7,7 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-from .config import Defaults
+from .config import ROOTDIR_PATHNAME, CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
@@ -30,15 +30,12 @@ from .utils import (
     return_visiblefiles_list,
 )
 
-fixed = Defaults()
-
 # pylint: disable=bad-continuation
 # Black disagrees.
 
 
 def read_config_yamlfile_return_config_dict(
-    rootdir_pathname=fixed.rootdir_pathname,
-    config_yamlfile_name=fixed.config_yamlfile_name,
+    rootdir_pathname=ROOTDIR_PATHNAME, config_yamlfile_name=CONFIG_YAMLFILE_NAME
 ):
     """Returns configuration settings as a Python dictionary
     after parsing a configuration file in YAML.
