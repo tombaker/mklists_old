@@ -4,11 +4,10 @@
 import os
 import re
 import pytest
-from .config import Settings, Defaults
+from .config import Settings, VALID_FILENAME_CHARACTERS_REGEX, URL_PATTERN_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
 sets = Settings()
-fixed = Defaults()
 
 # pylint: disable=bad-continuation
 #         Black disagrees.
@@ -19,7 +18,7 @@ fixed = Defaults()
 def filename_is_valid_as_filename(
     filename,
     invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
-    valid_filename_characters_regex=fixed.valid_filename_characters_regex,
+    valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
 ):
     """Return True if filename:
     * is not None

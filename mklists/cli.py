@@ -33,11 +33,11 @@ def init(config, with_examples):
     if with_examples:
         print("with_examples works too")
     # write_config_yamlfile_to_rootdir()
-    # write_minimal_rule_csvfiles_to_somedirs()
+    # write_minimal_rules_csvfiles_to_somedirs()
     # if config.with_examples:
     #     write_example_config_yamlfile()
     #     write_example_datafiles_to_somedirs()
-    #     write_example_rule_csvfiles_to_somedirs()
+    #     write_example_rules_csvfiles_to_somedirs()
 
 
 @cli.command()
@@ -59,17 +59,17 @@ def run(config, dryrun, here_only):  # should be config
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              _rootdir_pathname=rootdir_pathname,
     #                              _somedir_pathname=datadir_pathname,
-    #                              _rule_csvfile_name=RULE_CSVFILE_NAME)
+    #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
     # else:
     #     datadir_pathnames  = return_datadir_pathnames_under_somedir(
     #                              _rootdir_pathname=rootdir_pathname,
     #                              _somedir_pathname=rootdir_pathname,
-    #                              _rule_csvfile_name=RULE_CSVFILE_NAME)
+    #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
 
     # for datadir in datadirs_pathnames:
     #     rulefile_pathnames_chain     = return_rulefile_pathnames_list(
     #                                    _startdir_pathname=datadir,
-    #                                    _rule_csvfile_name=RULE_CSVFILE_NAME,
+    #                                    _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     #
     #     datadir_pathname   = os.getcwd(datadit)
@@ -102,10 +102,10 @@ def run(config, dryrun, here_only):  # should be config
     #         _backup_depth_int=None)            # something like config['backups']
     #
     #
-    #     @@REWRITE THE FOLLOWING TO TAKE rule_csvfile
+    #     @@REWRITE THE FOLLOWING TO TAKE rules_csvfile
     #     ruleobj_list       = return_ruleobj_list_from_rulefile_chain(
     #                              config_yamlfile=CONFIG_YAMLFILE_NAME, # needed??
-    #                              _rule_csvfile_name=RULE_CSVFILE_NAME,
+    #                              _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                              verbose=True)
     #
     #     datalines_dict     = return_names2lines_dict_from_rules_and_lines(

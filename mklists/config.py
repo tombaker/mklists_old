@@ -4,77 +4,45 @@ import os
 import datetime
 from dataclasses import dataclass, field
 from textwrap import dedent
-import attr
+from .decorators import preserve_cwd
 
-# Note: variables set only at command line:
-#     cli:  [config]
-#     init: [config] with_examples [directory - add this]
-#     run:  [config] dryrun here_only
+# "Constants": hard-coded variables, not intended to be changed
 
 
-class Defaults:
-    """Holds variables 'hard-coded' into mklists -
-    variables not intended to be changed.
-    Could add validation methods here, then re-allow
-    R0903 in pylintrc."""
+@preserve_cwd
+def _return_rootdir_pathname():
+    """Return repo root pathname wherever executed in repo."""
+    while "mklists.yml" not in os.listdir():
+        cwd_before_changing = os.getcwd()
+        os.chdir(os.pardir)
+        if os.getcwd() == cwd_before_changing:
+            return None
+    return os.getcwd()
 
-    # pylint: disable=too-many-instance-attributes
-    # pylint: disable=too-few-public-methods
-    # Not unreasonable to use a class instance as a namespace.
-    # pylint: disable=no-self-use
-    # Perfectly fine to take function out of module namespace and encapsulate in class.
 
-    def __init__(self):
-        self.config_yamlfile_name = "mklists.yml"
-        self.rule_csvfile_name = ".rules"
-        self.backupdir_name = "backups"
-        self.htmldir_name = "html"
-        self.url_pattern_regex = (
-            r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
-        )
-        self.datadir_pathname = os.getcwd()
-        self.timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
-        self.valid_filename_characters_regex = r"[\-_=.,@:A-Za-z0-9]+$"
-        self.rootdir_pathname = self.return_rootdir_pathname(
-            datadir_pathname=self.datadir_pathname
-        )
-        self.backupdir_shortname = self.return_backupdir_shortname(
-            datadir_pathname=self.datadir_pathname,
-            rootdir_pathname=self.rootdir_pathname,
-        )
-        self.backupdir_pathname = os.path.join(
-            self.rootdir_pathname,
-            self.backupdir_name,
-            self.backupdir_shortname,
-            self.timestamp_str,
-        )
+CONFIG_YAMLFILE_NAME = "mklists.yml"
+RULES_CSVFILE_NAME = ".rules"
+BACKUPDIR_NAME = "backups"
+HTMLDIR_NAME = "html"
+URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
+TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
+VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
+STARTDIR_PATHNAME = os.getcwd()
+ROOTDIR_PATHNAME = _return_rootdir_pathname()
 
-    def return_rootdir_pathname(self, datadir_pathname=None):
-        """Return repo root pathname when executed anywhere within repo."""
-        if not datadir_pathname:
-            datadir_pathname = os.getcwd()
-        starting_pathname = datadir_pathname
-        while "mklists.yml" not in os.listdir():
-            cwd_before_changing = os.getcwd()
-            os.chdir(os.pardir)
-            if os.getcwd() == cwd_before_changing:
-                os.chdir(starting_pathname)
-                return None
-        rootdir_pathname = os.getcwd()
-        os.chdir(starting_pathname)
-        return rootdir_pathname
 
-    def return_backupdir_shortname(self, datadir_pathname=None, rootdir_pathname=None):
-        """@@@Docstring"""
-        if datadir_pathname == rootdir_pathname:
-            return "rootdir"
-        # pylint: disable=bad-continuation
-        # But this makes it more readable!
-        return (
-            self.datadir_pathname[len(self.rootdir_pathname) :]
-            .strip("/")
-            .replace("/", "_")
-        )
+@preserve_cwd
+def _return_backupdir_shortname(rootdir_pathname=None, datadir_pathname=None):
+    """@@@Docstring"""
+    if rootdir_pathname == datadir_pathname:
+        return "rootdir"
+    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
+
+
+# BACKUPDIR_PATHNAME = os.path.join(
+#     ROOTDIR_PATHNAME, BACKUPDIR_NAME, BACKUPDIR_SHORTNAME, TIMESTAMP_STR
+# )
+# BACKUPDIR_SHORTNAME = _return_backupdir_shortname()
 
 
 class Settings:
