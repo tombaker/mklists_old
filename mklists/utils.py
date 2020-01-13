@@ -7,7 +7,12 @@ import re
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
 
-from .config import URL_PATTERN_REGEX, RULES_CSVFILE_NAME, ROOTDIR_PATHNAME
+from .config import (
+    URL_PATTERN_REGEX,
+    RULES_CSVFILE_NAME,
+    ROOTDIR_PATHNAME,
+    CONFIG_YAMLFILE_NAME,
+)
 from .decorators import preserve_cwd
 from .exceptions import (
     BadRegexError,
@@ -42,26 +47,31 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_datadir_pathnames_under_given_pathname(given_pathname=os.getcwd()):
+def return_datadir_pathnames_under_given_pathname(given_pathname=None):
     """Return list of data directories under a given directory.
 
-    "Data directories": directories with rules files (by default: '.rules').
+    "Data directories"
+    * directories with a rule file (default: RULES_CSVFILE_NAME = '.rules')
+      * repo root directory (ROOTDIR_PATHNAME) may have rule file
+        but is not a data directory
+      * except "hidden" directories (name starting with ".")
 
     Args:
         given_pathname: starting point for finding data subdirectories.
 
     2019-07-22: Two scenarios?
-    * mklists run         - runs in all data directories in repo
+    * mklists run --all   - runs in all data directories under repo root directory
+    * mklists run         - runs in all data directories under current directory
     * mklists run --here  - runs just in current directory
     """
+    if not given_pathname:
+        given_pathname = os.getcwd()
     datadirs = []
     for dirpath, dirs, files in os.walk(given_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
         if RULES_CSVFILE_NAME in files:
-            datadirs.append(dirpath)
-
-    if ROOTDIR_PATHNAME in datadirs:
-        datadirs.remove(ROOTDIR_PATHNAME)
+            if CONFIG_YAMLFILE_NAME not in files:
+                datadirs.append(dirpath)
 
     return datadirs
 

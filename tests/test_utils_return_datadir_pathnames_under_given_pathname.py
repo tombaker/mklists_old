@@ -23,11 +23,7 @@ def test_return_datadir_pathnames_under_given_pathname_excluding_rootdir(tmpdir)
         os.path.join(tmpdir, "c"),
     ]
     assert (
-        return_datadir_pathnames_under_given_pathname(
-            _rootdir_pathname=ROOTDIR_PATHNAME,
-            _somedir_pathname=tmpdir,
-            _rules_csvfile_name=RULES_CSVFILE_NAME,
-        )
+        return_datadir_pathnames_under_given_pathname(given_pathname=os.getcwd())
         == expected
     )
 
@@ -50,14 +46,7 @@ def test_return_datadir_pathnames_under_given_pathname_excluding_hiddendirs(tmpd
         os.path.join(tmpdir, "a/b"),
         os.path.join(tmpdir, "c"),
     ]
-    assert (
-        return_datadir_pathnames_under_given_pathname(
-            _rootdir_pathname=ROOTDIR_PATHNAME,
-            _somedir_pathname=tmpdir,
-            _rules_csvfile_name=RULES_CSVFILE_NAME,
-        )
-        == expected
-    )
+    assert return_datadir_pathnames_under_given_pathname() == expected
 
 
 def test_return_datadir_pathnames_under_given_pathname_just_one(tmpdir):
@@ -68,14 +57,7 @@ def test_return_datadir_pathnames_under_given_pathname_just_one(tmpdir):
     tmpdira.join(RULES_CSVFILE_NAME).write("some rules")
     os.chdir(tmpdir)
     expected = [os.path.join(tmpdir, "a")]
-    assert (
-        return_datadir_pathnames_under_given_pathname(
-            _rootdir_pathname=ROOTDIR_PATHNAME,
-            _somedir_pathname=tmpdir,
-            _rules_csvfile_name=RULES_CSVFILE_NAME,
-        )
-        == expected
-    )
+    assert return_datadir_pathnames_under_given_pathname() == expected
 
 
 def test_return_datadir_pathnames_under_given_pathname_rootdir_has_no_rulefile(tmpdir):
@@ -86,11 +68,4 @@ def test_return_datadir_pathnames_under_given_pathname_rootdir_has_no_rulefile(t
     tmpdira.join(RULES_CSVFILE_NAME).write("some rules")
     os.chdir(tmpdir)
     expected = [os.path.join(tmpdir, "a")]
-    assert (
-        return_datadir_pathnames_under_given_pathname(
-            _rootdir_pathname=ROOTDIR_PATHNAME,
-            _somedir_pathname=tmpdir,
-            _rules_csvfile_name=RULES_CSVFILE_NAME,
-        )
-        == expected
-    )
+    assert return_datadir_pathnames_under_given_pathname() == expected
