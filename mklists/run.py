@@ -15,6 +15,7 @@ from .exceptions import (
     BlankLinesError,
     NoBackupDirSpecifiedError,
     NoDataError,
+    NoRulefileError,
     NoRulesError,
     NotUTF8Error,
     RulefileNotFoundError,
@@ -76,12 +77,14 @@ def read_datafiles_return_datalines_list():
     return all_datalines
 
 
-# def read_csvfile_return_csvstr(csvfile_name):
-#     """Returns Python object from given CSV-format file."""
-#     try:
-#         return open(csvfile_name).read()
-#     except FileNotFoundError:
-#         raise CsvFileNotFoundError(f"CSV file {repr(yamlfile_name)} not found.")
+def read_rules_csvfile_return_csvstr(csvfile=None):
+    """Return string from given pipe-delimited CSV file."""
+    try:
+        return open(csvfile, newline="", encoding="utf-8-sig").read()
+    except TypeError:
+        raise NoRulefileError(f"No rule file specified.")
+    except FileNotFoundError:
+        raise NoRulefileError(f"Rule file not found.")
 
 
 def read_yamlfile_return_yamlstr(yamlfile_name):

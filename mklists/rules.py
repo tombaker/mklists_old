@@ -20,7 +20,7 @@ from .exceptions import (
     SourceMatchpatternError,
     UninitializedSourceError,
 )
-from .run import read_yamlfile_return_yamlstr
+from .run import read_rules_csvfile_return_csvstr, read_yamlfile_return_yamlstr
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -51,16 +51,6 @@ def _return_rulefile_pathnames_list(
             break
         os.chdir(os.pardir)
     return rulefile_pathnames_list
-
-
-def _return_rules_csvstr_from_rules_csvfile(csvfile=None):
-    """Return string from given pipe-delimited CSV file."""
-    try:
-        return open(csvfile, newline="", encoding="utf-8-sig").read()
-    except TypeError:
-        raise NoRulefileError(f"No rule file specified.")
-    except FileNotFoundError:
-        raise NoRulefileError(f"Rule file not found.")
 
 
 def _return_pyobj_from_rules_csvstr(csvstr=None):
@@ -105,7 +95,7 @@ def return_one_ruleobj_list_from_rulefile_pathnames_list(rulefile_pathnames_list
     """Return list of Rule objects from pipe-delimited CSV file."""
     one_ruleobj_list = []
     for rulefile_pathname in rulefile_pathnames_list:
-        csvstring = _return_rules_csvstr_from_rules_csvfile(rulefile_pathname)
+        csvstring = read_rules_csvfile_return_csvstr(rulefile_pathname)
         pyobject = _return_pyobj_from_rules_csvstr(csvstring)
         one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobject))
     return one_ruleobj_list
