@@ -89,10 +89,10 @@ def read_rules_csvfile_return_rules_pyobj(csvfile=None):
     csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
     try:
         csvfile_obj = open(csvfile, newline="", encoding="utf-8-sig")
-    except TypeError:
-        raise NoRulefileError(f"No rule file specified.")
     except FileNotFoundError:
         raise NoRulefileError(f"Rule file not found.")
+    except TypeError:
+        raise NoRulefileError(f"No rule file specified.")
 
     rules_parsed_list_raw = list(csv.reader(csvfile_obj, dialect="rules"))
     print(rules_parsed_list_raw)
