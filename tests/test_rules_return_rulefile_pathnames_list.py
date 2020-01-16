@@ -40,13 +40,13 @@ $ mklists run --here
 
 import os
 import pytest
-from mklists.rules import Rule, _return_rulefile_pathnames_list
+from mklists.rules import Rule, _return_rulefile_pathnames_chain
 from mklists.config import CONFIG_YAMLFILE_NAME
 
 RULES_CSVFILE_NAME = ".rules"
 
 
-def test_return_rulefile_pathnames_list_basic(tmpdir):
+def test_return_rulefile_pathnames_chain_basic(tmpdir):
     """Here: the normal case: chain of directories with '.rules'
     ends in rootdir (which also has 'mklists.yml' file)."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
@@ -63,10 +63,10 @@ def test_return_rulefile_pathnames_list_basic(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert _return_rulefile_pathnames_list(startdir_pathname=tmpdirc) == expected
+    assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
 
 
-def test_return_rulefile_pathnames_list_ends_before_repo_rootdir(tmpdir):
+def test_return_rulefile_pathnames_chain_ends_before_repo_rootdir(tmpdir):
     """Here: chain of directories with ".rules" ends
     before reaching root directory of repo (i.e., the
     root directory does not itself have a ".rules" file."""
@@ -82,11 +82,11 @@ def test_return_rulefile_pathnames_list_ends_before_repo_rootdir(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert _return_rulefile_pathnames_list(startdir_pathname=tmpdirc) == expected
+    assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
 
 
-def test_return_rulefile_pathnames_list_even_without_repo_rootdir(tmpdir):
-    """Here: _return_rulefile_pathnames_list()
+def test_return_rulefile_pathnames_chain_even_without_repo_rootdir(tmpdir):
+    """Here: _return_rulefile_pathnames_chain()
     called with startdir_pathname as an argument."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     tmpdira = tmpdir.mkdir("a")
@@ -100,12 +100,12 @@ def test_return_rulefile_pathnames_list_even_without_repo_rootdir(tmpdir):
         os.path.join(tmpdir, "a/b/.rules"),
         os.path.join(tmpdir, "a/b/c/.rules"),
     ]
-    assert _return_rulefile_pathnames_list(startdir_pathname=tmpdirc) == expected
+    assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
 
 
 @pytest.mark.skip
-def test_return_rulefile_pathnames_list_without_specifying_startdir_pathname(tmpdir):
-    """Here: _return_rulefile_pathnames_list()
+def test_return_rulefile_pathnames_chain_without_specifying_startdir_pathname(tmpdir):
+    """Here: _return_rulefile_pathnames_chain()
     * called without specifying startdir_pathname as an argument
     * therefore defaults to current working directory as startdir_pathname"""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
@@ -122,4 +122,4 @@ def test_return_rulefile_pathnames_list_without_specifying_startdir_pathname(tmp
         os.path.join(tmpdirb, ".rules"),
         os.path.join(tmpdirc, ".rules"),
     ]
-    assert _return_rulefile_pathnames_list() == expected
+    assert _return_rulefile_pathnames_chain() == expected

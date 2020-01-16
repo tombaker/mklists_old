@@ -67,7 +67,7 @@ def run(config, dryrun, here_only):  # should be config
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
 
     # for datadir in datadirs_pathnames:
-    #     rulefile_pathnames_chain     = return_rulefile_pathnames_list(
+    #     rulefile_pathnames_chain     = return_rulefile_pathnames_chain(
     #                                    _startdir_pathname=datadir,
     #                                    _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)

@@ -27,7 +27,7 @@ from .run import read_rules_csvfile_return_rules_pyobj, read_yamlfile_return_yam
 
 
 @preserve_cwd
-def _return_rulefile_pathnames_list(
+def _return_rulefile_pathnames_chain(
     startdir_pathname=os.getcwd(),
     rules_csvfile_name=RULES_CSVFILE_NAME,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
