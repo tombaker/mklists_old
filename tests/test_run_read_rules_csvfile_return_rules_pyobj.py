@@ -35,6 +35,7 @@ TEST_RULES_CSVSTR_WITH_NOISE = (
     "0|^2017 ..|lines|Line is too short\n"
 )
 
+
 TEST_RULES_CSVSTR_WITH_HEADERS = (
     "source_matchfield|source_matchpattern|source|target|target_sortorder\n"
     "0|.|x|lines|0|A comment\n"
@@ -43,6 +44,20 @@ TEST_RULES_CSVSTR_WITH_HEADERS = (
     "0|^2019 ..|lines|blines|1|\n"
 )
 
+TEST_RULES_CSVSTR_LEGACY = (
+    "0|.|lines|__RENAME__|\n"
+    "0|.|tophone|__RENAME__|\n"
+    "\n"
+    "1|PHONE|__RENAME__|phone|\n"
+    "    2|BDAY|phone|phone_bday|\n"
+)
+
+PYOBJ_LEGACY = [
+    ["0", ".", "lines", "__RENAME__", ""],
+    ["0", ".", "tophone", "__RENAME__", ""],
+    ["1", "PHONE", "__RENAME__", "phone", ""],
+    ["2", "BDAY", "phone", "phone_bday", ""],
+]
 
 PYOBJ = [
     ["0", ".", "x", "lines", "0"],
@@ -78,6 +93,16 @@ def test_run_read_rules_csvfile_return_rules_pyobj_rn(tmpdir):
     os.chdir(tmpdir)
     tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR_RN)
     expected = PYOBJ
+    real = read_rules_csvfile_return_rules_pyobj(csvfile=RULES_CSVFILE_NAME)
+    assert real == expected
+
+
+@pytest.mark.csvrules
+def test_run_read_rules_csvfile_return_rules_pyobj_legacy(tmpdir):
+    """Fine for CSV line to pad fields with spaces and leave field 5 blank."""
+    os.chdir(tmpdir)
+    tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR_LEGACY)
+    expected = PYOBJ_LEGACY
     real = read_rules_csvfile_return_rules_pyobj(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 

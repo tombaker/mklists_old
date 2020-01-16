@@ -95,16 +95,15 @@ def read_rules_csvfile_return_rules_pyobj(csvfile=None):
         raise NoRulefileError(f"No rule file specified.")
 
     rules_parsed_list_raw = list(csv.reader(csvfile_obj, dialect="rules"))
-    print(rules_parsed_list_raw)
     rules_parsed_list = []
     for single_rule_list in rules_parsed_list_raw:
         single_rule_list_depadded = []
         if len(single_rule_list) > 4:
-            if single_rule_list[0].isdigit():
-                for item in single_rule_list:
-                    single_rule_list_depadded.append(item.strip())
+            for item in single_rule_list:
+                single_rule_list_depadded.append(item.strip())
         if single_rule_list_depadded:
-            rules_parsed_list.append(single_rule_list_depadded[0:5])
+            if single_rule_list_depadded[0].isdigit():
+                rules_parsed_list.append(single_rule_list_depadded[0:5])
     return rules_parsed_list
 
 
