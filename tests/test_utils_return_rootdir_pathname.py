@@ -1,11 +1,4 @@
-"""
-Returns repo root pathname when executed anywhere within repo.
-* Starting at PWD, looks for:
-    * mandatory CONFIG_YAMLFILE_NAME ('mklists.yml')
-    * root directory - and if found, exit with error message
-
-See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
-"""
+"""Returns root pathname of mklists repo wherever executed in repo."""
 
 import os
 import pytest
@@ -18,19 +11,6 @@ from mklists.config import (
 # pylint: disable=unused-argument
 # These are just tests...
 
-TEST_CONFIG_YAMLFILE_STR = r"""\
-invalid_filename_patterns: ['\.swp$', '\.tmp$', '~$', '^\.']
-"""
-
-TEST_ROOTDIR_YAMLFILE_STR = """\
-- [0, '.', all, lines, 0]
-"""
-
-TEST_DATADIRA_YAMLFILE_STR = """\
-- [2, 'NOW',     lines,  now,     1]
-- [2, 'LATER',   lines,  later,   0]
-"""
-
 
 @pytest.fixture(name="myrepo")
 def fixture_myrepo(tmpdir_factory):
@@ -39,23 +19,16 @@ def fixture_myrepo(tmpdir_factory):
     # Not a problem; this is just a fixture.
     root_dir = tmpdir_factory.mktemp("myrepo")
     subdir_a = root_dir.mkdir("a")
-    root_dir.join(CONFIG_YAMLFILE_NAME).write(TEST_CONFIG_YAMLFILE_STR)
-    root_dir.join(RULES_CSVFILE_NAME).write(TEST_ROOTDIR_YAMLFILE_STR)
-    subdir_a.join(RULES_CSVFILE_NAME).write(TEST_DATADIRA_YAMLFILE_STR)
+    root_dir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
+    root_dir.join(RULES_CSVFILE_NAME).write("rule stuff")
+    subdir_a.join(RULES_CSVFILE_NAME).write("rule stuff")
     subdir_b = subdir_a.mkdir("b")
     subdir_c = subdir_b.mkdir("c")
     return root_dir
 
 
-def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
-    """Find root pathname for fixture "myrepo"."""
-    os.chdir(os.path.join(myrepo, "a"))
-    assert CONFIG_YAMLFILE_NAME in os.listdir(_return_rootdir_pathname())
-    assert _return_rootdir_pathname() == str(myrepo)
-
-
 def test_return_rootdir_pathname_while_in_rootdir_using_tmpdir(tmpdir):
-    """Find root directory while in root directory."""
+    """Returns root directory while already in root directory."""
     tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
     os.chdir(tmpdir)
     assert CONFIG_YAMLFILE_NAME in os.listdir(_return_rootdir_pathname())
@@ -63,29 +36,36 @@ def test_return_rootdir_pathname_while_in_rootdir_using_tmpdir(tmpdir):
 
 
 def test_return_rootdir_pathname_while_in_rootdir_using_fixture(myrepo):
-    """Find root directory from subdirectory of root."""
+    """Returns root directory starting in root directory of "myrepo"."""
     os.chdir(myrepo)
     assert CONFIG_YAMLFILE_NAME in os.listdir(_return_rootdir_pathname())
     assert RULES_CSVFILE_NAME in os.listdir(_return_rootdir_pathname())
     assert _return_rootdir_pathname() == str(myrepo)
 
 
+def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
+    """Returns root pathname starting in subdirectory of "myrepo"."""
+    os.chdir(os.path.join(myrepo, "a"))
+    assert CONFIG_YAMLFILE_NAME in os.listdir(_return_rootdir_pathname())
+    assert _return_rootdir_pathname() == str(myrepo)
+
+
 def test_return_rootdir_pathname_while_in_subdir_two_deep(myrepo):
-    """Find root directory while in subdir two deep."""
+    """Returns root directory starting in sub-subdirectory of "myrepo"."""
     os.chdir(os.path.join(myrepo, "a/b"))
     assert CONFIG_YAMLFILE_NAME in os.listdir(_return_rootdir_pathname())
     assert _return_rootdir_pathname() == str(myrepo)
 
 
 def test_return_rootdir_pathname_while_in_subdir_three_deep(myrepo):
-    """Find root directory while in subdir three deep."""
+    """Returns root directory starting in sub-sub-subdirectory of "myrepo"."""
     os.chdir(os.path.join(myrepo, "a/b/c"))
     assert CONFIG_YAMLFILE_NAME in os.listdir(_return_rootdir_pathname())
     assert _return_rootdir_pathname() == str(myrepo)
 
 
-def test_not_return_rootdir_pathname_when_configfile_not_found(tmpdir):
-    """Do not find root directory when config file is not found."""
+def test_return_rootdir_pathname_none_when_configfile_not_found(tmpdir):
+    """Returns "None" as root directory in absence of config file."""
     tmpdira = tmpdir.mkdir("a")
     tmpdirb = tmpdira.mkdir("b")
     tmpdirc = tmpdirb.mkdir("c")
@@ -94,7 +74,7 @@ def test_not_return_rootdir_pathname_when_configfile_not_found(tmpdir):
     assert _return_rootdir_pathname() is None
 
 
-def test_not_return_rootdir_pathname_when_one_subdir_up(myrepo):
-    """Do not find root directory when config file is is one subdir down."""
+def test_return_rootdir_pathname_none_when_outside_repo(myrepo):
+    """Returns "None" as root directory when executed outside "myrepo"."""
     os.chdir(os.pardir)
     assert _return_rootdir_pathname() is None

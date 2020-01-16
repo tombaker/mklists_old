@@ -11,7 +11,7 @@ from .decorators import preserve_cwd
 
 @preserve_cwd
 def _return_rootdir_pathname():
-    """Return repo root pathname wherever executed in repo."""
+    """Return root pathname of mklists repo wherever executed in repo."""
     while "mklists.yml" not in os.listdir():
         cwd_before_changing = os.getcwd()
         os.chdir(os.pardir)
