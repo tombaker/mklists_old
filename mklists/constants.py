@@ -20,6 +20,14 @@ def _return_rootdir_pathname():
     return os.getcwd()
 
 
+@preserve_cwd
+def _return_backupdir_shortname(rootdir_pathname=None, datadir_pathname=None):
+    """@@@Docstring"""
+    if rootdir_pathname == datadir_pathname:
+        return "rootdir"
+    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
+
+
 CONFIG_YAMLFILE_NAME = "mklists.yml"
 RULES_CSVFILE_NAME = ".rules"
 BACKUPDIR_NAME = "backups"
@@ -29,20 +37,10 @@ TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 STARTDIR_PATHNAME = os.getcwd()
 ROOTDIR_PATHNAME = _return_rootdir_pathname()
-
-
-@preserve_cwd
-def _return_backupdir_shortname(rootdir_pathname=None, datadir_pathname=None):
-    """@@@Docstring"""
-    if rootdir_pathname == datadir_pathname:
-        return "rootdir"
-    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
-
-
-# BACKUPDIR_PATHNAME = os.path.join(
-#     ROOTDIR_PATHNAME, BACKUPDIR_NAME, BACKUPDIR_SHORTNAME, TIMESTAMP_STR
-# )
-# BACKUPDIR_SHORTNAME = _return_backupdir_shortname()
+BACKUPDIR_SHORTNAME = _return_backupdir_shortname()
+BACKUPDIR_PATHNAME = os.path.join(
+    ROOTDIR_PATHNAME, BACKUPDIR_NAME, BACKUPDIR_SHORTNAME, TIMESTAMP_STR
+)
 
 
 class Settings:
