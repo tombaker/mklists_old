@@ -1,6 +1,7 @@
 """Apply rules to process datalines."""
 
 
+import csv
 import io
 import os
 import shutil
@@ -77,14 +78,34 @@ def read_datafiles_return_datalines_list():
     return all_datalines
 
 
-def read_rules_csvfile_return_csvstr(csvfile=None):
-    """Return string from given pipe-delimited CSV file."""
+def read_rules_csvfile_return_rules_pyobj(csvfile=None):
+    """Return string from given file:
+    * encoding 'utf-8-sig' used in case file was created with Excel with U+FEFF
+    * 'newline=""' used in case file has MS-Windows '\r\n' line endings
+
+    Return list of lists, each with whitespace-stripped strings,
+    given pipe-delimited CSV string."""
+
+    csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
     try:
-        return open(csvfile, newline="", encoding="utf-8-sig").read()
+        csvfile_obj = open(csvfile, newline="", encoding="utf-8-sig")
     except TypeError:
         raise NoRulefileError(f"No rule file specified.")
     except FileNotFoundError:
         raise NoRulefileError(f"Rule file not found.")
+
+    rules_parsed_list_raw = list(csv.reader(csvfile_obj, dialect="rules"))
+    print(rules_parsed_list_raw)
+    rules_parsed_list = []
+    for single_rule_list in rules_parsed_list_raw:
+        single_rule_list_depadded = []
+        if len(single_rule_list) > 4:
+            if single_rule_list[0].isdigit():
+                for item in single_rule_list:
+                    single_rule_list_depadded.append(item.strip())
+        if single_rule_list_depadded:
+            rules_parsed_list.append(single_rule_list_depadded[0:5])
+    return rules_parsed_list
 
 
 def read_yamlfile_return_yamlstr(yamlfile_name):

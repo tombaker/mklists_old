@@ -20,7 +20,7 @@ from .exceptions import (
     SourceMatchpatternError,
     UninitializedSourceError,
 )
-from .run import read_rules_csvfile_return_csvstr, read_yamlfile_return_yamlstr
+from .run import read_rules_csvfile_return_rules_pyobj, read_yamlfile_return_yamlstr
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -53,25 +53,6 @@ def _return_rulefile_pathnames_list(
     return rulefile_pathnames_list
 
 
-def _return_pyobj_from_rules_csvstr(csvstr=None):
-    """Return list of lists, each with whitespace-stripped strings,
-    given pipe-delimited CSV string."""
-    field_names = [
-        "source_matchfield",
-        "source_matchregex",
-        "source",
-        "target",
-        "target_sortfield",
-        "comments",
-    ]
-    csv_reader = csv.DictReader(
-        csvstr, fieldnames=field_names, delimiter="|", quoting=csv.QUOTE_NONE
-    )
-    pyobj = [list(dictrow.values()) for dictrow in [dict(row) for row in csv_reader]]
-    pyobj_stripped = [[item.strip() for item in blist] for blist in pyobj]
-    return pyobj_stripped
-
-
 def _return_ruleobj_list_from_pyobj(pyobj=None):
     """Return list of Rule objects from CSV string."""
     if not pyobj:
@@ -95,9 +76,8 @@ def return_one_ruleobj_list_from_rulefile_pathnames_list(rulefile_pathnames_list
     """Return list of Rule objects from pipe-delimited CSV file."""
     one_ruleobj_list = []
     for rulefile_pathname in rulefile_pathnames_list:
-        csvstring = read_rules_csvfile_return_csvstr(rulefile_pathname)
-        pyobject = _return_pyobj_from_rules_csvstr(csvstring)
-        one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobject))
+        pyobj = read_rules_csvfile_return_rules_pyobj(rulefile_pathname)
+        one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobj))
     return one_ruleobj_list
 
 
