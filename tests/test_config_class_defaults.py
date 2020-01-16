@@ -3,7 +3,7 @@
 
 import os
 import pytest
-from mklists.config import (
+from mklists.constants import (
     CONFIG_YAMLFILE_NAME,
     RULES_CSVFILE_NAME,
     BACKUPDIR_NAME,

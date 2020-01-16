@@ -3,7 +3,7 @@
 import os
 import pytest
 from mklists.utils import return_datadir_pathnames_under_given_pathname
-from mklists.config import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME, ROOTDIR_PATHNAME
+from mklists.constants import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME, ROOTDIR_PATHNAME
 
 
 def test_return_datadir_pathnames_under_given_pathname_excluding_rootdir(tmpdir):

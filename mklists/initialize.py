@@ -16,7 +16,7 @@ import os
 import attr
 import ruamel.yaml
 
-from .config import Settings, Samples, ROOTDIR_PATHNAME
+from .constants import Settings, Samples, ROOTDIR_PATHNAME
 from .decorators import preserve_cwd
 
 # pylint: disable=bad-continuation

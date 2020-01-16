@@ -3,7 +3,7 @@
 import io
 import os
 import pytest
-from mklists.config import Samples
+from mklists.constants import Samples
 from mklists.initialize import write_example_datafiles_to_somedirs
 
 

@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from .booleans import filename_is_valid_as_filename, regex_is_valid_as_regex
 
-from .config import RULES_CSVFILE_NAME, CONFIG_YAMLFILE_NAME
+from .constants import RULES_CSVFILE_NAME, CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,

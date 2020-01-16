@@ -7,7 +7,7 @@ import re
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
 
-from .config import (
+from .constants import (
     URL_PATTERN_REGEX,
     RULES_CSVFILE_NAME,
     ROOTDIR_PATHNAME,

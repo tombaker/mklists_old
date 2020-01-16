@@ -5,7 +5,7 @@ import os
 import pytest
 import ruamel.yaml
 import attr
-from mklists.config import Settings
+from mklists.constants import Settings
 from mklists.initialize import write_config_yamlfile_from_settingsobj_to_rootdir
 from mklists.run import read_config_yamlfile_return_config_dict
 

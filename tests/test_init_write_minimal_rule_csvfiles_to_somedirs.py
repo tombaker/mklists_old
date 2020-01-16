@@ -3,7 +3,7 @@
 import io
 import os
 import pytest
-from mklists.config import Samples, RULES_CSVFILE_NAME
+from mklists.constants import Samples, RULES_CSVFILE_NAME
 from mklists.initialize import write_minimal_rules_csvfiles_to_somedirs
 
 

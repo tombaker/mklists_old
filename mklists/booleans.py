@@ -4,7 +4,7 @@
 import os
 import re
 import pytest
-from .config import Settings, VALID_FILENAME_CHARACTERS_REGEX, URL_PATTERN_REGEX
+from .constants import Settings, VALID_FILENAME_CHARACTERS_REGEX, URL_PATTERN_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
 sets = Settings()

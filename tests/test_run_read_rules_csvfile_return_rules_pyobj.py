@@ -4,7 +4,7 @@ import io
 import os
 import pytest
 
-from mklists.config import RULES_CSVFILE_NAME
+from mklists.constants import RULES_CSVFILE_NAME
 from mklists.exceptions import NoRulefileError, NoRulesError
 from mklists.run import read_rules_csvfile_return_rules_pyobj
 

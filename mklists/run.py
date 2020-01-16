@@ -8,7 +8,7 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-from .config import ROOTDIR_PATHNAME, CONFIG_YAMLFILE_NAME
+from .constants import ROOTDIR_PATHNAME, CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,

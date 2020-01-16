@@ -3,7 +3,7 @@
 import os
 import pytest
 from mklists.booleans import filename_is_valid_as_filename
-from mklists.config import Settings, VALID_FILENAME_CHARACTERS_REGEX
+from mklists.constants import Settings, VALID_FILENAME_CHARACTERS_REGEX
 
 sets = Settings()
 

@@ -41,7 +41,7 @@ $ mklists run --here
 import os
 import pytest
 from mklists.rules import Rule, _return_rulefile_pathnames_chain
-from mklists.config import CONFIG_YAMLFILE_NAME
+from mklists.constants import CONFIG_YAMLFILE_NAME
 
 RULES_CSVFILE_NAME = ".rules"
 

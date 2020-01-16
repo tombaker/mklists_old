@@ -1,7 +1,7 @@
 """@@@Docstring"""
 
 import pytest
-from mklists.config import _return_backupdir_shortname
+from mklists.constants import _return_backupdir_shortname
 
 
 def test_backups_return_backupdir_shortname():
