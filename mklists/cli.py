@@ -2,12 +2,9 @@
 
 from dataclasses import dataclass
 import click
-from .constants import Settings
 
 # pylint: disable=unused-argument
 #         During development, unused arguments here.
-
-# pass_config = click.make_pass_decorator(Settings, ensure=True)
 
 
 @click.group()

@@ -50,18 +50,20 @@ DATADIRA_RULES_CSVFILE_CONTENTS = (
     "1       |^2020 |todo.txt   |log.txt    |0      |\n"
 )
 CONFIG_YAMLFILE_NAME = "mklists.yml"
-CONFIG_YAMLFILE_CONTENT = """\
-verbose: True
-htmlify: True
-backup_depth: 3
-invalid_filename_patterns:
-- \.swp$
-- \.tmp$
-- ~$
-- ^\.
-
-# For given file, destination directory to which it should be moved
-files2dirs:
-    to_a.txt: a
-    to_b.txt: b
-    to_c.txt: /Users/foo/logs"""
+# pylint: disable=anomalous-backslash-in-string
+CONFIG_YAMLFILE_CONTENT = (
+    "verbose: True\n"
+    "htmlify: True\n"
+    "backup_depth: 3\n"
+    "invalid_filename_patterns:\n"
+    "- \.swp$\n"
+    "- \.tmp$\n"
+    "- ~$\n"
+    "- ^\.\n"
+    "\n"
+    "# # For given file, destination directory to which it should be moved\n"
+    "# files2dirs:\n"
+    "#     to_a.txt: a\n"
+    "#     to_b.txt: b\n"
+    "#     to_c.txt: /Users/foo/logs\n"
+)
