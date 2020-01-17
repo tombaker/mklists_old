@@ -19,25 +19,16 @@ def cli(config):
 
 
 @cli.command()
-@click.option("--with-examples", is_flag=True, help="Initialize with example data")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(config, with_examples):
+def init(config):
     """Initialize list repo
     @@@TODO Add argument: optional directory name of mklists repository.
     @click.argument('dest', required=False) - something like this?
     Then rename init => new?
     """
-    config.with_examples = with_examples
-    print(config.with_examples)
-    if with_examples:
-        print("with_examples works too")
     # write_config_yamlfile_to_rootdir()
     # write_minimal_rules_csvfiles_to_somedirs()
-    # if config.with_examples:
-    #     write_example_config_yamlfile()
-    #     write_example_datafiles_to_somedirs()
-    #     write_example_rules_csvfiles_to_somedirs()
 
 
 @cli.command()

@@ -1,18 +1,23 @@
-"""Tests write_config_yamlfile_to_rootdir"""
+"""Writes YAML configuration file, 'mklists.yml', to repo root directory."""
 
 import io
 import os
 import pytest
-import ruamel.yaml
-import attr
-from mklists.constants import Settings
-from mklists.initialize import write_config_yamlfile_from_settingsobj_to_rootdir
-from mklists.run import read_config_yamlfile_return_config_dict
+from mklists.constants import (
+    CONFIG_YAMLFILE_CONTENT,
+    CONFIG_YAMLFILE_NAME,
+    RULES_CSVFILE_NAME,
+)
+from mklists.initialize import write_config_yamlfile_to_rootdir
 
 
-@pytest.mark.skip
-def test_init_write_config_yamlfile_from_settingsobj_to_rootdir(tmpdir):
-    """Write contents of Settings() instance to YAML config file 'mklists.yml'."""
+def test_init_write_config_yamlfile_to_rootdir(tmpdir):
+    """Write contents of CONFIG_YAMLFILE_CONTENT constant to 'mklists.yml'."""
     os.chdir(tmpdir)
-    write_config_yamlfile_from_settingsobj_to_rootdir()
-    assert read_config_yamlfile_return_config_dict() == attr.asdict(Settings())
+    write_config_yamlfile_to_rootdir()
+    print(os.getcwd())
+    print(os.path.join(os.getcwd(), CONFIG_YAMLFILE_NAME))
+    print(os.listdir(os.getcwd()))
+    print(os.path.getsize(os.path.join(os.getcwd(), CONFIG_YAMLFILE_NAME)))
+    print(str(tmpdir))
+    assert open(CONFIG_YAMLFILE_NAME).read() == CONFIG_YAMLFILE_CONTENT

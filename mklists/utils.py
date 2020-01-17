@@ -8,10 +8,11 @@ import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
 
 from .constants import (
-    URL_PATTERN_REGEX,
-    RULES_CSVFILE_NAME,
-    ROOTDIR_PATHNAME,
+    BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_NAME,
+    RULES_CSVFILE_NAME,
+    TIMESTAMP_STR,
+    URL_PATTERN_REGEX,
 )
 from .decorators import preserve_cwd
 from .exceptions import (
@@ -27,6 +28,48 @@ from .exceptions import (
 
 # pylint: disable=bad-continuation
 # Black disagrees.
+
+
+@preserve_cwd
+def return_rootdir_pathname(startdir_pathname=None):
+    """Return root pathname of mklists repo wherever executed in repo."""
+    if not startdir_pathname:
+        startdir_pathname = os.getcwd()
+    while "mklists.yml" not in os.listdir():
+        cwd_before_changing = os.getcwd()
+        os.chdir(os.pardir)
+        if os.getcwd() == cwd_before_changing:
+            return None
+    return os.getcwd()
+
+
+@preserve_cwd
+def return_backup_subdir_name(rootdir_pathname=None, datadir_pathname=None):
+    """@@@Docstring"""
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
+    if not rootdir_pathname:
+        rootdir_pathname = return_rootdir_pathname(startdir_pathname=datadir_pathname)
+    if rootdir_pathname == datadir_pathname:
+        return "rootdir"
+    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
+
+
+@preserve_cwd
+def return_backupdir_pathname(
+    rootdir_pathname=None,
+    backups_dir_name=None,
+    backup_subdir_name=None,
+    timestamp_str=None,
+):
+    """@@@Docstring"""
+    rootdir_pathname = return_rootdir_pathname()
+    backups_dir_name = BACKUPS_DIR_NAME
+    backup_subdir_name = return_backup_subdir_name()
+    timestamp_str = TIMESTAMP_STR
+    return os.path.join(
+        rootdir_pathname, backups_dir_name, backup_subdir_name, timestamp_str
+    )
 
 
 def return_compiled_regex_from_regexstr(_regex=None):

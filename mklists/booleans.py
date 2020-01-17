@@ -4,10 +4,8 @@
 import os
 import re
 import pytest
-from .constants import Settings, VALID_FILENAME_CHARACTERS_REGEX, URL_PATTERN_REGEX
+from .constants import VALID_FILENAME_CHARACTERS_REGEX, URL_PATTERN_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
-
-sets = Settings()
 
 # pylint: disable=bad-continuation
 #         Black disagrees.
@@ -15,32 +13,26 @@ sets = Settings()
 #         W0102: Dangerous default value sets.invalid_filename_regexes_list (builtins.list)
 
 
-def filename_is_valid_as_filename(
-    filename,
-    invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
-    valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
-):
+def filename_is_valid_as_filename(filename, invalid_filename_patterns=None):
     """Return True if filename:
     * is not None
-    * has no invalid characters (override defaults in mklists.yml)
-    * string patterns (override defaults in mklists.yml)
+    * does not match an "invalid filename" regex
     * does not match name of an existing directory in current directory
     """
-    # valid_filename_characters_regex=sets.valid_filename_characters_regex,
     if filename is None:
         raise MissingValueError(f"Missing filename.")
-    for badpat in invalid_filename_regexes_list:
-        if re.search(badpat, filename):
-            return False
+    if invalid_filename_patterns:
+        for badpat in invalid_filename_patterns:
+            if re.search(badpat, filename):
+                return False
     for char in filename:
-        if not bool(re.search(valid_filename_characters_regex, char)):
+        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
             return False
     if filename in [d for d in os.listdir() if os.path.isdir(d)]:
         raise FilenameIsAlreadyDirnameError(f"{repr(filename)} is a directory.")
     return True
 
 
-@pytest.mark.improve
 def dataline_is_match_to_ruleobj(_given_ruleobj=None, _given_dataline_str=None):
     """Returns True if data line matches pattern specified in given rule.
 

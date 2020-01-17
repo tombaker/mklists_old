@@ -3,75 +3,49 @@
 import os
 import pytest
 from mklists.booleans import filename_is_valid_as_filename
-from mklists.constants import Settings, VALID_FILENAME_CHARACTERS_REGEX
-
-sets = Settings()
 
 # pylint: disable=bad-continuation
 # Black disagrees.
 
 
 def test_utils_filename_is_valid_as_filename():
-    r"""Note: previously assigned bad patterns as follows:
-    bad_patterns = [r"\.swp$", r"\.tmp$", r"~$", r"^\."]
-
-    Note: in YAML, the Python string "\\.swp$" should be expressed either:
-    * in quotes, with escaped backslash: '\\.swp$'
-    * without quotes: \.swp$
-    """
+    """Passes when filename is valid."""
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
-    assert filename_is_valid_as_filename(
-        "foobar.txt",
-        invalid_filename_regexes_list=bad_patterns,
-        valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
-    )
+    assert filename_is_valid_as_filename("foobar.txt")
 
 
-def test_utils_filename_is_valid_as_filename_exits_filename_uses_illegal_character():
-    """Semicolon is illegal in filename."""
-    assert (
-        filename_is_valid_as_filename(
-            "foo;bar.txt",
-            invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
-            valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
-        )
-        is False
-    )
+def test_utils_filename_is_valid_as_filename_exits_when_illegal_character_used():
+    """Returns False when illegal semicolon encountered in filename."""
+    assert filename_is_valid_as_filename("foo;bar.txt") is False
 
 
-def test_utils_filename_is_valid_as_filename_exits_already_used_as_directory_name(
-    tmpdir
-):
-    """@@@Docstring"""
+def test_utils_filename_is_valid_as_filename_exits_when_exists_as_dirname(tmpdir):
+    """Exits when Docstring"""
     tmpdir.mkdir("foobar")
     os.chdir(tmpdir)
     with pytest.raises(SystemExit):
-        filename_is_valid_as_filename(
-            "foobar",
-            invalid_filename_regexes_list=sets.invalid_filename_regexes_list,
-            valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
-        )
+        filename_is_valid_as_filename("foobar")
 
 
-def test_utils_filename_is_valid_as_filename_dotfile():
-    """@@@Docstring"""
+def test_utils_filename_is_valid_as_filename_false_because_dotfile():
+    """Returns False for filename of hidden dotfile."""
     fname = ".foobar.txt"
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
         filename_is_valid_as_filename(
-            filename=fname, invalid_filename_regexes_list=bad_patterns
+            filename=fname, invalid_filename_patterns=bad_patterns
         )
         is False
     )
 
 
-def test_utils_filename_is_valid_as_filename_dotfile_emacs_backup_file():
-    """@@@Docstring"""
+def test_utils_filename_is_valid_as_filename_false_because_emacs_backup_file():
+    """Returns False for filename of an Emacs backup file."""
     fname = "foobar.txt~"
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
         filename_is_valid_as_filename(
-            filename=fname, invalid_filename_regexes_list=bad_patterns
+            filename=fname, invalid_filename_patterns=bad_patterns
         )
         is False
     )
@@ -83,7 +57,7 @@ def test_utils_filename_is_valid_as_filename_bad_filename_extension():
     bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert (
         filename_is_valid_as_filename(
-            filename=fname, invalid_filename_regexes_list=bad_patterns
+            filename=fname, invalid_filename_patterns=bad_patterns
         )
         is False
     )

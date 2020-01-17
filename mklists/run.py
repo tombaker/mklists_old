@@ -8,7 +8,7 @@ import shutil
 from collections import defaultdict
 import pytest
 from .booleans import dataline_is_match_to_ruleobj
-from .constants import ROOTDIR_PATHNAME, CONFIG_YAMLFILE_NAME
+from .constants import CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
@@ -30,6 +30,7 @@ from .utils import (
     return_pyobj_from_yamlstr,
     return_htmlline_from_textline,
     return_visiblefiles_list,
+    return_rootdir_pathname,
 )
 
 # pylint: disable=bad-continuation
@@ -37,11 +38,12 @@ from .utils import (
 
 
 def read_config_yamlfile_return_config_dict(
-    rootdir_pathname=ROOTDIR_PATHNAME, config_yamlfile_name=CONFIG_YAMLFILE_NAME
+    rootdir_pathname=None, config_yamlfile_name=CONFIG_YAMLFILE_NAME
 ):
     """Returns configuration settings as a Python dictionary
     after parsing a configuration file in YAML.
     """
+    rootdir_pathname = return_rootdir_pathname()
     config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
     try:
         return return_pyobj_from_yamlstr(
