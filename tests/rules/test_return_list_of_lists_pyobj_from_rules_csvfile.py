@@ -6,7 +6,7 @@ import pytest
 
 from mklists.constants import RULES_CSVFILE_NAME
 from mklists.exceptions import NoRulefileError, NoRulesError
-from mklists.run import return_list_of_lists_pyobj_from_rules_csvfile
+from mklists.rules import return_list_of_lists_pyobj_from_rules_csvfile
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.

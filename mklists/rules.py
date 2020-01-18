@@ -26,10 +26,38 @@ from .exceptions import (
     SourceMatchpatternError,
     UninitializedSourceError,
 )
-from .run import return_list_of_lists_pyobj_from_rules_csvfile
 
 # pylint: disable=bad-continuation
 # Black disagrees.
+
+
+def return_list_of_lists_pyobj_from_rules_csvfile(csvfile=None):
+    """Return string from given file:
+    * encoding 'utf-8-sig' used in case file was created with Excel with U+FEFF
+    * 'newline=""' used in case file has MS-Windows '\r\n' line endings
+
+    Return list of lists, each with whitespace-stripped strings,
+    given pipe-delimited CSV string."""
+
+    csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
+    try:
+        csvfile_obj = open(csvfile, newline="", encoding="utf-8-sig")
+    except FileNotFoundError:
+        raise NoRulefileError(f"Rule file not found.")
+    except TypeError:
+        raise NoRulefileError(f"No rule file specified.")
+
+    rules_parsed_list_raw = list(csv.reader(csvfile_obj, dialect="rules"))
+    rules_parsed_list = []
+    for single_rule_list in rules_parsed_list_raw:
+        single_rule_list_depadded = []
+        if len(single_rule_list) > 4:
+            for item in single_rule_list:
+                single_rule_list_depadded.append(item.strip())
+        if single_rule_list_depadded:
+            if single_rule_list_depadded[0].isdigit():
+                rules_parsed_list.append(single_rule_list_depadded[0:5])
+    return rules_parsed_list
 
 
 def return_names2lines_dict_from_ruleobj_and_dataline_lists(
