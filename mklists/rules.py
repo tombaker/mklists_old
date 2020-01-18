@@ -26,7 +26,7 @@ from .exceptions import (
     SourceMatchpatternError,
     UninitializedSourceError,
 )
-from .run import read_rules_csvfile_return_rules_pyobj
+from .run import return_list_of_lists_pyobj_from_rules_csvfile
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -139,7 +139,7 @@ def return_one_ruleobj_list_from_rulefile_pathnames_list(rulefile_pathnames_list
     """Return list of Rule objects from pipe-delimited CSV file."""
     one_ruleobj_list = []
     for rulefile_pathname in rulefile_pathnames_list:
-        pyobj = read_rules_csvfile_return_rules_pyobj(rulefile_pathname)
+        pyobj = return_list_of_lists_pyobj_from_rules_csvfile(rulefile_pathname)
         one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobj))
     return one_ruleobj_list
 

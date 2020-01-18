@@ -56,7 +56,7 @@ def read_datafiles_return_datalines_list():
     return all_datalines
 
 
-def read_rules_csvfile_return_rules_pyobj(csvfile=None):
+def return_list_of_lists_pyobj_from_rules_csvfile(csvfile=None):
     """Return string from given file:
     * encoding 'utf-8-sig' used in case file was created with Excel with U+FEFF
     * 'newline=""' used in case file has MS-Windows '\r\n' line endings

@@ -6,7 +6,7 @@ import pytest
 
 from mklists.constants import RULES_CSVFILE_NAME
 from mklists.exceptions import NoRulefileError, NoRulesError
-from mklists.run import read_rules_csvfile_return_rules_pyobj
+from mklists.run import return_list_of_lists_pyobj_from_rules_csvfile
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
@@ -34,7 +34,6 @@ TEST_RULES_CSVSTR_WITH_NOISE = (
     "_|^2018 ..|lines|blines|1|Line starts with non-integer\n"
     "0|^2017 ..|lines|Line is too short\n"
 )
-
 
 TEST_RULES_CSVSTR_WITH_HEADERS = (
     "source_matchfield|source_matchpattern|source|target|target_sortorder\n"
@@ -67,64 +66,61 @@ PYOBJ = [
 ]
 
 
-@pytest.mark.csvrules
-def test_read_rules_csvfile_return_rules_pyobj(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile(tmpdir):
     """Fine if CSV file has no header line because it will be ignored anyway."""
     os.chdir(tmpdir)
     tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = read_rules_csvfile_return_rules_pyobj(csvfile=RULES_CSVFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 
 
-@pytest.mark.csvrules
-def test_run_read_rules_csvfile_return_rules_pyobj(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_header_ignored(tmpdir):
     """The CSV file may have a header line, though it will be ignored."""
     os.chdir(tmpdir)
     tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = read_rules_csvfile_return_rules_pyobj(csvfile=RULES_CSVFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 
 
-@pytest.mark.csvrules
-def test_run_read_rules_csvfile_return_rules_pyobj_rn(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_rn(tmpdir):
     """Fine for CSV file to have MS-Windows line endings (\r\n)."""
     os.chdir(tmpdir)
     tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR_RN)
     expected = PYOBJ
-    real = read_rules_csvfile_return_rules_pyobj(csvfile=RULES_CSVFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 
 
-@pytest.mark.csvrules
-def test_run_read_rules_csvfile_return_rules_pyobj_legacy(tmpdir):
+def test_run_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmpdir):
     """Fine for CSV line to pad fields with spaces and leave field 5 blank."""
     os.chdir(tmpdir)
     tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR_LEGACY)
     expected = PYOBJ_LEGACY
-    real = read_rules_csvfile_return_rules_pyobj(csvfile=RULES_CSVFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 
 
-@pytest.mark.csvrules
-def test_run_read_rules_csvfile_return_rules_pyobj_rulefile_not_specified(tmpdir):
+def test_run_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified(
+    tmpdir
+):
     """Raises NoRulefileError if specified CSV file is "None"."""
     with pytest.raises(NoRulefileError):
-        read_rules_csvfile_return_rules_pyobj(csvfile=None)
+        return_list_of_lists_pyobj_from_rules_csvfile(csvfile=None)
 
 
-@pytest.mark.csvrules
-def test_run_read_rules_csvfile_return_rules_pyobj_rulefile_not_specified2(tmpdir):
+def test_run_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified2(
+    tmpdir
+):
     """Raises NoRulefileError if called specifying no argument at all."""
     with pytest.raises(NoRulefileError):
-        read_rules_csvfile_return_rules_pyobj()
+        return_list_of_lists_pyobj_from_rules_csvfile()
 
 
-@pytest.mark.csvrules
-def test_run_read_rules_csvfile_return_rules_pyobj_not_found(tmpdir):
+def test_run_return_list_of_lists_pyobj_from_rules_csvfile_not_found(tmpdir):
     """Raises NoRulefileError if specified CSV file is not found."""
     os.chdir(tmpdir)
     tmpdir.join(".rules2").write(TEST_RULES_CSVSTR)
     with pytest.raises(NoRulefileError):
-        read_rules_csvfile_return_rules_pyobj(csvfile=".rules3")
+        return_list_of_lists_pyobj_from_rules_csvfile(csvfile=".rules3")
