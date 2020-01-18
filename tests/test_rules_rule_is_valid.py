@@ -17,6 +17,7 @@ def test_rule_is_valid(reinitialize_ruleclass_variables):
     assert rule_obj.is_valid()
 
 
+@pytest.mark.skip
 def test_rule_is_valid_number_fields_look_like_integers_but_are_strings(
     reinitialize_ruleclass_variables
 ):

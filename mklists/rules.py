@@ -58,13 +58,16 @@ def _return_ruleobj_list_from_pyobj(pyobj=None):
     if not pyobj:
         raise NoRulesError(f"No rules list specified.")
     ruleobj_list = []
-    pyobj_filtered = [x for x in pyobj if re.match("[0-9]", x[0])]
-    for item in pyobj_filtered:
+    # pyobj_filtered = [x for x in pyobj if re.match("[0-9]", x[0])]
+    # for item in pyobj_filtered:
+    for item in pyobj:
         try:
             if Rule(*item).is_valid():
                 ruleobj_list.append(Rule(*item))
         except MissingValueError:
             print(f"Skipping badly formed rule: {item}")
+        except ValueError:
+            print(f"Value error.")
         except TypeError:
             raise BadRuleError(f"Rule {repr(item)} is badly formed.")
     if not ruleobj_list:
@@ -83,7 +86,7 @@ def return_one_ruleobj_list_from_rulefile_pathnames_list(rulefile_pathnames_list
 
 @dataclass
 class Rule:
-    """Holds state and self-validation methods for a single rule object.
+    """Holds state, transforms, and self-validation methods for a single rule object.
 
     Fields:
         source_matchfield: data line field to be matched to source_matchpattern.
@@ -102,22 +105,23 @@ class Rule:
     sources_list_is_initialized = False
     sources_list = []
 
-    def coerce_field_types(self):
-        """@@@Docstring"""
-        self.source_matchfield = int(self.source_matchfield)
-        self.source_matchpattern = str(self.source_matchpattern)
-        self.source = str(self.source)
-        self.target = str(self.target)
-        self.target_sortorder = int(self.target_sortorder)
-
     def is_valid(self):
         """Return True if Rule object passes all tests."""
+        self._coerce_field_types()
         self._number_fields_are_integers()
         self._source_matchpattern_field_string_is_valid_as_regex()
         self._filename_fields_are_valid()
         self._source_filename_field_is_not_equal_target()
         self._source_filename_field_was_properly_initialized()
         return True
+
+    def _coerce_field_types(self):
+        """Re-assigns dataclass fields coercing correct type (string or integer)."""
+        self.source_matchfield = int(self.source_matchfield)
+        self.source_matchpattern = str(self.source_matchpattern)
+        self.source = str(self.source)
+        self.target = str(self.target)
+        self.target_sortorder = int(self.target_sortorder)
 
     def _filename_fields_are_valid(self):
         """Returns True if filenames use only valid characters."""

@@ -50,7 +50,9 @@ DATADIRA_RULES_CSVFILE_CONTENTS = (
     "1       |^2020 |todo.txt   |log.txt    |0      |\n"
 )
 CONFIG_YAMLFILE_NAME = "mklists.yml"
+
 # pylint: disable=anomalous-backslash-in-string
+# => the slashes in "invalid filename patterns" are valid in YAML
 CONFIG_YAMLFILE_CONTENT = (
     "verbose: True\n"
     "htmlify: True\n"

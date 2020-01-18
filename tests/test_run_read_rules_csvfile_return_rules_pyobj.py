@@ -1,4 +1,4 @@
-"""@@@Docstring"""
+"""Reads '.rules', a CSV file, and returns a Python list of five-item lists."""
 
 import io
 import os
