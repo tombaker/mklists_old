@@ -35,17 +35,10 @@ def return_config_dict_from_config_yamlfile(
     rootdir_pathname=None, config_yamlfile_name=None
 ):
     """Returns configuration dictionary from YAML config file."""
-    if not rootdir_pathname:
-        rootdir_pathname = return_rootdir_pathname(startdir_pathname=os.getcwd())
+    if rootdir_pathname:
+        os.chdir(rootdir_pathname)
     if not config_yamlfile_name:
         config_yamlfile_name = CONFIG_YAMLFILE_NAME
-    # @@@TODO The following sequence works but is not quite right...
-    try:
-        config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
-    except TypeError:
-        raise ConfigFileNotFoundError(
-            f"Config file {repr(config_yamlfile_name)} not found."
-        )
     try:
         config_yamlfile_contents = open(config_yamlfile_name).read()
     except FileNotFoundError:
