@@ -29,6 +29,26 @@ from .exceptions import (
 # Black disagrees.
 
 
+def return_config_dict_from_config_yamlfile(
+    rootdir_pathname=None, config_yamlfile_name=None
+):
+    """Returns configuration dictionary from YAML config file."""
+    if rootdir_pathname:
+        os.chdir(rootdir_pathname)
+    if not config_yamlfile_name:
+        config_yamlfile_name = CONFIG_YAMLFILE_NAME
+    try:
+        config_yamlfile_contents = open(config_yamlfile_name).read()
+    except FileNotFoundError:
+        raise ConfigFileNotFoundError(
+            f"Config file {repr(config_yamlfile_name)} not found."
+        )
+    try:
+        return ruamel.yaml.safe_load(config_yamlfile_contents)
+    except ruamel.yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML content.")
+
+
 @preserve_cwd
 def return_rootdir_pathname(startdir_pathname=None):
     """Return root pathname of mklists repo wherever executed in repo."""

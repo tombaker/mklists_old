@@ -4,8 +4,10 @@ import os
 import pytest
 from mklists.constants import CONFIG_YAMLFILE_NAME
 from mklists.exceptions import ConfigFileNotFoundError
-from mklists.run import return_config_dict_from_config_yamlfile
-from mklists.utils import return_rootdir_pathname
+from mklists.utils import (
+    return_rootdir_pathname,
+    return_config_dict_from_config_yamlfile,
+)
 
 CONFIG_YAMLFILE_CONTENT = (
     "verbose: True\n"
