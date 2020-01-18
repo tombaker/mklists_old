@@ -14,6 +14,10 @@ class MissingValueError(SystemExit):
     """Function or argument is missing a value."""
 
 
+class RepoAlreadyInitialized(SystemExit):
+    """Mklists repo has already been initialized."""
+
+
 class NoBackupDirSpecifiedError(SystemExit):
     """No pathname for backup directory was specified."""
 

@@ -20,13 +20,14 @@ from .exceptions import (
     BadRuleError,
     BadYamlError,
     BlankLinesError,
+    ConfigFileNotFoundError,
     NoBackupDirSpecifiedError,
     NoDataError,
     NoRulefileError,
     NoRulesError,
     NotUTF8Error,
+    RepoAlreadyInitialized,
     RulefileNotFoundError,
-    ConfigFileNotFoundError,
 )
 from .utils import (
     return_htmlline_from_textline,
@@ -38,7 +39,7 @@ from .utils import (
 # Black disagrees.
 
 
-def write_config_yamlfile_to_rootdir(
+def write_config_yamlfile(
     rootdir_pathname=None, config_yamlfile_name=None, config_yamlfile_content=None
 ):
     """Write initial YAML config file, 'mklists.yml', to root directory."""
@@ -49,6 +50,10 @@ def write_config_yamlfile_to_rootdir(
     if not config_yamlfile_content:
         config_yamlfile_content = CONFIG_YAMLFILE_CONTENT
     file_tobewritten_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
+    if os.path.exists(file_tobewritten_pathname):
+        raise RepoAlreadyInitialized(
+            f"Repo already initialized with {CONFIG_YAMLFILE_NAME}."
+        )
     with open(file_tobewritten_pathname, "w", encoding="utf-8") as outfile:
         outfile.write(config_yamlfile_content)
 

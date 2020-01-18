@@ -24,7 +24,7 @@ def init(config):
     @click.argument('dest', required=False) - something like this?
     Then rename init => new?
     """
-    # write_config_yamlfile_to_rootdir()
+    # write_config_yamlfile()
     # write_minimal_rules_csvfiles_to_somedirs()
 
 
