@@ -23,7 +23,6 @@ from .exceptions import (
     MissingArgumentError,
     NoDataError,
     NotUTF8Error,
-    YamlFileNotFoundError,
 )
 
 # pylint: disable=bad-continuation
@@ -161,19 +160,3 @@ def return_visiblefiles_list():
         finally:
             all_datafile_names.append(filename)
     return sorted(all_datafile_names)
-
-
-def return_pyobj_from_yamlstr(yamlstr):
-    """Returns YAML object from given YAML string."""
-    try:
-        return ruamel.yaml.safe_load(yamlstr)
-    except ruamel.yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML content.")
-
-
-def return_yamlstr_from_pyobj(pyobj):
-    """Returns YAML string from given Python object."""
-    try:
-        return ruamel.yaml.safe_dump(pyobj)
-    except ruamel.yaml.YAMLError:
-        raise BadYamlError(f"Badly formatted YAML content.")

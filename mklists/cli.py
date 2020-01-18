@@ -40,7 +40,7 @@ def run(config, dryrun, here_only):  # should be config
     # rootdir_pathname       = return_rootdir_pathname(
     #                              _datadir_pathname=datadir_pathname
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
-    # ctx.obj                = read_config_yamlfile_return_config_dict(
+    # ctx.obj                = return_config_dict_from_config_yamlfile(
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
 
     # if here_only: # will operate only on data directories below current directory

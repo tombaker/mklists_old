@@ -1,16 +1,17 @@
 """Apply rules to process datalines."""
 
-
 import csv
 import io
 import os
 import shutil
 import pytest
+import ruamel.yaml
 from .constants import CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
     BadRuleError,
+    BadYamlError,
     BlankLinesError,
     NoBackupDirSpecifiedError,
     NoDataError,
@@ -18,14 +19,9 @@ from .exceptions import (
     NoRulesError,
     NotUTF8Error,
     RulefileNotFoundError,
-    YamlFileNotFoundError,
+    ConfigFileNotFoundError,
 )
-
-#    CsvFileNotFoundError,
-
-# from .rules import Rule
 from .utils import (
-    return_pyobj_from_yamlstr,
     return_htmlline_from_textline,
     return_visiblefiles_list,
     return_rootdir_pathname,
@@ -35,22 +31,31 @@ from .utils import (
 # Black disagrees.
 
 
-def read_config_yamlfile_return_config_dict(
-    rootdir_pathname=None, config_yamlfile_name=CONFIG_YAMLFILE_NAME
+def return_config_dict_from_config_yamlfile(
+    rootdir_pathname=None, config_yamlfile_name=None
 ):
-    """Returns configuration settings as a Python dictionary
-    after parsing a configuration file in YAML.
-    """
-    rootdir_pathname = return_rootdir_pathname()
-    config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
+    """Returns configuration dictionary from YAML config file."""
+    if not rootdir_pathname:
+        rootdir_pathname = return_rootdir_pathname(startdir_pathname=os.getcwd())
+    if not config_yamlfile_name:
+        config_yamlfile_name = CONFIG_YAMLFILE_NAME
+    # @@@TODO The following sequence works but is not quite right...
     try:
-        return return_pyobj_from_yamlstr(
-            read_yamlfile_return_yamlstr(config_yamlfile_pathname)
+        config_yamlfile_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
+    except TypeError:
+        raise ConfigFileNotFoundError(
+            f"Config file {repr(config_yamlfile_name)} not found."
         )
+    try:
+        config_yamlfile_contents = open(config_yamlfile_name).read()
     except FileNotFoundError:
-        raise FileNotFoundError(
-            f"Configuration file {repr(config_yamlfile_pathname)} not found."
+        raise ConfigFileNotFoundError(
+            f"Config file {repr(config_yamlfile_name)} not found."
         )
+    try:
+        return ruamel.yaml.safe_load(config_yamlfile_contents)
+    except ruamel.yaml.YAMLError:
+        raise BadYamlError(f"Badly formatted YAML content.")
 
 
 def read_datafiles_return_datalines_list():
@@ -105,14 +110,6 @@ def read_rules_csvfile_return_rules_pyobj(csvfile=None):
             if single_rule_list_depadded[0].isdigit():
                 rules_parsed_list.append(single_rule_list_depadded[0:5])
     return rules_parsed_list
-
-
-def read_yamlfile_return_yamlstr(yamlfile_name):
-    """Returns YAML object from given YAML-format file."""
-    try:
-        return open(yamlfile_name).read()
-    except FileNotFoundError:
-        raise YamlFileNotFoundError(f"YAML file {repr(yamlfile_name)} not found.")
 
 
 @preserve_cwd

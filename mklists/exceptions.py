@@ -43,8 +43,8 @@ class RulefileNotFoundError(ConfigError):
     """Rule file was not found."""
 
 
-class YamlFileNotFoundError(ConfigError):
-    """An expected YAML file was not found."""
+# class YamlFileNotFoundError(ConfigError):
+#     """An expected YAML file was not found."""
 
 
 # class CsvFileNotFoundError(ConfigError):

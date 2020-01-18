@@ -26,7 +26,7 @@ from .exceptions import (
     SourceMatchpatternError,
     UninitializedSourceError,
 )
-from .run import read_rules_csvfile_return_rules_pyobj, read_yamlfile_return_yamlstr
+from .run import read_rules_csvfile_return_rules_pyobj
 
 # pylint: disable=bad-continuation
 # Black disagrees.
