@@ -58,14 +58,14 @@ def test_run_return_ruleobj_list_from_pyobj():
     assert real == expected
 
 
-def test_run_return_ruleobj_list_from_csvstr_no_rules():
+def test_run_return_ruleobj_list_from_pyobj_but_no_pyobj_as_argument():
     """Raises NoRulesError if no Python object is specified as argument."""
     with pytest.raises(NoRulesError):
         _return_ruleobj_list_from_pyobj(pyobj=None)
 
 
 @pytest.mark.skip
-def test_run_return_ruleobj_list_from_csvstr_no_rules_binky():
+def test_run_return_ruleobj_list_from_pyobj_but_input_pyobj_is_bad():
     """Raises some exception if Python object does not match expectations.
 
     Or can we expect that the input to this function will be good?"""
