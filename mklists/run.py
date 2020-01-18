@@ -198,7 +198,7 @@ def move_specified_datafiles_to_somedirs(
                 shutil.move(key, destination_dir)
 
 
-def return_names2lines_dict_from_rules_and_lines(
+def return_names2lines_dict_from_ruleobj_and_dataline_lists(
     _ruleobjs_list=None, _datalines_list=None
 ):
     """Applies rules, one by one, to process aggregated datalines.

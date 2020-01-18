@@ -96,7 +96,7 @@ def run(config, dryrun, here_only):  # should be config
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                              verbose=True)
     #
-    #     datalines_dict     = return_names2lines_dict_from_rules_and_lines(
+    #     datalines_dict     = return_names2lines_dict_from_ruleobj_and_dataline_lists(
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #
