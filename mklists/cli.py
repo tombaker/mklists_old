@@ -64,7 +64,7 @@ def run(config, dryrun, here_only):  # should be config
     #
     #     visiblefiles_list  = return_visiblefiles_list(_datadir_pathname=datadir_pathname)
     #
-    #     datalines_list     = read_datafiles_return_datalines_list()
+    #     datalines_list     = return_datalines_list_from_datafiles()
     #
     #     backup_shortname   = return_backupdir_shortname(
     #                              _datadir_pathname=datadir_pathname,

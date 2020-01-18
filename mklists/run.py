@@ -31,31 +31,6 @@ from .utils import (
 # Black disagrees.
 
 
-def read_datafiles_return_datalines_list():
-    """Returns lines from files in current directory.
-
-    Exits with error message if it encounters:
-    * file that has an invalid name
-    * file that is not UTF8-encoded
-    * file that has blank lines."""
-    visiblefiles_list = return_visiblefiles_list()
-    all_datalines = []
-    for datafile in visiblefiles_list:
-        try:
-            datafile_lines = open(datafile).readlines()
-        except UnicodeDecodeError:
-            raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
-        for line in datafile_lines:
-            if not line.rstrip():
-                print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
-        all_datalines.extend(datafile_lines)
-
-    if not all_datalines:
-        raise NoDataError("No data to process!")
-    return all_datalines
-
-
 @preserve_cwd
 def delete_older_backupdirs(
     _rootdir_pathname=None,
