@@ -9,7 +9,7 @@ from mklists.constants import (
     DATADIRA_NAME,
     ROOTDIR_RULES_CSVFILE_CONTENTS,
 )
-from mklists.initialize import write_rules_csvfiles
+from mklists.run import write_rules_csvfiles
 
 
 def test_init_write_rules_csvfiles(tmpdir):

@@ -8,7 +8,7 @@ from mklists.constants import (
     CONFIG_YAMLFILE_NAME,
     RULES_CSVFILE_NAME,
 )
-from mklists.initialize import write_config_yamlfile_to_rootdir
+from mklists.run import write_config_yamlfile_to_rootdir
 
 
 def test_init_write_config_yamlfile_to_rootdir(tmpdir):
