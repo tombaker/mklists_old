@@ -3,7 +3,7 @@
 import os
 import shutil
 import pytest
-from mklists.run import move_specified_datafiles_to_somedirs
+from mklists.sideeffects import move_specified_datafiles_to_somedirs
 
 
 def test_move_specified_datafiles_to_somedirs(tmpdir):

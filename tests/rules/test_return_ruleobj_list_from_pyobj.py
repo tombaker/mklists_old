@@ -50,7 +50,7 @@ TEST_RULEOBJ_LIST = [
 ]
 
 
-def test_run_return_ruleobj_list_from_pyobj():
+def test_return_ruleobj_list_from_pyobj():
     """Returns list of Rule objects from Python list of five-item lists."""
     pyobj = TEST_RULES_CSVSTR_PARSED
     expected = TEST_RULEOBJ_LIST
@@ -58,14 +58,14 @@ def test_run_return_ruleobj_list_from_pyobj():
     assert real == expected
 
 
-def test_run_return_ruleobj_list_from_pyobj_but_no_pyobj_as_argument():
+def test_return_ruleobj_list_from_pyobj_but_no_pyobj_as_argument():
     """Raises NoRulesError if no Python object is specified as argument."""
     with pytest.raises(NoRulesError):
         _return_ruleobj_list_from_pyobj(pyobj=None)
 
 
 @pytest.mark.skip
-def test_run_return_ruleobj_list_from_pyobj_but_input_pyobj_is_bad():
+def test_return_ruleobj_list_from_pyobj_but_input_pyobj_is_bad():
     """Raises some exception if Python object does not match expectations.
 
     Or can we expect that the input to this function will be good?"""

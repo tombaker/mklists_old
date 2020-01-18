@@ -93,7 +93,7 @@ def test_return_list_of_lists_pyobj_from_rules_csvfile_rn(tmpdir):
     assert real == expected
 
 
-def test_run_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmpdir):
     """Fine for CSV line to pad fields with spaces and leave field 5 blank."""
     os.chdir(tmpdir)
     tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR_LEGACY)
@@ -102,23 +102,19 @@ def test_run_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmpdir):
     assert real == expected
 
 
-def test_run_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified(
-    tmpdir
-):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified(tmpdir):
     """Raises NoRulefileError if specified CSV file is "None"."""
     with pytest.raises(NoRulefileError):
         return_list_of_lists_pyobj_from_rules_csvfile(csvfile=None)
 
 
-def test_run_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified2(
-    tmpdir
-):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified2(tmpdir):
     """Raises NoRulefileError if called specifying no argument at all."""
     with pytest.raises(NoRulefileError):
         return_list_of_lists_pyobj_from_rules_csvfile()
 
 
-def test_run_return_list_of_lists_pyobj_from_rules_csvfile_not_found(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_not_found(tmpdir):
     """Raises NoRulefileError if specified CSV file is not found."""
     os.chdir(tmpdir)
     tmpdir.join(".rules2").write(TEST_RULES_CSVSTR)

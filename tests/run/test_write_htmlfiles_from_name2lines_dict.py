@@ -3,7 +3,7 @@
 import io
 import os
 import pytest
-from mklists.run import write_htmlfiles_from_name2lines_dict
+from mklists.sideeffects import write_htmlfiles_from_name2lines_dict
 from mklists.utils import return_htmlline_from_textline, return_visiblefiles_list
 
 DATADICT_BEFORE = {
