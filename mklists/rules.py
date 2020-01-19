@@ -116,9 +116,7 @@ def return_names2lines_dict_from_ruleobj_and_dataline_lists(
 
 @preserve_cwd
 def _return_rulefile_pathnames_chain(
-    startdir_pathname=os.getcwd(),
-    rules_csvfile_name=RULES_CSVFILE_NAME,
-    config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+    startdir_pathname=None, rules_csvfile_name=None, config_yamlfile_name=None
 ):
     """Return chain of rule files leading from parent directories
     to starting directory (default: the current directory).
@@ -131,6 +129,12 @@ def _return_rulefile_pathnames_chain(
         rules_csvfile_name:
         config_yamlfile_name:
     """
+    if not startdir_pathname:
+        startdir_pathname = os.getcwd()
+    if not rules_csvfile_name:
+        rules_csvfile_name = RULES_CSVFILE_NAME
+    if not config_yamlfile_name:
+        config_yamlfile_name = CONFIG_YAMLFILE_NAME
     os.chdir(startdir_pathname)
     rulefile_pathnames_list = []
     while rules_csvfile_name in os.listdir():

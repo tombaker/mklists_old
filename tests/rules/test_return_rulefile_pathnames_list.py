@@ -103,7 +103,6 @@ def test_return_rulefile_pathnames_chain_even_without_repo_rootdir(tmpdir):
     assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
 
 
-@pytest.mark.skip
 def test_return_rulefile_pathnames_chain_without_specifying_startdir_pathname(tmpdir):
     """Here: _return_rulefile_pathnames_chain()
     * called without specifying startdir_pathname as an argument
@@ -117,7 +116,6 @@ def test_return_rulefile_pathnames_chain_without_specifying_startdir_pathname(tm
     tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
     os.chdir(tmpdirc)
     expected = [
-        print(os.getcwd()),
         os.path.join(tmpdira, ".rules"),
         os.path.join(tmpdirb, ".rules"),
         os.path.join(tmpdirc, ".rules"),
