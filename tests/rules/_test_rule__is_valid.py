@@ -17,17 +17,6 @@ def test_rule_is_valid(reinitialize_ruleclass_variables):
     assert rule_obj.is_valid()
 
 
-@pytest.mark.skip
-def test_rule_is_valid_number_fields_look_like_integers_but_are_strings(
-    reinitialize_ruleclass_variables
-):
-    """First and last fields of rule object only look like
-    integers but are actually strings."""
-    rule_obj = Rule("1", "NOW", "a.txt", "b.txt", "0")
-    with pytest.raises(SystemExit):
-        rule_obj.is_valid()
-
-
 def test_rule_source_matchpattern_is_not_valid_too(reinitialize_ruleclass_variables):
     """Rule object fails self-validation because regex is bad."""
     rule_obj = Rule(1, "N(OW", "a", "b", 2)

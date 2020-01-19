@@ -33,40 +33,37 @@ def filename_is_valid_as_filename(filename, invalid_filename_patterns=None):
     return True
 
 
-def dataline_is_match_to_ruleobj(_given_ruleobj=None, _given_dataline_str=None):
+def dataline_is_match_to_ruleobj(given_ruleobj=None, given_dataline_str=None):
     """Returns True if data line matches pattern specified in given rule.
 
     2019-09-28: This function assumes that the rule object received
     is valid, its validity having been tested by
     run/return_ruleobj_list_from_rulefile_pathname_chain()."""
 
-    # if regex_is_valid_as_regex(_given_ruleobj
-    # @@@TODO
-
     # Line does not match if given field greater than number of fields in line.
-    if _given_ruleobj.source_matchfield > len(_given_dataline_str.split()):
+    if given_ruleobj.source_matchfield > len(given_dataline_str.split()):
         return False
 
     # Line matches if given field is zero and pattern found anywhere in line.
-    if _given_ruleobj.source_matchfield == 0:
-        if re.search(_given_ruleobj.source_matchpattern, _given_dataline_str):
+    if given_ruleobj.source_matchfield == 0:
+        if re.search(given_ruleobj.source_matchpattern, given_dataline_str):
             return True
 
     # Line matches if pattern is found in given field.
-    if _given_ruleobj.source_matchfield > 0:
-        eth = _given_ruleobj.source_matchfield - 1
+    if given_ruleobj.source_matchfield > 0:
+        eth = given_ruleobj.source_matchfield - 1
         if re.search(
-            _given_ruleobj.source_matchpattern, _given_dataline_str.split()[eth]
+            given_ruleobj.source_matchpattern, given_dataline_str.split()[eth]
         ):
             return True
 
     return False
 
 
-def regex_is_valid_as_regex(_regex=None):
+def regex_is_valid_as_regex(regex=None):
     """@@@Docstring"""
     try:
-        re.compile(_regex)
+        re.compile(regex)
     except re.error:
         return False
     return True

@@ -230,20 +230,6 @@ class Rule:
                 )
         return True
 
-    def _number_fields_are_integers(self):
-        """Return True if source_matchfield, target_sortorder are integers."""
-        for field in [self.source_matchfield, self.target_sortorder]:
-            if field is None:
-                raise MissingValueError(
-                    f"'None' is not a valid value for 'source_matchfield' or 'target_sortorder'."
-                )
-            if not isinstance(field, int):
-                print(f"In {self}:")
-                raise NotIntegerError(
-                    f"Values for 'source_matchfield' and 'target_sortorder' must be integers."
-                )
-        return True
-
     def _source_filename_field_was_properly_initialized(self):
         """Returns True if 'source' filename was initialized as a source."""
         if not Rule.sources_list_is_initialized:

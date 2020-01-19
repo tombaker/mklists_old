@@ -47,14 +47,6 @@ class RulefileNotFoundError(ConfigError):
     """Rule file was not found."""
 
 
-# class YamlFileNotFoundError(ConfigError):
-#     """An expected YAML file was not found."""
-
-
-# class CsvFileNotFoundError(ConfigError):
-#     """An expected CSV file was not found."""
-
-
 # DataError
 class DataError(SystemExit):
     """Superclass for errors relating to data."""
