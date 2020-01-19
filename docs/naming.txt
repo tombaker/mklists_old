@@ -1,4 +1,5 @@
 Types of file:
+    csvfile
     datafile
     htmlfile
     rulefile

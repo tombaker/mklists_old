@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "mklists"
-copyright = "2019, Tom Baker"
+copyright = "2020, Tom Baker"
 author = "Tom Baker"
 
 # The full version, including alpha/beta/rc tags
