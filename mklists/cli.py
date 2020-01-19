@@ -19,11 +19,10 @@ def cli(config):
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def init(config):
-    """Initialize list repo
-    @@@TODO Add argument: optional directory name of mklists repository.
-    @click.argument('dest', required=False) - something like this?
-    Then rename init => new?
-    """
+    """Initialize list repo."""
+    # TODO: Add argument: optional directory name of mklists repository.
+    #  @click.argument('dest', required=False) - something like this?
+    #  Then rename init => new?
     # write_config_yamlfile()
     # write_minimal_rules_csvfiles_to_somedirs()
 

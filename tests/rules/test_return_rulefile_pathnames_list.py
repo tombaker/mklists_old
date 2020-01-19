@@ -46,9 +46,10 @@ from mklists.constants import CONFIG_YAMLFILE_NAME
 RULES_CSVFILE_NAME = ".rules"
 
 
-# 2019-01-19: @@@TODO Possible developments:
-# Could generate one big dictionary of rulefile chains for entire repo
-# Test: function stops looking for '.rules' above rootdir (i.e., 'mklists.yml' found).
+# 2019-01-19:
+# TODO: Possible developments:
+#  Could generate one big dictionary of rulefile chains for entire repo
+#  Test: function stops looking for '.rules' above rootdir (i.e., 'mklists.yml' found).
 
 
 def test_return_rulefile_pathnames_chain_basic(tmpdir):
