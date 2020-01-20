@@ -1,6 +1,0 @@
-setuptools==40.8.0
-pytest==3.8.2
-click==6.7
-dataclasses==0.6
-ruamel.base==1.0.0
-ruamel.yaml==0.16.1
