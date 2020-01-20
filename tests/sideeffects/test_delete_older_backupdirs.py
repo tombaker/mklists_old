@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from mklists.sideeffects import delete_older_backupdirs
+from mklists.voids import delete_older_backupdirs
 
 
 def test_backups_delete_older_backupdirs(tmpdir):

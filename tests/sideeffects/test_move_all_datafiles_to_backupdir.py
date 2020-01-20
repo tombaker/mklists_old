@@ -13,7 +13,7 @@ components:
 
 import os
 import pytest
-from mklists.sideeffects import move_all_datafiles_to_backupdir
+from mklists.voids import move_all_datafiles_to_backupdir
 
 
 def test_move_all_datafiles_to_backupdir(tmpdir):

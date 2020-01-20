@@ -3,7 +3,7 @@
 import io
 import os
 import pytest
-from mklists.sideeffects import write_datafiles_from_name2lines_dict
+from mklists.voids import write_datafiles_from_name2lines_dict
 
 
 def test_write_datafiles_from_name2lines_dict(tmpdir):
