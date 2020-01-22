@@ -1,2 +1,3 @@
 [MESSAGES CONTROL]
 disable=W0611,protected-access,duplicate-code,invalid-name
+# disable=W0102
