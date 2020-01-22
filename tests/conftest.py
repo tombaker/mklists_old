@@ -26,5 +26,5 @@ def fixture_myrepo(tmpdir_factory):
     root_dir.join(RULES_CSVFILE_NAME).write("rule stuff")
     subdir_a.join(RULES_CSVFILE_NAME).write("rule stuff")
     subdir_b = subdir_a.mkdir("b")
-    subdir_c = subdir_b.mkdir("c")
+    subdir_b.mkdir("c")
     return root_dir
