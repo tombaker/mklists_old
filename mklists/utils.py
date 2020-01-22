@@ -1,6 +1,5 @@
 """Utilities used by other modules."""
 
-import csv
 import os
 import glob
 import re

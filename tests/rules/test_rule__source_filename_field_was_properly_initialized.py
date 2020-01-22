@@ -4,7 +4,6 @@
   initialized by a previous rule, either in the initial
   source field or in one of the target fields."""
 
-import pytest
 from mklists.rules import Rule
 
 # pylint: disable=bad-continuation

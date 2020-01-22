@@ -1,6 +1,5 @@
 """Test utils.py - return_htmlline_from_textline"""
 
-import pytest
 from mklists.utils import return_htmlline_from_textline
 
 
@@ -30,7 +29,10 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_question_ma
     # pylint: disable=line-too-long
     # Regrettably, yes.
     textline = """http://192.168.2.1/x.html?lang=en"""
-    htmlline = """<a href="http://192.168.2.1/x.html?lang=en">http://192.168.2.1/x.html?lang=en</a>\n"""
+    htmlline = (
+        """<a href="http://192.168.2.1/x.html?la"""
+        """ng=en">http://192.168.2.1/x.html?lang=en</a>\n"""
+    )
     assert return_htmlline_from_textline(textline) == htmlline
 
 
@@ -61,7 +63,7 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_hashsign():
     assert return_htmlline_from_textline(textline) == htmlline
 
 
-def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon():
+def test_utils_return_htmlline_from_textline_url_with_colon():
     """@@@Docstring"""
     textline = """http://foobar.org/Talk:Xyz"""
     htmlline = (
@@ -70,12 +72,15 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_colon():
     assert return_htmlline_from_textline(textline) == htmlline
 
 
-def test_utils_return_htmlline_from_textline_linkified_line_url_with_escaped_characters():
+def test_utils_return_htmlline_from_textline_url_with_escaped_characters():
     """@@@Docstring"""
     # pylint: disable=line-too-long
     # Regrettably, yes.
     textline = """http://ex.org/Rizzi_%28DE-537%29"""
-    htmlline = """<a href="http://ex.org/Rizzi_%28DE-537%29">http://ex.org/Rizzi_%28DE-537%29</a>\n"""
+    htmlline = (
+        """<a href="http://ex.org/Rizzi_%28"""
+        """DE-537%29">http://ex.org/Rizzi_%28DE-537%29</a>\n"""
+    )
     assert return_htmlline_from_textline(textline) == htmlline
 
 
@@ -93,7 +98,10 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_bang():
     # pylint: disable=line-too-long
     # Regrettably, yes.
     textline = """http://ex.com/#!/search/%23dcmi11"""
-    htmlline = """<a href="http://ex.com/#!/search/%23dcmi11">http://ex.com/#!/search/%23dcmi11</a>\n"""
+    htmlline = (
+        """<a href="http://ex.com/#!/search/%23dcm"""
+        """i11">http://ex.com/#!/search/%23dcmi11</a>\n"""
+    )
     assert return_htmlline_from_textline(textline) == htmlline
 
 
@@ -102,7 +110,10 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_comma():
     # pylint: disable=line-too-long
     # Regrettably, yes.
     textline = """http://standorte.deutschepost.de,"""
-    htmlline = """<a href="http://standorte.deutschepost.de">http://standorte.deutschepost.de</a>,\n"""
+    htmlline = (
+        """<a href="http://standorte.deutsche"""
+        """post.de">http://standorte.deutschepost.de</a>,\n"""
+    )
     assert return_htmlline_from_textline(textline) == htmlline
 
 
@@ -116,7 +127,10 @@ def test_utils_return_htmlline_from_textline_linkified_line_url_with_https():
 def test_utils_return_htmlline_from_textline_linkified_line_surrounded_by_brackets():
     """Note the single apostrophone."""
     textline = """see info (https://www.w3.org/wiki)'"""
-    htmlline = """see info (<a href="https://www.w3.org/wiki">https://www.w3.org/wiki</a>)'\n"""
+    htmlline = (
+        """see info (<a href="https://www.w3.or"""
+        """g/wiki">https://www.w3.org/wiki</a>)'\n"""
+    )
     assert return_htmlline_from_textline(textline) == htmlline
 
 

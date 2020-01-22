@@ -1,4 +1,4 @@
-"""Tests whether filenames (third and fourth components of a rule) are valid is filenames."""
+"""True if filenames in filename fields of Rule instances are valid."""
 
 import pytest
 from mklists.rules import Rule

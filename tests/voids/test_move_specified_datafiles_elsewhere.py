@@ -1,8 +1,6 @@
 """Tests for todo.py"""
 
 import os
-import shutil
-import pytest
 from mklists.voids import move_specified_datafiles_to_somedirs
 
 

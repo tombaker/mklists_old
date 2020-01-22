@@ -1,6 +1,5 @@
 """CLI - command-line interface module"""
 
-from dataclasses import dataclass
 import click
 
 # pylint: disable=unused-argument
@@ -61,7 +60,7 @@ def run(config, dryrun, here_only):  # should be config
     #
     #     datadir_pathname   = os.getcwd(datadit)
     #
-    #     visiblefiles_list  = return_visiblefiles_list(_datadir_pathname=datadir_pathname)
+    #     visiblefiles_list  = return_visiblefiles_list()
     #
     #     datalines_list     = return_datalines_list_from_datafiles()
     #

@@ -1,7 +1,6 @@
 """@@@Docstring"""
 
 import os
-import pytest
 from mklists.utils import return_datadir_pathnames_under_given_pathname
 from mklists.constants import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME
 

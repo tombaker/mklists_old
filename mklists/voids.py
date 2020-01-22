@@ -1,11 +1,9 @@
 """Apply rules to process datalines."""
 
-import csv
 import io
 import os
 import shutil
 import pytest
-import ruamel.yaml
 from .constants import (
     CONFIG_YAMLFILE_CONTENT,
     CONFIG_YAMLFILE_NAME,
@@ -17,23 +15,10 @@ from .constants import (
 from .decorators import preserve_cwd
 from .exceptions import (
     BackupDepthUnspecifiedError,
-    BadRuleError,
-    BadYamlError,
-    BlankLinesError,
-    ConfigFileNotFoundError,
     NoBackupDirSpecifiedError,
-    NoDataError,
-    NoRulefileError,
-    NoRulesError,
-    NotUTF8Error,
     RepoAlreadyInitialized,
-    RulefileNotFoundError,
 )
-from .utils import (
-    return_htmlline_from_textline,
-    return_visiblefiles_list,
-    return_rootdir_pathname,
-)
+from .utils import return_htmlline_from_textline, return_visiblefiles_list
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -98,8 +83,6 @@ def delete_older_backupdirs(
         _backupdir_subdir_name:
         _backupdir_shortname:
         _backup_depth_int: Number of backups to keep [default: 2]
-
-    See /Users/tbaker/github/tombaker/mklists/tests/test_backups_delete_older_backupdirs_TODO.py
     """
     if _backup_depth_int is None:
         raise BackupDepthUnspecifiedError(f"Number of backups to keep is unspecified.")

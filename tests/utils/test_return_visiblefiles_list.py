@@ -1,7 +1,6 @@
 """@@@Docstring"""
 
 import os
-import pytest
 from mklists.utils import return_visiblefiles_list
 
 

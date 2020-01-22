@@ -1,7 +1,5 @@
 """@@@Docstring"""
 
-import io
-import os
 import pytest
 
 # from mklists.constants import RULE_CSVFILE_NAME

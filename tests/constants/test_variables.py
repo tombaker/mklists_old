@@ -1,8 +1,6 @@
 """@@@Docstring"""
 
 
-import os
-import pytest
 from mklists.constants import CONFIG_YAMLFILE_NAME, HTMLDIR_NAME, RULES_CSVFILE_NAME
 
 

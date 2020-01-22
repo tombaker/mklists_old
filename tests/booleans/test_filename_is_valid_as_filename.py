@@ -10,7 +10,6 @@ from mklists.booleans import filename_is_valid_as_filename
 
 def test_utils_filename_is_valid_as_filename():
     """Passes when filename is valid."""
-    bad_patterns = ["\\.swp$", "\\.tmp$", "~$", "^\\."]
     assert filename_is_valid_as_filename("foobar.txt")
 
 

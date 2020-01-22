@@ -1,13 +1,8 @@
 """Writes YAML configuration file, 'mklists.yml', to repo root directory."""
 
-import io
 import os
 import pytest
-from mklists.constants import (
-    CONFIG_YAMLFILE_CONTENT,
-    CONFIG_YAMLFILE_NAME,
-    RULES_CSVFILE_NAME,
-)
+from mklists.constants import CONFIG_YAMLFILE_CONTENT, CONFIG_YAMLFILE_NAME
 from mklists.voids import write_config_yamlfile
 
 

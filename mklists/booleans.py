@@ -3,14 +3,11 @@
 
 import os
 import re
-import pytest
-from .constants import VALID_FILENAME_CHARACTERS_REGEX, URL_PATTERN_REGEX
+from .constants import VALID_FILENAME_CHARACTERS_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
 # pylint: disable=bad-continuation
 #         Black disagrees.
-# pylint: disable=dangerous-default-value
-#         W0102: Dangerous default value sets.invalid_filename_regexes_list (builtins.list)
 
 
 def filename_is_valid_as_filename(filename, invalid_filename_patterns=None):

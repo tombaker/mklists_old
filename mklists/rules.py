@@ -2,7 +2,6 @@
 
 import csv
 import os
-import re
 from dataclasses import dataclass
 from collections import defaultdict
 from .booleans import (
@@ -20,8 +19,6 @@ from .exceptions import (
     NoDataError,
     NoRulefileError,
     NoRulesError,
-    NotIntegerError,
-    RulefileNotFoundError,
     SourceEqualsTargetError,
     SourceMatchpatternError,
     UninitializedSourceError,
@@ -200,7 +197,7 @@ class Rule:
     def is_valid(self):
         """Return True if Rule object passes all tests."""
         self._coerce_field_types()  # TODO: break this up into coerce_a, coerce_b...
-        # self._number_fields_are_integers() # TODO: _coerce_field_types should handle this
+        # self._number_fields_are_integers() # TODO: _coerce_field_types to handle this
         self._source_matchpattern_field_string_is_valid_as_regex()
         self._filename_fields_are_valid()
         self._source_filename_field_is_not_equal_target()

@@ -2,29 +2,24 @@
 
 import io
 import os
-import pytest
 from mklists.voids import write_htmlfiles_from_name2lines_dict
-from mklists.utils import return_htmlline_from_textline, return_visiblefiles_list
 
 DATADICT_BEFORE = {
-    "filea.txt": [
-        "DC2019 http://dublincore.org/conferences/2019\n",
-        "DC2019 Sep 23-26\n",
-    ],
+    "filea.txt": ["DC2019 http://dublincore.org/confs/2019\n", "DC2019 Sep 23-26\n"],
     "fileb.txt": [
         "SHEX Primer: http://shex.io/shex-primer\n",
-        "SHEX Wikidata: http://bit.ly/shex_in_wikidata\n",
+        "SHEX Wikidata: http://bit.ly/foobar\n",
     ],
 }
 
 TEST_FILEA_HTMLSTR = """\
-DC2019 <a href="http://dublincore.org/conferences/2019">http://dublincore.org/conferences/2019</a>
+DC2019 <a href="http://dublincore.org/confs/2019">http://dublincore.org/confs/2019</a>
 DC2019 Sep 23-26
 """
 
 TEST_FILEB_HTMLSTR = """\
 SHEX Primer: <a href="http://shex.io/shex-primer">http://shex.io/shex-primer</a>
-SHEX Wikidata: <a href="http://bit.ly/shex_in_wikidata">http://bit.ly/shex_in_wikidata</a>
+SHEX Wikidata: <a href="http://bit.ly/foobar">http://bit.ly/foobar</a>
 """
 
 

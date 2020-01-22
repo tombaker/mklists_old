@@ -2,7 +2,6 @@
 
 import io
 import os
-import pytest
 from mklists.constants import (
     RULES_CSVFILE_NAME,
     DATADIRA_RULES_CSVFILE_CONTENTS,

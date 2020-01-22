@@ -1,11 +1,10 @@
 """Reads '.rules', a CSV file, and returns a Python list of five-item lists."""
 
-import io
 import os
 import pytest
 
 from mklists.constants import RULES_CSVFILE_NAME
-from mklists.exceptions import NoRulefileError, NoRulesError
+from mklists.exceptions import NoRulefileError
 from mklists.rules import return_list_of_lists_pyobj_from_rules_csvfile
 
 # pylint: disable=unused-argument

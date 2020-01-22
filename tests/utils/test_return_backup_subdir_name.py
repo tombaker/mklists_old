@@ -1,7 +1,6 @@
 """Returns shortname of directory (slashes to underscores) given rootdir pathname."""
 
 import os
-import pytest
 from mklists.utils import return_backup_subdir_name
 
 

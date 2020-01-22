@@ -1,8 +1,6 @@
 """For initializing pseudo-constants: global variables not intended to be changed."""
 
-import os
 import datetime
-from .decorators import preserve_cwd
 
 
 BACKUPS_DIR_NAME = "backups"

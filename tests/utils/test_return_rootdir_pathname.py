@@ -1,7 +1,6 @@
 """Returns root pathname of mklists repo wherever executed in repo."""
 
 import os
-import pytest
 from mklists.constants import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME
 from mklists.utils import return_rootdir_pathname
 
