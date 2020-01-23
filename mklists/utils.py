@@ -54,13 +54,11 @@ def return_datalines_list_from_datafiles():
 
 
 def return_config_dict_from_config_yamlfile(
-    rootdir_pathname=None, config_yamlfile_name=None
+    rootdir_pathname=None, config_yamlfile_name=CONFIG_YAMLFILE_NAME
 ):
     """Returns configuration dictionary from YAML config file."""
     if rootdir_pathname:
         os.chdir(rootdir_pathname)
-    if not config_yamlfile_name:
-        config_yamlfile_name = CONFIG_YAMLFILE_NAME
     try:
         config_yamlfile_contents = open(config_yamlfile_name).read()
     except FileNotFoundError:
@@ -101,15 +99,13 @@ def return_backup_subdir_name(rootdir_pathname=None, datadir_pathname=None):
 @preserve_cwd
 def return_backupdir_pathname(
     rootdir_pathname=None,
-    backups_dir_name=None,
+    backups_dir_name=BACKUPS_DIR_NAME,
     backup_subdir_name=None,
-    timestamp_str=None,
+    timestamp_str=TIMESTAMP_STR,
 ):
     """@@@Docstring"""
     rootdir_pathname = return_rootdir_pathname()
-    backups_dir_name = BACKUPS_DIR_NAME
     backup_subdir_name = return_backup_subdir_name()
-    timestamp_str = TIMESTAMP_STR
     return os.path.join(
         rootdir_pathname, backups_dir_name, backup_subdir_name, timestamp_str
     )
@@ -133,7 +129,11 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_datadir_pathnames_under_given_pathname(given_pathname=None):
+def return_datadir_pathnames_under_given_pathname(
+    given_pathname=None,
+    config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+    rules_csvfile_name=RULES_CSVFILE_NAME,
+):
     """Return list of data directories under a given directory.
 
     "Data directories"
@@ -155,8 +155,8 @@ def return_datadir_pathnames_under_given_pathname(given_pathname=None):
     datadirs = []
     for dirpath, dirs, files in os.walk(given_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
-        if RULES_CSVFILE_NAME in files:
-            if CONFIG_YAMLFILE_NAME not in files:
+        if rules_csvfile_name in files:
+            if config_yamlfile_name not in files:
                 datadirs.append(dirpath)
 
     return datadirs
