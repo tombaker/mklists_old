@@ -10,7 +10,11 @@ from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 #         Black disagrees.
 
 
-def filename_is_valid_as_filename(filename, invalid_filename_patterns=None):
+def filename_is_valid_as_filename(
+    filename,
+    invalid_filename_patterns=None,
+    valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
+):
     """Return True if filename:
     * is not None
     * does not match an "invalid filename" regex
@@ -23,7 +27,7 @@ def filename_is_valid_as_filename(filename, invalid_filename_patterns=None):
             if re.search(badpat, filename):
                 return False
     for char in filename:
-        if not bool(re.search(VALID_FILENAME_CHARACTERS_REGEX, char)):
+        if not bool(re.search(valid_filename_characters_regex, char)):
             return False
     if filename in [d for d in os.listdir() if os.path.isdir(d)]:
         raise FilenameIsAlreadyDirnameError(f"{repr(filename)} is a directory.")
