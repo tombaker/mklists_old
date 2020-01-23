@@ -7,5 +7,30 @@ module = "mklists"
 author = "Tom Baker"
 author-email = "tom@tombaker.org"
 home-page = "https://github.com/tombaker/mklists"
-classifiers = ["License :: OSI Approved :: MIT License"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.7",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Text Processing",
+    "Intended Audience :: End Users/Desktop",
+]
+requires = [
+    "click",
+    "dataclasses",
+    "ruamel.base",
+    "ruamel.yaml",
+]
+description-file = 'README.rst'
+requires-python = '>=3.7'
 
+[tool.flit.metadata.requires-extra]
+test = [
+    "jupyter",
+    "pytest",
+    "pytest-cov",
+]
+doc = ["sphinx"]
+
+[tool.flit.scripts]
+mklists = "mklists.cli:cli"

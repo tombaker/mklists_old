@@ -11,7 +11,7 @@ import click
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(config):
-    """Reorder plaintext lists by tweaking rules"""
+    """Reorder plaintext lists by tweaking patterns"""
 
 
 @cli.command()
