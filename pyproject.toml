@@ -1,0 +1,11 @@
+[build-system]
+requires = ["flit_core >=2,<3"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "mklists"
+author = "Tom Baker"
+author-email = "tom@tombaker.org"
+home-page = "https://github.com/tombaker/mklists"
+classifiers = ["License :: OSI Approved :: MIT License"]
+
