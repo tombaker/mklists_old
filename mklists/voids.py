@@ -25,19 +25,17 @@ from .utils import return_htmlline_from_textline, return_visiblefiles_list
 
 
 def write_config_yamlfile(
-    rootdir_pathname=None, config_yamlfile_name=None, config_yamlfile_content=None
+    rootdir_pathname=None,
+    config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+    config_yamlfile_content=CONFIG_YAMLFILE_CONTENT,
 ):
     """Write initial YAML config file, 'mklists.yml', to root directory."""
     if not rootdir_pathname:
         rootdir_pathname = os.getcwd()
-    if not config_yamlfile_name:
-        config_yamlfile_name = CONFIG_YAMLFILE_NAME
-    if not config_yamlfile_content:
-        config_yamlfile_content = CONFIG_YAMLFILE_CONTENT
     file_tobewritten_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
     if os.path.exists(file_tobewritten_pathname):
         raise RepoAlreadyInitialized(
-            f"Repo already initialized with {CONFIG_YAMLFILE_NAME}."
+            f"Repo already initialized with {config_yamlfile_name}."
         )
     with open(file_tobewritten_pathname, "w", encoding="utf-8") as outfile:
         outfile.write(config_yamlfile_content)
@@ -45,20 +43,12 @@ def write_config_yamlfile(
 
 @preserve_cwd
 def write_rules_csvfiles(
-    rules_csvfile_name=None,
-    datadira_rules_csvfile_contents=None,
-    datadira_name=None,
-    rootdir_rules_csvfile_contents=None,
+    rules_csvfile_name=RULES_CSVFILE_NAME,
+    datadira_rules_csvfile_contents=DATADIRA_RULES_CSVFILE_CONTENTS,
+    datadira_name=DATADIRA_NAME,
+    rootdir_rules_csvfile_contents=ROOTDIR_RULES_CSVFILE_CONTENTS,
 ):
     """@@@Docstring"""
-    if not rules_csvfile_name:
-        rules_csvfile_name = RULES_CSVFILE_NAME
-    if not datadira_rules_csvfile_contents:
-        datadira_rules_csvfile_contents = DATADIRA_RULES_CSVFILE_CONTENTS
-    if not datadira_name:
-        datadira_name = DATADIRA_NAME
-    if not rootdir_rules_csvfile_contents:
-        rootdir_rules_csvfile_contents = ROOTDIR_RULES_CSVFILE_CONTENTS
     io.open(rules_csvfile_name, "w", encoding="utf-8").write(
         rootdir_rules_csvfile_contents
     )
