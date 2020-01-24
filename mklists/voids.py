@@ -90,13 +90,7 @@ def delete_older_backupdirs(
 @pytest.mark.improve
 @preserve_cwd
 def move_all_datafiles_to_backupdir(datadir_pathname=None, backupdir_pathname=None):
-    """Move visible files in given data directory to named backup directory.
-
-    Args:
-        datadir_pathname: Pathname of the data directory,
-          (typically? always?) the current working directory.
-        backupdir_pathname: Pathname of the backup directory.
-    """
+    """Move visible files in given data directory to named backup directory."""
     if not datadir_pathname:
         datadir_pathname = os.getcwd()
     if not backupdir_pathname:
