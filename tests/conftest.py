@@ -15,6 +15,15 @@ def reinitialize_ruleclass_variables():
     Rule.sources_list_is_initialized = False
 
 
+@pytest.fixture(name="tmppath")
+def fixture_tmpath():
+    """Returns an instance of pathlib.Path because as of 2020,
+    the 'py' library, with 'py.path' (and 'py.path.local') appear
+    still to be in maintenance mode.
+
+    https://py.readthedocs.io/en/latest/path.html"""
+
+
 @pytest.fixture(name="myrepo")
 def fixture_myrepo(tmpdir_factory):
     """Return temporary mklists repo 'myrepo'."""

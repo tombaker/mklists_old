@@ -1,8 +1,10 @@
 """@@@Docstring"""
 
 import os
+import pathlib
 import pytest
 from mklists.booleans import filename_is_valid_as_filename
+from mklists.exceptions import FilenameIsAlreadyDirnameError
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -18,11 +20,16 @@ def test_utils_filename_is_valid_as_filename_exits_when_illegal_character_used()
     assert filename_is_valid_as_filename("foo;bar.txt") is False
 
 
-def test_utils_filename_is_valid_as_filename_exits_when_exists_as_dirname(tmpdir):
-    """Exits when Docstring"""
-    tmpdir.mkdir("foobar")
-    os.chdir(tmpdir)
-    with pytest.raises(SystemExit):
+def test_utils_filename_is_valid_as_filename_exits_when_exists_as_dirname(tmp_path):
+    """Raises exception when given filename already exists as directory name."""
+    os.chdir(tmp_path)
+    foobar = pathlib.Path("foobar")
+    foobar.mkdir()
+    print(f"value of foobar: {repr(foobar)}")
+    print(f"current directory: {os.getcwd()}")
+    print(f"current directory files: {os.listdir()}")
+    #    assert False
+    with pytest.raises(FilenameIsAlreadyDirnameError):
         filename_is_valid_as_filename("foobar")
 
 

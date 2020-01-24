@@ -1,6 +1,5 @@
 """Boolean functions."""
 
-
 import os
 import re
 from .constants import VALID_FILENAME_CHARACTERS_REGEX
@@ -17,9 +16,8 @@ def filename_is_valid_as_filename(
 ):
     """Return True if filename:
     * is not None
-    * does not match an "invalid filename" regex
-    * does not match name of an existing directory in current directory
-    """
+    * does not match "invalid filename" regex
+    * does not match name of an existing directory in current directory"""
     if filename is None:
         raise MissingValueError(f"Missing filename.")
     if invalid_filename_patterns:
