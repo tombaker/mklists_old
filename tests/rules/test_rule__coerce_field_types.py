@@ -20,7 +20,6 @@ def test_rule__coerce_field_types(reinitialize_ruleclass_variables):
     assert rule_obj._number_fields_are_integers()
 
 
-@pytest.mark.skip
 def test_rule_number_fields_are_integers_first_field_is_list(
     reinitialize_ruleclass_variables
 ):

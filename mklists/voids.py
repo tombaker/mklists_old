@@ -89,28 +89,22 @@ def delete_older_backupdirs(
 
 @pytest.mark.improve
 @preserve_cwd
-def move_all_datafiles_to_backupdir(
-    _datadir_pathname=None, _datafiles_names=None, _backupdir_pathname=None
-):
-    """Move data files to backup directory.
-
-    "Data files" are all visible files in the data directory.
+def move_all_datafiles_to_backupdir(datadir_pathname=None, backupdir_pathname=None):
+    """Move visible files in given data directory to named backup directory.
 
     Args:
-        _datadir_pathname: Pathname of the data directory,
+        datadir_pathname: Pathname of the data directory,
           (typically? always?) the current working directory.
-        _datafiles_names: Names of all visible files in the data
-          directory (pre-checked to ensure they are text files?).
-        _backupdir_pathname: Pathname of the backup directory.
+        backupdir_pathname: Pathname of the backup directory.
     """
-    if not _datadir_pathname:
-        _datadir_pathname = os.getcwd()
-    if not _backupdir_pathname:
-        raise NoBackupDirSpecifiedError(f"No pathname for backup directory specified.")
-    os.chdir(_datadir_pathname)
+    if not datadir_pathname:
+        datadir_pathname = os.getcwd()
+    if not backupdir_pathname:
+        raise NoBackupDirSpecifiedError(f"No pathname specified for backup directory.")
+    os.chdir(datadir_pathname)
     try:
-        for file in _datafiles_names:
-            shutil.move(file, _backupdir_pathname)
+        for file in return_visiblefiles_list():
+            shutil.move(file, backupdir_pathname)
     except OSError:
         print("Got an exception")
 

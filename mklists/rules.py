@@ -188,14 +188,13 @@ class Rule:
     source_matchpattern: str = None
     source: str = None
     target: str = None
-    target_sortorder: int = 0
+    target_sortorder: int = None
     sources_list_is_initialized = False
     sources_list = []
 
     def is_valid(self):
         """Return True if Rule object passes all tests."""
         self._coerce_field_types()  # TODO: break this up into coerce_a, coerce_b...
-        # self._number_fields_are_integers() # TODO: _coerce_field_types to handle this
         self._source_matchpattern_field_string_is_valid_as_regex()
         self._filename_fields_are_valid()
         self._source_filename_field_is_not_equal_target()

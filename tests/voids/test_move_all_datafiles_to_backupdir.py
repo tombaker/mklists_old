@@ -27,11 +27,8 @@ def test_move_all_datafiles_to_backupdir(tmpdir):
     datadir_pathname = tmpdir.mkdir(backup_subdir_shortname)
     datadir_pathname.join("file_a").write("some content")
     datadir_pathname.join("file_b").write("some content")
-    datafile_names = sorted(os.listdir(datadir_pathname))
     move_all_datafiles_to_backupdir(
-        _datadir_pathname=datadir_pathname,
-        _datafiles_names=datafile_names,
-        _backupdir_pathname=backupdir_pathname,
+        datadir_pathname=datadir_pathname, backupdir_pathname=backupdir_pathname
     )
     expected = ["file_a", "file_b"]
     assert sorted(os.listdir(backupdir_pathname)) == expected
@@ -44,10 +41,7 @@ def test_move_all_datafiles_to_backupdir_no_backupdir_specified(tmpdir):
     os.chdir(datadir_pathname)
     datadir_pathname.join("file_a").write("some content")
     datadir_pathname.join("file_b").write("some content")
-    datafile_names = sorted(os.listdir(datadir_pathname))
     with pytest.raises(SystemExit):
         move_all_datafiles_to_backupdir(
-            _datadir_pathname=datadir_pathname,
-            _datafiles_names=datafile_names,
-            _backupdir_pathname=None,
+            datadir_pathname=datadir_pathname, backupdir_pathname=None
         )
