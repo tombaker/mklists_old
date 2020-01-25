@@ -29,15 +29,11 @@ from .exceptions import (
 
 
 def return_list_of_lists_pyobj_from_rules_csvfile(csvfile=None):
-    """Return string from given file:
-    * encoding 'utf-8-sig' used in case file was created with Excel with U+FEFF
-    * 'newline=""' used in case file has MS-Windows '\r\n' line endings
-
-    Return list of lists, each with whitespace-stripped strings,
-    given pipe-delimited CSV string."""
-
+    """Return lists of lists, string items stripped, from pipe-delimited CSV file."""
     csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
     try:
+        # encoding 'utf-8-sig' for Excel files with U+FEFF
+        # newline '' for MS-Windows '\r\n' line endings
         csvfile_obj = open(csvfile, newline="", encoding="utf-8-sig")
     except FileNotFoundError:
         raise NoRulefileError(f"Rule file not found.")

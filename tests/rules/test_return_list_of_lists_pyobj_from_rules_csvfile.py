@@ -2,6 +2,7 @@
 
 import os
 import pytest
+from pathlib import Path
 
 from mklists.constants import RULES_CSVFILE_NAME
 from mklists.exceptions import NoRulefileError
@@ -65,10 +66,10 @@ PYOBJ = [
 ]
 
 
-def test_return_list_of_lists_pyobj_from_rules_csvfile(tmpdir):
-    """Fine if CSV file has no header line because it will be ignored anyway."""
-    os.chdir(tmpdir)
-    tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR)
+def test_return_list_of_lists_pyobj_from_rules_csvfile(tmp_path):
+    """Return True if CSV file has no header line because it will be ignored anyway."""
+    os.chdir(tmp_path)
+    Path(RULES_CSVFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
     real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
