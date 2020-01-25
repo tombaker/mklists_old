@@ -37,7 +37,7 @@ CONFIG_PYOBJ = {
 def test_return_config_dict_from_config_yamlfile(tmpdir):
     """Return dictionary of configuration settings from YAML file."""
     os.chdir(tmpdir)
-    here = return_rootdir_pathname(startdir_pathname=os.getcwd())
+    here = return_rootdir_pathname(here=os.getcwd())
     tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONFIG_YAMLFILE_CONTENT)
     assert (
         return_config_dict_from_config_yamlfile(rootdir_pathname=here) == CONFIG_PYOBJ
@@ -56,6 +56,6 @@ def test_read_config_yamlfile_return_config_dict_with_entries_commented_out(tmpd
 def test_read_config_yamlfile_return_config_dict_not_found(tmpdir):
     """Raise exception if no configuration YAML file is found."""
     os.chdir(tmpdir)
-    here = return_rootdir_pathname(startdir_pathname=os.getcwd())
+    here = return_rootdir_pathname(here=os.getcwd())
     with pytest.raises(SystemExit):
         return_config_dict_from_config_yamlfile(rootdir_pathname=here)

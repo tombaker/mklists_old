@@ -3,6 +3,7 @@
 import os
 import glob
 import re
+from pathlib import Path
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
 
@@ -72,43 +73,41 @@ def return_config_dict_from_config_yamlfile(
 
 
 @preserve_cwd
-def return_rootdir_pathname(startdir_pathname=None):
+def return_rootdir_pathname(here=None, configfile=CONFIG_YAMLFILE_NAME):
     """Return root pathname of mklists repo wherever executed in repo."""
-    if not startdir_pathname:
-        startdir_pathname = os.getcwd()
-    while "mklists.yml" not in os.listdir():
-        cwd_before_changing = os.getcwd()
-        os.chdir(os.pardir)
-        if os.getcwd() == cwd_before_changing:
-            return None
-    return os.getcwd()
+    if not here:
+        here = Path.cwd()
+    directory_chain_upwards = list(Path(here).parents)
+    directory_chain_upwards.insert(0, Path.cwd())
+    for directory in directory_chain_upwards:
+        if configfile in [item.name for item in directory.glob("*")]:
+            return directory
+    return None
 
 
 @preserve_cwd
-def return_backup_subdir_name(rootdir_pathname=None, datadir_pathname=None):
-    """@@@Docstring"""
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    if not rootdir_pathname:
-        rootdir_pathname = return_rootdir_pathname(startdir_pathname=datadir_pathname)
-    if rootdir_pathname == datadir_pathname:
+def return_backup_subdir_name(rootdir=None, heredir=None):
+    """Return shortname of backup subdirectory."""
+    if not heredir:
+        heredir = Path.cwd()
+    if not rootdir:
+        rootdir = return_rootdir_pathname(here=heredir)
+    if rootdir == heredir:
         return "rootdir"
-    return datadir_pathname[len(rootdir_pathname) :].strip("/").replace("/", "_")
+    return str(heredir)[len(str(rootdir)) :].strip("/").replace("/", "_")
 
 
 @preserve_cwd
 def return_backupdir_pathname(
-    rootdir_pathname=None,
-    backups_dir_name=BACKUPS_DIR_NAME,
-    backup_subdir_name=None,
-    timestamp_str=TIMESTAMP_STR,
+    rootdir=None,
+    backupsdir=BACKUPS_DIR_NAME,
+    backup_subdir=None,
+    timestamp=TIMESTAMP_STR,
 ):
     """@@@Docstring"""
-    rootdir_pathname = return_rootdir_pathname()
-    backup_subdir_name = return_backup_subdir_name()
-    return os.path.join(
-        rootdir_pathname, backups_dir_name, backup_subdir_name, timestamp_str
-    )
+    rootdir = return_rootdir_pathname()
+    backup_subdir = return_backup_subdir_name()
+    return Path(rootdir) / backupsdir / backup_subdir / timestamp
 
 
 def return_compiled_regex_from_regexstr(_regex=None):
