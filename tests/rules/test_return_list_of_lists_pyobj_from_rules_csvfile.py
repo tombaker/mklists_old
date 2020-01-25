@@ -78,7 +78,7 @@ def test_return_list_of_lists_pyobj_from_rules_csvfile(tmp_path):
 def test_return_list_of_lists_pyobj_from_rules_csvfile_header_ignored(tmpdir):
     """The CSV file may have a header line, though it will be ignored."""
     os.chdir(tmpdir)
-    tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR)
+    Path(RULES_CSVFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
     real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
@@ -87,7 +87,7 @@ def test_return_list_of_lists_pyobj_from_rules_csvfile_header_ignored(tmpdir):
 def test_return_list_of_lists_pyobj_from_rules_csvfile_rn(tmpdir):
     """Fine for CSV file to have MS-Windows line endings (\r\n)."""
     os.chdir(tmpdir)
-    tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR_RN)
+    Path(RULES_CSVFILE_NAME).write_text(TEST_RULES_CSVSTR_RN)
     expected = PYOBJ
     real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
@@ -96,7 +96,7 @@ def test_return_list_of_lists_pyobj_from_rules_csvfile_rn(tmpdir):
 def test_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmpdir):
     """Fine for CSV line to pad fields with spaces and leave field 5 blank."""
     os.chdir(tmpdir)
-    tmpdir.join(RULES_CSVFILE_NAME).write(TEST_RULES_CSVSTR_LEGACY)
+    Path(RULES_CSVFILE_NAME).write_text(TEST_RULES_CSVSTR_LEGACY)
     expected = PYOBJ_LEGACY
     real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
@@ -117,6 +117,6 @@ def test_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified2(t
 def test_return_list_of_lists_pyobj_from_rules_csvfile_not_found(tmpdir):
     """Raises NoRulefileError if specified CSV file is not found."""
     os.chdir(tmpdir)
-    tmpdir.join(".rules2").write(TEST_RULES_CSVSTR)
+    Path(".rules2").write_text(TEST_RULES_CSVSTR)
     with pytest.raises(NoRulefileError):
         return_list_of_lists_pyobj_from_rules_csvfile(csvfile=".rules3")
