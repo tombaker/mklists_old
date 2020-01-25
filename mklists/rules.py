@@ -2,6 +2,7 @@
 
 import csv
 import os
+from pathlib import Path
 from dataclasses import dataclass
 from collections import defaultdict
 from .booleans import (
@@ -129,7 +130,7 @@ def _return_rulefile_pathnames_chain(
     os.chdir(startdir_pathname)
     rulefile_pathnames_list = []
     while rules_csvfile_name in os.listdir():
-        rulefile_pathnames_list.insert(0, os.path.join(os.getcwd(), rules_csvfile_name))
+        rulefile_pathnames_list.insert(0, Path.cwd() / rules_csvfile_name)
         if config_yamlfile_name in os.listdir():
             break
         os.chdir(os.pardir)

@@ -1,6 +1,7 @@
 """Return list of rule file pathnames."""
 
 import os
+from pathlib import Path
 from mklists.rules import _return_rulefile_pathnames_chain
 from mklists.constants import CONFIG_YAMLFILE_NAME
 
@@ -24,10 +25,10 @@ def test_return_rulefile_pathnames_chain_basic(tmpdir):
     tmpdirc = tmpdirb.mkdir("c")
     tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
     expected = [
-        os.path.join(tmpdir, ".rules"),
-        os.path.join(tmpdir, "a/.rules"),
-        os.path.join(tmpdir, "a/b/.rules"),
-        os.path.join(tmpdir, "a/b/c/.rules"),
+        Path(tmpdir) / ".rules",
+        Path(tmpdir) / "a/.rules",
+        Path(tmpdir) / "a/b/.rules",
+        Path(tmpdir) / "a/b/c/.rules",
     ]
     assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
 
@@ -43,9 +44,9 @@ def test_return_rulefile_pathnames_chain_ends_before_repo_rootdir(tmpdir):
     tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
     os.chdir(tmpdirc)
     expected = [
-        os.path.join(tmpdir, "a/.rules"),
-        os.path.join(tmpdir, "a/b/.rules"),
-        os.path.join(tmpdir, "a/b/c/.rules"),
+        Path(tmpdir) / "a/.rules",
+        Path(tmpdir) / "a/b/.rules",
+        Path(tmpdir) / "a/b/c/.rules",
     ]
     assert _return_rulefile_pathnames_chain() == expected
 
@@ -60,9 +61,9 @@ def test_return_rulefile_pathnames_chain_even_without_repo_rootdir(tmpdir):
     tmpdirc = tmpdirb.mkdir("c")
     tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
     expected = [
-        os.path.join(tmpdir, "a/.rules"),
-        os.path.join(tmpdir, "a/b/.rules"),
-        os.path.join(tmpdir, "a/b/c/.rules"),
+        Path(tmpdir) / "a/.rules",
+        Path(tmpdir) / "a/b/.rules",
+        Path(tmpdir) / "a/b/c/.rules",
     ]
     assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
 
@@ -80,8 +81,8 @@ def test_return_rulefile_pathnames_chain_without_specifying_startdir_pathname(tm
     tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
     os.chdir(tmpdirc)
     expected = [
-        os.path.join(tmpdira, ".rules"),
-        os.path.join(tmpdirb, ".rules"),
-        os.path.join(tmpdirc, ".rules"),
+        Path(tmpdira) / ".rules",
+        Path(tmpdirb) / ".rules",
+        Path(tmpdirc) / ".rules",
     ]
     assert _return_rulefile_pathnames_chain() == expected
