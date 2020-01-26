@@ -3,7 +3,7 @@
 import io
 import os
 import shutil
-import pytest
+from pathlib import Path
 from .constants import (
     CONFIG_YAMLFILE_CONTENT,
     CONFIG_YAMLFILE_NAME,
@@ -87,18 +87,17 @@ def delete_older_backupdirs(
         print(f"rm {timestamped_dir_to_delete}")
 
 
-@pytest.mark.improve
 @preserve_cwd
-def move_all_datafiles_to_backupdir(datadir_pathname=None, backupdir_pathname=None):
+def move_all_datafiles_to_backupdir(datadir=None, backupdir=None):
     """Move visible files in given data directory to named backup directory."""
-    if not datadir_pathname:
-        datadir_pathname = os.getcwd()
-    if not backupdir_pathname:
+    if not datadir:
+        datadir = Path.cwd()
+    if not backupdir:
         raise NoBackupDirSpecifiedError(f"No pathname specified for backup directory.")
-    os.chdir(datadir_pathname)
+    os.chdir(datadir)
     try:
         for file in return_visiblefiles_list():
-            shutil.move(file, backupdir_pathname)
+            shutil.move(file, backupdir)
     except OSError:
         print("Got an exception")
 
