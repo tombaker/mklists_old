@@ -35,30 +35,27 @@ CONFIG_PYOBJ = {
 }
 
 
-@pytest.mark.skip
-def test_return_config_dict_from_config_yamlfile(tmpdir):
+def test_return_config_dict_from_config_yamlfile(tmp_path):
     """Return dictionary of configuration settings from YAML file."""
-    os.chdir(tmpdir)
-    here = return_rootdir_pathname()
+    os.chdir(tmp_path)
     Path(CONFIG_YAMLFILE_NAME).write_text(CONFIG_YAMLFILE_CONTENT)
+    here = return_rootdir_pathname()
     assert (
         return_config_dict_from_config_yamlfile(rootdir_pathname=here) == CONFIG_PYOBJ
     )
 
 
-def test_read_config_yamlfile_return_config_dict_with_entries_commented_out(tmpdir):
+def test_read_config_yamlfile_return_config_dict_with_entries_commented_out(tmp_path):
     """Return configuration dictionary even if some lines are commented out."""
-    os.chdir(tmpdir)
-    CONTENT = "verbose: False\n" "# htmlify: True\n"
+    os.chdir(tmp_path)
+    configfile_content = "verbose: False\n" "# htmlify: True\n"
+    Path(CONFIG_YAMLFILE_NAME).write_text(configfile_content)
     expected = {"verbose": False}
-    tmpdir.join(CONFIG_YAMLFILE_NAME).write(CONTENT)
     assert return_config_dict_from_config_yamlfile() == expected
 
 
-@pytest.mark.skip
-def test_read_config_yamlfile_return_config_dict_not_found(tmpdir):
+def test_read_config_yamlfile_return_config_dict_not_found(tmp_path):
     """Raise exception if no configuration YAML file is found."""
-    os.chdir(tmpdir)
-    here = return_rootdir_pathname(here=os.getcwd())
+    os.chdir(tmp_path)
     with pytest.raises(SystemExit):
-        return_config_dict_from_config_yamlfile(rootdir_pathname=here)
+        return_config_dict_from_config_yamlfile()

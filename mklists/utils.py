@@ -59,16 +59,15 @@ def return_config_dict_from_config_yamlfile(
     rootdir_pathname=None, config_yamlfile_name=CONFIG_YAMLFILE_NAME
 ):
     """Returns configuration dictionary from YAML config file."""
-    if rootdir_pathname:
-        os.chdir(rootdir_pathname)
+    if not rootdir_pathname:
+        rootdir_pathname = return_rootdir_pathname()
+    configfile = Path(rootdir_pathname) / config_yamlfile_name
     try:
-        config_yamlfile_contents = open(config_yamlfile_name).read()
+        configfile_contents = Path(configfile).read_text()
     except FileNotFoundError:
-        raise ConfigFileNotFoundError(
-            f"Config file {repr(config_yamlfile_name)} not found."
-        )
+        raise ConfigFileNotFoundError(f"Config file {repr(configfile)} not found.")
     try:
-        return ruamel.yaml.safe_load(config_yamlfile_contents)
+        return ruamel.yaml.safe_load(configfile_contents)
     except ruamel.yaml.YAMLError:
         raise BadYamlError(f"Badly formatted YAML content.")
 
