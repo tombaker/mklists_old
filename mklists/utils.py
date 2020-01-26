@@ -128,7 +128,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_datadir_pathnames_under_given_pathname(
+def return_data_subdirs_list(
     given_pathname=None,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
     rules_csvfile_name=RULES_CSVFILE_NAME,
