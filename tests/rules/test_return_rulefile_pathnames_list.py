@@ -14,75 +14,78 @@ RULES_CSVFILE_NAME = ".rules"
 #  Test: function stops looking for '.rules' above rootdir (i.e., 'mklists.yml' found).
 
 
-def test_return_rulefile_pathnames_chain_basic(tmpdir):
+def test_return_rulefile_pathnames_chain_basic(tmp_path):
     """Typical: chain starts with rootdir, which has '.rules' file."""
-    tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
-    tmpdir.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
+    os.chdir(tmp_path)
+    abc = Path.cwd().joinpath("a/b/c")
+    abc.mkdir(parents=True, exist_ok=True)
+    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(RULES_CSVFILE_NAME).write_text("rule stuff")
+    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    os.chdir(abc)
     expected = [
-        Path(tmpdir) / ".rules",
-        Path(tmpdir) / "a/.rules",
-        Path(tmpdir) / "a/b/.rules",
-        Path(tmpdir) / "a/b/c/.rules",
+        Path(tmp_path) / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
     ]
-    assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
+    assert _return_rulefile_pathnames_chain(startdir_pathname=abc) == expected
 
 
-def test_return_rulefile_pathnames_chain_ends_before_repo_rootdir(tmpdir):
+def test_return_rulefile_pathnames_chain_ends_before_repo_rootdir(tmp_path):
     """Return chain starting below root directory (where rootdir has no '.rules')."""
-    tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
-    tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
-    os.chdir(tmpdirc)
+    os.chdir(tmp_path)
+    abc = Path.cwd().joinpath("a/b/c")
+    abc.mkdir(parents=True, exist_ok=True)
+    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    # NOT Path(RULES_CSVFILE_NAME).write_text("rule stuff")
+    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    os.chdir(abc)
     expected = [
-        Path(tmpdir) / "a/.rules",
-        Path(tmpdir) / "a/b/.rules",
-        Path(tmpdir) / "a/b/c/.rules",
+        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
     ]
     assert _return_rulefile_pathnames_chain() == expected
 
 
-def test_return_rulefile_pathnames_chain_even_without_repo_rootdir(tmpdir):
+def test_return_rulefile_pathnames_chain_even_without_repo_rootdir(tmp_path):
     """Specify startdir_pathname as argument instead of default (os.getcwd)."""
-    tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
-    tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
+    os.chdir(tmp_path)
+    abc = Path.cwd().joinpath("a/b/c")
+    abc.mkdir(parents=True, exist_ok=True)
+    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    # NOT os.chdir(abc)
     expected = [
-        Path(tmpdir) / "a/.rules",
-        Path(tmpdir) / "a/b/.rules",
-        Path(tmpdir) / "a/b/c/.rules",
+        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
     ]
-    assert _return_rulefile_pathnames_chain(startdir_pathname=tmpdirc) == expected
+    assert _return_rulefile_pathnames_chain(startdir_pathname=abc) == expected
 
 
-def test_return_rulefile_pathnames_chain_without_specifying_startdir_pathname(tmpdir):
+def test_return_rulefile_pathnames_chain_without_specifying_startdir_pathname(tmp_path):
     """Return chain
     * called without specifying startdir_pathname as an argument
     * therefore defaults to current working directory as startdir_pathname"""
-    tmpdir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
-    tmpdira = tmpdir.mkdir("a")
-    tmpdira.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirb = tmpdira.mkdir("b")
-    tmpdirb.join(RULES_CSVFILE_NAME).write("rule stuff")
-    tmpdirc = tmpdirb.mkdir("c")
-    tmpdirc.join(RULES_CSVFILE_NAME).write("rule stuff")
-    os.chdir(tmpdirc)
+    os.chdir(tmp_path)
+    abc = Path.cwd().joinpath("a/b/c")
+    abc.mkdir(parents=True, exist_ok=True)
+    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    os.chdir(abc)
     expected = [
-        Path(tmpdira) / ".rules",
-        Path(tmpdirb) / ".rules",
-        Path(tmpdirc) / ".rules",
+        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
     ]
     assert _return_rulefile_pathnames_chain() == expected
