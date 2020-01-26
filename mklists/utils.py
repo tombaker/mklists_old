@@ -156,7 +156,7 @@ def return_datadir_pathnames_under_given_pathname(
         dirs[:] = [d for d in dirs if not d[0] == "."]
         if rules_csvfile_name in files:
             if config_yamlfile_name not in files:
-                datadirs.append(dirpath)
+                datadirs.append(Path(dirpath))
 
     return datadirs
 
