@@ -1,17 +1,16 @@
-"""read_datafiles_return_datalines_list()
-* takes a list of files
-* returns a list of datalines"""
+"""Return list of datalines from datafiles."""
 
 import os
 import pytest
+from pathlib import Path
 from mklists.utils import return_datalines_list_from_datafiles
 
 
-def test_return_datalines_list(tmpdir):
+def test_return_datalines_list(tmp_path):
     """Return list of lines aggregated from all data files."""
-    os.chdir(tmpdir)
-    tmpdir.join("bar").write("bar stuff\nmore bar stuff\n")
-    tmpdir.join("foo").write("foo stuff\nmore foo stuff\n")
+    os.chdir(tmp_path)
+    Path("bar").write_text("bar stuff\nmore bar stuff\n")
+    Path("foo").write_text("foo stuff\nmore foo stuff\n")
     expected_result = [
         "bar stuff\n",
         "more bar stuff\n",
@@ -21,23 +20,23 @@ def test_return_datalines_list(tmpdir):
     assert return_datalines_list_from_datafiles() == expected_result
 
 
-def test_return_datalines_list_blank_lines_found(tmpdir):
+def test_return_datalines_list_blank_lines_found(tmp_path):
     """Exit with error message after blank line found."""
-    os.chdir(tmpdir)
-    tmpdir.join("foo").write("foo stuff\nmore foo stuff\n\n")
-    tmpdir.join("bar").write("bar stuff\nmore bar stuff\n")
+    os.chdir(tmp_path)
+    Path("foo").write_text("foo stuff\nmore foo stuff\n\n")
+    Path("bar").write_text("bar stuff\nmore bar stuff\n")
     with pytest.raises(SystemExit):
         return_datalines_list_from_datafiles()
 
 
-def test_return_datalines_list_non_utf8_found(tmpdir):
+def test_return_datalines_list_non_utf8_found(tmp_path):
     """Exit with error message after non-UTF8 material found.
     Todo: find out how to write non-UTF8 to a file."""
     import pickle
 
-    os.chdir(tmpdir)
-    tmpdir.join("foo").write("foo stuff\nmore foo stuff\n")
-    barfile = tmpdir.join("bar.pickle")
+    os.chdir(tmp_path)
+    Path("foo").write_text("foo stuff\nmore foo stuff\n")
+    barfile = Path("bar.pickle")
     some_data = [{"a": "A", "b": 2, "c": 3.0}]
     with open(barfile, "wb") as fout:
         pickle.dump(some_data, fout)
@@ -45,10 +44,10 @@ def test_return_datalines_list_non_utf8_found(tmpdir):
         return_datalines_list_from_datafiles()
 
 
-def test_return_datalines_list_no_data_error(tmpdir):
+def test_return_datalines_list_no_data_error(tmp_path):
     """Exit with error message after blank line found."""
-    os.chdir(tmpdir)
-    tmpdir.join("foo").write("")
-    tmpdir.join("bar").write("")
+    os.chdir(tmp_path)
+    Path("foo").write_text("")
+    Path("bar").write_text("")
     with pytest.raises(SystemExit):
         return_datalines_list_from_datafiles()

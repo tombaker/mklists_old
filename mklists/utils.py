@@ -46,8 +46,7 @@ def return_datalines_list_from_datafiles():
             raise NotUTF8Error(f"{repr(datafile)} is not UTF8-encoded.")
         for line in datafile_lines:
             if not line.rstrip():
-                print("Files in data directory must contain no blank lines.")
-                raise BlankLinesError(f"{repr(datafile)} has blank lines.")
+                raise BlankLinesError(f"{repr(datafile)} must have no blank lines.")
         all_datalines.extend(datafile_lines)
 
     if not all_datalines:
