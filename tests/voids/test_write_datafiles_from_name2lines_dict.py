@@ -1,34 +1,26 @@
-"""@@@"""
+"""Write name2lines_dict to datafiles as named in the dictionary keys."""
 
-import io
 import os
+from pathlib import Path
 import pytest
 from mklists.voids import write_datafiles_from_name2lines_dict
 
 
-def test_write_datafiles_from_name2lines_dict(tmpdir):
-    """@@@Docstring"""
-    os.chdir(tmpdir)
+def test_write_datafiles_from_name2lines_dict(tmp_path):
+    """Write name2lines_dict to designated files."""
+    os.chdir(tmp_path)
     data_dict = {"a.txt": ["Line 1\n", "Line 2\n"], "b.txt": ["Line 3\n", "Line 4\n"]}
     write_datafiles_from_name2lines_dict(data_dict)
     assert "a.txt" in os.listdir()
+    assert Path("a.txt").is_file()
+    assert [line for line in Path("a.txt").open()][0] == "Line 1\n"
+    assert Path("b.txt").read_text() == "Line 3\nLine 4\n"
 
 
-def test_write_datafiles_from_name2lines_dict_contents(tmpdir):
-    """@@@Docstring"""
-    os.chdir(tmpdir)
-    data_dict = {"a.txt": ["Line 1\n", "Line 2\n"], "b.txt": ["Line 3\n", "Line 4\n"]}
-    write_datafiles_from_name2lines_dict(data_dict)
-    assert io.open("a.txt").read() == "Line 1\nLine 2\n"
-
-
-@pytest.mark.improve
-def test_write_datafiles_from_name2lines_dict_contents_unless_zero_length(tmpdir):
-    """Does not write file if value is empty list.
-
-    2019-09-28: Unclear if this is needed."""
-    os.chdir(tmpdir)
+def test_write_datafiles_from_name2lines_dict_contents_unless_zero_length(tmp_path):
+    """File is not written if value is an empty list."""
+    os.chdir(tmp_path)
     data_dict = {"a.txt": ["Line 1\n", "Line 2\n"], "b.txt": []}
     write_datafiles_from_name2lines_dict(data_dict)
     with pytest.raises(FileNotFoundError):
-        io.open("b.txt")
+        Path("b.txt").read_text()
