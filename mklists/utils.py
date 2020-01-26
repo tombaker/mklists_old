@@ -98,10 +98,7 @@ def return_backup_subdir(work_dir=None, root_dir=None):
 
 @preserve_cwd
 def return_backupdir_pathname(
-    rootdir=None,
-    backupsdir=BACKUPS_DIR_NAME,
-    backup_subdir=None,
-    timestamp=TIMESTAMP_STR,
+    backupsdir=BACKUPS_DIR_NAME, backup_subdir=None, timestamp=TIMESTAMP_STR
 ):
     """@@@Docstring"""
     rootdir = return_rootdir_pathname()
