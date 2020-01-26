@@ -1,7 +1,7 @@
-"""Tests for todo.py"""
+"""Write default starter rule files."""
 
-import io
 import os
+from pathlib import Path
 from mklists.constants import (
     RULES_CSVFILE_NAME,
     DATADIRA_RULES_CSVFILE_CONTENTS,
@@ -11,20 +11,13 @@ from mklists.constants import (
 from mklists.voids import write_rules_csvfiles
 
 
-def test_init_write_rules_csvfiles(tmpdir):
-    """@@@Docstring"""
-    os.chdir(tmpdir)
+def test_init_write_rules_csvfiles(tmp_path):
+    """Write global rulefile in root, starter rulefile in data directory."""
+    os.chdir(tmp_path)
+    root_rules = Path(RULES_CSVFILE_NAME)
+    datadira_rules = Path(DATADIRA_NAME) / RULES_CSVFILE_NAME
+    root_rules_contents = ROOTDIR_RULES_CSVFILE_CONTENTS
+    datadira_rules_contents = DATADIRA_RULES_CSVFILE_CONTENTS
     write_rules_csvfiles()
-    rules_csvfile_name = RULES_CSVFILE_NAME
-    datadira_name = DATADIRA_NAME
-    rules_csvfile_name = RULES_CSVFILE_NAME
-    rootdir_rules_csvfile_contents = ROOTDIR_RULES_CSVFILE_CONTENTS
-    datadira_rules_csvfile_contents = DATADIRA_RULES_CSVFILE_CONTENTS
-    assert (
-        io.open(os.path.join(tmpdir, rules_csvfile_name)).read()
-        == rootdir_rules_csvfile_contents
-    )
-    assert (
-        io.open(os.path.join(tmpdir, datadira_name, rules_csvfile_name)).read()
-        == datadira_rules_csvfile_contents
-    )
+    assert Path(root_rules).read_text() == root_rules_contents
+    assert Path(datadira_rules).read_text() == datadira_rules_contents

@@ -1,4 +1,4 @@
-"""Deletes oldest backup directories, keeping only a specified (configurable) number."""
+"""Delete oldest backup directories, keeping only specified number."""
 
 import os
 import pytest
