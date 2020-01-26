@@ -27,67 +27,43 @@ def test_move_all_datafiles_to_backupdir(tmp_path):
     os.chdir(tmp_datadir)
     Path("a.txt").write_text("some content")
     Path("b.txt").write_text("some content")
-    move_all_datafiles_to_backupdir(datadir=tmp_datadir, backupdir=tmp_backupdir)
+    move_all_datafiles_to_backupdir(backupdir=tmp_backupdir, datadir=tmp_datadir)
     expected = ["a.txt", "b.txt"]
     assert sorted(os.listdir(tmp_backupdir)) == expected
     assert sorted(os.listdir(tmp_datadir)) == []
 
 
-@pytest.mark.skip
-def test_move_all_datafiles_to_backupdir2(tmpdir):
+def test_move_all_datafiles_to_backupdir2(tmp_path):
     """Moves data files to backup directory."""
-    backupdir_name = "_backups"
-    backup_subdir_shortname = "agenda"
-    timestamp_str = "2019-07-26_0758_06488910"
-    backupdir_pathname = tmpdir.mkdir(
-        os.path.join(backupdir_name, backup_subdir_shortname, timestamp_str)
-    )
-    print(f"backupdir_pathname is {backupdir_pathname}")
-    assert (
-        os.path.join(backupdir_name, backup_subdir_shortname, timestamp_str)
-        == os.getcwd()
-    )
-
-    # print(f"backupdir_pathname is {backupdir_pathname}")
-    # print(f"backupdir_pathname is {backupdir_pathname}")
-    # print(f"backupdir_pathname is {backupdir_pathname}")
-    # print(f"backupdir_pathname is {backupdir_pathname}")
-    # print(f"backupdir_pathname is {backupdir_pathname}")
-    # print(f"backupdir_pathname is {backupdir_pathname}")
-    # datadir_pathname = tmpdir.mkdir(backup_subdir_shortname) # Yes, really!
-    # datadir_pathname.join("file_a").write("some content")
-    # datadir_pathname.join("file_b").write("some content")
-    # os.chdir(datadir_pathname)
-    # move_all_datafiles_to_backupdir(
-    #     datadir_pathname=datadir_pathname, backupdir_pathname=backupdir_pathname
-    # )
-    # expected = ["file_a", "file_b"]
-    # assert sorted(os.listdir(backupdir_pathname)) == expected
-    # assert sorted(os.listdir(datadir_pathname)) == []
+    os.chdir(tmp_path)
+    tmp_backupdir = Path(tmp_path).joinpath("_backups/agenda/2019-07-26_0758_06488910")
+    tmp_backupdir.mkdir(parents=True, exist_ok=True)
+    tmp_datadir = Path(tmp_path).joinpath("data")
+    tmp_datadir.mkdir()
+    os.chdir(tmp_datadir)
+    Path("a.txt").write_text("some content")
+    Path("b.txt").write_text("some content")
+    move_all_datafiles_to_backupdir(backupdir=tmp_backupdir, datadir=tmp_datadir)
+    expected = ["a.txt", "b.txt"]
+    assert sorted(os.listdir(tmp_backupdir)) == expected
+    assert os.listdir(tmp_datadir) == []
 
 
-@pytest.mark.skip
-def test_move_all_datafiles_to_backupdir_no_datadir_specified(tmpdir):
+def test_move_all_datafiles_to_backupdir_no_datadir_specified(tmp_path):
     """Sets default of current directory if datadir directory is specified."""
-    before_cwd = os.getcwd()
-    backupdir_name = "_backups"
-    backup_subdir_shortname = "2020-01-24"
-    datadir_pathname = tmpdir.mkdir(backup_subdir_shortname)
-    datadir_pathname.join("file_a").write("some content")
-    datadir_pathname.join("file_b").write("some content")
-    tmpdir_backupdir = tmpdir.mkdir(backupdir_name)
-    backupdir_pathname = tmpdir_backupdir.mkdir("some_directory")
-    move_all_datafiles_to_backupdir(
-        datadir_pathname=None, backupdir_pathname=backupdir_pathname
-    )
-    assert before_cwd == os.getcwd()
+    os.chdir(tmp_path)
+    tmp_backupdir = Path(tmp_path).joinpath("_backups/agenda/2019-07-26_0758_06488910")
+    tmp_backupdir.mkdir(parents=True, exist_ok=True)
+    tmp_datadir = Path(tmp_path).joinpath("data")
+    tmp_datadir.mkdir()
+    os.chdir(tmp_datadir)
+    Path("a.txt").write_text("some content")
+    move_all_datafiles_to_backupdir(backupdir=tmp_backupdir)
+    assert Path(tmp_backupdir).joinpath("a.txt").is_file()
 
 
-def test_move_all_datafiles_to_backupdir_no_backupdir_specified(tmpdir):
+def test_move_all_datafiles_to_backupdir_no_backupdir_specified(tmp_path):
     """Raises exception if no backup directory is specified."""
-    datadir_pathname = tmpdir.mkdir("a")
-    os.chdir(datadir_pathname)
-    datadir_pathname.join("file_a").write("some content")
-    datadir_pathname.join("file_b").write("some content")
+    tmp_datadir = Path(tmp_path / "a")
     with pytest.raises(SystemExit):
-        move_all_datafiles_to_backupdir(datadir=datadir_pathname, backupdir=None)
+        move_all_datafiles_to_backupdir(backupdir=None, datadir=tmp_datadir)

@@ -88,7 +88,7 @@ def delete_older_backupdirs(
 
 
 @preserve_cwd
-def move_all_datafiles_to_backupdir(datadir=None, backupdir=None):
+def move_all_datafiles_to_backupdir(backupdir=None, datadir=None):
     """Move visible files in given data directory to named backup directory."""
     if not datadir:
         datadir = Path.cwd()
