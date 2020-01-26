@@ -1,7 +1,4 @@
-"""Returns pathname of HTML directory, composed from info provided in arguments.
-
-Edit /Users/tbaker/github/tombaker/mklists/mklists/utils.py
-"""
+"""Returns pathname of HTML directory composed from arguments."""
 
 import os
 import pytest
@@ -10,6 +7,7 @@ from mklists.utils import return_htmldir_pathname
 HTMLDIR_NAME = ".html"
 
 
+@pytest.mark.skip
 def test_utils_return_htmldir_pathname():
     """Returns pathname of HTML directory."""
     rootdir_pathname = "/Users/tbaker/tmp"
@@ -26,6 +24,7 @@ def test_utils_return_htmldir_pathname():
     )
 
 
+@pytest.mark.skip
 def test_utils_return_htmldir_pathname_rootdir_pathname_not_given():
     """Raises exception if argument rootdir_pathname not provided."""
     htmldir_name = ".html"
@@ -36,6 +35,7 @@ def test_utils_return_htmldir_pathname_rootdir_pathname_not_given():
         )
 
 
+@pytest.mark.skip
 def test_utils_return_htmldir_pathname_htmldir_name_not_given():
     """Raises exception if argument htmldir_name not provided."""
     rootdir_pathname = "/Users/tbaker/tmp"
@@ -48,6 +48,7 @@ def test_utils_return_htmldir_pathname_htmldir_name_not_given():
         )
 
 
+@pytest.mark.skip
 def test_utils_return_htmldir_pathname_datadir_name_not_given(tmpdir):
     """Returns pathname of HTML directory."""
     # pylint: disable=unused-variable

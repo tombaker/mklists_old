@@ -22,6 +22,10 @@ class NoBackupDirSpecifiedError(SystemExit):
     """No pathname for backup directory was specified."""
 
 
+class RepoNotFoundError(SystemExit):
+    """No mklists repo was found (eg, no "mklists.yml")."""
+
+
 # ConfigError
 class ConfigError(SystemExit):
     """Category of errors related to configuration."""

@@ -10,6 +10,7 @@ from .booleans import filename_is_valid_as_filename
 from .constants import (
     BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_NAME,
+    HTMLDIR_NAME,
     RULES_CSVFILE_NAME,
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
@@ -20,9 +21,9 @@ from .exceptions import (
     BadYamlError,
     BlankLinesError,
     ConfigFileNotFoundError,
-    MissingArgumentError,
     NoDataError,
     NotUTF8Error,
+    RepoNotFoundError,
 )
 
 # pylint: disable=bad-continuation
@@ -81,20 +82,20 @@ def return_rootdir_pathname(here=None, configfile=CONFIG_YAMLFILE_NAME):
     directory_chain_upwards.insert(0, Path.cwd())
     for directory in directory_chain_upwards:
         if configfile in [item.name for item in directory.glob("*")]:
-            return directory
-    return None
+            return Path(directory)
+    raise RepoNotFoundError(f"Not a mklists repo - {repr(configfile)} not found.")
 
 
 @preserve_cwd
-def return_backup_subdir_name(rootdir=None, heredir=None):
+def return_backup_subdir(work_dir=None, root_dir=None):
     """Return shortname of backup subdirectory."""
-    if not heredir:
-        heredir = Path.cwd()
-    if not rootdir:
-        rootdir = return_rootdir_pathname(here=heredir)
-    if rootdir == heredir:
-        return "rootdir"
-    return str(heredir)[len(str(rootdir)) :].strip("/").replace("/", "_")
+    if not work_dir:
+        work_dir = Path.cwd()
+    if not root_dir:
+        root_dir = return_rootdir_pathname(here=work_dir)
+    if root_dir == work_dir:
+        return "root"
+    return str(Path(work_dir).relative_to(root_dir)).strip("/").replace("/", "_")
 
 
 @preserve_cwd
@@ -106,7 +107,7 @@ def return_backupdir_pathname(
 ):
     """@@@Docstring"""
     rootdir = return_rootdir_pathname()
-    backup_subdir = return_backup_subdir_name()
+    backup_subdir = return_backup_subdir()
     return Path(rootdir) / backupsdir / backup_subdir / timestamp
 
 
@@ -161,20 +162,14 @@ def return_datadir_pathnames_under_given_pathname(
     return datadirs
 
 
-def return_htmldir_pathname(rootdir_pathname, htmldir_name, datadir_name):
-    """Return pathname for folder holding htmlified data files.
-
-    Args:
-        rootdir_pathname: Full pathname of mklists repo root directory.
-        htmldir_name:
-        datadir_name:
-    """
+def return_htmldir_pathname(
+    rootdir_pathname=None, htmldir_name=HTMLDIR_NAME, datadir_name=None
+):
+    """Return pathname for folder holding htmlified data files."""
     if not rootdir_pathname:
-        raise MissingArgumentError(f"Missing argument 'rootdir_pathname'")
+        rootdir_pathname = return_rootdir_pathname()
     if not htmldir_name:
-        raise MissingArgumentError(f"Missing argument 'htmldir_name'")
-    if not htmldir_name:
-        raise MissingArgumentError(f"Missing argument 'datadir_name'")
+        datadir_name = Path.cwd()
     return os.path.join(rootdir_pathname, htmldir_name, datadir_name)
 
 

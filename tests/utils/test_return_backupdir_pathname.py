@@ -5,7 +5,7 @@ import pytest
 from pathlib import Path
 from mklists.constants import TIMESTAMP_STR, BACKUPS_DIR_NAME
 from mklists.utils import (
-    return_backup_subdir_name,
+    return_backup_subdir,
     return_rootdir_pathname,
     return_backupdir_pathname,
 )
@@ -17,7 +17,7 @@ def test_return_backupdir_pathname(tmp_path):
     os.chdir(tmp_path)
     root = return_rootdir_pathname()
     backupdir = BACKUPS_DIR_NAME
-    sub = return_backup_subdir_name()
+    sub = return_backup_subdir()
     timestamp = TIMESTAMP_STR
     actual = return_backupdir_pathname(rootdir=root, backup_subdir=sub)
     expected = Path(root) / backupdir / sub / timestamp

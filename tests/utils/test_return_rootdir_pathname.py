@@ -1,6 +1,7 @@
-"""Returns root pathname of mklists repo wherever executed in repo."""
+"""Returns root pathname of mklists repo wherever called in repo."""
 
 import os
+import pytest
 from pathlib import Path
 from mklists.constants import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME
 from mklists.utils import return_rootdir_pathname
@@ -10,39 +11,42 @@ from mklists.utils import return_rootdir_pathname
 
 
 def test_return_rootdir_pathname_while_in_rootdir_using_tmp_path(tmp_path):
-    """Returns root directory while already in root directory."""
+    """Returns root directory when called while already in root directory."""
     os.chdir(tmp_path)
     Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
+    assert Path(CONFIG_YAMLFILE_NAME).exists()
     assert return_rootdir_pathname() == tmp_path
 
 
 def test_return_rootdir_pathname_while_in_rootdir_using_fixture(myrepo):
-    """Returns root directory starting in root directory of "myrepo"."""
+    """Returns root directory when called in root directory of "myrepo"."""
     os.chdir(myrepo)
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
-    assert RULES_CSVFILE_NAME in os.listdir(return_rootdir_pathname())
+    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
+    assert Path(RULES_CSVFILE_NAME).exists()  # created by fixture "myrepo"
     assert return_rootdir_pathname() == myrepo
 
 
 def test_return_rootdir_pathname_from_fixture_subdir(myrepo):
-    """Returns root pathname starting in subdirectory of "myrepo"."""
+    """Returns root pathname when called in subdirectory of "myrepo"."""
+    os.chdir(myrepo)
+    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
     os.chdir(os.path.join(myrepo, "a"))
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
     assert return_rootdir_pathname() == myrepo
 
 
 def test_return_rootdir_pathname_while_in_subdir_two_deep(myrepo):
-    """Returns root directory starting in sub-subdirectory of "myrepo"."""
+    """Returns root directory when called in sub-subdirectory of "myrepo"."""
+    os.chdir(myrepo)
+    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
     os.chdir(os.path.join(myrepo, "a/b"))
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
     assert return_rootdir_pathname() == myrepo
 
 
 def test_return_rootdir_pathname_while_in_subdir_three_deep(myrepo):
-    """Returns root directory starting in sub-sub-subdirectory of "myrepo"."""
+    """Returns root directory when called in sub-sub-subdirectory of "myrepo"."""
+    os.chdir(myrepo)
+    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
     os.chdir(os.path.join(myrepo, "a/b/c"))
-    assert CONFIG_YAMLFILE_NAME in os.listdir(return_rootdir_pathname())
     assert return_rootdir_pathname() == myrepo
 
 
@@ -51,10 +55,12 @@ def test_return_rootdir_pathname_none_when_configfile_not_found(tmp_path):
     os.chdir(tmp_path)
     Path("a/b/c").mkdir(parents=True, exist_ok=True)
     os.chdir("a/b/c")
-    assert return_rootdir_pathname() is None
+    with pytest.raises(SystemExit):
+        return_rootdir_pathname()
 
 
 def test_return_rootdir_pathname_none_when_outside_repo(myrepo):
-    """Returns "None" as root directory when executed outside "myrepo"."""
+    """Returns "None" as root directory when called outside "myrepo"."""
     os.chdir(os.pardir)
-    assert return_rootdir_pathname() is None
+    with pytest.raises(SystemExit):
+        return_rootdir_pathname()

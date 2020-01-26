@@ -3,8 +3,8 @@
 import datetime
 
 
-BACKUPS_DIR_NAME = "backups"
-HTMLDIR_NAME = "html"
+BACKUPS_DIR_NAME = "_backups"
+HTMLDIR_NAME = "_html"
 URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
