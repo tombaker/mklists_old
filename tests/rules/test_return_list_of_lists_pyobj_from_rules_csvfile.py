@@ -75,48 +75,50 @@ def test_return_list_of_lists_pyobj_from_rules_csvfile(tmp_path):
     assert real == expected
 
 
-def test_return_list_of_lists_pyobj_from_rules_csvfile_header_ignored(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_header_ignored(tmp_path):
     """The CSV file may have a header line, though it will be ignored."""
-    os.chdir(tmpdir)
+    os.chdir(tmp_path)
     Path(RULES_CSVFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
     real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 
 
-def test_return_list_of_lists_pyobj_from_rules_csvfile_rn(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_rn(tmp_path):
     """Fine for CSV file to have MS-Windows line endings (\r\n)."""
-    os.chdir(tmpdir)
+    os.chdir(tmp_path)
     Path(RULES_CSVFILE_NAME).write_text(TEST_RULES_CSVSTR_RN)
     expected = PYOBJ
     real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 
 
-def test_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmp_path):
     """Fine for CSV line to pad fields with spaces and leave field 5 blank."""
-    os.chdir(tmpdir)
+    os.chdir(tmp_path)
     Path(RULES_CSVFILE_NAME).write_text(TEST_RULES_CSVSTR_LEGACY)
     expected = PYOBJ_LEGACY
     real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULES_CSVFILE_NAME)
     assert real == expected
 
 
-def test_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified(tmpdir):
-    """Raises NoRulefileError if specified CSV file is "None"."""
+def test_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified(tmp_path):
+    """Raises NoRulefileError if specified CSV file is "None" (the default)."""
     with pytest.raises(NoRulefileError):
         return_list_of_lists_pyobj_from_rules_csvfile(csvfile=None)
 
 
-def test_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified2(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_rulefile_not_specified2(
+    tmp_path
+):
     """Raises NoRulefileError if called specifying no argument at all."""
     with pytest.raises(NoRulefileError):
         return_list_of_lists_pyobj_from_rules_csvfile()
 
 
-def test_return_list_of_lists_pyobj_from_rules_csvfile_not_found(tmpdir):
+def test_return_list_of_lists_pyobj_from_rules_csvfile_not_found(tmp_path):
     """Raises NoRulefileError if specified CSV file is not found."""
-    os.chdir(tmpdir)
+    os.chdir(tmp_path)
     Path(".rules2").write_text(TEST_RULES_CSVSTR)
     with pytest.raises(NoRulefileError):
         return_list_of_lists_pyobj_from_rules_csvfile(csvfile=".rules3")
