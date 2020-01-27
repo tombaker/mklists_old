@@ -85,24 +85,14 @@ def return_rootdir_pathname(here=None, configfile=CONFIG_YAMLFILE_NAME):
 
 
 @preserve_cwd
-def return_backup_subdir(work_dir=None, root_dir=None):
-    """Return shortname of backup subdirectory."""
-    if not work_dir:
-        work_dir = Path.cwd()
-    if not root_dir:
-        root_dir = return_rootdir_pathname(here=work_dir)
-    if root_dir == work_dir:
-        return "root"
-    return str(Path(work_dir).relative_to(root_dir)).strip("/").replace("/", "_")
-
-
-@preserve_cwd
 def return_backupdir_pathname(
-    backupsdir=BACKUPS_DIR_NAME, backup_subdir=None, timestamp=TIMESTAMP_STR
+    workdir=None, backupsdir=BACKUPS_DIR_NAME, timestamp=TIMESTAMP_STR
 ):
-    """@@@Docstring"""
+    """Return backups Path named for given (or default) working directory."""
     rootdir = return_rootdir_pathname()
-    backup_subdir = return_backup_subdir()
+    if not workdir:
+        workdir = Path.cwd()
+    backup_subdir = str(Path(workdir).relative_to(rootdir)).strip("/").replace("/", "_")
     return Path(rootdir) / backupsdir / backup_subdir / timestamp
 
 
