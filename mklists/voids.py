@@ -67,12 +67,11 @@ def delete_older_backupdirs(
     """Delete all but specified number of backups of current working directory."""
     # 2019-01-28: Need function to test sanity of config file settings?
     if not rootdir:
-        rootdir = return_rootdir_pathname
+        rootdir = return_rootdir_pathname()
     if backups_depth is None:
         backups_depth = 0
-    print(f"rootdir is {rootdir}")
-    print(f"type(rootdir) is {type(rootdir)}")
-    return rootdir
+    if dryrun:
+        return rootdir
     # backupsdir = Path(rootdir).joinpath(backupsdir_name)
     # return backupsdir
 
