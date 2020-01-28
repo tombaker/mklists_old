@@ -60,28 +60,13 @@ def write_rules_csvfiles(
 
 
 @preserve_cwd
-def delete_older_backupdirs(
-    _rootdir_pathname=None,
-    _backupdir_subdir_name=None,
-    _backupdir_shortname=None,
-    _backup_depth_int=None,
-):
-    """Delete all but X number of backups of current working directory.
-
-    Args:
-        _rootdir_pathname:
-        _backupdir_subdir_name:
-        _backupdir_shortname:
-        _backup_depth_int: Number of backups to keep [default: 2]
-    """
-    if _backup_depth_int is None:
+def delete_older_backupdirs(backupdir=None, backup_depth=None):
+    """Delete all but specified number of backups of current working directory."""
+    if backup_depth is None:
         raise BackupDepthUnspecifiedError(f"Number of backups to keep is unspecified.")
-    backupdir = os.path.join(
-        _rootdir_pathname, _backupdir_subdir_name, _backupdir_shortname
-    )
     os.chdir(backupdir)
     ls_backupdir = sorted(os.listdir())
-    while len(ls_backupdir) > _backup_depth_int:
+    while len(ls_backupdir) > backup_depth:
         timestamped_dir_to_delete = ls_backupdir.pop(0)
         shutil.rmtree(timestamped_dir_to_delete)
         print(f"rm {timestamped_dir_to_delete}")

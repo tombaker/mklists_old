@@ -147,6 +147,4 @@ def test_utils_return_htmlline_from_textline_not_including_linefeed():
     """@@@Docstring"""
     textline = """http://www.gmd.de\n"""
     htmlline = """<a href="http://www.gmd.de">http://www.gmd.de</a>\n"""
-    print(type(htmlline))
-    print(htmlline)
     assert return_htmlline_from_textline(textline) == htmlline
