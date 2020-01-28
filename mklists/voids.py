@@ -62,7 +62,7 @@ def write_rules_csvfiles(
 
 @preserve_cwd
 def delete_older_backupdirs(
-    backups_depth=None, backups_dir=BACKUPS_DIR_NAME, rootdir=None, dryrun=False
+    backups_depth=None, backupsdir_name=BACKUPS_DIR_NAME, rootdir=None, dryrun=False
 ):
     """Delete all but specified number of backups of current working directory."""
     # 2019-01-28: Need function to test sanity of config file settings?
@@ -70,9 +70,11 @@ def delete_older_backupdirs(
         rootdir = return_rootdir_pathname
     if backups_depth is None:
         backups_depth = 0
-    if dryrun:
-        backupsdir = Path(rootdir).joinpath(backups_dir)
-        return backupsdir
+    print(f"rootdir is {rootdir}")
+    print(f"type(rootdir) is {type(rootdir)}")
+    return rootdir
+    # backupsdir = Path(rootdir).joinpath(backupsdir_name)
+    # return backupsdir
 
 
 @preserve_cwd
