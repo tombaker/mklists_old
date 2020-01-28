@@ -5,6 +5,7 @@ import os
 import shutil
 from pathlib import Path
 from .constants import (
+    BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_CONTENT,
     CONFIG_YAMLFILE_NAME,
     DATADIRA_NAME,
@@ -13,12 +14,12 @@ from .constants import (
     RULES_CSVFILE_NAME,
 )
 from .decorators import preserve_cwd
-from .exceptions import (
-    BackupDepthUnspecifiedError,
-    NoBackupDirSpecifiedError,
-    RepoAlreadyInitialized,
+from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
+from .utils import (
+    return_htmlline_from_textline,
+    return_visiblefiles_list,
+    return_rootdir_pathname,
 )
-from .utils import return_htmlline_from_textline, return_visiblefiles_list
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -60,16 +61,18 @@ def write_rules_csvfiles(
 
 
 @preserve_cwd
-def delete_older_backupdirs(backupdir=None, backup_depth=None):
+def delete_older_backupdirs(
+    backups_depth=None, backups_dir=BACKUPS_DIR_NAME, rootdir=None, dryrun=False
+):
     """Delete all but specified number of backups of current working directory."""
-    if backup_depth is None:
-        raise BackupDepthUnspecifiedError(f"Number of backups to keep is unspecified.")
-    os.chdir(backupdir)
-    ls_backupdir = sorted(os.listdir())
-    while len(ls_backupdir) > backup_depth:
-        timestamped_dir_to_delete = ls_backupdir.pop(0)
-        shutil.rmtree(timestamped_dir_to_delete)
-        print(f"rm {timestamped_dir_to_delete}")
+    # 2019-01-28: Need function to test sanity of config file settings?
+    if not rootdir:
+        rootdir = return_rootdir_pathname
+    if backups_depth is None:
+        backups_depth = 0
+    if dryrun:
+        backupsdir = Path(rootdir).joinpath(backups_dir)
+        return backupsdir
 
 
 @preserve_cwd
