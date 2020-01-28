@@ -1,6 +1,7 @@
 """@@@Docstring"""
 
 import pytest
+from pathlib import Path
 from mklists.rules import Rule
 from mklists.constants import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME
 
@@ -25,15 +26,13 @@ def fixture_tmpath():
 
 
 @pytest.fixture(name="myrepo")
-def fixture_myrepo(tmpdir_factory):
+def fixture_myrepo(tmp_path_factory):
     """Return temporary mklists repo 'myrepo'."""
     # pylint: disable=unused-variable
     # Not a problem; this is just a fixture.
-    root_dir = tmpdir_factory.mktemp("myrepo")
-    subdir_a = root_dir.mkdir("a")
-    root_dir.join(CONFIG_YAMLFILE_NAME).write("config stuff")
-    root_dir.join(RULES_CSVFILE_NAME).write("rule stuff")
-    subdir_a.join(RULES_CSVFILE_NAME).write("rule stuff")
-    subdir_b = subdir_a.mkdir("b")
-    subdir_b.mkdir("c")
+    root_dir = tmp_path_factory.mktemp("myrepo")
+    Path(root_dir).joinpath(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(root_dir).joinpath(RULES_CSVFILE_NAME).write_text("rule stuff")
+    Path(root_dir).joinpath("a/b/c").mkdir(parents=True, exist_ok=True)
+    Path(root_dir).joinpath("a", RULES_CSVFILE_NAME).write_text("rule stuff")
     return root_dir
