@@ -109,7 +109,7 @@ def return_names2lines_dict_from_ruleobj_and_dataline_lists(
 
 
 @preserve_cwd
-def _return_rulefile_pathnames_chain(
+def _return_parent_rulefile_paths(
     startdir_pathname=None,
     rules_csvfile_name=RULES_CSVFILE_NAME,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
@@ -126,7 +126,7 @@ def _return_rulefile_pathnames_chain(
         config_yamlfile_name:
     """
     if not startdir_pathname:
-        startdir_pathname = os.getcwd()
+        startdir_pathname = Path.cwd()
     os.chdir(startdir_pathname)
     rulefile_pathnames_list = []
     while rules_csvfile_name in os.listdir():
