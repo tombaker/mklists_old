@@ -110,7 +110,7 @@ def return_names2lines_dict_from_ruleobj_and_dataline_lists(
 
 @preserve_cwd
 def _return_parent_rulefile_paths(
-    startdir_pathname=None,
+    startdir_path=None,
     rules_csvfile_name=RULES_CSVFILE_NAME,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
 ):
@@ -121,20 +121,20 @@ def _return_parent_rulefile_paths(
     directory with a YAML configuration file (by default "mklists.yml").
 
     Args:
-        startdir_pathname:
+        startdir_path:
         rules_csvfile_name:
         config_yamlfile_name:
     """
-    if not startdir_pathname:
-        startdir_pathname = Path.cwd()
-    os.chdir(startdir_pathname)
-    rulefile_pathnames_list = []
+    if not startdir_path:
+        startdir_path = Path.cwd()
+    os.chdir(startdir_path)
+    parent_rulefile_paths = []
     while rules_csvfile_name in os.listdir():
-        rulefile_pathnames_list.insert(0, Path.cwd() / rules_csvfile_name)
+        parent_rulefile_paths.insert(0, Path.cwd() / rules_csvfile_name)
         if config_yamlfile_name in os.listdir():
             break
         os.chdir(os.pardir)
-    return rulefile_pathnames_list
+    return parent_rulefile_paths
 
 
 def _return_ruleobj_list_from_pyobj(pyobj=None):
@@ -159,10 +159,10 @@ def _return_ruleobj_list_from_pyobj(pyobj=None):
     return ruleobj_list
 
 
-def return_one_ruleobj_list_from_rulefile_pathnames_list(rulefile_pathnames_list=None):
+def return_ruleobj_list_from_rulefiles(rulefile_paths=None):
     """Return list of Rule objects from pipe-delimited CSV file."""
     one_ruleobj_list = []
-    for rulefile_pathname in rulefile_pathnames_list:
+    for rulefile_pathname in rulefile_paths:
         pyobj = return_list_of_lists_pyobj_from_rules_csvfile(rulefile_pathname)
         one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobj))
     return one_ruleobj_list

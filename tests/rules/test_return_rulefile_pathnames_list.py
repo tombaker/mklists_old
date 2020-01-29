@@ -31,7 +31,7 @@ def test_return_parent_rulefile_paths_typical(tmp_path):
         Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
         Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
     ]
-    assert _return_parent_rulefile_paths(startdir_pathname=abc) == expected
+    assert _return_parent_rulefile_paths(startdir_path=abc) == expected
 
 
 def test_return_parent_rulefile_paths_ends_before_repo_rootdir(tmp_path):
@@ -54,7 +54,7 @@ def test_return_parent_rulefile_paths_ends_before_repo_rootdir(tmp_path):
 
 
 def test_return_parent_rulefile_paths_without_specifying_rootdir(tmp_path):
-    """Specify startdir_pathname as argument instead of default (os.getcwd)."""
+    """Specify startdir_path as argument instead of default (os.getcwd)."""
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
@@ -68,13 +68,13 @@ def test_return_parent_rulefile_paths_without_specifying_rootdir(tmp_path):
         Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
         Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
     ]
-    assert _return_parent_rulefile_paths(startdir_pathname=abc) == expected
+    assert _return_parent_rulefile_paths(startdir_path=abc) == expected
 
 
-def test_return_parent_rulefile_paths_without_specifying_startdir_pathname(tmp_path):
+def test_return_parent_rulefile_paths_without_specifying_startdir_path(tmp_path):
     """Return chain
-    * called without specifying startdir_pathname as an argument
-    * therefore defaults to current working directory as startdir_pathname"""
+    * called without specifying startdir_path as an argument
+    * therefore defaults to current working directory as startdir_path"""
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
