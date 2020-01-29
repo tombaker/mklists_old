@@ -5,7 +5,7 @@ from pathlib import Path
 from mklists.rules import _return_parent_rulefile_paths
 from mklists.constants import CONFIG_YAMLFILE_NAME
 
-RULES_CSVFILE_NAME = ".rules"
+RULEFILE_NAME = ".rules"
 
 
 # 2019-01-19:
@@ -20,16 +20,16 @@ def test_return_parent_rulefile_paths_typical(tmp_path):
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
     Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
-    Path(RULES_CSVFILE_NAME).write_text("rule stuff")
-    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(RULEFILE_NAME).write_text("rule stuff")
+    Path(tmp_path).joinpath("a", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULEFILE_NAME).write_text("rule_stuff")
     os.chdir(abc)
     expected = [
-        Path(tmp_path) / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / RULEFILE_NAME,
+        Path(tmp_path) / "a" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULEFILE_NAME,
     ]
     assert _return_parent_rulefile_paths(startdir_path=abc) == expected
 
@@ -40,15 +40,15 @@ def test_return_parent_rulefile_paths_ends_before_repo_rootdir(tmp_path):
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
     Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
-    # NOT Path(RULES_CSVFILE_NAME).write_text("rule stuff")
-    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    # NOT Path(RULEFILE_NAME).write_text("rule stuff")
+    Path(tmp_path).joinpath("a", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULEFILE_NAME).write_text("rule_stuff")
     os.chdir(abc)
     expected = [
-        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULEFILE_NAME,
     ]
     assert _return_parent_rulefile_paths() == expected
 
@@ -59,14 +59,14 @@ def test_return_parent_rulefile_paths_without_specifying_rootdir(tmp_path):
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
     Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
-    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULEFILE_NAME).write_text("rule_stuff")
     # NOT os.chdir(abc)
     expected = [
-        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULEFILE_NAME,
     ]
     assert _return_parent_rulefile_paths(startdir_path=abc) == expected
 
@@ -79,13 +79,13 @@ def test_return_parent_rulefile_paths_without_specifying_startdir_path(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
     Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
-    Path(tmp_path).joinpath("a", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b", RULES_CSVFILE_NAME).write_text("rule_stuff")
-    Path(tmp_path).joinpath("a/b/c", RULES_CSVFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b", RULEFILE_NAME).write_text("rule_stuff")
+    Path(tmp_path).joinpath("a/b/c", RULEFILE_NAME).write_text("rule_stuff")
     os.chdir(abc)
     expected = [
-        Path(tmp_path) / "a" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b" / RULES_CSVFILE_NAME,
-        Path(tmp_path) / "a/b/c" / RULES_CSVFILE_NAME,
+        Path(tmp_path) / "a" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b" / RULEFILE_NAME,
+        Path(tmp_path) / "a/b/c" / RULEFILE_NAME,
     ]
     assert _return_parent_rulefile_paths() == expected

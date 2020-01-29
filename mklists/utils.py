@@ -11,7 +11,7 @@ from .constants import (
     BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_NAME,
     HTMLDIR_NAME,
-    RULES_CSVFILE_NAME,
+    RULEFILE_NAME,
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
 )
@@ -117,12 +117,12 @@ def return_compiled_regex_from_regexstr(_regex=None):
 def return_data_subdirs_list(
     given_pathname=None,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
-    rules_csvfile_name=RULES_CSVFILE_NAME,
+    rules_csvfile_name=RULEFILE_NAME,
 ):
     """Return list of data directories under a given directory.
 
     "Data directories"
-    * directories with a rule file (default: RULES_CSVFILE_NAME = '.rules')
+    * directories with a rule file (default: RULEFILE_NAME = '.rules')
       * repo root directory (ROOTDIR_PATHNAME) may have rule file
         but is not a data directory
       * except "hidden" directories (name starting with ".")

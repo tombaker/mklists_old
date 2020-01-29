@@ -9,9 +9,9 @@ from .constants import (
     CONFIG_YAMLFILE_CONTENT,
     CONFIG_YAMLFILE_NAME,
     DATADIRA_NAME,
-    DATADIRA_RULES_CSVFILE_CONTENTS,
-    ROOTDIR_RULES_CSVFILE_CONTENTS,
-    RULES_CSVFILE_NAME,
+    DATADIRA_RULEFILE_CONTENTS,
+    ROOTDIR_RULEFILE_CONTENTS,
+    RULEFILE_NAME,
 )
 from .decorators import preserve_cwd
 from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
@@ -44,10 +44,10 @@ def write_config_yamlfile(
 
 @preserve_cwd
 def write_rules_csvfiles(
-    rules_csvfile_name=RULES_CSVFILE_NAME,
-    datadira_rules_csvfile_contents=DATADIRA_RULES_CSVFILE_CONTENTS,
+    rules_csvfile_name=RULEFILE_NAME,
+    datadira_rules_csvfile_contents=DATADIRA_RULEFILE_CONTENTS,
     datadira_name=DATADIRA_NAME,
-    rootdir_rules_csvfile_contents=ROOTDIR_RULES_CSVFILE_CONTENTS,
+    rootdir_rules_csvfile_contents=ROOTDIR_RULEFILE_CONTENTS,
 ):
     """@@@Docstring"""
     io.open(rules_csvfile_name, "w", encoding="utf-8").write(

@@ -3,7 +3,7 @@
 import os
 import pytest
 from pathlib import Path
-from mklists.constants import CONFIG_YAMLFILE_NAME, RULES_CSVFILE_NAME
+from mklists.constants import CONFIG_YAMLFILE_NAME, RULEFILE_NAME
 from mklists.utils import return_rootdir_pathname
 
 # pylint: disable=unused-argument
@@ -22,7 +22,7 @@ def test_return_rootdir_pathname_while_in_rootdir_using_fixture(myrepo):
     """Returns root directory when called in root directory of "myrepo"."""
     os.chdir(myrepo)
     assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
-    assert Path(RULES_CSVFILE_NAME).exists()  # created by fixture "myrepo"
+    assert Path(RULEFILE_NAME).exists()  # created by fixture "myrepo"
     assert return_rootdir_pathname() == myrepo
 
 

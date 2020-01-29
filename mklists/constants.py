@@ -19,14 +19,14 @@ DATADIRA_README_FILE_CONTENTS = (
     "LATER Check out 'mklists.yml' in the root directory.\n"
     "LATER Hint: Create 'b' directory as a destination for 'log.txt'.\n"
 )
-RULES_CSVFILE_NAME = ".rules"
-ROOTDIR_RULES_CSVFILE_CONTENTS = (
+RULEFILE_NAME = ".rules"
+ROOTDIR_RULEFILE_CONTENTS = (
     "# Global rules.\n"
     "in field|match |in source  |move to    |sort by|\n"
     "0       |.     |lines.tmp  |lines      |1      |Comments here.\n"
 )
 DATADIRA_NAME = "a"
-DATADIRA_RULES_CSVFILE_CONTENTS = (
+DATADIRA_RULEFILE_CONTENTS = (
     "# First five fields in lines that start with integers are parsed as rules.\n"
     "# Everything else - empty lines, comments, extra fields - is ignored.\n"
     "# For readability, fields may contain whitespace on the left or right.\n"

@@ -11,7 +11,7 @@ from .booleans import (
     dataline_is_match_to_ruleobj,
 )
 
-from .constants import RULES_CSVFILE_NAME, CONFIG_YAMLFILE_NAME
+from .constants import RULEFILE_NAME, CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
@@ -111,7 +111,7 @@ def return_names2lines_dict_from_ruleobj_and_dataline_lists(
 @preserve_cwd
 def _return_parent_rulefile_paths(
     startdir_path=None,
-    rules_csvfile_name=RULES_CSVFILE_NAME,
+    rules_csvfile_name=RULEFILE_NAME,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return chain of rule files leading from parent directories
