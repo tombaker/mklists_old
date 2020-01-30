@@ -20,6 +20,7 @@ DATADIRA_README_FILE_CONTENTS = (
     "LATER Hint: Create 'b' directory as a destination for 'log.txt'.\n"
 )
 RULEFILE_NAME = ".rules"
+ROOTDIR_RULEFILE_NAME = "rules.cfg"
 ROOTDIR_RULEFILE_CONTENTS = (
     "# Global rules.\n"
     "in field|match |in source  |move to    |sort by|\n"

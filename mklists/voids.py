@@ -10,8 +10,9 @@ from .constants import (
     CONFIG_YAMLFILE_NAME,
     DATADIRA_NAME,
     DATADIRA_RULEFILE_CONTENTS,
-    ROOTDIR_RULEFILE_CONTENTS,
     RULEFILE_NAME,
+    ROOTDIR_RULEFILE_CONTENTS,
+    ROOTDIR_RULEFILE_NAME,
 )
 from .decorators import preserve_cwd
 from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
@@ -44,20 +45,16 @@ def write_config_yamlfile(
 
 @preserve_cwd
 def write_rules_csvfiles(
-    rules_csvfile_name=RULEFILE_NAME,
-    datadira_rules_csvfile_contents=DATADIRA_RULEFILE_CONTENTS,
-    datadira_name=DATADIRA_NAME,
-    rootdir_rules_csvfile_contents=ROOTDIR_RULEFILE_CONTENTS,
+    dira=DATADIRA_NAME,
+    dira_rulefile=RULEFILE_NAME,
+    dira_rulefile_contents=DATADIRA_RULEFILE_CONTENTS,
+    root_rulefile=ROOTDIR_RULEFILE_NAME,
+    root_rulefile_contents=ROOTDIR_RULEFILE_CONTENTS,
 ):
-    """@@@Docstring"""
-    io.open(rules_csvfile_name, "w", encoding="utf-8").write(
-        rootdir_rules_csvfile_contents
-    )
-    os.mkdir(datadira_name)
-    os.chdir(datadira_name)
-    io.open(rules_csvfile_name, "w", encoding="utf-8").write(
-        datadira_rules_csvfile_contents
-    )
+    """Write starter rule files to root directory and one data directory."""
+    Path(dira).mkdir(parents=True, exist_ok=True)
+    Path(dira).joinpath(dira_rulefile).write_text(dira_rulefile_contents)
+    Path(root_rulefile).write_text(root_rulefile_contents)
 
 
 @preserve_cwd

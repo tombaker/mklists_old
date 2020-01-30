@@ -7,6 +7,7 @@ from pathlib import Path
 import ruamel.yaml
 from .booleans import filename_is_valid_as_filename
 
+# ROOTDIR_RULEFILE_NAME,
 from .constants import (
     BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_NAME,
@@ -121,11 +122,10 @@ def return_data_subdirs_list(
 ):
     """Return list of data directories under a given directory.
 
-    "Data directories"
-    * directories with a rule file (default: RULEFILE_NAME = '.rules')
-      * repo root directory (ROOTDIR_PATHNAME) may have rule file
-        but is not a data directory
-      * except "hidden" directories (name starting with ".")
+    "Data directory" = directory with hidden rule file ('.rules')
+    * root directory has global rule file ('rules.cfg') but is
+      not a data directory
+
 
     Args:
         given_pathname: starting point for finding data subdirectories.
@@ -134,6 +134,7 @@ def return_data_subdirs_list(
     * mklists run --all   - runs in all data directories under repo root directory
     * mklists run         - runs in all data directories under current directory
     * mklists run --here  - runs just in current directory
+    2020-01-29: What need to filter "hidden" directories (name starting '^.')?
     """
     if not given_pathname:
         given_pathname = os.getcwd()

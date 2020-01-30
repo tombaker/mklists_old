@@ -4,7 +4,7 @@ import os
 import pytest
 from pathlib import Path
 
-from mklists.constants import RULEFILE_NAME
+from mklists.constants import ROOTDIR_RULEFILE_NAME
 from mklists.exceptions import NoRulefileError
 from mklists.rules import return_list_of_lists_pyobj_from_rules_csvfile
 
@@ -69,36 +69,36 @@ PYOBJ = [
 def test_return_list_of_lists_pyobj_from_rules_csvfile(tmp_path):
     """Return True if CSV file has no header line because it will be ignored anyway."""
     os.chdir(tmp_path)
-    Path(RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
+    Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULEFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
 def test_return_list_of_lists_pyobj_from_rules_csvfile_header_ignored(tmp_path):
     """The CSV file may have a header line, though it will be ignored."""
     os.chdir(tmp_path)
-    Path(RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
+    Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULEFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
 def test_return_list_of_lists_pyobj_from_rules_csvfile_rn(tmp_path):
     """Fine for CSV file to have MS-Windows line endings (\r\n)."""
     os.chdir(tmp_path)
-    Path(RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_RN)
+    Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_RN)
     expected = PYOBJ
-    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULEFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
 def test_return_list_of_lists_pyobj_from_rules_csvfile_legacy(tmp_path):
     """Fine for CSV line to pad fields with spaces and leave field 5 blank."""
     os.chdir(tmp_path)
-    Path(RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_LEGACY)
+    Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_LEGACY)
     expected = PYOBJ_LEGACY
-    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=RULEFILE_NAME)
+    real = return_list_of_lists_pyobj_from_rules_csvfile(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 

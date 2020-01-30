@@ -11,7 +11,7 @@ from .booleans import (
     dataline_is_match_to_ruleobj,
 )
 
-from .constants import RULEFILE_NAME, CONFIG_YAMLFILE_NAME
+from .constants import ROOTDIR_RULEFILE_NAME, RULEFILE_NAME, CONFIG_YAMLFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
@@ -111,7 +111,8 @@ def return_names2lines_dict_from_ruleobj_and_dataline_lists(
 @preserve_cwd
 def _return_parent_rulefile_paths(
     startdir_path=None,
-    rules_csvfile_name=RULEFILE_NAME,
+    data_rulefile=RULEFILE_NAME,
+    root_rulefile=ROOTDIR_RULEFILE_NAME,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return chain of rule files leading from parent directories
@@ -122,19 +123,25 @@ def _return_parent_rulefile_paths(
 
     Args:
         startdir_path:
-        rules_csvfile_name:
+        data_rulefile:
         config_yamlfile_name:
     """
     if not startdir_path:
         startdir_path = Path.cwd()
     os.chdir(startdir_path)
-    parent_rulefile_paths = []
-    while rules_csvfile_name in os.listdir():
-        parent_rulefile_paths.insert(0, Path.cwd() / rules_csvfile_name)
-        if config_yamlfile_name in os.listdir():
-            break
-        os.chdir(os.pardir)
-    return parent_rulefile_paths
+    root2startdir_rulefiles = []
+    if data_rulefile in os.listdir():
+        root2startdir_rulefiles.insert(0, Path.cwd().joinpath(data_rulefile))
+
+    # root2startdir_rulefiles = []
+    # while data_rulefile in os.listdir():
+    #     root2startdir_rulefiles.insert(0, Path.cwd().joinpath(data_rulefile))
+    #     if config_yamlfile_name in os.listdir():
+    #         if root_rulefile in os.listdir():
+    #             root2startdir_rulefiles.insert(0, Path.cwd().joinpath(root_rulefile))
+    #         break
+    #     os.chdir(os.pardir)
+    return root2startdir_rulefiles
 
 
 def _return_ruleobj_list_from_pyobj(pyobj=None):
