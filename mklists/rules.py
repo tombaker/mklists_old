@@ -11,7 +11,11 @@ from .booleans import (
     dataline_is_match_to_ruleobj,
 )
 
-from .constants import ROOTDIR_RULEFILE_NAME, RULEFILE_NAME, CONFIG_YAMLFILE_NAME
+from .constants import (
+    ROOTDIR_RULEFILE_NAME,
+    DATADIR_RULEFILE_NAME,
+    CONFIG_YAMLFILE_NAME,
+)
 from .decorators import preserve_cwd
 from .exceptions import (
     BadFilenameError,
@@ -110,38 +114,23 @@ def return_names2lines_dict_from_ruleobj_and_dataline_lists(
 
 @preserve_cwd
 def _return_parent_rulefile_paths(
-    startdir_path=None,
-    data_rulefile=RULEFILE_NAME,
-    root_rulefile=ROOTDIR_RULEFILE_NAME,
+    startdir=None,
+    datadir_rulefile=DATADIR_RULEFILE_NAME,
+    rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
 ):
-    """Return chain of rule files leading from parent directories
-    to starting directory (default: the current directory).
-
-    Looks no higher than the root directory of a mklists repo, i.e., the
-    directory with a YAML configuration file (by default "mklists.yml").
-
-    Args:
-        startdir_path:
-        data_rulefile:
-        config_yamlfile_name:
-    """
-    if not startdir_path:
-        startdir_path = Path.cwd()
-    os.chdir(startdir_path)
-    root2startdir_rulefiles = []
-    if data_rulefile in os.listdir():
-        root2startdir_rulefiles.insert(0, Path.cwd().joinpath(data_rulefile))
-
-    # root2startdir_rulefiles = []
-    # while data_rulefile in os.listdir():
-    #     root2startdir_rulefiles.insert(0, Path.cwd().joinpath(data_rulefile))
-    #     if config_yamlfile_name in os.listdir():
-    #         if root_rulefile in os.listdir():
-    #             root2startdir_rulefiles.insert(0, Path.cwd().joinpath(root_rulefile))
-    #         break
-    #     os.chdir(os.pardir)
-    return root2startdir_rulefiles
+    """Return chain of rule files from root to specified data directory."""
+    if not startdir:
+        startdir = Path.cwd()
+    os.chdir(startdir)
+    root2datadir_rulefiles = []
+    while datadir_rulefile in os.listdir():
+        root2datadir_rulefiles.insert(0, Path.cwd().joinpath(datadir_rulefile))
+        os.chdir(os.pardir)
+    if config_yamlfile_name in os.listdir():
+        if rootdir_rulefile in os.listdir():
+            root2datadir_rulefiles.insert(0, Path.cwd().joinpath(rootdir_rulefile))
+    return root2datadir_rulefiles
 
 
 def _return_ruleobj_list_from_pyobj(pyobj=None):

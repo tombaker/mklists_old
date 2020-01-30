@@ -8,8 +8,8 @@ HTMLDIR_NAME = "_html"
 URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
-DATADIRA_README_FILE_NAME = "README.txt"
-DATADIRA_README_FILE_CONTENTS = (
+DATADIR_README_FILE_NAME = "README.txt"
+DATADIR_README_FILE_CONTENTS = (
     "NOW Examine 'a/.rules' file (in this directory); edit as needed.\n"
     "NOW Hint: Examine '.rules' file in root directory; leave unchanged for now..\n"
     "NOW Hint: Change beginning of this line to today's date (eg, 2020-01-17).\n"
@@ -19,15 +19,15 @@ DATADIRA_README_FILE_CONTENTS = (
     "LATER Check out 'mklists.yml' in the root directory.\n"
     "LATER Hint: Create 'b' directory as a destination for 'log.txt'.\n"
 )
-RULEFILE_NAME = ".rules"
+DATADIR_RULEFILE_NAME = ".rules"
 ROOTDIR_RULEFILE_NAME = "rules.cfg"
 ROOTDIR_RULEFILE_CONTENTS = (
     "# Global rules.\n"
     "in field|match |in source  |move to    |sort by|\n"
     "0       |.     |lines.tmp  |lines      |1      |Comments here.\n"
 )
-DATADIRA_NAME = "a"
-DATADIRA_RULEFILE_CONTENTS = (
+DATADIR_NAME = "a"
+DATADIR_RULEFILE_CONTENTS = (
     "# First five fields in lines that start with integers are parsed as rules.\n"
     "# Everything else - empty lines, comments, extra fields - is ignored.\n"
     "# For readability, fields may contain whitespace on the left or right.\n"

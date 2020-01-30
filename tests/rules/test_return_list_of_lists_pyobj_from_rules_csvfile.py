@@ -1,4 +1,5 @@
 """Reads '.rules', a CSV file, and returns a Python list of five-item lists."""
+# TODO 2020-01-30: uses ROOTDIR_RULEFILE_NAME now, not just DATADIR_RULEFILE_NAME
 
 import os
 import pytest

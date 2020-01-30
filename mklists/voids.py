@@ -8,9 +8,9 @@ from .constants import (
     BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_CONTENT,
     CONFIG_YAMLFILE_NAME,
-    DATADIRA_NAME,
-    DATADIRA_RULEFILE_CONTENTS,
-    RULEFILE_NAME,
+    DATADIR_NAME,
+    DATADIR_RULEFILE_CONTENTS,
+    DATADIR_RULEFILE_NAME,
     ROOTDIR_RULEFILE_CONTENTS,
     ROOTDIR_RULEFILE_NAME,
 )
@@ -45,9 +45,9 @@ def write_config_yamlfile(
 
 @preserve_cwd
 def write_rules_csvfiles(
-    dira=DATADIRA_NAME,
-    dira_rulefile=RULEFILE_NAME,
-    dira_rulefile_contents=DATADIRA_RULEFILE_CONTENTS,
+    dira=DATADIR_NAME,
+    dira_rulefile=DATADIR_RULEFILE_NAME,
+    dira_rulefile_contents=DATADIR_RULEFILE_CONTENTS,
     root_rulefile=ROOTDIR_RULEFILE_NAME,
     root_rulefile_contents=ROOTDIR_RULEFILE_CONTENTS,
 ):

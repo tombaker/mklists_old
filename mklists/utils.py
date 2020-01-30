@@ -12,7 +12,7 @@ from .constants import (
     BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_NAME,
     HTMLDIR_NAME,
-    RULEFILE_NAME,
+    DATADIR_RULEFILE_NAME,
     TIMESTAMP_STR,
     URL_PATTERN_REGEX,
 )
@@ -118,7 +118,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
 def return_data_subdirs_list(
     given_pathname=None,
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
-    rules_csvfile_name=RULEFILE_NAME,
+    rules_csvfile_name=DATADIR_RULEFILE_NAME,
 ):
     """Return list of data directories under a given directory.
 
