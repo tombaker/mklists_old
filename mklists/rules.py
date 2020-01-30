@@ -128,8 +128,9 @@ def _return_parent_rulefile_paths(
         root2datadir_rulefiles.insert(0, Path.cwd().joinpath(datadir_rulefile))
         os.chdir(os.pardir)
     if config_yamlfile_name in os.listdir():
-        if rootdir_rulefile in os.listdir():
-            root2datadir_rulefiles.insert(0, Path.cwd().joinpath(rootdir_rulefile))
+        if root2datadir_rulefiles:
+            if rootdir_rulefile in os.listdir():
+                root2datadir_rulefiles.insert(0, Path.cwd().joinpath(rootdir_rulefile))
     return root2datadir_rulefiles
 
 
