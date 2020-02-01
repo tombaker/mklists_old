@@ -97,6 +97,10 @@ class FilenameIsAlreadyDirnameError(RuleError):
     """Filename is already being used as a directory name."""
 
 
+class FilenameNotSpecifiedError(RuleError):
+    """Filename is not specified."""
+
+
 # RulesError
 class RulesError(SystemExit):
     """Super-category for exceptions related to sets of rules."""

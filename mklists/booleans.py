@@ -10,7 +10,7 @@ from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
 
 def filename_is_valid_as_filename(
-    filename,
+    filename=None,
     invalid_filename_patterns=None,
     valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
 ):
