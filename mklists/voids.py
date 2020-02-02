@@ -75,8 +75,6 @@ def delete_older_backupdirs(
         subsubdirs = sorted([subsubdir for subsubdir in Path(subdir).glob("*")])
         subsubdirs_to_delete = subsubdirs[:-(backups_depth)]
         for subsubdir in subsubdirs_to_delete:
-            if dryrun:
-                print(f"removing older backup {Path(subsubdir).name}")
             shutil.rmtree(subsubdir)
 
 

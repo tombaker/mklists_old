@@ -12,7 +12,6 @@ def fixture_backupdir_with_directories(tmp_path_factory):
     """Return temporary mklists backup directory with subdirectories."""
     rootdir = tmp_path_factory.mktemp("root")
     os.chdir(rootdir)
-    Path(rootdir).joinpath("agenda").mkdir(parents=True, exist_ok=True)
     Path(rootdir).joinpath(CONFIG_YAMLFILE_NAME).write_text("config stuff")
     backupsdir = Path(rootdir).joinpath(BACKUPS_DIR_NAME)
     backupsdir.mkdir()
@@ -34,29 +33,74 @@ def fixture_backupdir_with_directories(tmp_path_factory):
             Path(backupsdir).joinpath("agendab/2020-01-03"),
         ]
     )
-    return rootdir
-
-
-def test_backupdir_fixture_itself(tmp_repo_with_backupdir):
-    os.chdir(Path(tmp_repo_with_backupdir).joinpath(BACKUPS_DIR_NAME))
     subsubdirs = []
-    for subdir in Path.cwd().glob("*"):
-        for subsubdir in Path(subdir).rglob("*"):
+    for subdir in Path(backupsdir).glob("*"):
+        for subsubdir in Path(subdir).glob("*"):
             subsubdirs.append(subsubdir)
     assert sorted(subsubdirs) == sorted(
         [
-            Path(tmp_repo_with_backupdir).joinpath("_backups/agenda/2020-01-01"),
-            Path(tmp_repo_with_backupdir).joinpath("_backups/agenda/2020-01-02"),
-            Path(tmp_repo_with_backupdir).joinpath("_backups/agenda/2020-01-03"),
-            Path(tmp_repo_with_backupdir).joinpath("_backups/agendab/2020-01-01"),
-            Path(tmp_repo_with_backupdir).joinpath("_backups/agendab/2020-01-02"),
-            Path(tmp_repo_with_backupdir).joinpath("_backups/agendab/2020-01-03"),
+            Path(rootdir).joinpath("_backups/agenda/2020-01-01"),
+            Path(rootdir).joinpath("_backups/agenda/2020-01-02"),
+            Path(rootdir).joinpath("_backups/agenda/2020-01-03"),
+            Path(rootdir).joinpath("_backups/agendab/2020-01-01"),
+            Path(rootdir).joinpath("_backups/agendab/2020-01-02"),
+            Path(rootdir).joinpath("_backups/agendab/2020-01-03"),
         ]
     )
+    return rootdir
 
 
-@pytest.mark.now
-def test_voids_delete_older_backupdirs_dryrun(tmp_repo_with_backupdir):
+def _get_subsubdirs(starting_dir=None):
+    """@@@Docstring"""
+    subsubdirs = []
+    for subdir in Path(starting_dir).glob("*"):
+        for subsubdir in Path(subdir).glob("*"):
+            subsubdirs.append(subsubdir)
+    return subsubdirs
+
+
+def test_voids_delete_older_backupdirs_keep_zero(tmp_repo_with_backupdir):
+    """Delete all sub-subdirectories of backups directory if backup depth is zero."""
+    backupsdir = Path(tmp_repo_with_backupdir).joinpath(BACKUPS_DIR_NAME)
+    backupsdir_before = sorted(_get_subsubdirs(backupsdir))
+    assert backupsdir_before == sorted(
+        [
+            Path(backupsdir, "agenda/2020-01-01"),
+            Path(backupsdir, "agenda/2020-01-02"),
+            Path(backupsdir, "agenda/2020-01-03"),
+            Path(backupsdir, "agendab/2020-01-01"),
+            Path(backupsdir, "agendab/2020-01-02"),
+            Path(backupsdir, "agendab/2020-01-03"),
+        ]
+    )
+    # os.chdir(tmp_repo_with_backupdir)
+    # backups_to_keep = 0
+    # delete_older_backupdirs(backups_depth=backups_to_keep)
+    # assert _get_subsubdirs(backupsdir) == []
+
+
+@pytest.mark.skip
+def test_voids_delete_older_backupdirs_keep_two_deep(tmp_repo_with_backupdir):
+    """@@@Docstring"""
+    backupsdir = Path(tmp_repo_with_backupdir).joinpath(BACKUPS_DIR_NAME)
+    backups_to_keep = 2
+    delete_older_backupdirs(backups_depth=backups_to_keep)  # noqa: F841
+    expected = sorted(
+        [
+            Path(backupsdir, "agenda"),
+            Path(backupsdir, "agenda/2020-01-02"),
+            Path(backupsdir, "agenda/2020-01-03"),
+            Path(backupsdir, "agendab"),
+            Path(backupsdir, "agendab/2020-01-02"),
+            Path(backupsdir, "agendab/2020-01-03"),
+        ]
+    )
+    actual = sorted([dir for dir in Path(backupsdir).rglob("*") if dir.is_dir()])
+    assert expected == actual
+
+
+@pytest.mark.skip
+def test_voids_delete_older_backupdirs_keep_one_deep(tmp_repo_with_backupdir):
     backupsdir = Path(tmp_repo_with_backupdir).joinpath(BACKUPS_DIR_NAME)
     backupsdir_before = sorted(
         [dir for dir in Path(backupsdir).rglob("*") if dir.is_dir()]
@@ -73,18 +117,41 @@ def test_voids_delete_older_backupdirs_dryrun(tmp_repo_with_backupdir):
             Path(backupsdir, "agendab/2020-01-03"),
         ]
     )
-    backups_to_keep = 2
+    backups_to_keep = 1
     delete_older_backupdirs(backups_depth=backups_to_keep)  # noqa: F841
     expected = sorted(
         [
             Path(backupsdir, "agenda"),
+            Path(backupsdir, "agenda/2020-01-03"),
+            Path(backupsdir, "agendab"),
+            Path(backupsdir, "agendab/2020-01-03"),
+        ]
+    )
+    actual = sorted([dir for dir in Path(backupsdir).rglob("*") if dir.is_dir()])
+    assert expected == actual
+
+
+@pytest.mark.skip
+def test_voids_delete_older_backupdirs_keep_zero_deep(tmp_repo_with_backupdir):
+    backupsdir = Path(tmp_repo_with_backupdir).joinpath(BACKUPS_DIR_NAME)
+    backupsdir_before = sorted(
+        [dir for dir in Path(backupsdir).rglob("*") if dir.is_dir()]
+    )
+    assert backupsdir_before == sorted(
+        [
+            Path(backupsdir, "agenda"),
+            Path(backupsdir, "agenda/2020-01-01"),
             Path(backupsdir, "agenda/2020-01-02"),
             Path(backupsdir, "agenda/2020-01-03"),
             Path(backupsdir, "agendab"),
+            Path(backupsdir, "agendab/2020-01-01"),
             Path(backupsdir, "agendab/2020-01-02"),
             Path(backupsdir, "agendab/2020-01-03"),
         ]
     )
+    backups_to_keep = 0
+    delete_older_backupdirs(backups_depth=backups_to_keep)  # noqa: F841
+    expected = sorted([Path(backupsdir, "agenda"), Path(backupsdir, "agendab")])
     actual = sorted([dir for dir in Path(backupsdir).rglob("*") if dir.is_dir()])
     assert expected == actual
 
