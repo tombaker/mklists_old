@@ -59,10 +59,7 @@ def write_rules_csvfiles(
 
 @preserve_cwd
 def delete_older_backupdirs(
-    backups_depth=None,
-    backupsdir_path=BACKUPS_DIR_NAME,
-    rootdir_path=None,
-    dryrun=False,
+    backups_depth=None, backups_name=BACKUPS_DIR_NAME, rootdir_path=None, dryrun=False
 ):
     """Delete all but specified number of backups of current working directory."""
     # 2019-01-28: Need function to test sanity of config file settings?
@@ -70,12 +67,20 @@ def delete_older_backupdirs(
         rootdir_path = return_rootdir_pathname()
     if backups_depth is None:
         backups_depth = 0
-    backupsdir_path = Path(rootdir_path).joinpath(backupsdir_path)
-    for subdir in sorted(Path(backupsdir_path).glob("*")):
-        subsubdirs = sorted([subsubdir for subsubdir in Path(subdir).glob("*")])
-        subsubdirs_to_delete = subsubdirs[:-(backups_depth)]
-        for subsubdir in subsubdirs_to_delete:
-            shutil.rmtree(subsubdir)
+    dir = Path(rootdir_path).joinpath(backups_name)
+    subdirs = []
+    for subdir in sorted(Path(dir).glob("*")):
+        subdirs.append(subdir)
+        to_delete = sorted([subsub for subsub in Path(subdir).glob("*")])[
+            :-(backups_depth)
+        ]
+        for item in to_delete:
+            shutil.rmtree(item)
+    for subdir in subdirs:
+        try:
+            subdir.rmdir()  # will delete subdir only if empty
+        except OSError:
+            pass  # leave subdir if not empty
 
 
 @preserve_cwd

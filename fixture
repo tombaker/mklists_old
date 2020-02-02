@@ -1,0 +1,44 @@
+@pytest.fixture(name="tmp_repo_with_backupdir")
+def fixture_backupdir_with_directories(tmp_path_factory):
+    """Return temporary mklists backup directory with subdirectories."""
+    rootdir = tmp_path_factory.mktemp("root")
+    os.chdir(rootdir)
+    Path(rootdir).joinpath(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    backups_dir = Path(rootdir).joinpath(BACKUPS_DIR_NAME)
+    backups_dir.mkdir()
+    Path(backups_dir).joinpath("agenda/2020-01-01").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agenda/2020-01-02").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agenda/2020-01-03").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agendab/2020-01-01").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agendab/2020-01-02").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agendab/2020-01-03").mkdir(parents=True, exist_ok=True)
+    assert sorted(list([pth for pth in Path(backups_dir).rglob("*")])) == sorted(
+        [
+            Path(backups_dir).joinpath("agenda"),
+            Path(backups_dir).joinpath("agenda/2020-01-01"),
+            Path(backups_dir).joinpath("agenda/2020-01-02"),
+            Path(backups_dir).joinpath("agenda/2020-01-03"),
+            Path(backups_dir).joinpath("agendab"),
+            Path(backups_dir).joinpath("agendab/2020-01-01"),
+            Path(backups_dir).joinpath("agendab/2020-01-02"),
+            Path(backups_dir).joinpath("agendab/2020-01-03"),
+        ]
+    )
+    subsubdirs = []
+    for subdir in Path(backups_dir).glob("*"):
+        for subsubdir in Path(subdir).glob("*"):
+            subsubdirs.append(subsubdir)
+    assert sorted(subsubdirs) == sorted(
+        [
+            Path(rootdir).joinpath("_backups/agenda/2020-01-01"),
+            Path(rootdir).joinpath("_backups/agenda/2020-01-02"),
+            Path(rootdir).joinpath("_backups/agenda/2020-01-03"),
+            Path(rootdir).joinpath("_backups/agendab/2020-01-01"),
+            Path(rootdir).joinpath("_backups/agendab/2020-01-02"),
+            Path(rootdir).joinpath("_backups/agendab/2020-01-03"),
+        ]
+    )
+    return rootdir
+
+
+
