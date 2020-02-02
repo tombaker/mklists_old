@@ -71,9 +71,8 @@ def delete_older_backupdirs(
     subdirs = []
     for subdir in sorted(Path(dir).glob("*")):
         subdirs.append(subdir)
-        to_delete = sorted([subsub for subsub in Path(subdir).glob("*")])[
-            :-(backups_depth)
-        ]
+        subdir_glob = sorted(list(Path(subdir).glob("*")))
+        to_delete = [subsub for subsub in subdir_glob][:-(backups_depth)]
         for item in to_delete:
             shutil.rmtree(item)
     for subdir in subdirs:
