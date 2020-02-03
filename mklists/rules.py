@@ -3,13 +3,9 @@
 import csv
 import os
 from pathlib import Path
-from dataclasses import dataclass
 from collections import defaultdict
-from .booleans import (
-    filename_is_valid_as_filename,
-    regex_is_valid_as_regex,
-    dataline_is_match_to_ruleobj,
-)
+from .ruleclass import Rule
+from .booleans import dataline_is_match_to_ruleobj
 
 from .constants import (
     ROOTDIR_RULEFILE_NAME,
@@ -18,15 +14,11 @@ from .constants import (
 )
 from .decorators import preserve_cwd
 from .exceptions import (
-    BadFilenameError,
     BadRuleError,
     MissingValueError,
     NoDataError,
     NoRulefileError,
     NoRulesError,
-    SourceEqualsTargetError,
-    SourceMatchpatternError,
-    UninitializedSourceError,
 )
 
 # pylint: disable=bad-continuation
@@ -163,90 +155,3 @@ def return_ruleobj_list_from_rulefiles(rulefile_paths=None):
         pyobj = return_list_of_lists_pyobj_from_rules_csvfile(rulefile_pathname)
         one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobj))
     return one_ruleobj_list
-
-
-@dataclass
-class Rule:
-    """Holds state, transforms, and self-validation methods for a single rule object.
-
-    Fields:
-        source_matchfield: data line field to be matched to source_matchpattern.
-        source_matchpattern: regex matched to source_matchfield.
-        source: filename of source of data lines to be matched to source_matchpattern.
-        target: filename of destination of data lines that match source_matchpattern.
-        target_sortorder: field on which target data lines are sorted.
-        sources_list_is_initialized: when first instantiated, rule object...
-        sources_list: for collecting list of declared sources."""
-
-    source_matchfield: int = None
-    source_matchpattern: str = None
-    source: str = None
-    target: str = None
-    target_sortorder: int = None
-    sources_list_is_initialized = False
-    sources_list = []
-
-    def is_valid(self):
-        """Return True if Rule object passes all tests."""
-        self._coerce_field_types()  # TODO: break this up into coerce_a, coerce_b...
-        self._source_matchpattern_field_string_is_valid_as_regex()
-        self._filename_fields_are_valid()
-        self._source_filename_field_is_not_equal_target()
-        self._source_filename_field_was_properly_initialized()
-        return True
-
-    def _coerce_field_types(self):
-        """Re-assigns dataclass fields coercing correct type (string or integer)."""
-        self.source_matchfield = int(self.source_matchfield)
-        self.source_matchpattern = str(self.source_matchpattern)
-        self.source = str(self.source)
-        self.target = str(self.target)
-        self.target_sortorder = int(self.target_sortorder)
-
-    def _filename_fields_are_valid(self):
-        """Returns True if filenames use only valid characters."""
-        for filename in [self.source, self.target]:
-            if filename is None:
-                print(f"{self}")
-                raise MissingValueError(
-                    f"'None' is not a valid value for 'source' or 'target'."
-                )
-            if not filename_is_valid_as_filename(filename):
-                print(f"{self}")
-                raise BadFilenameError(
-                    f"'source' and 'target' must be valid filenames."
-                )
-        return True
-
-    def _source_filename_field_was_properly_initialized(self):
-        """Returns True if 'source' filename was initialized as a source."""
-        if not Rule.sources_list_is_initialized:
-            Rule.sources_list.append(self.source)
-            Rule.sources_list_is_initialized = True
-        if self.source not in Rule.sources_list:
-            print(f"In rule: {self}")
-            print(f"Rule.sources_list = {Rule.sources_list}")
-            raise UninitializedSourceError(f"{repr(self.source)} not initialized.")
-        if self.target not in Rule.sources_list:
-            Rule.sources_list.append(self.target)
-        return True
-
-    def _source_filename_field_is_not_equal_target(self):
-        """Returns True if source is not equal to target."""
-        if self.source == self.target:
-            print(f"{self}")
-            raise SourceEqualsTargetError("source must not equal target.")
-        return True
-
-    def _source_matchpattern_field_string_is_valid_as_regex(self):
-        """Returns True if source_matchpattern is valid regular expression."""
-        if self.source_matchpattern is None:
-            raise MissingValueError(
-                f"'None' is not a valid value for 'source_matchpattern'."
-            )
-        if not regex_is_valid_as_regex(self.source_matchpattern):
-            print(f"{self}")
-            raise SourceMatchpatternError(
-                "Value for 'source_matchpattern' must be a valid regex."
-            )
-        return True

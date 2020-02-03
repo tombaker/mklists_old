@@ -2,7 +2,7 @@
 
 import pytest
 from pathlib import Path
-from mklists.rules import Rule
+from mklists.ruleclass import Rule
 from mklists.constants import (
     CONFIG_YAMLFILE_NAME,
     ROOTDIR_RULEFILE_NAME,

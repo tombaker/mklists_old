@@ -4,7 +4,7 @@
   initialized by a previous rule, either in the initial
   source field or in one of the target fields."""
 
-from mklists.rules import Rule
+from mklists.ruleclass import Rule
 
 # pylint: disable=bad-continuation
 # Black disagrees.

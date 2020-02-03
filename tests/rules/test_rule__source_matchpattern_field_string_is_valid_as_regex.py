@@ -1,7 +1,7 @@
 """Some rule module tests use temporary directory fixture."""
 
 import pytest
-from mklists.rules import Rule
+from mklists.ruleclass import Rule
 
 
 def test_rule_source_matchpattern_field_is_valid_as_regex():

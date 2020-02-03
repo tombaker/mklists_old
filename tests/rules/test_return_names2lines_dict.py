@@ -2,7 +2,8 @@
 given list of rule objects and list of text lines aggregated from data files."""
 
 import pytest
-from mklists.rules import Rule, return_names2lines_dict_from_ruleobj_and_dataline_lists
+from mklists.ruleclass import Rule
+from mklists.rules import return_names2lines_dict_from_ruleobj_and_dataline_lists
 
 # pylint: disable=expression-not-assigned
 # Right, because these are tests...

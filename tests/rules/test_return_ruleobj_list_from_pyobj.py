@@ -4,7 +4,8 @@ import pytest
 
 # from mklists.constants import RULE_CSVFILE_NAME
 from mklists.exceptions import NoRulesError
-from mklists.rules import Rule, _return_ruleobj_list_from_pyobj
+from mklists.ruleclass import Rule
+from mklists.rules import _return_ruleobj_list_from_pyobj
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
