@@ -60,7 +60,7 @@ def return_config_dict_from_config_yamlfile(
 ):
     """Returns configuration dictionary from YAML config file."""
     if not rootdir_pathname:
-        rootdir_pathname = return_rootdir_pathname()
+        rootdir_pathname = return_rootdir_path()
     configfile = Path(rootdir_pathname) / config_yamlfile_name
     try:
         configfile_contents = Path(configfile).read_text()
@@ -73,7 +73,7 @@ def return_config_dict_from_config_yamlfile(
 
 
 @preserve_cwd
-def return_rootdir_pathname(here=None, configfile=CONFIG_YAMLFILE_NAME):
+def return_rootdir_path(here=None, configfile=CONFIG_YAMLFILE_NAME):
     """Return root pathname of mklists repo wherever executed in repo."""
     if not here:
         here = Path.cwd()
@@ -90,7 +90,7 @@ def return_backupdir_pathname(
     workdir=None, backupsdir=BACKUPS_DIR_NAME, timestamp=TIMESTAMP_STR
 ):
     """Return backups Path named for given (or default) working directory."""
-    rootdir = return_rootdir_pathname()
+    rootdir = return_rootdir_path()
     if not workdir:
         workdir = Path.cwd()
     backup_subdir = str(Path(workdir).relative_to(rootdir)).strip("/").replace("/", "_")
@@ -153,7 +153,7 @@ def return_htmldir_pathname(
 ):
     """Return pathname for folder holding htmlified data files."""
     if not rootdir_pathname:
-        rootdir_pathname = return_rootdir_pathname()
+        rootdir_pathname = return_rootdir_path()
     if not htmldir_name:
         datadir_name = Path.cwd()
     return os.path.join(rootdir_pathname, htmldir_name, datadir_name)

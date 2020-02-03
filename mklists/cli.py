@@ -35,7 +35,7 @@ def run(config, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 
     # datadir_pathname       = os.getcwd()
-    # rootdir_pathname       = return_rootdir_pathname(
+    # rootdir_pathname       = return_rootdir_path(
     #                              _datadir_pathname=datadir_pathname
     #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
     # ctx.obj                = return_config_dict_from_config_yamlfile(
