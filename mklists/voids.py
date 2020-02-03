@@ -57,29 +57,43 @@ def write_rules_csvfiles(
     Path(root_rulefile).write_text(root_rulefile_contents)
 
 
-@preserve_cwd
 def delete_older_backupdirs(
     backups_depth=None, backups_name=BACKUPS_DIR_NAME, rootdir_path=None, dryrun=False
 ):
     """Delete all but specified number of backups of current working directory."""
-    # 2019-01-28: Need function to test sanity of config file settings?
+    from pprint import pprint
+
     if not rootdir_path:
         rootdir_path = return_rootdir_pathname()
-    if backups_depth is None:
+    try:
+        backups_depth = abs(int(backups_depth))
+    except (ValueError, TypeError):  # eg, "asdf", None...
         backups_depth = 0
-    dir = Path(rootdir_path).joinpath(backups_name)
+    backup_path = Path(rootdir_path).joinpath(backups_name)
     subdirs = []
-    for subdir in sorted(Path(dir).glob("*")):
+    for subdir in sorted(Path(backup_path).glob("*")):
         subdirs.append(subdir)
-        subdir_glob = sorted(list(Path(subdir).glob("*")))
-        to_delete = [subsub for subsub in subdir_glob][:-(backups_depth)]
-        for item in to_delete:
-            shutil.rmtree(item)
+        subsubdirs = []
+        for subsubdir in sorted(Path(subdir).glob("*")):
+            subsubdirs.insert(0, subsubdir)
+        print()
+        pprint(f"start:")
+        pprint(f"{subsubdirs}")
+        backups_depth = abs(int(backups_depth))
+        while len(subsubdirs) > backups_depth:
+            directory_to_be_deleted = subsubdirs.pop()
+            print(f"removing {directory_to_be_deleted}")
+            shutil.rmtree(directory_to_be_deleted)
+        pprint(f"end:")
+        pprint(f"{subsubdirs}")
     for subdir in subdirs:
         try:
+            print(f"removing {subdir}")
             subdir.rmdir()  # will delete subdir only if empty
         except OSError:
             pass  # leave subdir if not empty
+    print()
+    pprint(sorted(Path(backup_path).rglob("*")))
 
 
 @preserve_cwd

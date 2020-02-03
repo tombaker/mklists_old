@@ -7,7 +7,28 @@ from mklists.voids import delete_older_backupdirs
 from mklists.constants import BACKUPS_DIR_NAME, CONFIG_YAMLFILE_NAME
 
 
-def test_voids_delete_older_backupdirs_keep_two(tmp_path):
+def test_voids_delete_older_backupdirs_keep_zero(tmp_path):
+    """Delete all sub-subdirectories, and subdirectories, if backup depth is zero."""
+    Path(tmp_path).joinpath(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    datadir = Path(tmp_path).joinpath("datadir")
+    datadir.mkdir()  # create a "data directory"
+    os.chdir(datadir)  # starting point would normally be a data directory
+    backups_dir = Path(tmp_path).joinpath(BACKUPS_DIR_NAME)
+    backups_dir.mkdir()
+    Path(backups_dir).joinpath("agenda/2020-01-01").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agenda/2020-01-02").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agenda/2020-01-03").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agendab/2020-01-01").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agendab/2020-01-02").mkdir(parents=True, exist_ok=True)
+    Path(backups_dir).joinpath("agendab/2020-01-03").mkdir(parents=True, exist_ok=True)
+    delete_older_backupdirs(backups_depth=0, backups_name=BACKUPS_DIR_NAME)
+    expected = []
+    actual = list(Path(backups_dir).rglob("*"))
+    assert sorted(expected) == sorted(actual)
+
+
+@pytest.mark.skip
+def test_voids_delete_older_backupdirs_keep_seven(tmp_path):
     """Delete some sub-subdirectories of backups directory if backup depth is two."""
     Path(tmp_path).joinpath(CONFIG_YAMLFILE_NAME).write_text("config stuff")
     datadir = Path(tmp_path).joinpath("datadir")
@@ -21,12 +42,14 @@ def test_voids_delete_older_backupdirs_keep_two(tmp_path):
     Path(backups_dir).joinpath("agendab/2020-01-01").mkdir(parents=True, exist_ok=True)
     Path(backups_dir).joinpath("agendab/2020-01-02").mkdir(parents=True, exist_ok=True)
     Path(backups_dir).joinpath("agendab/2020-01-03").mkdir(parents=True, exist_ok=True)
-    delete_older_backupdirs(backups_depth=2, backups_name=BACKUPS_DIR_NAME)
+    delete_older_backupdirs(backups_depth=7, backups_name=BACKUPS_DIR_NAME)
     expected = [
         Path(backups_dir, "agenda"),
+        Path(backups_dir, "agenda/2020-01-01"),
         Path(backups_dir, "agenda/2020-01-02"),
         Path(backups_dir, "agenda/2020-01-03"),
         Path(backups_dir, "agendab"),
+        Path(backups_dir, "agendab/2020-01-01"),
         Path(backups_dir, "agendab/2020-01-02"),
         Path(backups_dir, "agendab/2020-01-03"),
     ]
