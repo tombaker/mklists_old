@@ -11,10 +11,8 @@ from .booleans import filename_is_valid_as_filename
 from .constants import (
     BACKUPS_DIR_NAME,
     CONFIG_YAMLFILE_NAME,
-    HTMLDIR_NAME,
     DATADIR_RULEFILE_NAME,
     TIMESTAMP_STR,
-    URL_PATTERN_REGEX,
 )
 from .decorators import preserve_cwd
 from .exceptions import (
@@ -146,30 +144,6 @@ def return_data_subdirs_list(
                 datadirs.append(Path(dirpath))
 
     return datadirs
-
-
-def return_htmldir_pathname(
-    rootdir_pathname=None, htmldir_name=HTMLDIR_NAME, datadir_name=None
-):
-    """Return pathname for folder holding htmlified data files."""
-    if not rootdir_pathname:
-        rootdir_pathname = return_rootdir_path()
-    if not htmldir_name:
-        datadir_name = Path.cwd()
-    return os.path.join(rootdir_pathname, htmldir_name, datadir_name)
-
-
-def return_htmlline_from_textline(textline=None, url_pattern_regex=URL_PATTERN_REGEX):
-    """Return line (ending in \n) with URLs wrapped (with <a href=></a>).
-
-    Args:
-        textline: A line of text (a string)."""
-    if "<a href=" in textline:
-        return textline
-    return (
-        re.compile(url_pattern_regex).sub(r'<a href="\1">\1</a>', textline.rstrip())
-        + "\n"
-    )
 
 
 def return_visiblefiles_list():

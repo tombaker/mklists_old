@@ -102,8 +102,3 @@ def run(config, dryrun, here_only):  # should be config
     #
     #     if files2dirs_dict:
     #         move_specified_datafiles_to_somedirs(ctx.obj["files2dirs_dict"])
-
-    # Writing out HTML versions
-    # if html:
-    #     [create html directory]
-    #     write_htmlfiles_from_name2lines_dict(lines)     - todo.py

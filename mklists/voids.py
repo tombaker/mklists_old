@@ -1,6 +1,5 @@
 """Apply rules to process datalines."""
 
-import io
 import os
 import shutil
 from pathlib import Path
@@ -16,11 +15,7 @@ from .constants import (
 )
 from .decorators import preserve_cwd
 from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
-from .utils import (
-    return_htmlline_from_textline,
-    return_visiblefiles_list,
-    return_rootdir_path,
-)
+from .utils import return_visiblefiles_list, return_rootdir_path
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -142,33 +137,3 @@ def write_datafiles_from_name2lines_dict(_name2lines_dict=None):
         if value:
             with open(key, "w", encoding="utf-8") as fout:
                 fout.writelines(value)
-
-
-@preserve_cwd
-def write_htmlfiles_from_name2lines_dict(
-    name2lines_dict=None, htmldir_pathname=None, backupdir_shortname=None
-):
-    """Writes contents of in-memory dictionary, urlified, to disk.
-
-    Args:
-        name2lines_dict: Python dictionary in which:
-            * keys are the names of files to be written
-            * values are lists of text lines.
-        htmldir_pathname: Name of HTML directory (relative to the root directory).
-        backupdir_shortname:
-    """
-    htmldir_subdir_pathname = os.path.join(htmldir_pathname, backupdir_shortname)
-    if not os.path.exists(htmldir_subdir_pathname):
-        os.makedirs(htmldir_subdir_pathname)
-    os.chdir(htmldir_subdir_pathname)
-
-    for file in return_visiblefiles_list():
-        os.remove(file)
-
-    for key in list(name2lines_dict.keys()):
-        lines_to_be_written = []
-        for line in name2lines_dict[key]:
-            lines_to_be_written.append(return_htmlline_from_textline(line))
-
-        file_to_write = key + ".html"
-        io.open(file_to_write, "w", encoding="utf-8").writelines(lines_to_be_written)

@@ -4,8 +4,6 @@ import datetime
 
 
 BACKUPS_DIR_NAME = "_backups"
-HTMLDIR_NAME = "_html"
-URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 TIMESTAMP_STR = datetime.datetime.now().strftime("%Y-%m-%d_%H%M_%S%f")
 VALID_FILENAME_CHARACTERS_REGEX = r"[\-_=.,@:A-Za-z0-9]+$"
 DATADIR_README_FILE_NAME = "README.txt"
@@ -54,7 +52,6 @@ CONFIG_YAMLFILE_NAME = "mklists.yml"
 # => the slashes in "invalid filename patterns" are valid in YAML
 CONFIG_YAMLFILE_CONTENT = (
     "verbose: True\n"
-    "htmlify: True\n"
     "backup_depth: 3\n"
     "invalid_filename_patterns:\n"
     "- \.swp$\n"
