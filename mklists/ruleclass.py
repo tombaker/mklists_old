@@ -28,22 +28,25 @@ class Rule:
         """Return True if Rule object passes all conversions and tests."""
         self._coerce_source_matchfield_as_integer()
         self._coerce_target_sortorder_as_integer()
-        self._coerce_source_as_valid_filename()
+        self._confirm_source_is_valid_filename()
+        self._confirm_target_is_valid_filename()
 
         self._source_matchpattern_field_string_is_valid_as_regex()
         self._source_filename_field_is_not_equal_target()
         self._source_filename_field_was_properly_initialized()
         return True
 
-    def _coerce_source_as_valid_filename(self):
+    def _confirm_source_is_valid_filename(self):
         """Return source as valid filename as per filename rules."""
-        if not filename_is_valid_as_filename(self.source):
-            raise BadFilenameError(f"{repr(self.source)} must be a valid filename.")
+        filename = self.source
+        if not filename_is_valid_as_filename(filename):
+            raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
 
-    def _coerce_target_as_valid_filename(self):
+    def _confirm_target_is_valid_filename(self):
         """Return target as valid filename as per filename rules."""
-        if not filename_is_valid_as_filename(self.target):
-            raise BadFilenameError(f"{repr(self.target)} must be a valid filename.")
+        filename = self.target
+        if not filename_is_valid_as_filename(filename):
+            raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
 
     def _source_filename_field_was_properly_initialized(self):
         """Returns True if 'source' filename was initialized as a source."""

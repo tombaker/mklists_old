@@ -1,7 +1,7 @@
 """Boolean functions."""
 
-import os
 import re
+from pathlib import Path
 from .constants import VALID_FILENAME_CHARACTERS_REGEX
 from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 
@@ -27,8 +27,8 @@ def filename_is_valid_as_filename(
     for char in filename:
         if not bool(re.search(valid_filename_characters_regex, char)):
             return False
-    if filename in [d for d in os.listdir() if os.path.isdir(d)]:
-        raise FilenameIsAlreadyDirnameError(f"{repr(filename)} is a directory.")
+    if Path(filename).is_dir():
+        raise FilenameIsAlreadyDirnameError(f"{repr(filename)} is already a directory.")
     return True
 
 

@@ -29,14 +29,11 @@ def test_utils_filename_is_invalid_if_filename_is_none(tmp_path):
 def test_utils_filename_is_valid_as_filename_exits_when_exists_as_dirname(tmp_path):
     """Raises exception when given filename already exists as directory name."""
     os.chdir(tmp_path)
-    foobar = pathlib.Path("foobar")
+    name_to_be_tested = "foobar"
+    foobar = pathlib.Path(name_to_be_tested)
     foobar.mkdir()
-    print(f"value of foobar: {repr(foobar)}")
-    print(f"current directory: {os.getcwd()}")
-    print(f"current directory files: {os.listdir()}")
-    #    assert False
     with pytest.raises(FilenameIsAlreadyDirnameError):
-        filename_is_valid_as_filename("foobar")
+        filename_is_valid_as_filename(name_to_be_tested)
 
 
 def test_utils_filename_is_valid_as_filename_false_because_dotfile():
