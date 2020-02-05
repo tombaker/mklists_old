@@ -4,7 +4,6 @@ import csv
 import os
 from pathlib import Path
 from .ruleclass import Rule
-
 from .constants import (
     ROOTDIR_RULEFILE_NAME,
     DATADIR_RULEFILE_NAME,
@@ -19,6 +18,7 @@ from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRule
 
 def return_listrules_from_rulefile_list(csvfile=None):
     """Return lists of lists, string items stripped, from pipe-delimited CSV file."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_listrules_from_rulefile_list.py
     csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
     try:
         # encoding 'utf-8-sig' for Excel files with U+FEFF
@@ -28,7 +28,6 @@ def return_listrules_from_rulefile_list(csvfile=None):
         raise NoRulefileError(f"Rule file not found.")
     except TypeError:
         raise NoRulefileError(f"No rule file specified.")
-
     rules_parsed_list_raw = list(csv.reader(csvfile_obj, dialect="rules"))
     rules_parsed_list = []
     for single_rule_list in rules_parsed_list_raw:
@@ -50,6 +49,7 @@ def return_rulefile_chain(
     config_yamlfile_name=CONFIG_YAMLFILE_NAME,
 ):
     """Return chain of rule files from root to specified data directory."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_rulefile_chain.py
     if not startdir:
         startdir = Path.cwd()
     os.chdir(startdir)
@@ -66,6 +66,7 @@ def return_rulefile_chain(
 
 def _return_ruleobj_list_from_pyobj(pyobj=None):
     """Return list of Rule objects from CSV string."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_rulefiles.py
     if not pyobj:
         raise NoRulesError(f"No rules list specified.")
     ruleobj_list = []
@@ -88,6 +89,7 @@ def _return_ruleobj_list_from_pyobj(pyobj=None):
 
 def return_ruleobj_list_from_rulefiles(rulefile_paths=None):
     """Return single list of Rule objects from list of pipe-delimited CSV files."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_rulefiles.py
     one_ruleobj_list = []
     for rulefile_pathname in rulefile_paths:
         pyobj = return_listrules_from_rulefile_list(rulefile_pathname)
