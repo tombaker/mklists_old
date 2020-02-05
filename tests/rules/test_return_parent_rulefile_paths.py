@@ -1,8 +1,9 @@
 """Return list of rule file pathnames."""
 
 import os
+import pytest
 from pathlib import Path
-from mklists.rules import _return_parent_rulefile_paths
+from mklists.rules import return_rulefile_chain
 from mklists.constants import (
     CONFIG_YAMLFILE_NAME,
     ROOTDIR_RULEFILE_NAME,
@@ -16,7 +17,8 @@ from mklists.constants import (
 #  Test: function stops looking for '.rules' above rootdir (i.e., 'mklists.yml' found).
 
 
-def test_return_parent_rulefile_paths_typical(tmp_path):
+@pytest.mark.rules
+def test_return_rulefile_chain_typical(tmp_path):
     """Return list of rulefiles from root to (current) working data directory."""
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
@@ -33,10 +35,11 @@ def test_return_parent_rulefile_paths_typical(tmp_path):
         Path(tmp_path) / "a/b" / DATADIR_RULEFILE_NAME,
         Path(tmp_path) / "a/b/c" / DATADIR_RULEFILE_NAME,
     ]
-    assert _return_parent_rulefile_paths(startdir=abc) == expected
+    assert return_rulefile_chain(startdir=abc) == expected
 
 
-def test_return_parent_rulefile_paths_ends_before_repo_rootdir(tmp_path):
+@pytest.mark.rules
+def test_return_rulefile_chain_ends_before_repo_rootdir(tmp_path):
     """Return list of data directory rulefiles only when 'rules.cfg' not reachable)."""
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
@@ -50,10 +53,11 @@ def test_return_parent_rulefile_paths_ends_before_repo_rootdir(tmp_path):
         Path(tmp_path) / "a/b" / DATADIR_RULEFILE_NAME,
         Path(tmp_path) / "a/b/c" / DATADIR_RULEFILE_NAME,
     ]
-    assert _return_parent_rulefile_paths() == expected
+    assert return_rulefile_chain() == expected
 
 
-def test_return_parent_rulefile_paths_with_specifying_rootdir(tmp_path):
+@pytest.mark.rules
+def test_return_rulefile_chain_with_specifying_rootdir(tmp_path):
     """Return correct list when starting directory is explicitly specified."""
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
@@ -69,10 +73,11 @@ def test_return_parent_rulefile_paths_with_specifying_rootdir(tmp_path):
         Path(tmp_path) / "a/b" / DATADIR_RULEFILE_NAME,
         Path(tmp_path) / "a/b/c" / DATADIR_RULEFILE_NAME,
     ]
-    assert _return_parent_rulefile_paths(startdir=abc) == expected
+    assert return_rulefile_chain(startdir=abc) == expected
 
 
-def test_return_parent_rulefile_paths_empty_list_when_starting_in_non_datadir(tmp_path):
+@pytest.mark.rules
+def test_return_rulefile_chain_empty_list_when_starting_in_non_datadir(tmp_path):
     """Return empty list when starting in a non-data directory."""
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
@@ -86,10 +91,11 @@ def test_return_parent_rulefile_paths_empty_list_when_starting_in_non_datadir(tm
     Path(tmp_path).joinpath("a/b/c", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     os.chdir(d)
     expected = []
-    assert _return_parent_rulefile_paths() == expected
+    assert return_rulefile_chain() == expected
 
 
-def test_return_parent_rulefile_paths_empty_list_when_starting_in_rootdir(tmp_path):
+@pytest.mark.rules
+def test_return_rulefile_chain_empty_list_when_starting_in_rootdir(tmp_path):
     """Return empty list when starting in root directory."""
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
@@ -101,4 +107,4 @@ def test_return_parent_rulefile_paths_empty_list_when_starting_in_rootdir(tmp_pa
     Path(tmp_path).joinpath("a/b/c", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     os.chdir(tmp_path)
     expected = []
-    assert _return_parent_rulefile_paths() == expected
+    assert return_rulefile_chain() == expected

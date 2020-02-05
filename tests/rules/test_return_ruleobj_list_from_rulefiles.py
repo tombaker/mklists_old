@@ -3,7 +3,10 @@
 import pytest
 from mklists.rules import return_ruleobj_list_from_rulefiles
 
+# return_listrules_from_rulefile_list
 
+
+@pytest.mark.rules
 @pytest.mark.skip
 def test_return_ruleobj_list_from_rulefiles():
     """@@@Docstring"""
