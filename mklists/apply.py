@@ -5,14 +5,12 @@ from .booleans import dataline_is_match_to_ruleobj
 from .exceptions import NoDataError, NoRulesError
 
 
-def return_names2lines_dict_from_ruleobj_and_dataline_lists(
-    _ruleobjs_list=None, _datalines_list=None
-):
+def return_names2lines_dict_from_ruleobjs_and_datalines(ruleobjs=None, datalines=None):
     """Applies rules, one by one, to process aggregated datalines.
 
     Args:
-        _ruleobjs_list: list of rule objects
-        _datalines_list: list of strings (all data lines)
+        ruleobjs: list of rule objects
+        datalines: list of strings (all data lines)
 
     Returns:
         datadict - dictionary where:
@@ -22,20 +20,20 @@ def return_names2lines_dict_from_ruleobj_and_dataline_lists(
     datadict = defaultdict(list)
     first_key_is_initialized = False
 
-    if not _ruleobjs_list:
+    if not ruleobjs:
         raise NoRulesError("No rules specified.")
 
-    if not _datalines_list:
+    if not datalines:
         raise NoDataError("No data specified.")
 
     # Evaluate rules, one-by-one, to process entries in datadict.
-    for ruleobj in _ruleobjs_list:
+    for ruleobj in ruleobjs:
 
         # Initialize datadict with first rule.
         #    key: valid filename (from 'source' field of first ruleobj)
         #    value: list of all data lines
         if not first_key_is_initialized:
-            datadict[ruleobj.source] = _datalines_list
+            datadict[ruleobj.source] = datalines
             first_key_is_initialized = True
 
         # Match lines in 'ruleobj.source' against 'rulesobj.regex'.
