@@ -87,11 +87,7 @@ def _return_rulefile_chain(
     while datadir_rulefile in os.listdir():
         rulefile_chain.insert(0, Path.cwd().joinpath(datadir_rulefile))
         os.chdir(os.pardir)
-    print(f"if {configfile} in {os.listdir()}")
     if configfile in os.listdir():
-        print(f"if {rootdir_rulefile} in {os.listdir()}")
         if rootdir_rulefile in os.listdir():
-            print(rulefile_chain)
             rulefile_chain.insert(0, Path.cwd().joinpath(rootdir_rulefile))
-    print(rulefile_chain)
-    # return rulefile_chain
+    return rulefile_chain

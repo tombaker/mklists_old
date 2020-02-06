@@ -57,6 +57,7 @@ def test_return_ruleobj_list_from_listrules():
     assert real == expected
 
 
+@pytest.mark.skip
 @pytest.mark.rules
 def test_return_ruleobj_list_from_listrules_but_no_pyobj_as_argument():
     """Raises NoRulesError if no Python object is specified as argument."""
