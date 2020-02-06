@@ -5,7 +5,7 @@ import pytest
 # from mklists.constants import RULE_CSVFILE_NAME
 from mklists.exceptions import NoRulesError
 from mklists.ruleclass import Rule
-from mklists.rules import _return_ruleobj_list_from_pyobj
+from mklists.rules import _return_ruleobj_list_from_listrules
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
@@ -50,24 +50,24 @@ TEST_RULEOBJ_LIST = [
 
 
 @pytest.mark.rules
-def test_return_ruleobj_list_from_pyobj():
+def test_return_ruleobj_list_from_listrules():
     """Returns list of Rule objects from Python list of five-item lists."""
     pyobj = TEST_RULES_CSVSTR_PARSED
     expected = TEST_RULEOBJ_LIST
-    real = _return_ruleobj_list_from_pyobj(pyobj=pyobj)
+    real = _return_ruleobj_list_from_listrules(pyobj=pyobj)
     assert real == expected
 
 
 @pytest.mark.rules
-def test_return_ruleobj_list_from_pyobj_but_no_pyobj_as_argument():
+def test_return_ruleobj_list_from_listrules_but_no_pyobj_as_argument():
     """Raises NoRulesError if no Python object is specified as argument."""
     with pytest.raises(NoRulesError):
-        _return_ruleobj_list_from_pyobj(pyobj=None)
+        _return_ruleobj_list_from_listrules(pyobj=None)
 
 
 @pytest.mark.skip
 @pytest.mark.rules
-def test_return_ruleobj_list_from_pyobj_but_input_pyobj_is_bad():
+def test_return_ruleobj_list_from_listrules_binky():
     """Raises some exception if Python object does not match expectations.
 
     Or can we expect that the input to this function will be good?"""
@@ -78,4 +78,4 @@ def test_return_ruleobj_list_from_pyobj_but_input_pyobj_is_bad():
         [0, "^2020", "lines", "blines", "binky"],
     ]
     with pytest.raises(ValueError):
-        _return_ruleobj_list_from_pyobj(pyobj=TEST_RULES_CSVSTR_PARSED_BINKY)
+        _return_ruleobj_list_from_listrules(pyobj=TEST_RULES_CSVSTR_PARSED_BINKY)

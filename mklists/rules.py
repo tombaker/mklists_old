@@ -1,4 +1,4 @@
-"""Factory to create, self-test, and lightly correct a rule object."""
+"""Return list of rule objects from chain of rule files."""
 
 import csv
 import os
@@ -8,8 +8,24 @@ from .constants import ROOTDIR_RULEFILE_NAME, DATADIR_RULEFILE_NAME, CONFIGFILE_
 from .decorators import preserve_cwd
 from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRulesError
 
+# pylint: disable=bad-continuation
+# Black disagrees.
 
-def return_listrules_from_rulefile_list(csvfile=None):
+
+def return_ruleobj_list_from_rulefiles(startdir=None):
+    """Return list of Rule objects from one or more rule files."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_rulefiles.py
+    if not startdir:
+        startdir = Path.cwd()
+    rulefile_chain = return_rulefile_chain(startdir)
+    ruleobj_list = []
+    for rulefile in rulefile_chain:
+        listrules_list = _return_listrules_from_rulefile_list(rulefile)
+        ruleobj_list.append(_return_ruleobj_list_from_listrules(listrules_list))
+    return ruleobj_list
+
+
+def _return_listrules_from_rulefile_list(csvfile=None):
     """Return lists of lists, string items stripped, from pipe-delimited CSV file."""
     # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_listrules_from_rulefile_list.py
     csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
@@ -34,37 +50,12 @@ def return_listrules_from_rulefile_list(csvfile=None):
     return rules_parsed_list
 
 
-@preserve_cwd
-def return_rulefile_chain(
-    startdir=None,
-    datadir_rulefile=DATADIR_RULEFILE_NAME,
-    rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
-    config_yamlfile_name=CONFIGFILE_NAME,
-):
-    """Return chain of rule files from root to specified data directory."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_rulefile_chain.py
-    if not startdir:
-        startdir = Path.cwd()
-    os.chdir(startdir)
-    root2datadir_rulefiles = []
-    while datadir_rulefile in os.listdir():
-        root2datadir_rulefiles.insert(0, Path.cwd().joinpath(datadir_rulefile))
-        os.chdir(os.pardir)
-    if config_yamlfile_name in os.listdir():
-        if root2datadir_rulefiles:
-            if rootdir_rulefile in os.listdir():
-                root2datadir_rulefiles.insert(0, Path.cwd().joinpath(rootdir_rulefile))
-    return root2datadir_rulefiles
-
-
-def _return_ruleobj_list_from_pyobj(pyobj=None):
-    """Return list of Rule objects from CSV string."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_rulefiles.py
+def _return_ruleobj_list_from_listrules(pyobj=None):
+    """Return list of Rule objects from list of lists of component strings."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_listrules.py
     if not pyobj:
-        raise NoRulesError(f"No rules list specified.")
+        raise NoRulesError(f"List with rule components as strings must be specified.")
     ruleobj_list = []
-    # pyobj_filtered = [x for x in pyobj if re.match("[0-9]", x[0])]
-    # for item in pyobj_filtered:
     for item in pyobj:
         try:
             if Rule(*item).is_valid():
@@ -80,11 +71,24 @@ def _return_ruleobj_list_from_pyobj(pyobj=None):
     return ruleobj_list
 
 
-def return_ruleobj_list_from_rulefiles(rulefile_paths=None):
-    """Return single list of Rule objects from list of pipe-delimited CSV files."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_rulefiles.py
-    one_ruleobj_list = []
-    for rulefile_pathname in rulefile_paths:
-        pyobj = return_listrules_from_rulefile_list(rulefile_pathname)
-        one_ruleobj_list.append(_return_ruleobj_list_from_pyobj(pyobj))
-    return one_ruleobj_list
+@preserve_cwd
+def return_rulefile_chain(
+    startdir=None,
+    datadir_rulefile=DATADIR_RULEFILE_NAME,
+    rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
+    configfile=CONFIGFILE_NAME,
+):
+    """Return list of rule files from root to specified data directory."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_rulefile_chain.py
+    if not startdir:
+        startdir = Path.cwd()
+    os.chdir(startdir)
+    root2datadir_rulefiles = []
+    while datadir_rulefile in os.listdir():
+        root2datadir_rulefiles.insert(0, Path.cwd().joinpath(datadir_rulefile))
+        os.chdir(os.pardir)
+    if configfile in os.listdir():
+        if root2datadir_rulefiles:
+            if rootdir_rulefile in os.listdir():
+                root2datadir_rulefiles.insert(0, Path.cwd().joinpath(rootdir_rulefile))
+    return root2datadir_rulefiles

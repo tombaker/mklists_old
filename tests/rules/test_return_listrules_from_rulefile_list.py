@@ -7,7 +7,7 @@ from pathlib import Path
 
 from mklists.constants import ROOTDIR_RULEFILE_NAME
 from mklists.exceptions import NoRulefileError
-from mklists.rules import return_listrules_from_rulefile_list
+from mklists.rules import _return_listrules_from_rulefile_list
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
@@ -73,7 +73,7 @@ def test_return_listrules_from_rulefile_list(tmp_path):
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
@@ -83,7 +83,7 @@ def test_return_listrules_from_rulefile_list_header_ignored(tmp_path):
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
@@ -93,7 +93,7 @@ def test_return_listrules_from_rulefile_list_rn(tmp_path):
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_RN)
     expected = PYOBJ
-    real = return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
@@ -103,7 +103,7 @@ def test_return_listrules_from_rulefile_list_legacy(tmp_path):
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_LEGACY)
     expected = PYOBJ_LEGACY
-    real = return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
@@ -111,14 +111,14 @@ def test_return_listrules_from_rulefile_list_legacy(tmp_path):
 def test_return_listrules_from_rulefile_list_rulefile_not_specified(tmp_path):
     """Raises NoRulefileError if specified CSV file is "None" (the default)."""
     with pytest.raises(NoRulefileError):
-        return_listrules_from_rulefile_list(csvfile=None)
+        _return_listrules_from_rulefile_list(csvfile=None)
 
 
 @pytest.mark.rules
 def test_return_listrules_from_rulefile_list_rulefile_not_specified2(tmp_path):
     """Raises NoRulefileError if called specifying no argument at all."""
     with pytest.raises(NoRulefileError):
-        return_listrules_from_rulefile_list()
+        _return_listrules_from_rulefile_list()
 
 
 @pytest.mark.rules
@@ -127,4 +127,4 @@ def test_return_listrules_from_rulefile_list_not_found(tmp_path):
     os.chdir(tmp_path)
     Path(".rules2").write_text(TEST_RULES_CSVSTR)
     with pytest.raises(NoRulefileError):
-        return_listrules_from_rulefile_list(csvfile=".rules3")
+        _return_listrules_from_rulefile_list(csvfile=".rules3")

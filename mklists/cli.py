@@ -58,7 +58,7 @@ def run(config, dryrun, here_only):  # should be config
     #                                    _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                                    _config_yamlfile_name=CONFIGFILE_NAME)
     #
-    #     datadir_pathname   = os.getcwd(datadit)
+    #     datadir_pathname   = os.getcwd(datadir)
     #
     #     visiblefiles_list  = return_visiblefiles_list()
     #
