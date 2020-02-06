@@ -8,9 +8,6 @@ from .constants import ROOTDIR_RULEFILE_NAME, DATADIR_RULEFILE_NAME, CONFIGFILE_
 from .decorators import preserve_cwd
 from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRulesError
 
-# pylint: disable=bad-continuation
-# Black disagrees.
-
 
 def return_listrules_from_rulefile_list(csvfile=None):
     """Return lists of lists, string items stripped, from pipe-delimited CSV file."""
