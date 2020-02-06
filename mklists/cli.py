@@ -37,9 +37,9 @@ def run(config, dryrun, here_only):  # should be config
     # datadir_pathname       = os.getcwd()
     # rootdir_pathname       = return_rootdir_path(
     #                              _datadir_pathname=datadir_pathname
-    #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    #                              _config_yamlfile_name=CONFIGFILE_NAME)
     # ctx.obj                = return_config_dict_from_config_yamlfile(
-    #                              _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    #                              _config_yamlfile_name=CONFIGFILE_NAME)
 
     # if here_only: # will operate only on data directories below current directory
     #     datadir_pathnames  = return_data_subdirs_list(
@@ -56,7 +56,7 @@ def run(config, dryrun, here_only):  # should be config
     #     rulefile_pathnames_chain     = return_rulefile_chain(
     #                                    _startdir_pathname=datadir,
     #                                    _rules_csvfile_name=RULE_CSVFILE_NAME,
-    #                                    _config_yamlfile_name=CONFIG_YAMLFILE_NAME)
+    #                                    _config_yamlfile_name=CONFIGFILE_NAME)
     #
     #     datadir_pathname   = os.getcwd(datadit)
     #
@@ -90,7 +90,7 @@ def run(config, dryrun, here_only):  # should be config
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rules_csvfile
     #     ruleobj_list       = return_ruleobj_list_from_rulefile_chain(
-    #                              config_yamlfile=CONFIG_YAMLFILE_NAME, # needed??
+    #                              config_yamlfile=CONFIGFILE_NAME, # needed??
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                              verbose=True)
     #

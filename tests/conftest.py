@@ -4,7 +4,7 @@ import pytest
 from pathlib import Path
 from mklists.ruleclass import Rule
 from mklists.constants import (
-    CONFIG_YAMLFILE_NAME,
+    CONFIGFILE_NAME,
     ROOTDIR_RULEFILE_NAME,
     DATADIR_RULEFILE_NAME,
 )
@@ -35,7 +35,7 @@ def fixture_myrepo(tmp_path_factory):
     # pylint: disable=unused-variable
     # Not a problem; this is just a fixture.
     root_dir = tmp_path_factory.mktemp("myrepo")
-    Path(root_dir).joinpath(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(root_dir).joinpath(CONFIGFILE_NAME).write_text("config stuff")
     Path(root_dir).joinpath(ROOTDIR_RULEFILE_NAME).write_text("rule stuff")
     Path(root_dir).joinpath("a/b/c").mkdir(parents=True, exist_ok=True)
     Path(root_dir).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule stuff")

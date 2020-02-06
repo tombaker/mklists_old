@@ -3,14 +3,14 @@
 import os
 import pytest
 from pathlib import Path
-from mklists.constants import CONFIG_YAMLFILE_NAME
+from mklists.constants import CONFIGFILE_NAME
 from mklists.utils import return_backupdir_pathname
 
 
 def test_return_backupdir_pathname(tmp_path):
     """Returns backups Path named for default working directory."""
     os.chdir(tmp_path)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     backdir = "_backups"
     datestr = "2020-01-03_1646"
     workingdir = Path("agenda")
@@ -26,7 +26,7 @@ def test_return_backupdir_pathname(tmp_path):
 def test_return_backupdir_pathname_given_workdir(tmp_path):
     """Returns backups Path named for specified working directory."""
     os.chdir(tmp_path)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     workingdir = Path(tmp_path).joinpath("todolists/a")
     workingdir.mkdir(parents=True, exist_ok=True)
     workingdir_shortname_expected = "todolists_a"
@@ -42,7 +42,7 @@ def test_return_backupdir_pathname_given_workdir(tmp_path):
 def test_return_backupdir_pathname_given_workdir_with_slash(tmp_path):
     """Returns backups Path named for specified working directory ending with slash."""
     os.chdir(tmp_path)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     workingdir = Path(tmp_path).joinpath("todolists/a/")
     workingdir.mkdir(parents=True, exist_ok=True)
     workingdir_shortname_expected = "todolists_a"

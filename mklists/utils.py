@@ -10,7 +10,7 @@ from .booleans import filename_is_valid_as_filename
 # ROOTDIR_RULEFILE_NAME,
 from .constants import (
     BACKUPS_DIR_NAME,
-    CONFIG_YAMLFILE_NAME,
+    CONFIGFILE_NAME,
     DATADIR_RULEFILE_NAME,
     TIMESTAMP_STR,
 )
@@ -54,7 +54,7 @@ def return_datalines_list_from_datafiles():
 
 
 def return_config_dict_from_config_yamlfile(
-    rootdir_pathname=None, config_yamlfile_name=CONFIG_YAMLFILE_NAME
+    rootdir_pathname=None, config_yamlfile_name=CONFIGFILE_NAME
 ):
     """Returns configuration dictionary from YAML config file."""
     if not rootdir_pathname:
@@ -71,7 +71,7 @@ def return_config_dict_from_config_yamlfile(
 
 
 @preserve_cwd
-def return_rootdir_path(here=None, configfile=CONFIG_YAMLFILE_NAME):
+def return_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
     """Return root pathname of mklists repo wherever executed in repo."""
     if not here:
         here = Path.cwd()
@@ -115,7 +115,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
 
 def return_data_subdirs_list(
     given_pathname=None,
-    config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+    config_yamlfile_name=CONFIGFILE_NAME,
     rules_csvfile_name=DATADIR_RULEFILE_NAME,
 ):
     """Return list of data directories under a given directory.

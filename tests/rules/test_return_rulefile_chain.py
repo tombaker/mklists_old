@@ -5,7 +5,7 @@ import pytest
 from pathlib import Path
 from mklists.rules import return_rulefile_chain
 from mklists.constants import (
-    CONFIG_YAMLFILE_NAME,
+    CONFIGFILE_NAME,
     ROOTDIR_RULEFILE_NAME,
     DATADIR_RULEFILE_NAME,
 )
@@ -23,7 +23,7 @@ def test_return_rulefile_chain_typical(tmp_path):
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(ROOTDIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     Path(tmp_path).joinpath("a/b", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
@@ -44,7 +44,7 @@ def test_return_rulefile_chain_ends_before_repo_rootdir(tmp_path):
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(ROOTDIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a/b", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     Path(tmp_path).joinpath("a/b/c", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
@@ -62,7 +62,7 @@ def test_return_rulefile_chain_with_specifying_rootdir(tmp_path):
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(ROOTDIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     Path(tmp_path).joinpath("a/b", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
@@ -84,7 +84,7 @@ def test_return_rulefile_chain_empty_list_when_starting_in_non_datadir(tmp_path)
     d = Path.cwd().joinpath("d")
     abc.mkdir(parents=True, exist_ok=True)
     d.mkdir(parents=True, exist_ok=True)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(ROOTDIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     Path(tmp_path).joinpath("a/b", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
@@ -100,7 +100,7 @@ def test_return_rulefile_chain_empty_list_when_starting_in_rootdir(tmp_path):
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(ROOTDIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     Path(tmp_path).joinpath("a/b", DATADIR_RULEFILE_NAME).write_text("rule_stuff")

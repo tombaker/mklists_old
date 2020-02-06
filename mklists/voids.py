@@ -5,8 +5,8 @@ import shutil
 from pathlib import Path
 from .constants import (
     BACKUPS_DIR_NAME,
-    CONFIG_YAMLFILE_CONTENT,
-    CONFIG_YAMLFILE_NAME,
+    CONFIGFILE_CONTENT,
+    CONFIGFILE_NAME,
     DATADIR_NAME,
     DATADIR_RULEFILE_CONTENTS,
     DATADIR_RULEFILE_NAME,
@@ -23,8 +23,8 @@ from .utils import return_visiblefiles_list, return_rootdir_path
 
 def write_config_yamlfile(
     rootdir_pathname=None,
-    config_yamlfile_name=CONFIG_YAMLFILE_NAME,
-    config_yamlfile_content=CONFIG_YAMLFILE_CONTENT,
+    config_yamlfile_name=CONFIGFILE_NAME,
+    config_yamlfile_content=CONFIGFILE_CONTENT,
 ):
     """Write initial YAML config file, 'mklists.yml', to root directory."""
     if not rootdir_pathname:

@@ -46,11 +46,11 @@ DATADIR_RULEFILE_CONTENTS = (
     "1       |LATER |todo.txt   |later.txt  |       |'later.txt' will not be sorted.\n"
     "1       |^2020 |todo.txt   |log.txt    |0      |\n"
 )
-CONFIG_YAMLFILE_NAME = "mklists.yml"
+CONFIGFILE_NAME = "mklists.yml"
 
 # pylint: disable=anomalous-backslash-in-string
 # => the slashes in "invalid filename patterns" are valid in YAML
-CONFIG_YAMLFILE_CONTENT = (
+CONFIGFILE_CONTENT = (
     "verbose: True\n"
     "backup_depth: 3\n"
     "invalid_filename_patterns:\n"

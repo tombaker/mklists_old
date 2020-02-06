@@ -3,7 +3,7 @@
 import os
 import pytest
 from pathlib import Path
-from mklists.constants import CONFIG_YAMLFILE_NAME, ROOTDIR_RULEFILE_NAME
+from mklists.constants import CONFIGFILE_NAME, ROOTDIR_RULEFILE_NAME
 from mklists.utils import return_rootdir_path
 
 # pylint: disable=unused-argument
@@ -13,15 +13,15 @@ from mklists.utils import return_rootdir_path
 def test_return_rootdir_path_while_in_rootdir_using_tmp_path(tmp_path):
     """Returns root directory when called while already in root directory."""
     os.chdir(tmp_path)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
-    assert Path(CONFIG_YAMLFILE_NAME).exists()
+    Path(CONFIGFILE_NAME).write_text("config stuff")
+    assert Path(CONFIGFILE_NAME).exists()
     assert return_rootdir_path() == tmp_path
 
 
 def test_return_rootdir_path_while_in_rootdir_using_fixture(myrepo):
     """Returns root directory when called in root directory of "myrepo"."""
     os.chdir(myrepo)
-    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
+    assert Path(CONFIGFILE_NAME).exists()  # created by fixture "myrepo"
     assert Path(ROOTDIR_RULEFILE_NAME).exists()  # created by fixture "myrepo"
     assert return_rootdir_path() == myrepo
 
@@ -29,7 +29,7 @@ def test_return_rootdir_path_while_in_rootdir_using_fixture(myrepo):
 def test_return_rootdir_path_from_fixture_subdir(myrepo):
     """Returns root pathname when called in subdirectory of "myrepo"."""
     os.chdir(myrepo)
-    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
+    assert Path(CONFIGFILE_NAME).exists()  # created by fixture "myrepo"
     os.chdir(os.path.join(myrepo, "a"))
     assert return_rootdir_path() == myrepo
 
@@ -37,7 +37,7 @@ def test_return_rootdir_path_from_fixture_subdir(myrepo):
 def test_return_rootdir_path_while_in_subdir_two_deep(myrepo):
     """Returns root directory when called in sub-subdirectory of "myrepo"."""
     os.chdir(myrepo)
-    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
+    assert Path(CONFIGFILE_NAME).exists()  # created by fixture "myrepo"
     os.chdir(os.path.join(myrepo, "a/b"))
     assert return_rootdir_path() == myrepo
 
@@ -45,7 +45,7 @@ def test_return_rootdir_path_while_in_subdir_two_deep(myrepo):
 def test_return_rootdir_path_while_in_subdir_three_deep(myrepo):
     """Returns root directory when called in sub-sub-subdirectory of "myrepo"."""
     os.chdir(myrepo)
-    assert Path(CONFIG_YAMLFILE_NAME).exists()  # created by fixture "myrepo"
+    assert Path(CONFIGFILE_NAME).exists()  # created by fixture "myrepo"
     os.chdir(os.path.join(myrepo, "a/b/c"))
     assert return_rootdir_path() == myrepo
 

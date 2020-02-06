@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 from mklists.utils import return_data_subdirs_list
-from mklists.constants import CONFIG_YAMLFILE_NAME, DATADIR_RULEFILE_NAME
+from mklists.constants import CONFIGFILE_NAME, DATADIR_RULEFILE_NAME
 
 
 def test_return_data_subdirs_list__excluding_rootdir(tmp_path):
@@ -11,7 +11,7 @@ def test_return_data_subdirs_list__excluding_rootdir(tmp_path):
     os.chdir(tmp_path)
     abc = Path.cwd().joinpath("a/b/c")
     abc.mkdir(parents=True, exist_ok=True)
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(DATADIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     Path(tmp_path).joinpath("a/b", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
@@ -29,7 +29,7 @@ def test_return_data_subdirs_list_ignoring_hidden_directory(tmp_path):
     c.mkdir()
     hidden = Path.cwd().joinpath(".hidden")
     hidden.mkdir()
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(DATADIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     Path(tmp_path).joinpath("a/b", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
@@ -44,7 +44,7 @@ def test_return_data_subdirs_list_just_one(tmp_path):
     os.chdir(tmp_path)
     a = Path("a")
     a.mkdir()
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     Path(DATADIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     expected = [Path(tmp_path).joinpath("a")]
@@ -56,7 +56,7 @@ def test_return_data_subdirs_list_rootdir_has_no_rulefile(tmp_path):
     os.chdir(tmp_path)
     a = Path("a")
     a.mkdir()
-    Path(CONFIG_YAMLFILE_NAME).write_text("config stuff")
+    Path(CONFIGFILE_NAME).write_text("config stuff")
     # NOT Path(DATADIR_RULEFILE_NAME).write_text("rule stuff")
     Path(tmp_path).joinpath("a", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     expected = [Path(tmp_path).joinpath("a")]

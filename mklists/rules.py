@@ -4,11 +4,7 @@ import csv
 import os
 from pathlib import Path
 from .ruleclass import Rule
-from .constants import (
-    ROOTDIR_RULEFILE_NAME,
-    DATADIR_RULEFILE_NAME,
-    CONFIG_YAMLFILE_NAME,
-)
+from .constants import ROOTDIR_RULEFILE_NAME, DATADIR_RULEFILE_NAME, CONFIGFILE_NAME
 from .decorators import preserve_cwd
 from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRulesError
 
@@ -46,7 +42,7 @@ def return_rulefile_chain(
     startdir=None,
     datadir_rulefile=DATADIR_RULEFILE_NAME,
     rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
-    config_yamlfile_name=CONFIG_YAMLFILE_NAME,
+    config_yamlfile_name=CONFIGFILE_NAME,
 ):
     """Return chain of rule files from root to specified data directory."""
     # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_rulefile_chain.py
