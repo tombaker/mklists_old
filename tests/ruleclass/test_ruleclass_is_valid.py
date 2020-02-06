@@ -3,7 +3,7 @@ other methods are indirectly tested here."""
 
 
 import pytest
-from mklists.rules import Rule
+from mklists.ruleclass import Rule
 
 # pylint: disable=bad-continuation
 # Black disagrees.

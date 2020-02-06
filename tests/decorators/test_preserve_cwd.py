@@ -1,4 +1,4 @@
-"""Tests for decorator @preserve_cwd"""
+"""Re-sets current working directory on finishing execution of a decorated function."""
 
 import os
 from pathlib import Path
@@ -6,7 +6,7 @@ from mklists.decorators import preserve_cwd
 
 
 def test_preserve_cwd(tmp_path):
-    """@@@Docstring"""
+    """Current working directory is same at start and end of executing function."""
     os.chdir(tmp_path)
     directory_before = Path.cwd()
     tmpdir_some_directory = Path(tmp_path) / "some_directory"

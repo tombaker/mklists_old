@@ -42,7 +42,7 @@ def run(config, dryrun, here_only):  # should be config
     #                              _config_yamlfile_name=CONFIGFILE_NAME)
 
     # if here_only: # will operate only on data directories below current directory
-    #     datadir_pathnames  = return_data_subdirs_list(
+    #     datadir_pathnames  = return_datadirs_list(
     #                              _rootdir_pathname=rootdir_pathname,
     #                              _somedir_pathname=datadir_pathname,
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
@@ -53,12 +53,10 @@ def run(config, dryrun, here_only):  # should be config
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
 
     # for datadir in datadirs_pathnames:
-    #     rulefile_pathnames_chain     = return_rulefile_chain(
+    #     rulefile_pathnames_chain     = _return_rulefile_chain(
     #                                    _startdir_pathname=datadir,
     #                                    _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                                    _config_yamlfile_name=CONFIGFILE_NAME)
-    #
-    #     datadir_pathname   = os.getcwd(datadir)
     #
     #     visiblefiles_list  = return_visiblefiles_list()
     #

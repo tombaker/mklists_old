@@ -17,17 +17,17 @@ def return_ruleobj_list_from_rulefiles(startdir=None):
     # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_rulefiles.py
     if not startdir:
         startdir = Path.cwd()
-    rulefile_chain = return_rulefile_chain(startdir)
-    ruleobj_list = []
+    rulefile_chain = _return_rulefile_chain(startdir)
+    listrules_lists_aggregated = []
     for rulefile in rulefile_chain:
         listrules_list = _return_listrules_from_rulefile_list(rulefile)
-        ruleobj_list.append(_return_ruleobj_list_from_listrules(listrules_list))
-    return ruleobj_list
+        listrules_lists_aggregated.extend(listrules_list)
+    return _return_ruleobj_list_from_listrules(listrules_lists_aggregated)
 
 
 def _return_listrules_from_rulefile_list(csvfile=None):
     """Return lists of lists, string items stripped, from pipe-delimited CSV file."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_listrules_from_rulefile_list.py
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_listrules_from_rulefile_list.py
     csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
     try:
         # encoding 'utf-8-sig' for Excel files with U+FEFF
@@ -52,7 +52,7 @@ def _return_listrules_from_rulefile_list(csvfile=None):
 
 def _return_ruleobj_list_from_listrules(pyobj=None):
     """Return list of Rule objects from list of lists of component strings."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_listrules.py
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_ruleobj_list_from_listrules.py
     if not pyobj:
         raise NoRulesError(f"List with rule components as strings must be specified.")
     ruleobj_list = []
@@ -72,14 +72,14 @@ def _return_ruleobj_list_from_listrules(pyobj=None):
 
 
 @preserve_cwd
-def return_rulefile_chain(
+def _return_rulefile_chain(
     startdir=None,
     datadir_rulefile=DATADIR_RULEFILE_NAME,
     rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
     configfile=CONFIGFILE_NAME,
 ):
     """Return list of rule files from root to specified data directory."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_rulefile_chain.py
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_rulefile_chain.py
     if not startdir:
         startdir = Path.cwd()
     os.chdir(startdir)

@@ -113,7 +113,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_data_subdirs_list(
+def return_datadirs_list(
     given_pathname=None,
     config_yamlfile_name=CONFIGFILE_NAME,
     rules_csvfile_name=DATADIR_RULEFILE_NAME,

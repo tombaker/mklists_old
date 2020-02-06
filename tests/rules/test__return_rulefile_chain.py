@@ -3,18 +3,12 @@
 import os
 import pytest
 from pathlib import Path
-from mklists.rules import return_rulefile_chain
+from mklists.rules import _return_rulefile_chain
 from mklists.constants import (
     CONFIGFILE_NAME,
     ROOTDIR_RULEFILE_NAME,
     DATADIR_RULEFILE_NAME,
 )
-
-
-# 2019-01-19:
-# TODO: Possible developments:
-#  Could generate one big dictionary of rulefile chains for entire repo
-#  Test: function stops looking for '.rules' above rootdir (i.e., 'mklists.yml' found).
 
 
 @pytest.mark.rules
@@ -35,7 +29,7 @@ def test_return_rulefile_chain_typical(tmp_path):
         Path(tmp_path) / "a/b" / DATADIR_RULEFILE_NAME,
         Path(tmp_path) / "a/b/c" / DATADIR_RULEFILE_NAME,
     ]
-    assert return_rulefile_chain(startdir=abc) == expected
+    assert _return_rulefile_chain(startdir=abc) == expected
 
 
 @pytest.mark.rules
@@ -53,7 +47,7 @@ def test_return_rulefile_chain_ends_before_repo_rootdir(tmp_path):
         Path(tmp_path) / "a/b" / DATADIR_RULEFILE_NAME,
         Path(tmp_path) / "a/b/c" / DATADIR_RULEFILE_NAME,
     ]
-    assert return_rulefile_chain() == expected
+    assert _return_rulefile_chain() == expected
 
 
 @pytest.mark.rules
@@ -73,7 +67,7 @@ def test_return_rulefile_chain_with_specifying_rootdir(tmp_path):
         Path(tmp_path) / "a/b" / DATADIR_RULEFILE_NAME,
         Path(tmp_path) / "a/b/c" / DATADIR_RULEFILE_NAME,
     ]
-    assert return_rulefile_chain(startdir=abc) == expected
+    assert _return_rulefile_chain(startdir=abc) == expected
 
 
 @pytest.mark.rules
@@ -91,7 +85,7 @@ def test_return_rulefile_chain_empty_list_when_starting_in_non_datadir(tmp_path)
     Path(tmp_path).joinpath("a/b/c", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     os.chdir(d)
     expected = []
-    assert return_rulefile_chain() == expected
+    assert _return_rulefile_chain() == expected
 
 
 @pytest.mark.rules
@@ -107,4 +101,4 @@ def test_return_rulefile_chain_empty_list_when_starting_in_rootdir(tmp_path):
     Path(tmp_path).joinpath("a/b/c", DATADIR_RULEFILE_NAME).write_text("rule_stuff")
     os.chdir(tmp_path)
     expected = []
-    assert return_rulefile_chain() == expected
+    assert _return_rulefile_chain() == expected
