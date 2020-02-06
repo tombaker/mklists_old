@@ -1,4 +1,4 @@
-"""Some rule module tests use temporary directory fixture."""
+"""Source match pattern must be valid regular expression."""
 
 import pytest
 from mklists.ruleclass import Rule

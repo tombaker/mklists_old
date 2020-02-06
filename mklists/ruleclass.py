@@ -24,62 +24,10 @@ class Rule:
     sources_list_is_initialized = False
     sources_list = []
 
-    def is_valid(self):
-        """Return True if Rule object passes all conversions and tests."""
+    def coerce_types(self):
         self._coerce_source_matchfield_as_integer()
         self._coerce_target_sortorder_as_integer()
-        self._confirm_source_is_valid_filename()
-        self._confirm_target_is_valid_filename()
-
-        self._source_matchpattern_field_string_is_valid_as_regex()
-        self._source_filename_field_is_not_equal_target()
-        self._source_filename_field_was_properly_initialized()
-        return True
-
-    def _confirm_source_is_valid_filename(self):
-        """Return source as valid filename as per filename rules."""
-        filename = self.source
-        if not filename_is_valid_as_filename(filename):
-            raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
-
-    def _confirm_target_is_valid_filename(self):
-        """Return target as valid filename as per filename rules."""
-        filename = self.target
-        if not filename_is_valid_as_filename(filename):
-            raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
-
-    def _source_filename_field_was_properly_initialized(self):
-        """Returns True if 'source' filename was initialized as a source."""
-        if not Rule.sources_list_is_initialized:
-            Rule.sources_list.append(self.source)
-            Rule.sources_list_is_initialized = True
-        if self.source not in Rule.sources_list:
-            print(f"In rule: {self}")
-            print(f"Rule.sources_list = {Rule.sources_list}")
-            raise UninitializedSourceError(f"{repr(self.source)} not initialized.")
-        if self.target not in Rule.sources_list:
-            Rule.sources_list.append(self.target)
-        return True
-
-    def _source_filename_field_is_not_equal_target(self):
-        """Returns True if source is not equal to target."""
-        if self.source == self.target:
-            print(f"{self}")
-            raise SourceEqualsTargetError("source must not equal target.")
-        return True
-
-    def _source_matchpattern_field_string_is_valid_as_regex(self):
-        """Returns True if source_matchpattern is valid regular expression."""
-        if self.source_matchpattern is None:
-            raise MissingValueError(
-                f"'None' is not a valid value for 'source_matchpattern'."
-            )
-        if not regex_is_valid_as_regex(self.source_matchpattern):
-            print(f"{self}")
-            raise SourceMatchpatternError(
-                "Value for 'source_matchpattern' must be a valid regex."
-            )
-        return True
+        return self
 
     def _coerce_source_matchfield_as_integer(self):
         """Coerces source_matchfield to be of type integer."""
@@ -98,3 +46,60 @@ class Rule:
         except ValueError:
             print(self)
             raise BadRuleError(f"Target sortorder {repr(value)} is not an integer.")
+
+    def is_valid(self):
+        """Return True if Rule object passes all conversions and tests."""
+        self._source_is_valid_filename()
+        self._target_is_valid_filename()
+        self._source_matchpattern_field_string_is_valid_as_regex()
+        self._source_filename_field_is_not_equal_target()
+        self._source_filename_field_was_properly_initialized()
+        return True
+
+    def _source_is_valid_filename(self):
+        """Return source as valid filename as per filename rules."""
+        filename = self.source
+        if not filename_is_valid_as_filename(filename):
+            raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
+        return True
+
+    def _target_is_valid_filename(self):
+        """Return target as valid filename as per filename rules."""
+        filename = self.target
+        if not filename_is_valid_as_filename(filename):
+            raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
+        return True
+
+    def _source_filename_field_was_properly_initialized(self):
+        """Returns True if 'source' filename was initialized as a source."""
+        if not Rule.sources_list_is_initialized:
+            Rule.sources_list.append(self.source)
+            Rule.sources_list_is_initialized = True
+        # print(f"if {self.source} not in {Rule.sources_list}")
+        if self.source not in Rule.sources_list:
+            # print(f"In rule: {self}")
+            # print(f"Rule.sources_list = {Rule.sources_list}")
+            raise UninitializedSourceError(f"{repr(self.source)} not initialized.")
+        if self.target not in Rule.sources_list:
+            Rule.sources_list.append(self.target)
+        return True
+
+    def _source_filename_field_is_not_equal_target(self):
+        """Returns True if source is not equal to target."""
+        if self.source == self.target:
+            # print(f"{self}")
+            raise SourceEqualsTargetError("source must not equal target.")
+        return True
+
+    def _source_matchpattern_field_string_is_valid_as_regex(self):
+        """Returns True if source_matchpattern is valid regular expression."""
+        if self.source_matchpattern is None:
+            raise MissingValueError(
+                f"'None' is not a valid value for 'source_matchpattern'."
+            )
+        if not regex_is_valid_as_regex(self.source_matchpattern):
+            # print(f"{self}")
+            raise SourceMatchpatternError(
+                "Value for 'source_matchpattern' must be a valid regex."
+            )
+        return True

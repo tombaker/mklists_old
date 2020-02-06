@@ -22,7 +22,11 @@ def return_ruleobj_list_from_rulefiles(startdir=None):
     for rulefile in rulefile_chain:
         listrules_list = _return_listrules_from_rulefile_list(rulefile)
         listrules_lists_aggregated.extend(listrules_list)
-    return _return_ruleobj_list_from_listrules(listrules_lists_aggregated)
+        from pprint import pprint
+
+        pprint(_return_ruleobj_list_from_listrules(listrules_lists_aggregated))
+    # return _return_ruleobj_list_from_listrules(listrules_lists_aggregated)
+    return False
 
 
 def _return_listrules_from_rulefile_list(csvfile=None):
@@ -59,7 +63,7 @@ def _return_ruleobj_list_from_listrules(pyobj=None):
     for item in pyobj:
         try:
             if Rule(*item).is_valid():
-                ruleobj_list.append(Rule(*item))
+                ruleobj_list.append(Rule(*item).coerce_types())
         except MissingValueError:
             print(f"Skipping badly formed rule: {item}")
         except ValueError:

@@ -8,11 +8,11 @@ from mklists.rules import _return_ruleobj_list_from_listrules
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
 
-TEST_RULES_CSVSTR_PARSED = [
+TEST_RULES_LIST = [
     [0, ".", "x", "lines", 0],
     [1, "NOW", "lines", "alines", 1],
-    [1, "LATER", "lines", "alines", 1],
-    [0, "^2020", "lines", "blines", 1],
+    [1, "LATER", "alines", "blines", 1],
+    [0, "^2020", "blines", "clines", 1],
 ]
 
 TEST_RULEOBJ_LIST = [
@@ -33,33 +33,31 @@ TEST_RULEOBJ_LIST = [
     Rule(
         source_matchfield=1,
         source_matchpattern="LATER",
-        source="lines",
-        target="alines",
+        source="alines",
+        target="blines",
         target_sortorder=1,
     ),
     Rule(
         source_matchfield=0,
         source_matchpattern="^2020",
-        source="lines",
-        target="blines",
+        source="blines",
+        target="clines",
         target_sortorder=1,
     ),
 ]
 
 
-@pytest.mark.skip
 @pytest.mark.rules
-def test_return_ruleobj_list_from_listrules():
+def test_return_ruleobj_list_from_listrules(reinitialize_ruleclass_variables):
     """Returns list of Rule objects from Python list of five-item lists."""
-    pyobj = TEST_RULES_CSVSTR_PARSED
+    rules_list = TEST_RULES_LIST
     expected = TEST_RULEOBJ_LIST
-    real = _return_ruleobj_list_from_listrules(pyobj=pyobj)
+    real = _return_ruleobj_list_from_listrules(rules_list)
     assert real == expected
 
 
-@pytest.mark.skip
 @pytest.mark.rules
-def test_return_ruleobj_list_from_listrules_but_no_pyobj_as_argument():
-    """Raises NoRulesError if no Python object is specified as argument."""
+def test_return_ruleobj_list_with_no_pyobj_specified(reinitialize_ruleclass_variables):
+    """Raises NoRulesError if no rules list is specified as argument."""
     with pytest.raises(NoRulesError):
         _return_ruleobj_list_from_listrules(pyobj=None)

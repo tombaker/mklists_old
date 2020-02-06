@@ -11,6 +11,13 @@ from mklists.ruleclass import Rule
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
 
+TEST_RULES_LIST = [
+    [0, ".", "x", "lines", 0],
+    [1, "NOW", "lines", "alines", 1],
+    [1, "LATER", "lines", "alines", 1],
+    [0, "^2020", "lines", "blines", 1],
+]
+
 
 def test_rule_source_filename_field_was_properly_initialized_initial_source(
     reinitialize_ruleclass_variables

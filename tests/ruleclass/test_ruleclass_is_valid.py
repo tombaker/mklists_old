@@ -1,6 +1,4 @@
-"""Method is_valid() calls other methods, so these
-other methods are indirectly tested here."""
-
+"""Indirectly tests methods called by is_valid()."""
 
 import pytest
 from mklists.ruleclass import Rule
@@ -51,3 +49,9 @@ def test_rule_source_not_initialized_unprecedented(reinitialize_ruleclass_variab
     rule_obj2 = Rule(1, "LATER", "c.txt", "d.txt", 0)
     with pytest.raises(SystemExit):
         rule_obj2.is_valid()
+
+
+def test_properly_coerces_integer_fields(reinitialize_ruleclass_variables):
+    """First and last fields must be coerced to integers."""
+    rule_obj = Rule("1", "NOW", "a.txt", "b.txt", "0")
+    assert rule_obj.coerce_types() == Rule(1, "NOW", "a.txt", "b.txt", 0)

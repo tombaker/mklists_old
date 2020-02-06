@@ -33,7 +33,7 @@ def test_coerce_source_matchfield_as_integer_raise_exception_given_bad_string():
 
 
 def test_coerce_source_matchfield_as_integer_raise_exception_given_non_integer():
-    """Perversely, int(1.2) evaluates to 1; improbable edge case?"""
+    """Perversely, int(1.2) evaluates to 1, so why not accept it?"""
     rule_obj = Rule(1.2, "NOW", "a", "b", 1.2)
     rule_obj._coerce_source_matchfield_as_integer()
     assert isinstance(rule_obj.source_matchfield, int)
