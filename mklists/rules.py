@@ -74,8 +74,8 @@ def _return_ruleobj_list_from_listrules(pyobj=None):
 @preserve_cwd
 def _return_rulefile_chain(
     startdir=None,
-    datadir_rulefile=DATADIR_RULEFILE_NAME,
     rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
+    datadir_rulefile=DATADIR_RULEFILE_NAME,
     configfile=CONFIGFILE_NAME,
 ):
     """Return list of rule files from root to specified data directory."""
@@ -83,12 +83,15 @@ def _return_rulefile_chain(
     if not startdir:
         startdir = Path.cwd()
     os.chdir(startdir)
-    root2datadir_rulefiles = []
+    rulefile_chain = []
     while datadir_rulefile in os.listdir():
-        root2datadir_rulefiles.insert(0, Path.cwd().joinpath(datadir_rulefile))
+        rulefile_chain.insert(0, Path.cwd().joinpath(datadir_rulefile))
         os.chdir(os.pardir)
+    print(f"if {configfile} in {os.listdir()}")
     if configfile in os.listdir():
-        if root2datadir_rulefiles:
-            if rootdir_rulefile in os.listdir():
-                root2datadir_rulefiles.insert(0, Path.cwd().joinpath(rootdir_rulefile))
-    return root2datadir_rulefiles
+        print(f"if {rootdir_rulefile} in {os.listdir()}")
+        if rootdir_rulefile in os.listdir():
+            print(rulefile_chain)
+            rulefile_chain.insert(0, Path.cwd().joinpath(rootdir_rulefile))
+    print(rulefile_chain)
+    # return rulefile_chain
