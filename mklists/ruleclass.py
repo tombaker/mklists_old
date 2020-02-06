@@ -25,6 +25,7 @@ class Rule:
     sources_list = []
 
     def coerce_types(self):
+        """Coerces string integers to real integers."""
         self._coerce_source_matchfield_as_integer()
         self._coerce_target_sortorder_as_integer()
         return self
