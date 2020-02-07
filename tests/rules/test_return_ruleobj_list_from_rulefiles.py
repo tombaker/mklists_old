@@ -71,12 +71,8 @@ def test_return_ruleobj_list_from_rulefiles(tmp_path):
     rulefile_chain = _return_rulefile_chain()
     assert rulefile_chain == [rulefile0, rulefile1, rulefile2]
     expected = RULEOBJ_LIST
-    from pprint import pprint
-
-    pprint(expected)
     real = return_ruleobj_list_from_rulefiles()
-    pprint(real)
-    # assert real == expected
+    assert real == expected
 
 
 @pytest.mark.rules
@@ -84,19 +80,3 @@ def test_return_listrules_from_rulefile_list_rulefile_not_specified(tmp_path):
     """@@@Docstring."""
     with pytest.raises(NoRulefileError):
         _return_listrules_from_rulefile_list(csvfile=None)
-
-
-# PYOBJ_JUST_STRINGS = [
-#     ["0", ".", "x", "lines", "0"],
-#     ["1", "NOW", "lines", "alines", "1"],
-#     ["1", "LATER", "lines", "alines", "1"],
-#     ["0", "^2019 ..", "lines", "blines", "1"],
-# ]
-#
-#
-# PYOBJ_WITH_INTEGERS = [
-#     [0, ".", "x", "lines", 0],
-#     [1, "NOW", "lines", "alines", 1],
-#     [1, "LATER", "lines", "alines", 1],
-#     [0, "^2020", "lines", "blines", 1],
-# ]

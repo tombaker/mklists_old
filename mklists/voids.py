@@ -21,37 +21,6 @@ from .utils import return_visiblefiles_list, return_rootdir_path
 # Black disagrees.
 
 
-def write_starter_configfile(
-    rootdir_pathname=None,
-    configfile_name=CONFIGFILE_NAME,
-    configfile_content=CONFIGFILE_CONTENT,
-):
-    """Write initial YAML config file, 'mklists.yml', to root directory."""
-    if not rootdir_pathname:
-        rootdir_pathname = os.getcwd()
-    file_tobewritten_pathname = os.path.join(rootdir_pathname, configfile_name)
-    if os.path.exists(file_tobewritten_pathname):
-        raise RepoAlreadyInitialized(
-            f"Repo already initialized with {configfile_name}."
-        )
-    with open(file_tobewritten_pathname, "w", encoding="utf-8") as outfile:
-        outfile.write(configfile_content)
-
-
-@preserve_cwd
-def write_starter_rulefiles(
-    dira=DATADIR_NAME,
-    dira_rulefile=DATADIR_RULEFILE_NAME,
-    dira_rulefile_contents=DATADIR_RULEFILE_CONTENTS,
-    root_rulefile=ROOTDIR_RULEFILE_NAME,
-    root_rulefile_contents=ROOTDIR_RULEFILE_CONTENTS,
-):
-    """Write starter rule files to root directory and one data directory."""
-    Path(dira).mkdir(parents=True, exist_ok=True)
-    Path(dira).joinpath(dira_rulefile).write_text(dira_rulefile_contents)
-    Path(root_rulefile).write_text(root_rulefile_contents)
-
-
 def delete_older_backupdirs(
     backups_depth=None, backups_name=BACKUPS_DIR_NAME, rootdir_path=None
 ):
@@ -137,3 +106,33 @@ def write_datafiles_from_name2lines_dict(_name2lines_dict=None):
         if value:
             with open(key, "w", encoding="utf-8") as fout:
                 fout.writelines(value)
+
+
+def write_starter_configfile(
+    rootdir_pathname=None,
+    configfile_name=CONFIGFILE_NAME,
+    configfile_content=CONFIGFILE_CONTENT,
+):
+    """Write initial config file (mklists.yml) to root directory."""
+    if not rootdir_pathname:
+        rootdir_pathname = os.getcwd()
+    file_tobewritten_pathname = os.path.join(rootdir_pathname, configfile_name)
+    if os.path.exists(file_tobewritten_pathname):
+        raise RepoAlreadyInitialized(
+            f"Repo already initialized with {configfile_name}."
+        )
+    with open(file_tobewritten_pathname, "w", encoding="utf-8") as outfile:
+        outfile.write(configfile_content)
+
+
+def write_starter_rulefiles(
+    dira=DATADIR_NAME,
+    dira_rulefile=DATADIR_RULEFILE_NAME,
+    dira_rulefile_contents=DATADIR_RULEFILE_CONTENTS,
+    root_rulefile=ROOTDIR_RULEFILE_NAME,
+    root_rulefile_contents=ROOTDIR_RULEFILE_CONTENTS,
+):
+    """Write starter rule files to root directory and to starter data directory."""
+    Path(root_rulefile).write_text(root_rulefile_contents)
+    Path(dira).mkdir(parents=True, exist_ok=True)
+    Path(dira).joinpath(dira_rulefile).write_text(dira_rulefile_contents)

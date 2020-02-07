@@ -22,11 +22,29 @@ def return_ruleobj_list_from_rulefiles(startdir=None):
     for rulefile in rulefile_chain:
         listrules_list = _return_listrules_from_rulefile_list(rulefile)
         listrules_lists_aggregated.extend(listrules_list)
-        from pprint import pprint
+    return _return_ruleobj_list_from_listrules(listrules_lists_aggregated)
 
-        pprint(_return_ruleobj_list_from_listrules(listrules_lists_aggregated))
-    # return _return_ruleobj_list_from_listrules(listrules_lists_aggregated)
-    return False
+
+@preserve_cwd
+def _return_rulefile_chain(
+    startdir=None,
+    rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
+    datadir_rulefile=DATADIR_RULEFILE_NAME,
+    configfile=CONFIGFILE_NAME,
+):
+    """Return list of rule files from root to specified data directory."""
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_rulefile_chain.py
+    if not startdir:
+        startdir = Path.cwd()
+    os.chdir(startdir)
+    rulefile_chain = []
+    while datadir_rulefile in os.listdir():
+        rulefile_chain.insert(0, Path.cwd().joinpath(datadir_rulefile))
+        os.chdir(os.pardir)
+    if configfile in os.listdir():
+        if rootdir_rulefile in os.listdir():
+            rulefile_chain.insert(0, Path.cwd().joinpath(rootdir_rulefile))
+    return rulefile_chain
 
 
 def _return_listrules_from_rulefile_list(csvfile=None):
@@ -73,25 +91,3 @@ def _return_ruleobj_list_from_listrules(pyobj=None):
     if not ruleobj_list:
         raise NoRulesError(f"No rules found.")
     return ruleobj_list
-
-
-@preserve_cwd
-def _return_rulefile_chain(
-    startdir=None,
-    rootdir_rulefile=ROOTDIR_RULEFILE_NAME,
-    datadir_rulefile=DATADIR_RULEFILE_NAME,
-    configfile=CONFIGFILE_NAME,
-):
-    """Return list of rule files from root to specified data directory."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_rulefile_chain.py
-    if not startdir:
-        startdir = Path.cwd()
-    os.chdir(startdir)
-    rulefile_chain = []
-    while datadir_rulefile in os.listdir():
-        rulefile_chain.insert(0, Path.cwd().joinpath(datadir_rulefile))
-        os.chdir(os.pardir)
-    if configfile in os.listdir():
-        if rootdir_rulefile in os.listdir():
-            rulefile_chain.insert(0, Path.cwd().joinpath(rootdir_rulefile))
-    return rulefile_chain

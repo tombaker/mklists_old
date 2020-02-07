@@ -1,0 +1,28 @@
+apply.py =============================================
+def return_names2lines_dict_from_ruleobjs_and_datalines
+==> apply_rules_to_datalines
+
+utils.py ============================================= or: returns.py?
+def return_backupdir_pathname             => backupsdir_path
+def return_datadirs_list                  => datadir_paths
+def return_visiblefiles_list              => visible_filenames
+def return_compiled_regex_from_regexstr   => regex_compile
+def return_rootdir_path                   => rootdir_path
+
+reads.py =============================================
+def read_configfile
+def read_datafiles
+
+rules.py =============================================
+def return_ruleobj_list_from_rulefiles    => read_rulefiles
+def _return_rulefile_chain
+def _return_listrules_from_rulefile_list
+def _return_ruleobj_list_from_listrules
+
+voids.py =============================================
+def delete_older_backupdirs
+def move_all_datafiles_to_backupdir
+def move_specified_datafiles_to_somedirs
+def write_datafiles_from_name2lines_dict
+def write_starter_configfile
+def write_starter_rulefiles
