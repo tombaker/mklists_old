@@ -1,12 +1,12 @@
 apply.py =============================================
 def apply_rules_to_datalines
 
-utils.py ============================================= or: returns.py?
-def return_backupdir_pathname             => get_backupdir_path
-def return_datadirs_list                  => get_datadir_paths
-def return_visiblefiles_list              => get_visible_filenames
-def return_compiled_regex_from_regexstr   => compile_regex
-def return_rootdir_path                   => get_rootdir_path
+returns.py ===========================================
+def compile_regex
+def get_backupdir_path
+def get_datadir_paths
+def get_rootdir_path
+def get_visible_filenames
 
 reads.py =============================================
 def read_configfile

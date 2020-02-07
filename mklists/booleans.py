@@ -32,28 +32,21 @@ def filename_is_valid_as_filename(
     return True
 
 
-def dataline_is_match_to_ruleobj(given_ruleobj=None, given_dataline_str=None):
-    """Returns True if data line matches pattern specified in given rule.
-
-    2019-09-28: This function assumes that the rule object received
-    is valid, its validity having been tested by
-    run/return_ruleobj_list_from_rulefile_pathname_chain()."""
-
+def dataline_is_match_to_ruleobj(ruleobj=None, dataline_str=None):
+    """Returns True if data line matches pattern specified in given rule."""
     # Line does not match if given field greater than number of fields in line.
-    if given_ruleobj.source_matchfield > len(given_dataline_str.split()):
+    if ruleobj.source_matchfield > len(dataline_str.split()):
         return False
 
     # Line matches if given field is zero and pattern found anywhere in line.
-    if given_ruleobj.source_matchfield == 0:
-        if re.search(given_ruleobj.source_matchpattern, given_dataline_str):
+    if ruleobj.source_matchfield == 0:
+        if re.search(ruleobj.source_matchpattern, dataline_str):
             return True
 
     # Line matches if pattern is found in given field.
-    if given_ruleobj.source_matchfield > 0:
-        eth = given_ruleobj.source_matchfield - 1
-        if re.search(
-            given_ruleobj.source_matchpattern, given_dataline_str.split()[eth]
-        ):
+    if ruleobj.source_matchfield > 0:
+        eth = ruleobj.source_matchfield - 1
+        if re.search(ruleobj.source_matchpattern, dataline_str.split()[eth]):
             return True
 
     return False
