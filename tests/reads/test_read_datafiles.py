@@ -1,9 +1,9 @@
-"""Return list of datalines from datafiles."""
+"""Return list of datalines from reading datafiles."""
 
 import os
 import pytest
 from pathlib import Path
-from mklists.utils import read_datafiles
+from mklists.reads import read_datafiles
 
 
 def test_read_datafiles(tmp_path):

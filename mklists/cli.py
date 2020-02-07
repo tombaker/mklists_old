@@ -38,8 +38,7 @@ def init(config, directory):
 def run(config, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 
-    # ctx.obj                = return_config_dict_from_configfile(
-    #                              _configfile_name=CONFIGFILE_NAME)
+    # ctx.obj                = read_configfile()
 
     # if here_only: # will operate only on data directories below current directory
     #     datadir_pathnames  = return_datadirs_list(
