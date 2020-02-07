@@ -21,7 +21,7 @@ from .exceptions import BadRegexError, RepoNotFoundError
 
 
 @preserve_cwd
-def return_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
+def get_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
     """Return root pathname of mklists repo wherever executed in repo."""
     if not here:
         here = Path.cwd()
@@ -34,18 +34,18 @@ def return_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
 
 
 @preserve_cwd
-def return_backupdir_pathname(
+def get_backupdir_path(
     workdir=None, backupsdir=BACKUPS_DIR_NAME, timestamp=TIMESTAMP_STR
 ):
     """Return backups Path named for given (or default) working directory."""
-    rootdir = return_rootdir_path()
+    rootdir = get_rootdir_path()
     if not workdir:
         workdir = Path.cwd()
     backup_subdir = str(Path(workdir).relative_to(rootdir)).strip("/").replace("/", "_")
     return Path(rootdir) / backupsdir / backup_subdir / timestamp
 
 
-def return_compiled_regex_from_regexstr(_regex=None):
+def compile_regex(_regex=None):
     """Return compiled regex from regular expression.
 
     Args:
@@ -63,7 +63,7 @@ def return_compiled_regex_from_regexstr(_regex=None):
     return compiled_regex
 
 
-def return_datadirs_list(
+def get_datadir_paths(
     given_pathname=None,
     configfile_name=CONFIGFILE_NAME,
     datadir_rulefile_name=DATADIR_RULEFILE_NAME,
@@ -96,10 +96,10 @@ def return_datadirs_list(
     return datadirs
 
 
-def return_visiblefiles_list():
+def get_visible_filenames():
     """Return list of names of visible files with valid names.
 
-    See /Users/tbaker/github/tombaker/mklists/mklists/utils.py
+    See /Users/tbaker/github/tombaker/mklists/mklists/returns.py
     """
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:

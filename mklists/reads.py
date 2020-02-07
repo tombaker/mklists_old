@@ -10,7 +10,7 @@ from .exceptions import (
     NoDataError,
     NotUTF8Error,
 )
-from .utils import return_rootdir_path, return_visiblefiles_list
+from .returns import get_rootdir_path, get_visible_filenames
 
 
 def read_datafiles():
@@ -20,7 +20,7 @@ def read_datafiles():
     * file that has an invalid name
     * file that is not UTF8-encoded
     * file that has blank lines."""
-    visiblefiles_list = return_visiblefiles_list()
+    visiblefiles_list = get_visible_filenames()
     all_datalines = []
     for datafile in visiblefiles_list:
         try:
@@ -39,7 +39,7 @@ def read_datafiles():
 def read_configfile(rootdir_pathname=None, configfile_name=CONFIGFILE_NAME):
     """Returns configuration dictionary from YAML config file."""
     if not rootdir_pathname:
-        rootdir_pathname = return_rootdir_path()
+        rootdir_pathname = get_rootdir_path()
     configfile = Path(rootdir_pathname) / configfile_name
     try:
         configfile_contents = Path(configfile).read_text()

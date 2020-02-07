@@ -4,10 +4,10 @@ import os
 import pytest
 from pathlib import Path
 from mklists.constants import CONFIGFILE_NAME
-from mklists.utils import return_backupdir_pathname
+from mklists.returns import get_backupdir_path
 
 
-def test_return_backupdir_pathname(tmp_path):
+def test_get_backupdir_path(tmp_path):
     """Returns backups Path named for default working directory."""
     os.chdir(tmp_path)
     Path(CONFIGFILE_NAME).write_text("config stuff")
@@ -16,14 +16,14 @@ def test_return_backupdir_pathname(tmp_path):
     workingdir = Path("agenda")
     workingdir.mkdir()
     os.chdir(workingdir)
-    actual = return_backupdir_pathname(backupsdir=backdir, timestamp=datestr)
+    actual = get_backupdir_path(backupsdir=backdir, timestamp=datestr)
     expected = Path(tmp_path) / backdir / str(workingdir) / datestr
     expected_explicit = Path(tmp_path) / "_backups" / "agenda" / "2020-01-03_1646"
     assert actual == expected
     assert actual == expected_explicit
 
 
-def test_return_backupdir_pathname_given_workdir(tmp_path):
+def test_get_backupdir_path_given_workdir(tmp_path):
     """Returns backups Path named for specified working directory."""
     os.chdir(tmp_path)
     Path(CONFIGFILE_NAME).write_text("config stuff")
@@ -32,14 +32,14 @@ def test_return_backupdir_pathname_given_workdir(tmp_path):
     workingdir_shortname_expected = "todolists_a"
     backdir = "_backups"
     datestr = "2020-01-03_1646_06488910"
-    actual = return_backupdir_pathname(
+    actual = get_backupdir_path(
         workdir=workingdir, backupsdir=backdir, timestamp=datestr
     )
     expected = Path(tmp_path) / backdir / workingdir_shortname_expected / datestr
     assert actual == expected
 
 
-def test_return_backupdir_pathname_given_workdir_with_slash(tmp_path):
+def test_get_backupdir_path_given_workdir_with_slash(tmp_path):
     """Returns backups Path named for specified working directory ending with slash."""
     os.chdir(tmp_path)
     Path(CONFIGFILE_NAME).write_text("config stuff")
@@ -48,15 +48,15 @@ def test_return_backupdir_pathname_given_workdir_with_slash(tmp_path):
     workingdir_shortname_expected = "todolists_a"
     backdir = "_backups"
     datestr = "2020-01-03_1646_06488910"
-    actual = return_backupdir_pathname(
+    actual = get_backupdir_path(
         workdir=workingdir, backupsdir=backdir, timestamp=datestr
     )
     expected = Path(tmp_path) / backdir / workingdir_shortname_expected / datestr
     assert actual == expected
 
 
-def test_return_backupdir_pathname_raise_exception_if_rootdir_not_found(tmp_path):
+def test_get_backupdir_path_raise_exception_if_rootdir_not_found(tmp_path):
     """Raises exception if no rootdir is found (rootdir is None)."""
     os.chdir(tmp_path)
     with pytest.raises(SystemExit):
-        return_backupdir_pathname()
+        get_backupdir_path()

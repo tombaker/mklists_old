@@ -5,7 +5,7 @@ import pytest
 from pathlib import Path
 from mklists.constants import CONFIGFILE_NAME
 from mklists.reads import read_configfile
-from mklists.utils import return_rootdir_path
+from mklists.returns import get_rootdir_path
 
 CONFIGFILE_CONTENT = (
     "verbose: True\n"
@@ -37,7 +37,7 @@ def test_read_configfile(tmp_path):
     """Return dictionary of configuration settings from YAML file."""
     os.chdir(tmp_path)
     Path(CONFIGFILE_NAME).write_text(CONFIGFILE_CONTENT)
-    here = return_rootdir_path()
+    here = get_rootdir_path()
     assert read_configfile(rootdir_pathname=here) == CONFIG_PYOBJ
 
 

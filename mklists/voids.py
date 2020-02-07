@@ -15,7 +15,7 @@ from .constants import (
 )
 from .decorators import preserve_cwd
 from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
-from .utils import return_visiblefiles_list, return_rootdir_path
+from .returns import get_visible_filenames, get_rootdir_path
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -26,7 +26,7 @@ def delete_older_backupdirs(
 ):
     """Delete all but specified number of backups of current working directory."""
     if not rootdir_path:
-        rootdir_path = return_rootdir_path()
+        rootdir_path = get_rootdir_path()
     try:
         backups_depth = abs(int(backups_depth))
     except (ValueError, TypeError):  # eg, "asdf", None...
@@ -62,7 +62,7 @@ def move_all_datafiles_to_backupdir(backupdir=None, datadir=None):
         raise NoBackupDirSpecifiedError(f"No pathname specified for backup directory.")
     os.chdir(datadir)
     try:
-        for file in return_visiblefiles_list():
+        for file in get_visible_filenames():
             shutil.move(file, backupdir)
     except OSError:
         print("Got an exception")

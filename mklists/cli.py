@@ -43,7 +43,7 @@ def run(config, dryrun, here_only):  # should be config
     # ctx.obj                = read_configfile()
 
     # if here_only: # will operate only on data directories below current directory
-    #     datadir_pathnames  = return_datadirs_list(
+    #     datadir_pathnames  = get_datadir_paths(
     # else: # will operate on all data directories under repo rootdir
     #     datadir_pathnames  = return_data_subdirs_list(
     #                              _rootdir_pathname=rootdir_pathname,
@@ -56,7 +56,7 @@ def run(config, dryrun, here_only):  # should be config
     #                                    _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                                    _configfile_name=CONFIGFILE_NAME)
     #
-    #     visiblefiles_list  = return_visiblefiles_list()
+    #     visiblefiles_list  = get_visible_filenames()
     #
     #     datalines_list     = read_datafiles()
     #
@@ -66,7 +66,7 @@ def run(config, dryrun, here_only):  # should be config
     #
     #     backups_dirname    = [[get from ctx.obj <= config files]]
     #
-    #     backupdir_pathname = return_backupdir_pathname(
+    #     backupdir_pathname = get_backupdir_path(
     #                              _rootdir_pathname=rootdir_pathname,
     #                              _backupdir_subdir_name=backups_dirname,
     #                              _backupdir_shortname=backup_shortname,

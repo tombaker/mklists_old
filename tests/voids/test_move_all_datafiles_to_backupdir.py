@@ -1,7 +1,7 @@
 """Datafile contents having been captured in a Python list,
 moves datafiles to backup directory.
 
-These tests emulate return_backupdir_pathname() by
+These tests emulate get_backupdir_path() by
 composing the backup directory name from the following
 components:
 
