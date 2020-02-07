@@ -12,9 +12,9 @@ from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRule
 # Black disagrees.
 
 
-def return_ruleobj_list_from_rulefiles(startdir=None):
+def read_rulefiles(startdir=None):
     """Return list of Rule objects from one or more rule files."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_return_ruleobj_list_from_rulefiles.py
+    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_read_rulefiles.py
     if not startdir:
         startdir = Path.cwd()
     rulefile_chain = _return_rulefile_chain(startdir)
