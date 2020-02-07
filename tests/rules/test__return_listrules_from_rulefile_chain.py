@@ -7,7 +7,7 @@ from pathlib import Path
 
 from mklists.constants import ROOTDIR_RULEFILE_NAME
 from mklists.exceptions import NoRulefileError
-from mklists.rules import _return_listrules_from_rulefile_list
+from mklists.rules import _return_listrules_from_rulefile_chain
 
 # pylint: disable=unused-argument
 # In tests, fixture arguments may look like they are unused.
@@ -68,63 +68,63 @@ PYOBJ = [
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list(tmp_path):
+def test_return_listrules_from_rulefile_chain(tmp_path):
     """Return True if CSV file has no header line because it will be ignored anyway."""
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_chain(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list_header_ignored(tmp_path):
+def test_return_listrules_from_rulefile_chain_header_ignored(tmp_path):
     """The CSV file may have a header line, though it will be ignored."""
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR)
     expected = PYOBJ
-    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_chain(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list_rn(tmp_path):
+def test_return_listrules_from_rulefile_chain_rn(tmp_path):
     """Fine for CSV file to have MS-Windows line endings (\r\n)."""
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_RN)
     expected = PYOBJ
-    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_chain(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list_legacy(tmp_path):
+def test_return_listrules_from_rulefile_chain_legacy(tmp_path):
     """Fine for CSV line to pad fields with spaces and leave field 5 blank."""
     os.chdir(tmp_path)
     Path(ROOTDIR_RULEFILE_NAME).write_text(TEST_RULES_CSVSTR_LEGACY)
     expected = PYOBJ_LEGACY
-    real = _return_listrules_from_rulefile_list(csvfile=ROOTDIR_RULEFILE_NAME)
+    real = _return_listrules_from_rulefile_chain(csvfile=ROOTDIR_RULEFILE_NAME)
     assert real == expected
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list_rulefile_not_specified(tmp_path):
+def test_return_listrules_from_rulefile_chain_rulefile_not_specified(tmp_path):
     """Raises NoRulefileError if specified CSV file is "None" (the default)."""
     with pytest.raises(NoRulefileError):
-        _return_listrules_from_rulefile_list(csvfile=None)
+        _return_listrules_from_rulefile_chain(csvfile=None)
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list_rulefile_not_specified2(tmp_path):
+def test_return_listrules_from_rulefile_chain_rulefile_not_specified2(tmp_path):
     """Raises NoRulefileError if called specifying no argument at all."""
     with pytest.raises(NoRulefileError):
-        _return_listrules_from_rulefile_list()
+        _return_listrules_from_rulefile_chain()
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list_not_found(tmp_path):
+def test_return_listrules_from_rulefile_chain_not_found(tmp_path):
     """Raises NoRulefileError if specified CSV file is not found."""
     os.chdir(tmp_path)
     Path(".rules2").write_text(TEST_RULES_CSVSTR)
     with pytest.raises(NoRulefileError):
-        _return_listrules_from_rulefile_list(csvfile=".rules3")
+        _return_listrules_from_rulefile_chain(csvfile=".rules3")

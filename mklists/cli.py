@@ -94,7 +94,7 @@ def run(config, dryrun, here_only):  # should be config
     #                              _ruleobjs_list=ruleobj_list,
     #                              _datalines_list=datalines_list)
     #
-    #     write_datafiles_from_name2lines_dict(_name2lines_dict=None)
+    #     write_new_datafiles(_name2lines_dict=None)
     #
     #     if files2dirs_dict:
-    #         move_specified_datafiles_to_somedirs(ctx.obj["files2dirs_dict"])
+    #         move_specified_datafiles_elsewhere(ctx.obj["files2dirs_dict"])

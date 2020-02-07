@@ -21,7 +21,7 @@ def _return_ruleobj_list_from_listrules
 voids.py =============================================
 def delete_older_backupdirs
 def move_all_datafiles_to_backupdir
-def move_specified_datafiles_to_somedirs
-def write_datafiles_from_name2lines_dict
+def move_specified_datafiles_elsewhere
+def write_new_datafiles
 def write_starter_configfile
 def write_starter_rulefiles

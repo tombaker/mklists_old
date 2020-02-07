@@ -5,7 +5,7 @@ import pytest
 from pathlib import Path
 from mklists.rules import (
     read_rulefiles,
-    _return_listrules_from_rulefile_list,
+    _return_listrules_from_rulefile_chain,
     _return_rulefile_chain,
 )
 from mklists.ruleclass import Rule
@@ -76,7 +76,7 @@ def test_read_rulefiles(tmp_path):
 
 
 @pytest.mark.rules
-def test_return_listrules_from_rulefile_list_rulefile_not_specified(tmp_path):
+def test_return_listrules_from_rulefile_chain_rulefile_not_specified(tmp_path):
     """@@@Docstring."""
     with pytest.raises(NoRulefileError):
-        _return_listrules_from_rulefile_list(csvfile=None)
+        _return_listrules_from_rulefile_chain(csvfile=None)

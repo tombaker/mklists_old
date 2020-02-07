@@ -68,7 +68,7 @@ def move_all_datafiles_to_backupdir(backupdir=None, datadir=None):
         print("Got an exception")
 
 
-def move_specified_datafiles_to_somedirs(
+def move_specified_datafiles_elsewhere(
     _filenames2dirnames_dict=None, _rootdir_pathname=None
 ):
     """Moves data files to specified destination directories.
@@ -91,7 +91,7 @@ def move_specified_datafiles_to_somedirs(
                 shutil.move(key, destination_dir)
 
 
-def write_datafiles_from_name2lines_dict(_name2lines_dict=None):
+def write_new_datafiles(_name2lines_dict=None):
     """Writes contents of filenames2datalines dictionary in which:
     * keys are names of files that will be created
     * values are (non-empty) contents of such files (lists of text lines)
