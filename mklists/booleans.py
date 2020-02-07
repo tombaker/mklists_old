@@ -9,6 +9,23 @@ from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 #         Black disagrees.
 
 
+def dataline_matches_ruleobj(ruleobj=None, dataline_str=None):
+    """Returns True if data line matches pattern specified in given rule."""
+    # Line does not match if given field greater than number of fields in line.
+    if ruleobj.source_matchfield > len(dataline_str.split()):
+        return False
+    # Line matches if given field is zero and pattern found anywhere in line.
+    if ruleobj.source_matchfield == 0:
+        if re.search(ruleobj.source_matchpattern, dataline_str):
+            return True
+    # Line matches if pattern is found in given field.
+    if ruleobj.source_matchfield > 0:
+        eth = ruleobj.source_matchfield - 1
+        if re.search(ruleobj.source_matchpattern, dataline_str.split()[eth]):
+            return True
+    return False
+
+
 def filename_is_valid(
     filename=None,
     invalid_filename_patterns=None,
@@ -30,26 +47,6 @@ def filename_is_valid(
     if Path(filename).is_dir():
         raise FilenameIsAlreadyDirnameError(f"{repr(filename)} is already a directory.")
     return True
-
-
-def dataline_matches_ruleobj(ruleobj=None, dataline_str=None):
-    """Returns True if data line matches pattern specified in given rule."""
-    # Line does not match if given field greater than number of fields in line.
-    if ruleobj.source_matchfield > len(dataline_str.split()):
-        return False
-
-    # Line matches if given field is zero and pattern found anywhere in line.
-    if ruleobj.source_matchfield == 0:
-        if re.search(ruleobj.source_matchpattern, dataline_str):
-            return True
-
-    # Line matches if pattern is found in given field.
-    if ruleobj.source_matchfield > 0:
-        eth = ruleobj.source_matchfield - 1
-        if re.search(ruleobj.source_matchpattern, dataline_str.split()[eth]):
-            return True
-
-    return False
 
 
 def regex_is_valid(regex=None):

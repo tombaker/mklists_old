@@ -16,7 +16,7 @@ import click
 @click.help_option(help="Show help and exit")
 @click.pass_context
 def cli(config):
-    """Reorder plaintext lists by tweaking patterns"""
+    """Sync your lists to evolving rules."""
 
 
 @cli.command()
@@ -37,7 +37,7 @@ def init(config, directory):
 @click.option("--here-only", is_flag=True, help="Run only in current data directory")
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def run(config, dryrun, here_only):  # should be config
+def sync(config, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 
     # ctx.obj                = read_configfile()

@@ -1,3 +1,3 @@
-"""Rearrange text lists by tweaking patterns."""
+"""Sync your lists to evolving rules."""
 
-__version__ = "0.1.4"
+__version__ = "0.2"

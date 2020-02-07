@@ -1,0 +1,10 @@
+
+    Args:
+        ruleobjs: list of rule objects
+        datalines: list of strings (all data lines)
+
+    Returns:
+        datadict - dictionary where:
+        * key: always a string that is valid as a filename
+        * value: always a list of (part of the) data lines
+    """
