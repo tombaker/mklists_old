@@ -12,7 +12,7 @@ from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRule
 # Black disagrees.
 
 
-def read_rulefiles(startdir=None):
+def get_rules(startdir=None):
     """Return list of Rule objects from one or more rule files."""
     if not startdir:
         startdir = Path.cwd()

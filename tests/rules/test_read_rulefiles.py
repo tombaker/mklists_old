@@ -4,7 +4,7 @@ import os
 import pytest
 from pathlib import Path
 from mklists.rules import (
-    read_rulefiles,
+    get_rules,
     _return_listrules_from_rulefile_chain,
     _return_rulefile_chain,
 )
@@ -55,7 +55,7 @@ RULEOBJ_LIST = [
 
 
 @pytest.mark.rules
-def test_read_rulefiles(tmp_path):
+def test_get_rules(tmp_path):
     """@@@Docstring."""
     os.chdir(tmp_path)
     Path(tmp_path).joinpath(CONFIGFILE_NAME).write_text("config stuff")
@@ -71,7 +71,7 @@ def test_read_rulefiles(tmp_path):
     rulefile_chain = _return_rulefile_chain()
     assert rulefile_chain == [rulefile0, rulefile1, rulefile2]
     expected = RULEOBJ_LIST
-    real = read_rulefiles()
+    real = get_rules()
     assert real == expected
 
 
