@@ -1,6 +1,9 @@
 """CLI - command-line interface module"""
 
+# import os
+# from pathlib import Path
 import click
+
 
 # pylint: disable=unused-argument
 #         During development, unused arguments here.
@@ -15,15 +18,16 @@ def cli(config):
 
 
 @cli.command()
+@click.argument("directory", click.Path(exists=False, required=False))
 @click.help_option(help="Show help and exit")
 @click.pass_context
-def init(config):
+def init(config, directory):
     """Initialize list repo."""
-    # TODO: Add argument: optional directory name of mklists repository.
-    #  @click.argument('dest', required=False) - something like this?
-    #  Then rename init => new?
-    # write_config_yamlfile()
-    # write_minimal_rules_csvfiles_to_somedirs()
+    # if directory:
+    #     dir = Path.cwd().joinpath(directory)
+    #     os.chdir(dir)
+    # write_starter_configfile()
+    # write_starter_rulefiles()
 
 
 @cli.command()
@@ -34,18 +38,11 @@ def init(config):
 def run(config, dryrun, here_only):  # should be config
     """Rebuild lists, by default in whole repo"""
 
-    # datadir_pathname       = os.getcwd()
-    # rootdir_pathname       = return_rootdir_path(
-    #                              _datadir_pathname=datadir_pathname
-    #                              _config_yamlfile_name=CONFIGFILE_NAME)
-    # ctx.obj                = return_config_dict_from_config_yamlfile(
-    #                              _config_yamlfile_name=CONFIGFILE_NAME)
+    # ctx.obj                = return_config_dict_from_configfile(
+    #                              _configfile_name=CONFIGFILE_NAME)
 
     # if here_only: # will operate only on data directories below current directory
     #     datadir_pathnames  = return_datadirs_list(
-    #                              _rootdir_pathname=rootdir_pathname,
-    #                              _somedir_pathname=datadir_pathname,
-    #                              _rules_csvfile_name=RULE_CSVFILE_NAME)
     # else: # will operate on all data directories under repo rootdir
     #     datadir_pathnames  = return_data_subdirs_list(
     #                              _rootdir_pathname=rootdir_pathname,
@@ -56,11 +53,11 @@ def run(config, dryrun, here_only):  # should be config
     #     rulefile_pathnames_chain     = _return_rulefile_chain(
     #                                    _startdir_pathname=datadir,
     #                                    _rules_csvfile_name=RULE_CSVFILE_NAME,
-    #                                    _config_yamlfile_name=CONFIGFILE_NAME)
+    #                                    _configfile_name=CONFIGFILE_NAME)
     #
     #     visiblefiles_list  = return_visiblefiles_list()
     #
-    #     datalines_list     = return_datalines_list_from_datafiles()
+    #     datalines_list     = read_datafiles()
     #
     #     backup_shortname   = return_backupdir_shortname(
     #                              _datadir_pathname=datadir_pathname,
@@ -88,7 +85,7 @@ def run(config, dryrun, here_only):  # should be config
     #
     #     @@REWRITE THE FOLLOWING TO TAKE rules_csvfile
     #     ruleobj_list       = return_ruleobj_list_from_rulefile_chain(
-    #                              config_yamlfile=CONFIGFILE_NAME, # needed??
+    #                              configfile=CONFIGFILE_NAME, # needed??
     #                              _rules_csvfile_name=RULE_CSVFILE_NAME,
     #                              verbose=True)
     #

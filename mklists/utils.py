@@ -29,7 +29,7 @@ from .exceptions import (
 # Black disagrees.
 
 
-def return_datalines_list_from_datafiles():
+def read_datafiles():
     """Returns lines from files in current directory.
 
     Exits with error message if it encounters:
@@ -53,13 +53,13 @@ def return_datalines_list_from_datafiles():
     return all_datalines
 
 
-def return_config_dict_from_config_yamlfile(
-    rootdir_pathname=None, config_yamlfile_name=CONFIGFILE_NAME
+def return_config_dict_from_configfile(
+    rootdir_pathname=None, configfile_name=CONFIGFILE_NAME
 ):
     """Returns configuration dictionary from YAML config file."""
     if not rootdir_pathname:
         rootdir_pathname = return_rootdir_path()
-    configfile = Path(rootdir_pathname) / config_yamlfile_name
+    configfile = Path(rootdir_pathname) / configfile_name
     try:
         configfile_contents = Path(configfile).read_text()
     except FileNotFoundError:
@@ -115,8 +115,8 @@ def return_compiled_regex_from_regexstr(_regex=None):
 
 def return_datadirs_list(
     given_pathname=None,
-    config_yamlfile_name=CONFIGFILE_NAME,
-    rules_csvfile_name=DATADIR_RULEFILE_NAME,
+    configfile_name=CONFIGFILE_NAME,
+    datadir_rulefile_name=DATADIR_RULEFILE_NAME,
 ):
     """Return list of data directories under a given directory.
 
@@ -139,8 +139,8 @@ def return_datadirs_list(
     datadirs = []
     for dirpath, dirs, files in os.walk(given_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
-        if rules_csvfile_name in files:
-            if config_yamlfile_name not in files:
+        if datadir_rulefile_name in files:
+            if configfile_name not in files:
                 datadirs.append(Path(dirpath))
 
     return datadirs

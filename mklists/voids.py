@@ -21,25 +21,25 @@ from .utils import return_visiblefiles_list, return_rootdir_path
 # Black disagrees.
 
 
-def write_config_yamlfile(
+def write_starter_configfile(
     rootdir_pathname=None,
-    config_yamlfile_name=CONFIGFILE_NAME,
-    config_yamlfile_content=CONFIGFILE_CONTENT,
+    configfile_name=CONFIGFILE_NAME,
+    configfile_content=CONFIGFILE_CONTENT,
 ):
     """Write initial YAML config file, 'mklists.yml', to root directory."""
     if not rootdir_pathname:
         rootdir_pathname = os.getcwd()
-    file_tobewritten_pathname = os.path.join(rootdir_pathname, config_yamlfile_name)
+    file_tobewritten_pathname = os.path.join(rootdir_pathname, configfile_name)
     if os.path.exists(file_tobewritten_pathname):
         raise RepoAlreadyInitialized(
-            f"Repo already initialized with {config_yamlfile_name}."
+            f"Repo already initialized with {configfile_name}."
         )
     with open(file_tobewritten_pathname, "w", encoding="utf-8") as outfile:
-        outfile.write(config_yamlfile_content)
+        outfile.write(configfile_content)
 
 
 @preserve_cwd
-def write_rules_csvfiles(
+def write_starter_rulefiles(
     dira=DATADIR_NAME,
     dira_rulefile=DATADIR_RULEFILE_NAME,
     dira_rulefile_contents=DATADIR_RULEFILE_CONTENTS,

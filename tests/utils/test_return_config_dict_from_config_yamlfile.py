@@ -4,7 +4,7 @@ import os
 import pytest
 from pathlib import Path
 from mklists.constants import CONFIGFILE_NAME
-from mklists.utils import return_rootdir_path, return_config_dict_from_config_yamlfile
+from mklists.utils import return_rootdir_path, return_config_dict_from_configfile
 
 CONFIGFILE_CONTENT = (
     "verbose: True\n"
@@ -32,27 +32,25 @@ CONFIG_PYOBJ = {
 }
 
 
-def test_return_config_dict_from_config_yamlfile(tmp_path):
+def test_return_config_dict_from_configfile(tmp_path):
     """Return dictionary of configuration settings from YAML file."""
     os.chdir(tmp_path)
     Path(CONFIGFILE_NAME).write_text(CONFIGFILE_CONTENT)
     here = return_rootdir_path()
-    assert (
-        return_config_dict_from_config_yamlfile(rootdir_pathname=here) == CONFIG_PYOBJ
-    )
+    assert return_config_dict_from_configfile(rootdir_pathname=here) == CONFIG_PYOBJ
 
 
-def test_read_config_yamlfile_return_config_dict_with_entries_commented_out(tmp_path):
+def test_read_configfile_return_config_dict_with_entries_commented_out(tmp_path):
     """Return configuration dictionary even if some lines are commented out."""
     os.chdir(tmp_path)
     configfile_content = "verbose: False\n" "# htmlify: True\n"
     Path(CONFIGFILE_NAME).write_text(configfile_content)
     expected = {"verbose": False}
-    assert return_config_dict_from_config_yamlfile() == expected
+    assert return_config_dict_from_configfile() == expected
 
 
-def test_read_config_yamlfile_return_config_dict_not_found(tmp_path):
+def test_read_configfile_return_config_dict_not_found(tmp_path):
     """Raise exception if no configuration YAML file is found."""
     os.chdir(tmp_path)
     with pytest.raises(SystemExit):
-        return_config_dict_from_config_yamlfile()
+        return_config_dict_from_configfile()
