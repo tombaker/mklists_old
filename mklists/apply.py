@@ -1,7 +1,7 @@
 """Returns dictionary of filenames to lines given lists of lines and rule objects."""
 
 from collections import defaultdict
-from .booleans import dataline_is_match_to_ruleobj
+from .booleans import dataline_matches_ruleobj
 from .exceptions import NoDataError, NoRulesError
 
 
@@ -40,7 +40,7 @@ def apply_rules_to_datalines(ruleobjs=None, datalines=None):
         #    append matching lines to value of 'ruleobj.target'
         #    remove matching lines from value of 'ruleobj.source'
         for line in datadict[ruleobj.source]:
-            if dataline_is_match_to_ruleobj(ruleobj, line):
+            if dataline_matches_ruleobj(ruleobj, line):
                 datadict[ruleobj.target].extend([line])
                 datadict[ruleobj.source].remove(line)
 

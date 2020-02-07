@@ -4,7 +4,7 @@ import os
 import glob
 import re
 from pathlib import Path
-from .booleans import filename_is_valid_as_filename
+from .booleans import filename_is_valid
 
 # ROOTDIR_RULEFILE_NAME,
 from .constants import (
@@ -76,7 +76,7 @@ def get_visible_filenames():
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:
-            filename_is_valid_as_filename(filename)
+            filename_is_valid(filename)
         finally:
             all_datafile_names.append(filename)
     return sorted(all_datafile_names)

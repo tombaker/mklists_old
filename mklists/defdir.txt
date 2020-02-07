@@ -1,6 +1,11 @@
 apply.py =============================================
 def apply_rules_to_datalines
 
+booleans.py =============================================
+def filename_is_valid
+def dataline_matches_ruleobj
+def regex_is_valid
+
 returns.py ===========================================
 def compile_regex
 def get_backupdir_path
@@ -25,3 +30,5 @@ def move_specified_datafiles_elsewhere
 def write_new_datafiles
 def write_starter_configfile
 def write_starter_rulefiles
+
+

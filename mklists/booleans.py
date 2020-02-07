@@ -9,7 +9,7 @@ from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
 #         Black disagrees.
 
 
-def filename_is_valid_as_filename(
+def filename_is_valid(
     filename=None,
     invalid_filename_patterns=None,
     valid_filename_characters_regex=VALID_FILENAME_CHARACTERS_REGEX,
@@ -32,7 +32,7 @@ def filename_is_valid_as_filename(
     return True
 
 
-def dataline_is_match_to_ruleobj(ruleobj=None, dataline_str=None):
+def dataline_matches_ruleobj(ruleobj=None, dataline_str=None):
     """Returns True if data line matches pattern specified in given rule."""
     # Line does not match if given field greater than number of fields in line.
     if ruleobj.source_matchfield > len(dataline_str.split()):
@@ -52,7 +52,7 @@ def dataline_is_match_to_ruleobj(ruleobj=None, dataline_str=None):
     return False
 
 
-def regex_is_valid_as_regex(regex=None):
+def regex_is_valid(regex=None):
     """@@@Docstring"""
     try:
         re.compile(regex)

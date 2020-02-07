@@ -1,7 +1,7 @@
 """Class holding state, transforms, and self-validation methods for rule objects."""
 
 from dataclasses import dataclass
-from .booleans import filename_is_valid_as_filename, regex_is_valid_as_regex
+from .booleans import filename_is_valid, regex_is_valid
 from .exceptions import (
     BadFilenameError,
     BadRuleError,
@@ -60,14 +60,14 @@ class Rule:
     def _source_is_valid_filename(self):
         """Return source as valid filename as per filename rules."""
         filename = self.source
-        if not filename_is_valid_as_filename(filename):
+        if not filename_is_valid(filename):
             raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
         return True
 
     def _target_is_valid_filename(self):
         """Return target as valid filename as per filename rules."""
         filename = self.target
-        if not filename_is_valid_as_filename(filename):
+        if not filename_is_valid(filename):
             raise BadFilenameError(f"{repr(filename)} must be a valid filename.")
         return True
 
@@ -98,7 +98,7 @@ class Rule:
             raise MissingValueError(
                 f"'None' is not a valid value for 'source_matchpattern'."
             )
-        if not regex_is_valid_as_regex(self.source_matchpattern):
+        if not regex_is_valid(self.source_matchpattern):
             # print(f"{self}")
             raise SourceMatchpatternError(
                 "Value for 'source_matchpattern' must be a valid regex."
