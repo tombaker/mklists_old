@@ -14,7 +14,6 @@ from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRule
 
 def read_rulefiles(startdir=None):
     """Return list of Rule objects from one or more rule files."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test_read_rulefiles.py
     if not startdir:
         startdir = Path.cwd()
     rulefile_chain = _return_rulefile_chain(startdir)
@@ -33,7 +32,6 @@ def _return_rulefile_chain(
     configfile=CONFIGFILE_NAME,
 ):
     """Return list of rule files from root to specified data directory."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_rulefile_chain.py
     if not startdir:
         startdir = Path.cwd()
     os.chdir(startdir)
@@ -49,7 +47,6 @@ def _return_rulefile_chain(
 
 def _return_listrules_from_rulefile_chain(csvfile=None):
     """Return lists of lists, string items stripped, from pipe-delimited CSV file."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_listrules_from_rulefile_chain.py
     csv.register_dialect("rules", delimiter="|", quoting=csv.QUOTE_NONE)
     try:
         # encoding 'utf-8-sig' for Excel files with U+FEFF
@@ -74,7 +71,6 @@ def _return_listrules_from_rulefile_chain(csvfile=None):
 
 def _return_ruleobj_list_from_listrules(pyobj=None):
     """Return list of Rule objects from list of lists of component strings."""
-    # /Users/tbaker/github/tombaker/mklists/tests/rules/test__return_ruleobj_list_from_listrules.py
     if not pyobj:
         raise NoRulesError(f"List with rule components as strings must be specified.")
     ruleobj_list = []
