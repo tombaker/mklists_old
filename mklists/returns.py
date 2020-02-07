@@ -20,17 +20,13 @@ from .exceptions import BadRegexError, RepoNotFoundError
 # Black disagrees.
 
 
-@preserve_cwd
-def get_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
-    """Return root pathname of mklists repo wherever executed in repo."""
-    if not here:
-        here = Path.cwd()
-    directory_chain_upwards = list(Path(here).parents)
-    directory_chain_upwards.insert(0, Path.cwd())
-    for directory in directory_chain_upwards:
-        if configfile in [item.name for item in directory.glob("*")]:
-            return Path(directory)
-    raise RepoNotFoundError(f"Not a mklists repo - {repr(configfile)} not found.")
+def compile_regex(_regex=None):
+    """Return compiled regex from regular expression string."""
+    try:
+        compiled_regex = re.compile(_regex)
+    except re.error:
+        raise BadRegexError(f"String {repr(_regex)} does not compile as regex.")
+    return compiled_regex
 
 
 @preserve_cwd
@@ -45,62 +41,38 @@ def get_backupdir_path(
     return Path(rootdir) / backupsdir / backup_subdir / timestamp
 
 
-def compile_regex(_regex=None):
-    """Return compiled regex from regular expression.
-
-    Args:
-        _regex: a regular expression
-
-    Raises:
-        BadRegexError: string does not compile as regular expression
-    """
-    try:
-        compiled_regex = re.compile(_regex)
-    except re.error:
-        raise BadRegexError(
-            f"{repr(_regex)} does not correctly compile as Python regex"
-        )
-    return compiled_regex
-
-
 def get_datadir_paths(
     given_pathname=None,
     configfile_name=CONFIGFILE_NAME,
     datadir_rulefile_name=DATADIR_RULEFILE_NAME,
 ):
-    """Return list of data directories under a given directory.
-
-    "Data directory" = directory with hidden rule file ('.rules')
-    * root directory has global rule file ('rules.cfg') but is
-      not a data directory
-
-
-    Args:
-        given_pathname: starting point for finding data subdirectories.
-
-    2019-07-22: Two scenarios?
-    * mklists run --all   - runs in all data directories under repo root directory
-    * mklists run         - runs in all data directories under current directory
-    * mklists run --here  - runs just in current directory
-    2020-01-29: What need to filter "hidden" directories (name starting '^.')?
-    """
+    """Return list of data directories below given directory."""
     if not given_pathname:
-        given_pathname = os.getcwd()
+        given_pathname = Path.cwd()
     datadirs = []
     for dirpath, dirs, files in os.walk(given_pathname):
         dirs[:] = [d for d in dirs if not d[0] == "."]
         if datadir_rulefile_name in files:
             if configfile_name not in files:
                 datadirs.append(Path(dirpath))
-
     return datadirs
 
 
-def get_visible_filenames():
-    """Return list of names of visible files with valid names.
+@preserve_cwd
+def get_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
+    """Return root pathname of mklists repo wherever executed in repo."""
+    if not here:
+        here = Path.cwd()
+    directory_chain_upwards = list(Path(here).parents)
+    directory_chain_upwards.insert(0, Path.cwd())
+    for directory in directory_chain_upwards:
+        if configfile in [item.name for item in directory.glob("*")]:
+            return Path(directory)
+    raise RepoNotFoundError(f"Not a mklists repo - {repr(configfile)} not found.")
 
-    See /Users/tbaker/github/tombaker/mklists/mklists/returns.py
-    """
+
+def get_visible_filenames():
+    """Return list of names of visible files with valid names."""
     all_datafile_names = []
     for filename in [name for name in glob.glob("*") if os.path.isfile(name)]:
         try:

@@ -1,0 +1,15 @@
+
+    "Data directory" = directory with hidden rule file ('.rules')
+    * root directory has global rule file ('rules.cfg') but is
+      not a data directory
+
+
+    Args:
+        given_pathname: starting point for finding data subdirectories.
+
+    2019-07-22: Two scenarios?
+    * mklists run --all   - runs in all data directories under repo root directory
+    * mklists run         - runs in all data directories under current directory
+    * mklists run --here  - runs just in current directory
+    2020-01-29: What need to filter "hidden" directories (name starting '^.')?
+    """
