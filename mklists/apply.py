@@ -5,7 +5,7 @@ from .booleans import dataline_is_match_to_ruleobj
 from .exceptions import NoDataError, NoRulesError
 
 
-def return_names2lines_dict_from_ruleobjs_and_datalines(ruleobjs=None, datalines=None):
+def apply_rules_to_datalines(ruleobjs=None, datalines=None):
     """Applies rules, one by one, to process aggregated datalines.
 
     Args:
