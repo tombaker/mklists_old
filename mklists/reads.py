@@ -1,7 +1,7 @@
 """Functions that return lists or dictionaries from reading files."""
 
-import ruamel.yaml
 from pathlib import Path
+import ruamel.yaml
 from .constants import CONFIGFILE_NAME
 from .exceptions import (
     BadYamlError,

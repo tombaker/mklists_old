@@ -7,6 +7,8 @@ import click
 
 # pylint: disable=unused-argument
 #         During development, unused arguments here.
+# pylint: disable=unexpected-keyword-arg
+#         Pylint does not like click parameter "required"
 
 
 @click.group()
