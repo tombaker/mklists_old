@@ -1,0 +1,12 @@
+"""
+>>> from mklists.returns import linkify_textline
+
+Lines already containing HREF tags are left untouched:
+
+>>> linkify_textline('Line with <a href="http://example.org">HREF tags</a>.')
+'Line with <a href="http://example.org">HREF tags</a>.'
+
+>>> linkify_textline("""Line with <a href="http://example.org">HREF tags</a>.\n""")
+'Line with <a href="http://example.org">HREF tags</a>.\n'
+
+"""
