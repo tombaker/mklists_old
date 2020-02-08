@@ -1,6 +1,7 @@
 """Apply rules to process datalines."""
 
 import os
+import io
 import shutil
 from pathlib import Path
 from .constants import (
@@ -15,7 +16,7 @@ from .constants import (
 )
 from .decorators import preserve_cwd
 from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
-from .returns import get_visible_filenames, get_rootdir_path
+from .returns import get_visible_filenames, get_rootdir_path, linkify_line
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -89,6 +90,26 @@ def move_specified_datafiles_elsewhere(
         if os.path.exists(key):
             if os.path.exists(destination_dir):
                 shutil.move(key, destination_dir)
+
+
+@preserve_cwd
+def write_htmlfiles(
+    name2lines_dict=None, htmldir_pathname=None, backupdir_shortname=None
+):
+    """Writes contents of in-memory dictionary, urlified, to disk."""
+    htmldir_subdir_pathname = os.path.join(htmldir_pathname, backupdir_shortname)
+    if not os.path.exists(htmldir_subdir_pathname):
+        os.makedirs(htmldir_subdir_pathname)
+    os.chdir(htmldir_subdir_pathname)
+    for file in get_visible_filenames():
+        os.remove(file)
+    for key in list(name2lines_dict.keys()):
+        lines_to_be_written = []
+        for line in name2lines_dict[key]:
+            lines_to_be_written.append(linkify_line(line))
+        file_to_write = key + ".html"
+        # Pathlib!
+        io.open(file_to_write, "w", encoding="utf-8").writelines(lines_to_be_written)
 
 
 def write_new_datafiles(_name2lines_dict=None):

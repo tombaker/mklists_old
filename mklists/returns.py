@@ -11,7 +11,9 @@ from .constants import (
     BACKUPS_DIR_NAME,
     CONFIGFILE_NAME,
     DATADIR_RULEFILE_NAME,
+    HTMLDIR_NAME,
     TIMESTAMP_STR,
+    URL_PATTERN_REGEX,
 )
 from .decorators import preserve_cwd
 from .exceptions import BadRegexError, RepoNotFoundError
@@ -58,6 +60,15 @@ def get_datadir_paths(
     return datadirs
 
 
+def get_htmldir_path(root=None, htmldir=HTMLDIR_NAME, datadir=None):
+    """Return pathname for folder holding htmlified data files."""
+    if not root:
+        root = get_rootdir_path()
+    if not htmldir:
+        datadir = Path.cwd()
+    return os.path.join(root, htmldir, datadir)
+
+
 @preserve_cwd
 def get_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
     """Return root pathname of mklists repo wherever executed in repo."""
@@ -80,3 +91,10 @@ def get_visible_filenames():
         finally:
             all_datafile_names.append(filename)
     return sorted(all_datafile_names)
+
+
+def linkify_line(line=None, url_regex=URL_PATTERN_REGEX):
+    """Return text lines with URLs wrapped with HREF tags."""
+    if "<a href=" in line:
+        return line
+    return re.compile(url_regex).sub(r'<a href="\1">\1</a>', line.rstrip()) + "\n"

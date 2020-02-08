@@ -47,12 +47,15 @@ DATADIR_RULEFILE_CONTENTS = (
     "1       |^2020 |todo.txt   |log.txt    |0      |\n"
 )
 CONFIGFILE_NAME = "mklists.yml"
+HTMLDIR_NAME = "_html"
+URL_PATTERN_REGEX = r"""((?:git://|http://|https://)[^ <>'"{}(),|\\^`[\]]*)"""
 
 # pylint: disable=anomalous-backslash-in-string
 # => the slashes in "invalid filename patterns" are valid in YAML
 CONFIGFILE_CONTENT = (
     "verbose: True\n"
     "backup_depth: 3\n"
+    "htmlify: True\n"
     "invalid_filename_patterns:\n"
     "- \.swp$\n"
     "- \.tmp$\n"

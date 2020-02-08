@@ -2,8 +2,8 @@ apply.py =============================================
 def apply_rules_to_datalines
 
 booleans.py =============================================
+det dataline_matches_ruleobj
 def filename_is_valid
-def dataline_matches_ruleobj
 def regex_is_valid
 
 returns.py ===========================================
