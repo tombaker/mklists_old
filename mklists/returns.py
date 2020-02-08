@@ -16,7 +16,7 @@ from .constants import (
     URL_PATTERN_REGEX,
 )
 from .decorators import preserve_cwd
-from .exceptions import BadRegexError, RepoNotFoundError
+from .exceptions import BadRegexError, RepoNotFoundError, MissingArgumentError
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -32,15 +32,13 @@ def compile_regex(_regex=None):
 
 
 @preserve_cwd
-def get_backupdir_path(
-    workdir=None, backupsdir=BACKUPS_DIR_NAME, timestamp=TIMESTAMP_STR
-):
+def get_backupdir_path(datadir=None, backdir=BACKUPS_DIR_NAME, now=TIMESTAMP_STR):
     """Return backups Path named for given (or default) working directory."""
     rootdir = get_rootdir_path()
-    if not workdir:
-        workdir = Path.cwd()
-    backup_subdir = str(Path(workdir).relative_to(rootdir)).strip("/").replace("/", "_")
-    return Path(rootdir) / backupsdir / backup_subdir / timestamp
+    if not datadir:
+        datadir = Path.cwd()
+    backup_subdir = str(Path(datadir).relative_to(rootdir)).strip("/").replace("/", "_")
+    return Path(rootdir) / backdir / backup_subdir / now
 
 
 def get_datadir_paths(
@@ -60,13 +58,16 @@ def get_datadir_paths(
     return datadirs
 
 
-def get_htmldir_path(root=None, htmldir=HTMLDIR_NAME, datadir=None):
+def get_htmldir_path(rootdir=None, htmldir=HTMLDIR_NAME, datadir=None):
     """Return pathname for folder holding htmlified data files."""
-    if not root:
-        root = get_rootdir_path()
-    if not htmldir:
+    if not rootdir:
+        rootdir = get_rootdir_path()
+    if not datadir:
         datadir = Path.cwd()
-    return os.path.join(root, htmldir, datadir)
+    if not htmldir:
+        raise MissingArgumentError(f"Leave htmldir unspecified to use default ")
+    html_subdir = Path(datadir).relative_to(rootdir)
+    return Path(rootdir).joinpath(htmldir, html_subdir)
 
 
 @preserve_cwd
