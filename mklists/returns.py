@@ -1,4 +1,4 @@
-"""Utilities used by other modules."""
+"""Various functions that return a value."""
 
 import os
 import glob
@@ -94,8 +94,8 @@ def get_visible_filenames():
     return sorted(all_datafile_names)
 
 
-def linkify_line(line=None, url_regex=URL_PATTERN_REGEX):
+def linkify_textline(line=None, url_regex=URL_PATTERN_REGEX):
     """Return text lines with URLs wrapped with HREF tags."""
-    if "<a href=" in line:
+    if "<a href=" in line or "<A HREF=" in line:
         return line
     return re.compile(url_regex).sub(r'<a href="\1">\1</a>', line.rstrip()) + "\n"

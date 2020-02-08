@@ -36,12 +36,15 @@ def test_utils_return_htmldir_pathname_rootdir_pathname_not_given(tmp_path):
 
 def test_utils_return_htmldir_pathname_htmldir_name_not_given(tmp_path):
     """Raises exception if HTML directory name is deliberately omitted."""
-    os.chdir(tmp_path)
+    rd = tmp_path
+    dd = Path(tmp_path).joinpath("a")
+    dd.mkdir()
+    os.chdir(dd)
     with pytest.raises(SystemExit):
-        get_htmldir_path(htmldir=None)
+        get_htmldir_path(rootdir=rd, htmldir=None)
 
 
-def test_utils_return_htmldir_pathname_datadir_name_not_given(tmp_path):
+def test_utils_return_htmldir_pathname_datadir_name_not_given2(tmp_path):
     """Returns pathname of HTML directory."""
     Path(tmp_path).joinpath("mklists.yml").write_text("config stuff")
     ab = Path(tmp_path).joinpath("a/b")

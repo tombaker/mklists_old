@@ -16,7 +16,7 @@ from .constants import (
 )
 from .decorators import preserve_cwd
 from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
-from .returns import get_visible_filenames, get_rootdir_path, linkify_line
+from .returns import get_visible_filenames, get_rootdir_path, linkify_textline
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -106,7 +106,7 @@ def write_htmlfiles(
     for key in list(name2lines_dict.keys()):
         lines_to_be_written = []
         for line in name2lines_dict[key]:
-            lines_to_be_written.append(linkify_line(line))
+            lines_to_be_written.append(linkify_textline(line))
         file_to_write = key + ".html"
         # Pathlib!
         io.open(file_to_write, "w", encoding="utf-8").writelines(lines_to_be_written)

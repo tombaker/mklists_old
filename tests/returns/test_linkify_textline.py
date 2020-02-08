@@ -1,33 +1,31 @@
-"""Test utils.py - linkify_textline"""
+"""Add HREF tags to lines containing URLs but leave lines already with HREF alone."""
 
-from mklists.utils import linkify_textline
+from mklists.returns import linkify_textline
 
 
-def test_utils_linkify_textline_linkified_line_already_linkified():
-    """@@@Docstring"""
-    textline = """A line with <a href="http://example.org">http://example.org</a>.\n"""
-    htmlline = """A line with <a href="http://example.org">http://example.org</a>.\n"""
+def test_linkify_textline_linkified_line_already_linkified():
+    """Line already containing HREF tags are left untouched."""
+    textline = """Line with <a href="http://example.org">http://example.org</a>.\n"""
+    htmlline = """Line with <a href="http://example.org">http://example.org</a>.\n"""
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line():
+def test_linkify_textline_linkified_line():
     """@@@Docstring"""
     textline = """http://example.org"""
     htmlline = """<a href="http://example.org">http://example.org</a>\n"""
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_non_url():
+def test_linkify_textline_linkified_line_non_url():
     """Shows that function does not test for non-sensical URLs."""
     textline = """http://..."""
     htmlline = """<a href="http://...">http://...</a>\n"""
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_question_mark():
+def test_linkify_textline_linkified_line_url_with_question_mark():
     """@@@Docstring"""
-    # pylint: disable=line-too-long
-    # Regrettably, yes.
     textline = """http://192.168.2.1/x.html?lang=en"""
     htmlline = (
         """<a href="http://192.168.2.1/x.html?la"""
@@ -36,25 +34,27 @@ def test_utils_linkify_textline_linkified_line_url_with_question_mark():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_ip_address():
+def test_linkify_textline_linkified_line_url_with_ip_address():
     """@@@Docstring"""
     textline = """http://192.168.56.100:8888/"""
     htmlline = (
-        """<a href="http://192.168.56.100:8888/">http://192.168.56.100:8888/</a>\n"""
+        """<a href="http://192.168.56.100:8888/">"""
+        """http://192.168.56.100:8888/</a>\n"""
     )
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_3d():
+def test_linkify_textline_linkified_line_url_with_3d():
     """@@@Docstring"""
     textline = """http://foo.eu/?fa=3D64063="""
     htmlline = (
-        """<a href="http://foo.eu/?fa=3D64063=">http://foo.eu/?fa=3D64063=</a>\n"""
+        """<a href="http://foo.eu/?fa=3D64063=">"""
+        """http://foo.eu/?fa=3D64063=</a>\n"""
     )
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_hashsign():
+def test_linkify_textline_linkified_line_url_with_hashsign():
     """@@@Docstring"""
     textline = """http://bar.github.io/#inst"""
     htmlline = (
@@ -63,7 +63,7 @@ def test_utils_linkify_textline_linkified_line_url_with_hashsign():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_url_with_colon():
+def test_linkify_textline_url_with_colon():
     """@@@Docstring"""
     textline = """http://foobar.org/Talk:Xyz"""
     htmlline = (
@@ -72,7 +72,7 @@ def test_utils_linkify_textline_url_with_colon():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_url_with_escaped_characters():
+def test_linkify_textline_url_with_escaped_characters():
     """@@@Docstring"""
     # pylint: disable=line-too-long
     # Regrettably, yes.
@@ -84,7 +84,7 @@ def test_utils_linkify_textline_url_with_escaped_characters():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_colon2():
+def test_linkify_textline_linkified_line_url_with_colon2():
     """@@@Docstring"""
     textline = """http://ex.net/rdf/lrmi/#/res"""
     htmlline = (
@@ -93,7 +93,7 @@ def test_utils_linkify_textline_linkified_line_url_with_colon2():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_bang():
+def test_linkify_textline_linkified_line_url_with_bang():
     """@@@Docstring"""
     # pylint: disable=line-too-long
     # Regrettably, yes.
@@ -105,7 +105,7 @@ def test_utils_linkify_textline_linkified_line_url_with_bang():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_comma():
+def test_linkify_textline_linkified_line_url_with_comma():
     """This application will not accept commas as valid URL characters."""
     # pylint: disable=line-too-long
     # Regrettably, yes.
@@ -117,14 +117,14 @@ def test_utils_linkify_textline_linkified_line_url_with_comma():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_url_with_https():
+def test_linkify_textline_linkified_line_url_with_https():
     """@@@Docstring"""
     textline = """https://www.w3.org/wiki"""
     htmlline = """<a href="https://www.w3.org/wiki">https://www.w3.org/wiki</a>\n"""
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_surrounded_by_brackets():
+def test_linkify_textline_linkified_line_surrounded_by_brackets():
     """Note the single apostrophone."""
     textline = """see info (https://www.w3.org/wiki)'"""
     htmlline = (
@@ -134,7 +134,7 @@ def test_utils_linkify_textline_linkified_line_surrounded_by_brackets():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_linkified_line_with_two_urls():
+def test_linkify_textline_linkified_line_with_two_urls():
     """@@@Docstring"""
     textline = """(https://1) http://2"""
     htmlline = (
@@ -143,7 +143,7 @@ def test_utils_linkify_textline_linkified_line_with_two_urls():
     assert linkify_textline(textline) == htmlline
 
 
-def test_utils_linkify_textline_not_including_linefeed():
+def test_linkify_textline_not_including_linefeed():
     """@@@Docstring"""
     textline = """http://www.gmd.de\n"""
     htmlline = """<a href="http://www.gmd.de">http://www.gmd.de</a>\n"""
