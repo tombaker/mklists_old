@@ -5,7 +5,6 @@ import pytest
 from pathlib import Path
 from mklists.constants import CONFIGFILE_NAME
 from mklists.reads import read_configfile
-from mklists.returns import get_rootdir_path
 
 CONFIGFILE_CONTENT = (
     "verbose: True\n"
@@ -37,8 +36,7 @@ def test_read_configfile(tmp_path):
     """Return dictionary of configuration settings from YAML file."""
     os.chdir(tmp_path)
     Path(CONFIGFILE_NAME).write_text(CONFIGFILE_CONTENT)
-    here = get_rootdir_path()
-    assert read_configfile(rootdir_pathname=here) == CONFIG_PYOBJ
+    assert read_configfile() == CONFIG_PYOBJ
 
 
 def test_read_configfile_read_configfile_with_entries_commented_out(tmp_path):
@@ -50,8 +48,25 @@ def test_read_configfile_read_configfile_with_entries_commented_out(tmp_path):
     assert read_configfile() == expected
 
 
-def test_read_configfile_read_configfile_not_found(tmp_path):
+def test_systemexit_if_configfile_not_found(tmp_path):
     """Raise exception if no configuration YAML file is found."""
     os.chdir(tmp_path)
+    with pytest.raises(SystemExit):
+        read_configfile()
+
+
+def test_systemexit_if_configfile_not_found_explicitly_specifying_rootdir(tmp_path):
+    """Raise exception if no config file found when explicitly specifying rootdir."""
+    os.chdir(tmp_path)
+    cwd = Path.cwd()
+    with pytest.raises(SystemExit):
+        read_configfile(rootdir_pathname=cwd)
+
+
+def test_systemexit_if_configfile_has_bad_yaml(tmp_path):
+    """Raise exception if config file has bad YAML."""
+    os.chdir(tmp_path)
+    configfile_content = "BAD: -: @@YAML CONTENT@@\n"
+    Path(CONFIGFILE_NAME).write_text(configfile_content)
     with pytest.raises(SystemExit):
         read_configfile()
