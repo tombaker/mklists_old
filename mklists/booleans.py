@@ -3,7 +3,7 @@
 import re
 from pathlib import Path
 from .constants import VALID_FILENAME_CHARACTERS_REGEX
-from .exceptions import FilenameIsAlreadyDirnameError, MissingValueError
+from .exceptions import FilenameIsAlreadyDirnameError, MissingArgumentError
 
 # pylint: disable=bad-continuation
 #         Black disagrees.
@@ -36,7 +36,7 @@ def filename_is_valid(
     * does not match "invalid filename" regex
     * does not match name of an existing directory in current directory"""
     if filename is None:
-        raise MissingValueError(f"Missing filename.")
+        raise MissingArgumentError("Expected filename string to validate.")
     if invalid_filename_patterns:
         for badpat in invalid_filename_patterns:
             if re.search(badpat, filename):

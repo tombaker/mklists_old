@@ -4,8 +4,7 @@ from dataclasses import dataclass
 from .booleans import filename_is_valid, regex_is_valid
 from .exceptions import (
     BadFilenameError,
-    BadRuleError,
-    MissingValueError,
+    RuleError,
     SourceEqualsTargetError,
     SourceMatchpatternError,
     UninitializedSourceError,
@@ -37,7 +36,7 @@ class Rule:
             self.source_matchfield = abs(int(self.source_matchfield))
         except ValueError:
             print(self)
-            raise BadRuleError(f"Source matchfield {repr(value)} is not an integer.")
+            raise RuleError(f"Source matchfield {repr(value)} is not an integer.")
 
     def _coerce_target_sortorder_as_integer(self):
         """Coerces target_sortorder to be of type integer."""
@@ -46,7 +45,7 @@ class Rule:
             self.target_sortorder = abs(int(self.target_sortorder))
         except ValueError:
             print(self)
-            raise BadRuleError(f"Target sortorder {repr(value)} is not an integer.")
+            raise RuleError(f"Target sortorder {repr(value)} is not an integer.")
 
     def is_valid(self):
         """Return True if Rule object passes all conversions and tests."""
@@ -95,9 +94,7 @@ class Rule:
     def _source_matchpattern_field_string_is_valid_as_regex(self):
         """Returns True if source_matchpattern is valid regular expression."""
         if self.source_matchpattern is None:
-            raise MissingValueError(
-                f"'None' is not a valid value for 'source_matchpattern'."
-            )
+            raise RuleError("'source_matchpattern' must be a valid regex.")
         if not regex_is_valid(self.source_matchpattern):
             # print(f"{self}")
             raise SourceMatchpatternError(

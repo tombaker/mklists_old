@@ -1,15 +1,4 @@
-"""Datafile contents having been captured in a Python list,
-moves datafiles to backup directory.
-
-These tests emulate get_backupdir_path() by
-composing the backup directory name from the following
-components:
-
-* root directory pathname  - here: tmpdir
-* backupdir_name           - here: "_backups"
-* backup_subdir_shortname  - here: "agenda"
-* timestamp_str            - here: "2019-07-26_0758_06488910"
-"""
+"""Moves datafiles to backup directory (just before writing new datafiles)."""
 
 import os
 from pathlib import Path
@@ -62,8 +51,15 @@ def test_move_all_datafiles_to_backupdir_no_datadir_specified(tmp_path):
     assert Path(tmp_backupdir).joinpath("a.txt").is_file()
 
 
-def test_move_all_datafiles_to_backupdir_no_backupdir_specified(tmp_path):
+def test_move_all_datafiles_to_backupdir_no_backupdir_path_specified(tmp_path):
     """Raises exception if no backup directory is specified."""
     tmp_datadir = Path(tmp_path / "a")
     with pytest.raises(SystemExit):
         move_all_datafiles_to_backupdir(backupdir=None, datadir=tmp_datadir)
+
+
+def test_move_all_datafiles_to_backupdir_bad_backupdir_path_specified(tmp_path):
+    """Raises exception if backup directory full pathname not specified."""
+    tmp_datadir = Path(tmp_path / "a")
+    with pytest.raises(FileNotFoundError):
+        move_all_datafiles_to_backupdir(backupdir="_backup", datadir=tmp_datadir)

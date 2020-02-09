@@ -4,7 +4,7 @@ import os
 import pathlib
 import pytest
 from mklists.booleans import filename_is_valid
-from mklists.exceptions import FilenameIsAlreadyDirnameError, MissingValueError
+from mklists.exceptions import FilenameIsAlreadyDirnameError
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -22,7 +22,7 @@ def test_filename_is_valid_exits_when_illegal_character_used():
 
 def test_filename_is_invalid_if_filename_is_none(tmp_path):
     """Raises exception when given filename is None."""
-    with pytest.raises(MissingValueError):
+    with pytest.raises(SystemExit):
         filename_is_valid(filename=None)
 
 

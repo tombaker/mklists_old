@@ -6,7 +6,13 @@ from pathlib import Path
 from .ruleclass import Rule
 from .constants import ROOTDIR_RULEFILE_NAME, DATADIR_RULEFILE_NAME, CONFIGFILE_NAME
 from .decorators import preserve_cwd
-from .exceptions import BadRuleError, MissingValueError, NoRulefileError, NoRulesError
+from .exceptions import (
+    BadRuleError,
+    MissingArgumentError,
+    MissingValueError,
+    NoRulefileError,
+    NoRulesError,
+)
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -72,7 +78,7 @@ def _return_listrules_from_rulefile_chain(csvfile=None):
 def _return_ruleobj_list_from_listrules(pyobj=None):
     """Return list of Rule objects from list of lists of component strings."""
     if not pyobj:
-        raise NoRulesError(f"List with rule components as strings must be specified.")
+        raise MissingArgumentError("Expecting list of lists of rule components.")
     ruleobj_list = []
     for item in pyobj:
         try:

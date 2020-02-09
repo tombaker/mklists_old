@@ -4,7 +4,6 @@
 import os
 import pytest
 from mklists.ruleclass import Rule
-from mklists.exceptions import MissingValueError
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -31,5 +30,5 @@ def test_source_is_valid_filename_raise_exception_given_bad_string():
 def test_source_is_valid_filename_raise_exception_given_none():
     """Field 3 (source) must not be None."""
     rule_obj = Rule(1, "NOW", None, "b", 2)
-    with pytest.raises(MissingValueError):
+    with pytest.raises(SystemExit):
         rule_obj._source_is_valid_filename()

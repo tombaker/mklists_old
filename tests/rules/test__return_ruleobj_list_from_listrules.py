@@ -1,7 +1,6 @@
 """Return rule object list from list of lists of rule components."""
 
 import pytest
-from mklists.exceptions import NoRulesError
 from mklists.ruleclass import Rule
 from mklists.rules import _return_ruleobj_list_from_listrules
 
@@ -59,5 +58,5 @@ def test_return_ruleobj_list_from_listrules(reinitialize_ruleclass_variables):
 @pytest.mark.rules
 def test_return_ruleobj_list_with_no_pyobj_specified(reinitialize_ruleclass_variables):
     """Raises NoRulesError if no rules list is specified as argument."""
-    with pytest.raises(NoRulesError):
+    with pytest.raises(SystemExit):
         _return_ruleobj_list_from_listrules(pyobj=None)

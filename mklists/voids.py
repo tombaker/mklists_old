@@ -15,7 +15,7 @@ from .constants import (
     ROOTDIR_RULEFILE_NAME,
 )
 from .decorators import preserve_cwd
-from .exceptions import NoBackupDirSpecifiedError, RepoAlreadyInitialized
+from .exceptions import MissingArgumentError, RepoAlreadyInitialized
 from .returns import get_visible_filenames, get_rootdir_path, linkify_textline
 
 # pylint: disable=bad-continuation
@@ -57,10 +57,14 @@ def delete_older_backupdirs(
 @preserve_cwd
 def move_all_datafiles_to_backupdir(backupdir=None, datadir=None):
     """Move visible files in given data directory to named backup directory."""
+    # TODO: 2020-02-09 Where does the backup directory actually get created?
+    #       In move_all_datafiles_to_backupdir, or in get_backupdir_path?
+    #       When are datafiles moved to backup directory?
+    #       Just before writing new datafiles?
     if not datadir:
         datadir = Path.cwd()
     if not backupdir:
-        raise NoBackupDirSpecifiedError(f"No pathname specified for backup directory.")
+        raise MissingArgumentError(f"No pathname specified for backup directory.")
     os.chdir(datadir)
     try:
         for file in get_visible_filenames():
