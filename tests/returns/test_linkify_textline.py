@@ -1,4 +1,4 @@
-"""Add HREF tags to lines containing URLs but leave lines already with HREF alone."""
+"""Wraps URLs found in text lines with HTML tags to make them clickable."""
 
 from mklists.returns import linkify_textline
 
