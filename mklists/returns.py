@@ -16,7 +16,7 @@ from .constants import (
     URL_PATTERN_REGEX,
 )
 from .decorators import preserve_cwd
-from .exceptions import BadRegexError, RepoNotFoundError, MissingArgumentError
+from .exceptions import BadRegexError, ConfigFileNotFoundError, MissingArgumentError
 
 # pylint: disable=bad-continuation
 # Black disagrees.
@@ -71,16 +71,16 @@ def get_htmldir_path(rootdir=None, htmldir=HTMLDIR_NAME, datadir=None):
 
 
 @preserve_cwd
-def get_rootdir_path(here=None, configfile=CONFIGFILE_NAME):
+def get_rootdir_path(here=None, mkyml=CONFIGFILE_NAME):
     """Return root pathname of mklists repo wherever executed in repo."""
     if not here:
         here = Path.cwd()
-    directory_chain_upwards = list(Path(here).parents)
-    directory_chain_upwards.insert(0, Path.cwd())
-    for directory in directory_chain_upwards:
-        if configfile in [item.name for item in directory.glob("*")]:
+    parents = list(Path(here).parents)
+    parents.insert(0, Path.cwd())
+    for directory in parents:
+        if mkyml in [item.name for item in directory.glob("*")]:
             return Path(directory)
-    raise RepoNotFoundError(f"Not a mklists repo - {repr(configfile)} not found.")
+    raise ConfigFileNotFoundError(f"{repr(mkyml)} not found.")
 
 
 def get_visible_filenames():
